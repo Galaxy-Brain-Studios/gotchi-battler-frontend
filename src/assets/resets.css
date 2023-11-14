@@ -1,0 +1,46 @@
+.button-reset {
+  border: none;
+  background-color: transparent;
+  font-family: inherit;
+  padding: 0;
+  cursor: pointer;
+}
+.button-reset::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+.link-reset,
+.link-reset:link,
+.link-reset:visited,
+.link-reset:hover,
+.link-reset:focus,
+.link-reset:active {
+  color: inherit;
+  text-decoration: none;
+}
+.link-reset--hover-underline:hover,
+.link-reset--hover-underline:focus {
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+}
+.link-reset--hover-underline:focus {
+  outline-color: transparent;
+}
+
+.list-reset,
+.list-reset > li {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+.list-reset {
+  list-style-type: none;
+}
+
+.dl-reset,
+.dl-reset dt,
+.dl-reset dd {
+  margin: 0;
+  padding: 0;
+}

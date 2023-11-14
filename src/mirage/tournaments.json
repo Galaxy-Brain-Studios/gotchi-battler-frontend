@@ -1,0 +1,337 @@
+[
+    {
+        "id": 1,
+        "name": "Tournament 1 (state BATTLE)",
+        "address": "0x91a519f250ffae6a2a130fa98627e8ccb1d49e62",
+        "startDate": "2023-07-01T14:00:00.000Z",
+        "endDate": "2023-10-05T14:00:00.000Z",
+        "state": "BATTLE",
+        "numberOfTeams": 16,
+        "image": "https://verse.aavegotchi.com/_next/image?url=https%3A%2F%2Fverse-ugc.aavegotchi.com%2Fparcel%2FPimpGotchiBounceGate-1688830769997.png&w=1920&q=75",
+        "rules": "5 vs. 5 - BRS Limited",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse in tempor neque. Praesent convallis lectus nec lorem ornare dapibus. Curabitur venenatis ligula vitae egestas pretium. Nullam rutrum vulputate massa vel vestibulum.",
+        "brackets":
+        [
+            {
+                "id": "t1b1",
+                "name": "Bracket #1",
+                "startDate": "2023-07-01T14:00:00.000Z",
+                "numberOfTeams": 64,
+                "rules": "Top 2 to Finale",
+                "stage": 0,
+                "status": "completed"
+            },
+            {
+                "id": "t1b2",
+                "name": "Bracket #2",
+                "startDate": "2023-08-10T14:00:00.000Z",
+                "numberOfTeams": 5,
+                "rules": "Top 2 to Finale",
+                "stage": 0,
+                "status": "started"
+            },
+            {
+                "id": "t1b3",
+                "name": "Bracket #3",
+                "startDate": "2023-10-01T14:00:00.000Z",
+                "numberOfTeams": 10,
+                "rules": "Top 2 to Finale",
+                "stage": 0,
+                "status": "upcoming"
+            },
+            {
+                "id": "t1b4",
+                "name": "Finale (Top 64)",
+                "startDate": "2023-10-30T14:00:00.000Z",
+                "numberOfTeams": 64,
+                "rules": "Top 2 to Finale",
+                "stage": 1,
+                "status": "upcoming"
+            }
+        ],
+        "teams":
+        [
+            {
+                "id": 1,
+                "name": "Team name 1",
+                "owner": "0x385Eeac5cB85A38A9a07A70c73e0a3271CfB54A7",
+                "ranking": 1,
+                "battlesWon": 12
+            },
+            {
+                "id": 2,
+                "name": "Team name 2 Testing Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String",
+                "owner": "0x86935F11C86623deC8a25696E1C19a8659CbF95d",
+                "ranking": 2,
+                "battlesWon": 110
+            },
+            {
+                "id": 3,
+                "name": "Team name 3 TestingLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWord",
+                "owner": "0x86935F11C86623deC8a25696E1C19a8659CbF95d",
+                "ranking": 3,
+                "battlesWon": 10
+            },
+            {
+                "id": 4,
+                "name": "Team name 4 - Test my team",
+                "owner": "0xBfe09443556773958bae1699b786d8E9680B5571",
+                "ranking": 4,
+                "battlesWon": 9
+            },
+            {
+                "id": 5,
+                "name": "Team name 5",
+                "owner": "0x385Eeac5cB85A38A9a07A70c73e0a3271CfB54A7",
+                "ranking": 5,
+                "battlesWon": 8
+            },
+            {
+                "id": 6,
+                "name": "Team name 6 - another one with my address",
+                "owner": "0xBfe09443556773958bae1699b786d8E9680B5571",
+                "ranking": 6,
+                "battlesWon": 7
+            },
+            {
+                "id": 7,
+                "name": "Team name 7",
+                "owner": "0x3F382DbD960E3a9bbCeaE22651E88158d2791550",
+                "ranking": 7,
+                "battlesWon": 6
+            },
+            {
+                "id": 8,
+                "name": "Team name 8",
+                "owner": "0x385Eeac5cB85A38A9a07A70c73e0a3271CfB54A7",
+                "ranking": 8,
+                "battlesWon": 5
+            },
+            {
+                "id": 9,
+                "name": "Team name 9",
+                "owner": "0xd8D4BDb89D64B7A2971Dc987DD67F101fea6c7D8",
+                "ranking": 9,
+                "battlesWon": 4
+            },
+            {
+                "id": 10,
+                "name": "Team name 10",
+                "owner": "0x1906fd9c4AC440561F7197Da0A4BD2E88DF5fA70",
+                "ranking": 10,
+                "battlesWon": 3
+            },
+            {
+                "id": 11,
+                "name": "Team name 11",
+                "owner": "0x58de9AaBCaeEC0f69883C94318810ad79Cc6a44f",
+                "ranking": 11,
+                "battlesWon": 2
+            },
+            {
+                "id": 12,
+                "name": "Team name 12",
+                "owner": "0x58de9AaBCaeEC0f69883C94318810ad79Cc6a44f",
+                "ranking": 12,
+                "battlesWon": 0
+            },
+            {
+                "id": 13,
+                "name": "Team name 13",
+                "owner": "0x58de9AaBCaeEC0f69883C94318810ad79Cc6a44f",
+                "ranking": 13,
+                "battlesWon": 0
+            },
+            {
+                "id": 14,
+                "name": "Team name 14",
+                "owner": "0x1906fd9c4AC440561F7197Da0A4BD2E88DF5fA70",
+                "ranking": 14,
+                "battlesWon": 0
+            },
+            {
+                "id": 15,
+                "name": "Team name 15",
+                "owner": "0x1906fd9c4AC440561F7197Da0A4BD2E88DF5fA70",
+                "ranking": 15,
+                "battlesWon": 0
+            },
+            {
+                "id": 16,
+                "name": "Team name 16",
+                "owner": "0x3F382DbD960E3a9bbCeaE22651E88158d2791550",
+                "ranking": 16,
+                "battlesWon": 0
+            },
+            {
+                "id": 17,
+                "name": "Team 17",
+                "owner": "0xd8D4BDb89D64B7A2971Dc987DD67F101fea6c7D8",
+                "ranking": 1,
+                "battlesWon": 12
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "name": "TestingREGISTERINGLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWord",
+        "address": "0x085bcDA996952BE278ca3E4C32b02c43a3f67FB2",
+        "startDate": "2023-11-01T15:10:00.000Z",
+        "endDate": "2023-11-20T15:10:00.000Z",
+        "state": "REGISTERING",
+        "numberOfTeams": 4,
+        "image": "https://verse.aavegotchi.com/_next/image?url=https%3A%2F%2Fverse-ugc.aavegotchi.com%2Fparcel%2Fezgif-1689696876748.com-optimize%20(4).gif&w=1920&q=75",
+        "rules": "Some rules text here",
+        "description": "TestingLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWord",
+        "brackets":
+        [
+            {
+                "id": "t2b1",
+                "name": "TestingLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWord",
+                "startDate": "2023-11-01T15:10:00.000Z",
+                "numberOfTeams": 64,
+                "rules": "TestingLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWord",
+                "stage": 0,
+                "status": "upcoming"
+            }
+        ],
+        "teams":
+        [
+            {
+                "id": 21,
+                "name": "Team name 21",
+                "owner": "0xd8D4BDb89D64B7A2971Dc987DD67F101fea6c7D8",
+                "ranking": 1,
+                "battlesWon": 12
+            },
+            {
+                "id": 22,
+                "name": "Team name 22 Testing Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String",
+                "owner": "0x86935F11C86623deC8a25696E1C19a8659CbF95d",
+                "ranking": 2,
+                "battlesWon": 110
+            },
+            {
+                "id": 23,
+                "name": "Team name 23 TestingLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWord",
+                "owner": "0x86935F11C86623deC8a25696E1C19a8659CbF95d",
+                "ranking": 3,
+                "battlesWon": 10
+            },
+            {
+                "id": 24,
+                "name": "Team name 24 - Test my team",
+                "owner": "0xBfe09443556773958bae1699b786d8E9680B5571",
+                "ranking": 4,
+                "battlesWon": 9
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "name": "Testing REGISTERING Long String Long String Long String Long String Long String",
+        "address": "0x1cD420A8aF633d78eC3dd00C4EEa2f5561d0fe04",
+        "startDate": "2023-12-15T16:20:00.000Z",
+        "endDate": "2023-12-25T16:20:00.000Z",
+        "state": "REGISTERING",
+        "numberOfTeams": 2,
+        "image": "https://www.aavegotchi.com/_next/image?url=%2Fimages%2Faavegotchis%2F01.png&w=640&q=75",
+        "rules": "Some rules text here",
+        "description": "",
+        "brackets":
+        [
+            {
+                "id": "t3b1",
+                "name": "Testing Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String",
+                "startDate": "2023-12-15T16:20:00.000Z",
+                "numberOfTeams": 64,
+                "rules": "Testing Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String",
+                "stage": 0,
+                "status": "upcoming"
+            }
+        ],
+        "teams":
+        [
+            {
+                "id": 0,
+                "name": "Team 0",
+                "owner": "0xd8D4BDb89D64B7A2971Dc987DD67F101fea6c7D8",
+                "ranking": 1,
+                "battlesWon": 0
+            },
+            {
+                "id": 1,
+                "name": "Team 1",
+                "owner": "0xd8D4BDb89D64B7A2971Dc987DD67F101fea6c7D8",
+                "ranking": 2,
+                "battlesWon": 0
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "name": "Tournament 4 (state FINISHED)",
+        "address": "xxx",
+        "startDate": "2023-01-01T10:00:00.000Z",
+        "endDate": "2023-01-31T10:00:00.000Z",
+        "state": "FINISHED",
+        "numberOfTeams": 10,
+        "image": "",
+        "rules": "Some rules text here",
+        "description": "",
+        "brackets":
+        [
+            {
+                "id": "t4b1",
+                "name": "Test with zero teams",
+                "startDate": "2023-01-01T10:00:00.000Z",
+                "numberOfTeams": 0,
+                "rules": "",
+                "stage": 0,
+                "status": "completed"
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "name": "Tournament 5 (state FINISHED)",
+        "address": "0xB76e26aabD5C689ba46EbE51f921c6b8828ae997",
+        "startDate": "2023-05-15T16:20:00.000Z",
+        "endDate": "2023-06-15T16:20:00.000Z",
+        "state": "FINISHED",
+        "numberOfTeams": 20,
+        "image": "https://verse.aavegotchi.com/_next/image?url=https%3A%2F%2Fverse-ugc.aavegotchi.com%2Fparcel%2FPimpGotchiBounceGate-1688830769997.png&w=1920&q=75",
+        "rules": "Some rules text here",
+        "description": "Test with zero brackets",
+        "brackets":
+        []
+    },
+    {
+        "id": 6,
+        "name": "Tournament 6 (state UPCOMING)",
+        "address": "xxx",
+        "startDate": "2024-05-15T16:20:00.000Z",
+        "endDate": "2024-06-15T16:20:00.000Z",
+        "state": "UPCOMING",
+        "numberOfTeams": 0,
+        "image": "",
+        "rules": "Some rules text here",
+        "description": "",
+        "brackets":
+        []
+    },
+    {
+        "id": 7,
+        "name": "Tournament 7 (state PREPARATION)",
+        "address": "xxx",
+        "startDate": "2023-05-15T16:20:00.000Z",
+        "endDate": "2023-06-15T16:20:00.000Z",
+        "state": "PREPARATION",
+        "numberOfTeams": 5,
+        "image": "",
+        "rules": "Some rules text here",
+        "description": "",
+        "brackets":
+        []
+    }
+]

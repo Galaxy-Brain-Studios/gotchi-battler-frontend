@@ -1,0 +1,74 @@
+/* color palette from <https://github.com/vuejs/theme> */
+:root {
+  --c-white: #fff;
+  --c-black-rgb: 27, 15, 85;
+  --c-black: rgb(var(--c-black-rgb));
+  --c-medium-blue-rgb: 32, 68, 185;
+  --c-medium-blue: rgb(var(--c-medium-blue-rgb));
+  --c-light-blue-rgb: 1, 185, 225;
+  --c-light-blue: rgb(var(--c-light-blue-rgb));
+  --c-dark-blue: #332383;
+  --c-light-purple-rgb: 200, 41, 194;
+  --c-light-purple: rgb(var(--c-light-purple-rgb));
+  --c-medium-purple-rgb: 99, 23, 121;
+  --c-medium-purple: rgb(var(--c-medium-purple-rgb));
+  --c-medium-pink-rgb: 244, 114, 241, 1;
+  --c-medium-pink: rgb(var(--c-medium-pink-rgb));
+  --c-light-yellow-rgb: 255, 208, 32;
+  --c-light-yellow: rgb(var(--c-light-yellow-rgb));
+  --c-medium-yellow-rgb: 127, 103, 105;
+  --c-medium-yellow: rgb(var(--c-medium-yellow-rgb));
+
+  --c-bright-yellow-rgb: 241, 212, 56;
+  --c-bright-yellow: rgb(var(--c-bright-yellow-rgb));
+
+  --c-bright-purple-rgb: 255, 0, 243;
+  --c-bright-purple: rgb(var(--c-bright-purple-rgb));
+
+  --c-rarity-garbage: rgb(60, 60, 100);
+  --c-rarity-garbage-contrast: var(--c-white);
+  --c-rarity-common: rgb(112, 85, 244);
+  --c-rarity-common-contrast: var(--c-white);
+  --c-rarity-uncommon: rgb(45, 177, 197);
+  --c-rarity-uncommon-contrast: var(--c-black);
+  --c-rarity-rare: rgb(79, 180, 255);
+  --c-rarity-rare-contrast: var(--c-black);
+  --c-rarity-legendary: rgb(255, 187, 96);
+  --c-rarity-legendary-contrast: var(--c-black);
+  --c-rarity-mythical: rgb(255, 139, 255);
+  --c-rarity-mythical-contrast: var(--c-black);
+  --c-rarity-godlike: rgb(71, 255, 158);
+  --c-rarity-godlike-contrast: var(--c-black);
+}
+
+/* semantic color variables for this project */
+:root {
+  --color-background: var(--c-dark-blue);
+  --color-text: var(--c-white);
+}
+
+html {
+  font-size: 16px;
+  /* use reserved gutter width to avoid layout reflow when opening dialog */
+  scrollbar-gutter: stable;
+}
+
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  color: var(--color-text);
+  background-color: var(--color-background);
+  background-image: url('./bg.png');
+  background-repeat: repeat;
+  font-family: Kanit, Seravek, 'Gill Sans Nova', Ubuntu, Calibri, 'DejaVu Sans', source-sans-pro, sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

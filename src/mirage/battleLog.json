@@ -1,0 +1,4833 @@
+{
+  "gotchis": [
+    {
+      "id": 45609,
+      "name": "Godlike --+- Enlightened",
+      "speed": 100,
+      "health": 1205,
+      "crit": 0,
+      "armor": 61,
+      "evade": 31,
+      "resist": 0,
+      "magic": 225,
+      "physical": 530,
+      "accuracy": 100,
+      "svgFront": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_front.svg",
+      "svgBack": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_back.svg",
+      "svgLeft": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_left.svg",
+      "svgRight": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_right.svg",
+      "specialId": 2,
+      "special": {
+        "id": 2,
+        "name": "Meditate",
+        "cooldown": 0,
+        "leaderPassive": "Cloud of Zen",
+        "gotchiClass": "Enlightened"
+      }
+    },
+    {
+      "id": 62411,
+      "name": "Godlike ---- Enlightened",
+      "speed": 100,
+      "health": 1205,
+      "crit": 0,
+      "armor": 61,
+      "evade": 0,
+      "resist": 92,
+      "magic": 225,
+      "physical": 530,
+      "accuracy": 100,
+      "svgFront": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_front.svg",
+      "svgBack": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_back.svg",
+      "svgLeft": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_left.svg",
+      "svgRight": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_right.svg",
+      "specialId": 2,
+      "special": {
+        "id": 2,
+        "name": "Meditate",
+        "cooldown": 0,
+        "leaderPassive": "Cloud of Zen",
+        "gotchiClass": "Enlightened"
+      }
+    },
+    {
+      "id": 16201,
+      "name": "Godlike -+++ Mage",
+      "speed": 100,
+      "health": 1205,
+      "crit": 31,
+      "armor": 0,
+      "evade": 31,
+      "resist": 0,
+      "magic": 530,
+      "physical": 225,
+      "accuracy": 100,
+      "svgFront": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_front.svg",
+      "svgBack": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_back.svg",
+      "svgLeft": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_left.svg",
+      "svgRight": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_right.svg",
+      "specialId": 7,
+      "special": {
+        "id": 7,
+        "name": "Thunder",
+        "cooldown": 2,
+        "leaderPassive": "Channel the coven",
+        "gotchiClass": "Mage"
+      }
+    },
+    {
+      "id": 59909,
+      "name": "Godlike +--- Troll",
+      "speed": 161,
+      "health": 900,
+      "crit": 0,
+      "armor": 61,
+      "evade": 0,
+      "resist": 92,
+      "magic": 225,
+      "physical": 530,
+      "accuracy": 100,
+      "svgFront": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_front.svg",
+      "svgBack": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_back.svg",
+      "svgLeft": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_left.svg",
+      "svgRight": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_right.svg",
+      "specialId": 8,
+      "special": {
+        "id": 8,
+        "name": "Devestating Smash",
+        "cooldown": 2,
+        "leaderPassive": "Clan momentum",
+        "gotchiClass": "Troll"
+      }
+    },
+    {
+      "id": 76882,
+      "name": "Godlike +--- Healer",
+      "speed": 161,
+      "health": 900,
+      "crit": 0,
+      "armor": 61,
+      "evade": 0,
+      "resist": 92,
+      "magic": 225,
+      "physical": 530,
+      "accuracy": 100,
+      "svgFront": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_front.svg",
+      "svgBack": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_back.svg",
+      "svgLeft": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_left.svg",
+      "svgRight": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_right.svg",
+      "specialId": 6,
+      "special": {
+        "id": 6,
+        "name": "Blessing",
+        "cooldown": 0,
+        "leaderPassive": "Cleansing Aura",
+        "gotchiClass": "Healer"
+      }
+    },
+    {
+      "id": 43861,
+      "name": "Godlike +++- Ninja",
+      "speed": 161,
+      "health": 900,
+      "crit": 31,
+      "armor": 0,
+      "evade": 31,
+      "resist": 0,
+      "magic": 225,
+      "physical": 530,
+      "accuracy": 100,
+      "svgFront": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_front.svg",
+      "svgBack": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_back.svg",
+      "svgLeft": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_left.svg",
+      "svgRight": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_right.svg",
+      "specialId": 1,
+      "special": {
+        "id": 1,
+        "name": "Spectral strike",
+        "cooldown": 0,
+        "leaderPassive": "Sharpen blades",
+        "gotchiClass": "Ninja"
+      }
+    },
+    {
+      "id": 30028,
+      "name": "Godlike --+- Enlightened",
+      "speed": 100,
+      "health": 1205,
+      "crit": 0,
+      "armor": 61,
+      "evade": 31,
+      "resist": 0,
+      "magic": 225,
+      "physical": 530,
+      "accuracy": 100,
+      "svgFront": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_front.svg",
+      "svgBack": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_back.svg",
+      "svgLeft": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_left.svg",
+      "svgRight": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_right.svg",
+      "specialId": 2,
+      "special": {
+        "id": 2,
+        "name": "Meditate",
+        "cooldown": 0,
+        "leaderPassive": "Cloud of Zen",
+        "gotchiClass": "Enlightened"
+      }
+    },
+    {
+      "id": 61818,
+      "name": "Godlike +--- Healer",
+      "speed": 161,
+      "health": 900,
+      "crit": 0,
+      "armor": 61,
+      "evade": 0,
+      "resist": 92,
+      "magic": 225,
+      "physical": 530,
+      "accuracy": 100,
+      "svgFront": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_front.svg",
+      "svgBack": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_back.svg",
+      "svgLeft": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_left.svg",
+      "svgRight": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_right.svg",
+      "specialId": 6,
+      "special": {
+        "id": 6,
+        "name": "Blessing",
+        "cooldown": 0,
+        "leaderPassive": "Cleansing Aura",
+        "gotchiClass": "Healer"
+      }
+    },
+    {
+      "id": 15513,
+      "name": "Godlike +++- Cleavers",
+      "speed": 161,
+      "health": 900,
+      "crit": 31,
+      "armor": 0,
+      "evade": 31,
+      "resist": 0,
+      "magic": 225,
+      "physical": 530,
+      "accuracy": 100,
+      "svgFront": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_front.svg",
+      "svgBack": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_back.svg",
+      "svgLeft": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_left.svg",
+      "svgRight": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_right.svg",
+      "specialId": 3,
+      "special": {
+        "id": 3,
+        "name": "Cleave",
+        "cooldown": 2,
+        "leaderPassive": "Frenzy",
+        "gotchiClass": "Cleavers"
+      }
+    },
+    {
+      "id": 32220,
+      "name": "Godlike -+++ Mage",
+      "speed": 100,
+      "health": 1205,
+      "crit": 31,
+      "armor": 0,
+      "evade": 31,
+      "resist": 0,
+      "magic": 530,
+      "physical": 225,
+      "accuracy": 100,
+      "svgFront": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_front.svg",
+      "svgBack": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_back.svg",
+      "svgLeft": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_left.svg",
+      "svgRight": "https://funny-mandazi-6aca8c.netlify.app/dev/gotchi_godlike_right.svg",
+      "specialId": 7,
+      "special": {
+        "id": 7,
+        "name": "Thunder",
+        "cooldown": 2,
+        "leaderPassive": "Channel the coven",
+        "gotchiClass": "Mage"
+      }
+    }
+  ],
+  "layout": {
+    "teams": [
+      {
+        "name": "Ironclad Mystics",
+        "owner": "0x0000000000000000000000000000000000000000",
+        "leaderId": 45609,
+        "rows": [
+          {
+            "slots": [
+              {
+                "isActive": false,
+                "id": null
+              },
+              {
+                "isActive": true,
+                "id": 45609
+              },
+              {
+                "isActive": false,
+                "id": null
+              },
+              {
+                "isActive": true,
+                "id": 62411
+              },
+              {
+                "isActive": false,
+                "id": null
+              }
+            ]
+          },
+          {
+            "slots": [
+              {
+                "isActive": false,
+                "id": null
+              },
+              {
+                "isActive": true,
+                "id": 16201
+              },
+              {
+                "isActive": true,
+                "id": 59909
+              },
+              {
+                "isActive": true,
+                "id": 76882
+              },
+              {
+                "isActive": false,
+                "id": null
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Versatile Vanguard",
+        "owner": "0x0000000000000000000000000000000000000000",
+        "leaderId": 61818,
+        "rows": [
+          {
+            "slots": [
+              {
+                "isActive": true,
+                "id": 43861
+              },
+              {
+                "isActive": false,
+                "id": null
+              },
+              {
+                "isActive": true,
+                "id": 30028
+              },
+              {
+                "isActive": false,
+                "id": null
+              },
+              {
+                "isActive": true,
+                "id": 61818
+              }
+            ]
+          },
+          {
+            "slots": [
+              {
+                "isActive": false,
+                "id": null
+              },
+              {
+                "isActive": true,
+                "id": 15513
+              },
+              {
+                "isActive": false,
+                "id": null
+              },
+              {
+                "isActive": true,
+                "id": 32220
+              },
+              {
+                "isActive": false,
+                "id": null
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "turns": [
+    {
+      "index": 0,
+      "skipTurn": false,
+      "action": {
+        "user": 59909,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 30028,
+            "damage": 90,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 1,
+      "skipTurn": false,
+      "action": {
+        "user": 61818,
+        "name": "Blessing",
+        "effects": [
+          {
+            "target": 30028,
+            "outcome": "success",
+            "damage": -90
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 2,
+      "skipTurn": false,
+      "action": {
+        "user": 15513,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 45609,
+            "damage": 90,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 3,
+      "skipTurn": false,
+      "action": {
+        "user": 76882,
+        "name": "Blessing",
+        "effects": [
+          {
+            "target": 45609,
+            "outcome": "success",
+            "damage": -90
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 4,
+      "skipTurn": false,
+      "action": {
+        "user": 43861,
+        "name": "Spectral strike",
+        "effects": [
+          {
+            "target": 45609,
+            "statuses": [
+              "bleed"
+            ],
+            "damage": 100,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 5,
+      "skipTurn": false,
+      "action": {
+        "user": 16201,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 61818,
+            "damage": 185,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [
+        {
+          "target": 45609,
+          "status": "bleed",
+          "damage": 55,
+          "remove": false
+        }
+      ],
+      "statusesExpired": []
+    },
+    {
+      "index": 6,
+      "skipTurn": false,
+      "action": {
+        "user": 62411,
+        "name": "Meditate",
+        "effects": []
+      },
+      "passiveEffects": [],
+      "statusEffects": [
+        {
+          "target": 45609,
+          "status": "bleed",
+          "damage": 53,
+          "remove": false
+        }
+      ],
+      "statusesExpired": []
+    },
+    {
+      "index": 7,
+      "skipTurn": false,
+      "action": {
+        "user": 45609,
+        "name": "Meditate",
+        "effects": []
+      },
+      "passiveEffects": [],
+      "statusEffects": [
+        {
+          "target": 45609,
+          "status": "bleed",
+          "damage": 50,
+          "remove": false
+        }
+      ],
+      "statusesExpired": []
+    },
+    {
+      "index": 8,
+      "skipTurn": false,
+      "action": {
+        "user": 32220,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 45609,
+            "damage": 160,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [
+        {
+          "target": 45609,
+          "status": "bleed",
+          "damage": 47,
+          "remove": false
+        }
+      ],
+      "statusesExpired": []
+    },
+    {
+      "index": 9,
+      "skipTurn": false,
+      "action": {
+        "user": 30028,
+        "name": "Meditate",
+        "effects": []
+      },
+      "passiveEffects": [],
+      "statusEffects": [
+        {
+          "target": 45609,
+          "status": "bleed",
+          "damage": 37,
+          "remove": false
+        }
+      ],
+      "statusesExpired": []
+    },
+    {
+      "index": 10,
+      "skipTurn": false,
+      "action": {
+        "user": 15513,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 62411,
+            "damage": 70,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [
+        {
+          "target": 45609,
+          "status": "bleed",
+          "damage": 35,
+          "remove": false
+        }
+      ],
+      "statusesExpired": []
+    },
+    {
+      "index": 11,
+      "skipTurn": false,
+      "action": {
+        "user": 43861,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 45609,
+            "damage": 76,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [
+        {
+          "target": 45609,
+          "status": "bleed",
+          "damage": 33,
+          "remove": false
+        }
+      ],
+      "statusesExpired": []
+    },
+    {
+      "index": 12,
+      "skipTurn": false,
+      "action": {
+        "user": 61818,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 62411,
+            "damage": 70,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [
+        {
+          "target": 45609,
+          "status": "bleed",
+          "damage": 28,
+          "remove": false
+        }
+      ],
+      "statusesExpired": []
+    },
+    {
+      "index": 13,
+      "skipTurn": false,
+      "action": {
+        "user": 59909,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 43861,
+            "damage": 165,
+            "outcome": "critical"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [
+        {
+          "target": 45609,
+          "status": "bleed",
+          "damage": 27,
+          "remove": false
+        }
+      ],
+      "statusesExpired": []
+    },
+    {
+      "index": 14,
+      "skipTurn": false,
+      "action": {
+        "user": 76882,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 43861,
+            "damage": 165,
+            "outcome": "critical"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [
+        {
+          "target": 45609,
+          "status": "bleed",
+          "damage": 25,
+          "remove": false
+        }
+      ],
+      "statusesExpired": []
+    },
+    {
+      "index": 15,
+      "skipTurn": false,
+      "action": {
+        "user": 76882,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 61818,
+            "damage": 99,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [
+        {
+          "target": 45609,
+          "status": "bleed",
+          "damage": 24,
+          "remove": false
+        }
+      ],
+      "statusesExpired": []
+    },
+    {
+      "index": 16,
+      "skipTurn": false,
+      "action": {
+        "user": 59909,
+        "name": "Devestating Smash",
+        "effects": [
+          {
+            "target": 30028,
+            "damage": 109,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [
+        {
+          "target": 45609,
+          "status": "bleed",
+          "damage": 23,
+          "remove": false
+        }
+      ],
+      "statusesExpired": []
+    },
+    {
+      "index": 17,
+      "skipTurn": false,
+      "action": {
+        "user": 45609,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 61818,
+            "damage": 108,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [
+        {
+          "target": 45609,
+          "status": "bleed",
+          "damage": 22,
+          "remove": false
+        }
+      ],
+      "statusesExpired": []
+    },
+    {
+      "index": 18,
+      "skipTurn": false,
+      "action": {
+        "user": 30028,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 62411,
+            "damage": 84,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [
+        {
+          "target": 45609,
+          "status": "bleed",
+          "damage": 21,
+          "remove": false
+        }
+      ],
+      "statusesExpired": []
+    },
+    {
+      "index": 19,
+      "skipTurn": false,
+      "action": {
+        "user": 62411,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 43861,
+            "damage": 132,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [
+        {
+          "target": 45609,
+          "status": "bleed",
+          "damage": 19,
+          "remove": false
+        }
+      ],
+      "statusesExpired": []
+    },
+    {
+      "index": 20,
+      "skipTurn": false,
+      "action": {
+        "user": 43861,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 62411,
+            "damage": 70,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [
+        {
+          "target": 45609,
+          "status": "bleed",
+          "damage": 19,
+          "remove": false
+        }
+      ],
+      "statusesExpired": []
+    },
+    {
+      "index": 21,
+      "skipTurn": false,
+      "action": {
+        "user": 61818,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 62411,
+            "damage": 70,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [
+        {
+          "target": 45609,
+          "status": "bleed",
+          "damage": 18,
+          "remove": false
+        }
+      ],
+      "statusesExpired": []
+    },
+    {
+      "index": 22,
+      "skipTurn": false,
+      "action": {
+        "user": 15513,
+        "name": "Cleave",
+        "effects": [
+          {
+            "target": 16201,
+            "damage": 241,
+            "outcome": "critical"
+          },
+          {
+            "target": 59909,
+            "damage": 62,
+            "outcome": "success"
+          },
+          {
+            "target": 76882,
+            "damage": 62,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [
+        {
+          "target": 45609,
+          "status": "bleed",
+          "damage": 17,
+          "remove": false
+        }
+      ],
+      "statusesExpired": []
+    },
+    {
+      "index": 23,
+      "skipTurn": false,
+      "action": {
+        "user": 32220,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 45609,
+            "damage": 160,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [
+        {
+          "target": 45609,
+          "status": "bleed",
+          "damage": 16,
+          "remove": false
+        }
+      ],
+      "statusesExpired": []
+    },
+    {
+      "index": 24,
+      "skipTurn": false,
+      "action": {
+        "user": 16201,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 43861,
+            "damage": 389,
+            "outcome": "critical"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [
+        {
+          "target": 45609,
+          "status": "bleed",
+          "damage": 7,
+          "remove": false
+        }
+      ],
+      "statusesExpired": []
+    },
+    {
+      "index": 25,
+      "skipTurn": false,
+      "action": {
+        "user": 59909,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 43861,
+            "damage": 165,
+            "outcome": "critical"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [
+        {
+          "target": 45609,
+          "status": "bleed",
+          "damage": 7,
+          "remove": false
+        }
+      ],
+      "statusesExpired": []
+    },
+    {
+      "index": 26,
+      "skipTurn": false,
+      "action": {
+        "user": 76882,
+        "name": "Blessing",
+        "effects": [
+          {
+            "target": 45609,
+            "outcome": "success",
+            "damage": -180
+          },
+          {
+            "target": 62411,
+            "outcome": "success",
+            "damage": -180
+          },
+          {
+            "target": 16201,
+            "outcome": "success",
+            "damage": -180
+          },
+          {
+            "target": 59909,
+            "outcome": "success",
+            "damage": -62
+          },
+          {
+            "target": 76882,
+            "outcome": "success",
+            "damage": -62
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [
+        {
+          "target": 45609,
+          "status": "bleed",
+          "damage": 6,
+          "remove": false
+        }
+      ],
+      "statusesExpired": [
+        {
+          "target": 45609,
+          "status": "bleed"
+        }
+      ]
+    },
+    {
+      "index": 27,
+      "skipTurn": false,
+      "action": {
+        "user": 61818,
+        "name": "Blessing",
+        "effects": [
+          {
+            "target": 30028,
+            "outcome": "success",
+            "damage": -109
+          },
+          {
+            "target": 61818,
+            "outcome": "success",
+            "damage": -180
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 28,
+      "skipTurn": false,
+      "action": {
+        "user": 15513,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 62411,
+            "damage": 70,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 29,
+      "skipTurn": false,
+      "action": {
+        "user": 62411,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 61818,
+            "damage": 118,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 30,
+      "skipTurn": false,
+      "action": {
+        "user": 30028,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 62411,
+            "damage": 84,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 31,
+      "skipTurn": false,
+      "action": {
+        "user": 45609,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 30028,
+            "damage": 91,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 32,
+      "skipTurn": false,
+      "action": {
+        "user": 16201,
+        "name": "Thunder",
+        "effects": [
+          {
+            "target": 30028,
+            "statuses": [
+              "stun"
+            ],
+            "damage": 88,
+            "outcome": "success"
+          },
+          {
+            "target": 61818,
+            "statuses": [
+              "stun"
+            ],
+            "damage": 102,
+            "outcome": "success"
+          },
+          {
+            "target": 15513,
+            "statuses": [
+              "stun"
+            ],
+            "damage": 130,
+            "outcome": "success"
+          },
+          {
+            "target": 32220,
+            "statuses": [
+              "stun"
+            ],
+            "damage": 55,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 33,
+      "skipTurn": false,
+      "action": {
+        "user": 59909,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 30028,
+            "damage": 84,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 34,
+      "skipTurn": false,
+      "action": {
+        "user": 76882,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 30028,
+            "damage": 84,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 35,
+      "skipTurn": false,
+      "action": {
+        "user": 32220,
+        "name": "Thunder",
+        "effects": [
+          {
+            "target": 45609,
+            "statuses": [
+              "stun"
+            ],
+            "damage": 80,
+            "outcome": "success"
+          },
+          {
+            "target": 62411,
+            "statuses": [
+              "stun"
+            ],
+            "damage": 74,
+            "outcome": "success"
+          },
+          {
+            "target": 16201,
+            "statuses": [
+              "stun"
+            ],
+            "damage": 46,
+            "outcome": "success"
+          },
+          {
+            "target": 59909,
+            "statuses": [
+              "stun"
+            ],
+            "damage": 86,
+            "outcome": "success"
+          },
+          {
+            "target": 76882,
+            "statuses": [
+              "stun"
+            ],
+            "damage": 86,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 36,
+      "skipTurn": false,
+      "action": {
+        "user": 15513,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 62411,
+            "damage": 70,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 37,
+      "skipTurn": false,
+      "action": {
+        "user": 61818,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 45609,
+            "damage": 76,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [
+        {
+          "source": 61818,
+          "target": 30028,
+          "status": "stun",
+          "damage": 0,
+          "remove": true
+        },
+        {
+          "source": 61818,
+          "target": 61818,
+          "status": "stun",
+          "damage": 0,
+          "remove": true
+        },
+        {
+          "source": 61818,
+          "target": 15513,
+          "status": "stun",
+          "damage": 0,
+          "remove": true
+        },
+        {
+          "source": 61818,
+          "target": 32220,
+          "status": "stun",
+          "damage": 0,
+          "remove": true
+        }
+      ],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 38,
+      "skipTurn": true,
+      "action": {
+        "user": 62411,
+        "name": "auto",
+        "effects": []
+      },
+      "passiveEffects": [],
+      "statusEffects": [
+        {
+          "target": 62411,
+          "status": "stun",
+          "damage": 0,
+          "remove": true
+        }
+      ],
+      "statusesExpired": []
+    },
+    {
+      "index": 39,
+      "skipTurn": true,
+      "action": {
+        "user": 76882,
+        "name": "auto",
+        "effects": []
+      },
+      "passiveEffects": [],
+      "statusEffects": [
+        {
+          "target": 76882,
+          "status": "stun",
+          "damage": 0,
+          "remove": true
+        }
+      ],
+      "statusesExpired": []
+    },
+    {
+      "index": 40,
+      "skipTurn": false,
+      "action": {
+        "user": 59909,
+        "name": "Devestating Smash",
+        "effects": [
+          {
+            "target": 30028,
+            "damage": 109,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 41,
+      "skipTurn": false,
+      "action": {
+        "user": 30028,
+        "name": "Meditate",
+        "effects": []
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 42,
+      "skipTurn": true,
+      "action": {
+        "user": 45609,
+        "name": "auto",
+        "effects": []
+      },
+      "passiveEffects": [],
+      "statusEffects": [
+        {
+          "target": 45609,
+          "status": "stun",
+          "damage": 0,
+          "remove": true
+        }
+      ],
+      "statusesExpired": []
+    },
+    {
+      "index": 43,
+      "skipTurn": false,
+      "action": {
+        "user": 61818,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 45609,
+            "damage": 76,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 44,
+      "skipTurn": false,
+      "action": {
+        "user": 15513,
+        "name": "Cleave",
+        "effects": [
+          {
+            "target": 16201,
+            "damage": 161,
+            "outcome": "success"
+          },
+          {
+            "target": 59909,
+            "damage": 62,
+            "outcome": "success"
+          },
+          {
+            "target": 76882,
+            "damage": 62,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 45,
+      "skipTurn": true,
+      "action": {
+        "user": 16201,
+        "name": "auto",
+        "effects": []
+      },
+      "passiveEffects": [],
+      "statusEffects": [
+        {
+          "target": 16201,
+          "status": "stun",
+          "damage": 0,
+          "remove": true
+        }
+      ],
+      "statusesExpired": []
+    },
+    {
+      "index": 46,
+      "skipTurn": false,
+      "action": {
+        "user": 32220,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 62411,
+            "damage": 148,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 47,
+      "skipTurn": false,
+      "action": {
+        "user": 76882,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 30028,
+            "damage": 71,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 48,
+      "skipTurn": true,
+      "action": {
+        "user": 59909,
+        "name": "auto",
+        "effects": []
+      },
+      "passiveEffects": [],
+      "statusEffects": [
+        {
+          "target": 59909,
+          "status": "stun",
+          "damage": 0,
+          "remove": true
+        }
+      ],
+      "statusesExpired": []
+    },
+    {
+      "index": 49,
+      "skipTurn": false,
+      "action": {
+        "user": 62411,
+        "name": "Meditate",
+        "effects": []
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 50,
+      "skipTurn": false,
+      "action": {
+        "user": 30028,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 45609,
+            "damage": 109,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 51,
+      "skipTurn": false,
+      "action": {
+        "user": 61818,
+        "name": "Blessing",
+        "effects": [
+          {
+            "target": 30028,
+            "outcome": "success",
+            "damage": -180
+          },
+          {
+            "target": 61818,
+            "outcome": "success",
+            "damage": -180
+          },
+          {
+            "target": 15513,
+            "outcome": "success",
+            "damage": -130
+          },
+          {
+            "target": 32220,
+            "outcome": "success",
+            "damage": -55
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 52,
+      "skipTurn": false,
+      "action": {
+        "user": 15513,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 62411,
+            "damage": 59,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 53,
+      "skipTurn": false,
+      "action": {
+        "user": 59909,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 30028,
+            "damage": 71,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 54,
+      "skipTurn": false,
+      "action": {
+        "user": 76882,
+        "name": "Blessing",
+        "effects": [
+          {
+            "target": 62411,
+            "outcome": "success",
+            "damage": -180
+          },
+          {
+            "target": 16201,
+            "outcome": "success",
+            "damage": -180
+          },
+          {
+            "target": 59909,
+            "outcome": "success",
+            "damage": -148
+          },
+          {
+            "target": 76882,
+            "outcome": "success",
+            "damage": -148
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 55,
+      "skipTurn": false,
+      "action": {
+        "user": 16201,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 30028,
+            "damage": 151,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 56,
+      "skipTurn": false,
+      "action": {
+        "user": 62411,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 61818,
+            "damage": 142,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 57,
+      "skipTurn": false,
+      "action": {
+        "user": 30028,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 62411,
+            "damage": 85,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 58,
+      "skipTurn": false,
+      "action": {
+        "user": 15513,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 62411,
+            "damage": 59,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 59,
+      "skipTurn": false,
+      "action": {
+        "user": 61818,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 62411,
+            "damage": 59,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 60,
+      "skipTurn": false,
+      "action": {
+        "user": 32220,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 62411,
+            "damage": 127,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 61,
+      "skipTurn": false,
+      "action": {
+        "user": 76882,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 61818,
+            "damage": 99,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 62,
+      "skipTurn": false,
+      "action": {
+        "user": 59909,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 61818,
+            "damage": 99,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 63,
+      "skipTurn": false,
+      "action": {
+        "user": 62411,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 30028,
+            "damage": 102,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 64,
+      "skipTurn": false,
+      "action": {
+        "user": 30028,
+        "name": "Meditate",
+        "effects": []
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 65,
+      "skipTurn": false,
+      "action": {
+        "user": 61818,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 62411,
+            "damage": 59,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 66,
+      "skipTurn": false,
+      "action": {
+        "user": 15513,
+        "name": "Cleave",
+        "effects": [
+          {
+            "target": 16201,
+            "damage": 161,
+            "outcome": "success"
+          },
+          {
+            "target": 59909,
+            "damage": 62,
+            "outcome": "success"
+          },
+          {
+            "target": 76882,
+            "damage": 62,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 67,
+      "skipTurn": false,
+      "action": {
+        "user": 16201,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 30028,
+            "damage": 130,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 68,
+      "skipTurn": false,
+      "action": {
+        "user": 59909,
+        "name": "Devestating Smash",
+        "effects": [
+          {
+            "target": 61818,
+            "damage": 129,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 69,
+      "skipTurn": false,
+      "action": {
+        "user": 76882,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 61818,
+            "damage": 99,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 70,
+      "skipTurn": false,
+      "action": {
+        "user": 32220,
+        "name": "Thunder",
+        "effects": [
+          {
+            "target": 62411,
+            "statuses": [
+              "stun"
+            ],
+            "damage": 64,
+            "outcome": "success"
+          },
+          {
+            "target": 16201,
+            "statuses": [
+              "stun"
+            ],
+            "damage": 68,
+            "outcome": "critical"
+          },
+          {
+            "target": 59909,
+            "statuses": [
+              "stun"
+            ],
+            "damage": 86,
+            "outcome": "success"
+          },
+          {
+            "target": 76882,
+            "statuses": [
+              "stun"
+            ],
+            "damage": 86,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 71,
+      "skipTurn": false,
+      "action": {
+        "user": 62411,
+        "name": "Meditate",
+        "effects": []
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 72,
+      "skipTurn": false,
+      "action": {
+        "user": 30028,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 62411,
+            "damage": 86,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 73,
+      "skipTurn": false,
+      "action": {
+        "user": 15513,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 62411,
+            "damage": 50,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 74,
+      "skipTurn": false,
+      "action": {
+        "user": 61818,
+        "name": "Blessing",
+        "effects": [
+          {
+            "target": 30028,
+            "outcome": "success",
+            "damage": -180
+          },
+          {
+            "target": 61818,
+            "outcome": "success",
+            "damage": -180
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 75,
+      "skipTurn": false,
+      "action": {
+        "user": 59909,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 30028,
+            "damage": 60,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 76,
+      "skipTurn": false,
+      "action": {
+        "user": 76882,
+        "name": "Blessing",
+        "effects": [
+          {
+            "target": 62411,
+            "outcome": "success",
+            "damage": -180
+          },
+          {
+            "target": 16201,
+            "outcome": "success",
+            "damage": -180
+          },
+          {
+            "target": 59909,
+            "outcome": "success",
+            "damage": -148
+          },
+          {
+            "target": 76882,
+            "outcome": "success",
+            "damage": -148
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": [
+        {
+          "target": 62411,
+          "status": "stun"
+        },
+        {
+          "target": 16201,
+          "status": "stun"
+        },
+        {
+          "target": 59909,
+          "status": "stun"
+        },
+        {
+          "target": 76882,
+          "status": "stun"
+        }
+      ]
+    },
+    {
+      "index": 77,
+      "skipTurn": false,
+      "action": {
+        "user": 62411,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 30028,
+            "damage": 103,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 78,
+      "skipTurn": false,
+      "action": {
+        "user": 16201,
+        "name": "Thunder",
+        "effects": [
+          {
+            "target": 30028,
+            "statuses": [
+              "stun"
+            ],
+            "damage": 65,
+            "outcome": "success"
+          },
+          {
+            "target": 61818,
+            "statuses": [
+              "stun"
+            ],
+            "damage": 102,
+            "outcome": "success"
+          },
+          {
+            "target": 15513,
+            "statuses": [
+              "stun"
+            ],
+            "damage": 194,
+            "outcome": "critical"
+          },
+          {
+            "target": 32220,
+            "statuses": [
+              "stun"
+            ],
+            "damage": 83,
+            "outcome": "critical"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 79,
+      "skipTurn": false,
+      "action": {
+        "user": 30028,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 62411,
+            "damage": 86,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 80,
+      "skipTurn": true,
+      "action": {
+        "user": 15513,
+        "name": "auto",
+        "effects": []
+      },
+      "passiveEffects": [],
+      "statusEffects": [
+        {
+          "target": 15513,
+          "status": "stun",
+          "damage": 0,
+          "remove": true
+        }
+      ],
+      "statusesExpired": []
+    },
+    {
+      "index": 81,
+      "skipTurn": false,
+      "action": {
+        "user": 61818,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 62411,
+            "damage": 50,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [
+        {
+          "source": 61818,
+          "target": 30028,
+          "status": "stun",
+          "damage": 0,
+          "remove": true
+        },
+        {
+          "source": 61818,
+          "target": 61818,
+          "status": "stun",
+          "damage": 0,
+          "remove": true
+        },
+        {
+          "source": 61818,
+          "target": 32220,
+          "status": "stun",
+          "damage": 0,
+          "remove": true
+        }
+      ],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 82,
+      "skipTurn": false,
+      "action": {
+        "user": 59909,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 61818,
+            "damage": 99,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 83,
+      "skipTurn": false,
+      "action": {
+        "user": 76882,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 61818,
+            "damage": 99,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 84,
+      "skipTurn": false,
+      "action": {
+        "user": 32220,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 62411,
+            "damage": 109,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 85,
+      "skipTurn": false,
+      "action": {
+        "user": 62411,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 30028,
+            "damage": 103,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 86,
+      "skipTurn": false,
+      "action": {
+        "user": 30028,
+        "name": "Meditate",
+        "effects": []
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 87,
+      "skipTurn": false,
+      "action": {
+        "user": 76882,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 30028,
+            "damage": 50,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 88,
+      "skipTurn": false,
+      "action": {
+        "user": 59909,
+        "name": "Devestating Smash",
+        "effects": [
+          {
+            "target": 30028,
+            "damage": 65,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 89,
+      "skipTurn": false,
+      "action": {
+        "user": 15513,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 62411,
+            "damage": 50,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 90,
+      "skipTurn": false,
+      "action": {
+        "user": 16201,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 30028,
+            "damage": 110,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 91,
+      "skipTurn": false,
+      "action": {
+        "user": 30028,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 59909,
+            "damage": 171,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 92,
+      "skipTurn": false,
+      "action": {
+        "user": 76882,
+        "name": "Blessing",
+        "effects": [
+          {
+            "target": 16201,
+            "outcome": "success",
+            "damage": -137
+          },
+          {
+            "target": 59909,
+            "outcome": "success",
+            "damage": -171
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 93,
+      "skipTurn": false,
+      "action": {
+        "user": 59909,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 30028,
+            "damage": 50,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 94,
+      "skipTurn": false,
+      "action": {
+        "user": 32220,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 16201,
+            "damage": 91,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 95,
+      "skipTurn": false,
+      "action": {
+        "user": 15513,
+        "name": "Cleave",
+        "effects": [
+          {
+            "target": 16201,
+            "damage": 241,
+            "outcome": "critical"
+          },
+          {
+            "target": 59909,
+            "damage": 62,
+            "outcome": "success"
+          },
+          {
+            "target": 76882,
+            "damage": 62,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 96,
+      "skipTurn": false,
+      "action": {
+        "user": 16201,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 15513,
+            "damage": 259,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 97,
+      "skipTurn": false,
+      "action": {
+        "user": 76882,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 32220,
+            "damage": 259,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 98,
+      "skipTurn": false,
+      "action": {
+        "user": 59909,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 15513,
+            "damage": 165,
+            "outcome": "critical"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 99,
+      "skipTurn": false,
+      "action": {
+        "user": 15513,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 76882,
+            "damage": 82,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 100,
+      "skipTurn": false,
+      "action": {
+        "user": 32220,
+        "name": "Thunder",
+        "effects": [
+          {
+            "target": 16201,
+            "statuses": [
+              "stun"
+            ],
+            "damage": 68,
+            "outcome": "critical"
+          },
+          {
+            "target": 59909,
+            "statuses": [
+              "stun"
+            ],
+            "damage": 86,
+            "outcome": "success"
+          },
+          {
+            "target": 76882,
+            "statuses": [
+              "stun"
+            ],
+            "damage": 86,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 101,
+      "skipTurn": true,
+      "action": {
+        "user": 59909,
+        "name": "auto",
+        "effects": []
+      },
+      "passiveEffects": [],
+      "statusEffects": [
+        {
+          "target": 59909,
+          "status": "stun",
+          "damage": 0,
+          "remove": true
+        }
+      ],
+      "statusesExpired": []
+    },
+    {
+      "index": 102,
+      "skipTurn": false,
+      "action": {
+        "user": 76882,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 32220,
+            "damage": 259,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 103,
+      "skipTurn": false,
+      "action": {
+        "user": 16201,
+        "name": "Thunder",
+        "effects": [
+          {
+            "target": 15513,
+            "statuses": [
+              "stun"
+            ],
+            "damage": 130,
+            "outcome": "success"
+          },
+          {
+            "target": 32220,
+            "statuses": [
+              "stun"
+            ],
+            "damage": 83,
+            "outcome": "critical"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 104,
+      "skipTurn": false,
+      "action": {
+        "user": 15513,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 76882,
+            "damage": 82,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 105,
+      "skipTurn": false,
+      "action": {
+        "user": 59909,
+        "name": "Devestating Smash",
+        "effects": [
+          {
+            "target": 32220,
+            "damage": 337,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 106,
+      "skipTurn": false,
+      "action": {
+        "user": 76882,
+        "name": "Blessing",
+        "effects": [
+          {
+            "target": 16201,
+            "outcome": "success",
+            "damage": -180
+          },
+          {
+            "target": 59909,
+            "outcome": "success",
+            "damage": -148
+          },
+          {
+            "target": 76882,
+            "outcome": "success",
+            "damage": -180
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": [
+        {
+          "target": 16201,
+          "status": "stun"
+        },
+        {
+          "target": 76882,
+          "status": "stun"
+        }
+      ]
+    },
+    {
+      "index": 107,
+      "skipTurn": false,
+      "action": {
+        "user": 15513,
+        "name": "Cleave",
+        "effects": [
+          {
+            "target": 16201,
+            "damage": 161,
+            "outcome": "success"
+          },
+          {
+            "target": 59909,
+            "damage": 62,
+            "outcome": "success"
+          },
+          {
+            "target": 76882,
+            "damage": 62,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 108,
+      "skipTurn": false,
+      "action": {
+        "user": 32220,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 16201,
+            "damage": 91,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 109,
+      "skipTurn": false,
+      "action": {
+        "user": 16201,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 32220,
+            "damage": 165,
+            "outcome": "critical"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 110,
+      "skipTurn": false,
+      "action": {
+        "user": 76882,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 15513,
+            "damage": 110,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 111,
+      "skipTurn": false,
+      "action": {
+        "user": 59909,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 15513,
+            "damage": 110,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    },
+    {
+      "index": 112,
+      "skipTurn": false,
+      "action": {
+        "user": 76882,
+        "name": "auto",
+        "effects": [
+          {
+            "target": 32220,
+            "damage": 259,
+            "outcome": "success"
+          }
+        ]
+      },
+      "passiveEffects": [],
+      "statusEffects": [],
+      "statusesExpired": []
+    }
+  ],
+  "debug": [
+    {
+      "turn": 0,
+      "user": 59909,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 1205, Statuses: cloud_of_zen",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 1205, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1205, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 43861, Name: Godlike +++- Ninja, Health: 900, Statuses: ",
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1115, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 900, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 1,
+      "user": 61818,
+      "move": "Blessing",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 1205, Statuses: cloud_of_zen",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 1205, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1205, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 43861, Name: Godlike +++- Ninja, Health: 900, Statuses: ",
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1205, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 900, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 2,
+      "user": 15513,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 1115, Statuses: cloud_of_zen",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 1205, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1205, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 43861, Name: Godlike +++- Ninja, Health: 900, Statuses: ",
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1205, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 900, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 3,
+      "user": 76882,
+      "move": "Blessing",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 1205, Statuses: cloud_of_zen",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 1205, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1205, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 43861, Name: Godlike +++- Ninja, Health: 900, Statuses: ",
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1205, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 900, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 4,
+      "user": 43861,
+      "move": "Spectral strike",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 1105, Statuses: cloud_of_zen,bleed",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 1205, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1205, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 43861, Name: Godlike +++- Ninja, Health: 900, Statuses: ",
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1205, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 900, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 5,
+      "user": 16201,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 1050, Statuses: cloud_of_zen,bleed",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 1205, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1205, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 43861, Name: Godlike +++- Ninja, Health: 900, Statuses: ",
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1205, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 715, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 6,
+      "user": 62411,
+      "move": "Meditate",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 997, Statuses: cloud_of_zen,bleed",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 1205, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1205, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 43861, Name: Godlike +++- Ninja, Health: 900, Statuses: ",
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1205, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 715, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 7,
+      "user": 45609,
+      "move": "Meditate",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 947, Statuses: cloud_of_zen,bleed",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 1205, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1205, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 43861, Name: Godlike +++- Ninja, Health: 900, Statuses: ",
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1205, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 715, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 8,
+      "user": 32220,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 740, Statuses: cloud_of_zen,bleed",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 1205, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1205, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 43861, Name: Godlike +++- Ninja, Health: 900, Statuses: ",
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1205, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 715, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 9,
+      "user": 30028,
+      "move": "Meditate",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 703, Statuses: cloud_of_zen,bleed",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 1205, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1205, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 43861, Name: Godlike +++- Ninja, Health: 900, Statuses: ",
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1205, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 715, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 10,
+      "user": 15513,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 668, Statuses: cloud_of_zen,bleed",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 1135, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1205, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 43861, Name: Godlike +++- Ninja, Health: 900, Statuses: ",
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1205, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 715, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 11,
+      "user": 43861,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 559, Statuses: cloud_of_zen,bleed",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 1135, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1205, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 43861, Name: Godlike +++- Ninja, Health: 900, Statuses: ",
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1205, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 715, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 12,
+      "user": 61818,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 531, Statuses: cloud_of_zen,bleed",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 1065, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1205, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 43861, Name: Godlike +++- Ninja, Health: 900, Statuses: ",
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1205, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 715, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 13,
+      "user": 59909,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 504, Statuses: cloud_of_zen,bleed",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 1065, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1205, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 43861, Name: Godlike +++- Ninja, Health: 735, Statuses: ",
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1205, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 715, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 14,
+      "user": 76882,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 479, Statuses: cloud_of_zen,bleed",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 1065, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1205, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 43861, Name: Godlike +++- Ninja, Health: 570, Statuses: ",
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1205, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 715, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 15,
+      "user": 76882,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 455, Statuses: cloud_of_zen,bleed",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 1065, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1205, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 43861, Name: Godlike +++- Ninja, Health: 570, Statuses: ",
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1205, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 616, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 16,
+      "user": 59909,
+      "move": "Devestating Smash",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 432, Statuses: cloud_of_zen,bleed",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 1065, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1205, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 43861, Name: Godlike +++- Ninja, Health: 570, Statuses: ",
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1096, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 616, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 17,
+      "user": 45609,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 410, Statuses: cloud_of_zen,bleed",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 1065, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1205, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 43861, Name: Godlike +++- Ninja, Health: 570, Statuses: ",
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1096, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 508, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 18,
+      "user": 30028,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 389, Statuses: cloud_of_zen,bleed",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 981, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1205, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 43861, Name: Godlike +++- Ninja, Health: 570, Statuses: ",
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1096, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 508, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 19,
+      "user": 62411,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 370, Statuses: cloud_of_zen,bleed",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 981, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1205, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 43861, Name: Godlike +++- Ninja, Health: 438, Statuses: ",
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1096, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 508, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 20,
+      "user": 43861,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 351, Statuses: cloud_of_zen,bleed",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 911, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1205, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 43861, Name: Godlike +++- Ninja, Health: 438, Statuses: ",
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1096, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 508, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 21,
+      "user": 61818,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 333, Statuses: cloud_of_zen,bleed",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 841, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1205, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 43861, Name: Godlike +++- Ninja, Health: 438, Statuses: ",
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1096, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 508, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 22,
+      "user": 15513,
+      "move": "Cleave",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 316, Statuses: cloud_of_zen,bleed",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 841, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 964, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 838, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 838, Statuses: "
+      ],
+      "team2": [
+        "Id: 43861, Name: Godlike +++- Ninja, Health: 438, Statuses: ",
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1096, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 508, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 23,
+      "user": 32220,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 140, Statuses: cloud_of_zen,bleed",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 841, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 964, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 838, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 838, Statuses: "
+      ],
+      "team2": [
+        "Id: 43861, Name: Godlike +++- Ninja, Health: 438, Statuses: ",
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1096, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 508, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 24,
+      "user": 16201,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 133, Statuses: cloud_of_zen,bleed",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 841, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 964, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 838, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 838, Statuses: "
+      ],
+      "team2": [
+        "Id: 43861, Name: Godlike +++- Ninja, Health: 49, Statuses: ",
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1096, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 508, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 25,
+      "user": 59909,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 126, Statuses: cloud_of_zen,bleed",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 841, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 964, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 838, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 838, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1096, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 508, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 26,
+      "user": 76882,
+      "move": "Blessing",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 300, Statuses: cloud_of_zen",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 1021, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1144, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1096, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 508, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 27,
+      "user": 61818,
+      "move": "Blessing",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 300, Statuses: cloud_of_zen",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 1021, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1144, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1205, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 688, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 28,
+      "user": 15513,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 300, Statuses: cloud_of_zen",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 951, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1144, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1205, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 688, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 29,
+      "user": 62411,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 300, Statuses: cloud_of_zen",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 951, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1144, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1205, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 570, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 30,
+      "user": 30028,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 300, Statuses: cloud_of_zen",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 867, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1144, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1205, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 570, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 31,
+      "user": 45609,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 300, Statuses: cloud_of_zen",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 867, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1144, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1114, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 570, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 32,
+      "user": 16201,
+      "move": "Thunder",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 300, Statuses: cloud_of_zen",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 867, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1144, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 1026, Statuses: stun",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 468, Statuses: cleansing_aura,stun",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 770, Statuses: stun",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1150, Statuses: stun"
+      ]
+    },
+    {
+      "turn": 33,
+      "user": 59909,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 300, Statuses: cloud_of_zen",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 867, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1144, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 942, Statuses: stun",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 468, Statuses: cleansing_aura,stun",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 770, Statuses: stun",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1150, Statuses: stun"
+      ]
+    },
+    {
+      "turn": 34,
+      "user": 76882,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 300, Statuses: cloud_of_zen",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 867, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1144, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 858, Statuses: stun",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 468, Statuses: cleansing_aura,stun",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 770, Statuses: stun",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1150, Statuses: stun"
+      ]
+    },
+    {
+      "turn": 35,
+      "user": 32220,
+      "move": "Thunder",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 220, Statuses: cloud_of_zen,stun",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 793, Statuses: stun",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1098, Statuses: stun",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 814, Statuses: stun",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 814, Statuses: stun"
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 858, Statuses: stun",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 468, Statuses: cleansing_aura,stun",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 770, Statuses: stun",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1150, Statuses: stun"
+      ]
+    },
+    {
+      "turn": 36,
+      "user": 15513,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 220, Statuses: cloud_of_zen,stun",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 723, Statuses: stun",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1098, Statuses: stun",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 814, Statuses: stun",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 814, Statuses: stun"
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 858, Statuses: stun",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 468, Statuses: cleansing_aura,stun",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 770, Statuses: stun",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1150, Statuses: stun"
+      ]
+    },
+    {
+      "turn": 37,
+      "user": 61818,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 144, Statuses: cloud_of_zen,stun",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 723, Statuses: stun",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1098, Statuses: stun",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 814, Statuses: stun",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 814, Statuses: stun"
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 858, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 468, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 770, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1150, Statuses: "
+      ]
+    },
+    {
+      "turn": 38,
+      "user": 62411,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 144, Statuses: cloud_of_zen,stun",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 723, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1098, Statuses: stun",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 814, Statuses: stun",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 814, Statuses: stun"
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 858, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 468, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 770, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1150, Statuses: "
+      ]
+    },
+    {
+      "turn": 39,
+      "user": 76882,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 144, Statuses: cloud_of_zen,stun",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 723, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1098, Statuses: stun",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 814, Statuses: stun",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 814, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 858, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 468, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 770, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1150, Statuses: "
+      ]
+    },
+    {
+      "turn": 40,
+      "user": 59909,
+      "move": "Devestating Smash",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 144, Statuses: cloud_of_zen,stun",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 723, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1098, Statuses: stun",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 814, Statuses: stun",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 814, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 749, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 468, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 770, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1150, Statuses: "
+      ]
+    },
+    {
+      "turn": 41,
+      "user": 30028,
+      "move": "Meditate",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 144, Statuses: cloud_of_zen,stun",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 723, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1098, Statuses: stun",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 814, Statuses: stun",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 814, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 749, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 468, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 770, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1150, Statuses: "
+      ]
+    },
+    {
+      "turn": 42,
+      "user": 45609,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 144, Statuses: cloud_of_zen",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 723, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1098, Statuses: stun",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 814, Statuses: stun",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 814, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 749, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 468, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 770, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1150, Statuses: "
+      ]
+    },
+    {
+      "turn": 43,
+      "user": 61818,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 68, Statuses: cloud_of_zen",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 723, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1098, Statuses: stun",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 814, Statuses: stun",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 814, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 749, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 468, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 770, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1150, Statuses: "
+      ]
+    },
+    {
+      "turn": 44,
+      "user": 15513,
+      "move": "Cleave",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 68, Statuses: cloud_of_zen",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 723, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 937, Statuses: stun",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 752, Statuses: stun",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 752, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 749, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 468, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 770, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1150, Statuses: "
+      ]
+    },
+    {
+      "turn": 45,
+      "user": 16201,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 68, Statuses: cloud_of_zen",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 723, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 937, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 752, Statuses: stun",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 752, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 749, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 468, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 770, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1150, Statuses: "
+      ]
+    },
+    {
+      "turn": 46,
+      "user": 32220,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 68, Statuses: cloud_of_zen",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 575, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 937, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 752, Statuses: stun",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 752, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 749, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 468, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 770, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1150, Statuses: "
+      ]
+    },
+    {
+      "turn": 47,
+      "user": 76882,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 68, Statuses: cloud_of_zen",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 575, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 937, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 752, Statuses: stun",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 752, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 678, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 468, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 770, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1150, Statuses: "
+      ]
+    },
+    {
+      "turn": 48,
+      "user": 59909,
+      "move": "auto",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 68, Statuses: cloud_of_zen",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 575, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 937, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 752, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 752, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 678, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 468, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 770, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1150, Statuses: "
+      ]
+    },
+    {
+      "turn": 49,
+      "user": 62411,
+      "move": "Meditate",
+      "team1": [
+        "Id: 45609, Name: Godlike --+- Enlightened, Health: 68, Statuses: cloud_of_zen",
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 575, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 937, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 752, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 752, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 678, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 468, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 770, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1150, Statuses: "
+      ]
+    },
+    {
+      "turn": 50,
+      "user": 30028,
+      "move": "auto",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 575, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 937, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 752, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 752, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 678, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 468, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 770, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1150, Statuses: "
+      ]
+    },
+    {
+      "turn": 51,
+      "user": 61818,
+      "move": "Blessing",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 575, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 937, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 752, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 752, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 858, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 648, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 52,
+      "user": 15513,
+      "move": "auto",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 516, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 937, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 752, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 752, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 858, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 648, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 53,
+      "user": 59909,
+      "move": "auto",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 516, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 937, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 752, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 752, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 787, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 648, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 54,
+      "user": 76882,
+      "move": "Blessing",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 696, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1117, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 787, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 648, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 55,
+      "user": 16201,
+      "move": "auto",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 696, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1117, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 636, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 648, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 56,
+      "user": 62411,
+      "move": "auto",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 696, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1117, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 636, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 506, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 57,
+      "user": 30028,
+      "move": "auto",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 611, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1117, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 636, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 506, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 58,
+      "user": 15513,
+      "move": "auto",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 552, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1117, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 636, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 506, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 59,
+      "user": 61818,
+      "move": "auto",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 493, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1117, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 636, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 506, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 60,
+      "user": 32220,
+      "move": "auto",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 366, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1117, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 636, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 506, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 61,
+      "user": 76882,
+      "move": "auto",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 366, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1117, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 636, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 407, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 62,
+      "user": 59909,
+      "move": "auto",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 366, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1117, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 636, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 308, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 63,
+      "user": 62411,
+      "move": "auto",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 366, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1117, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 534, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 308, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 64,
+      "user": 30028,
+      "move": "Meditate",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 366, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1117, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 534, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 308, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 65,
+      "user": 61818,
+      "move": "auto",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 307, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1117, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 534, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 308, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 66,
+      "user": 15513,
+      "move": "Cleave",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 307, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 956, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 838, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 838, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 534, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 308, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 67,
+      "user": 16201,
+      "move": "auto",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 307, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 956, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 838, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 838, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 404, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 308, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 68,
+      "user": 59909,
+      "move": "Devestating Smash",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 307, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 956, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 838, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 838, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 404, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 179, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 69,
+      "user": 76882,
+      "move": "auto",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 307, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 956, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 838, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 838, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 404, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 80, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 70,
+      "user": 32220,
+      "move": "Thunder",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 243, Statuses: stun",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 888, Statuses: stun",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 752, Statuses: stun",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 752, Statuses: stun"
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 404, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 80, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 71,
+      "user": 62411,
+      "move": "Meditate",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 243, Statuses: stun",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 888, Statuses: stun",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 752, Statuses: stun",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 752, Statuses: stun"
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 404, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 80, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 72,
+      "user": 30028,
+      "move": "auto",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 157, Statuses: stun",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 888, Statuses: stun",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 752, Statuses: stun",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 752, Statuses: stun"
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 404, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 80, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 73,
+      "user": 15513,
+      "move": "auto",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 107, Statuses: stun",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 888, Statuses: stun",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 752, Statuses: stun",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 752, Statuses: stun"
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 404, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 80, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 74,
+      "user": 61818,
+      "move": "Blessing",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 107, Statuses: stun",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 888, Statuses: stun",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 752, Statuses: stun",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 752, Statuses: stun"
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 584, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 260, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 75,
+      "user": 59909,
+      "move": "auto",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 107, Statuses: stun",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 888, Statuses: stun",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 752, Statuses: stun",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 752, Statuses: stun"
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 524, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 260, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 76,
+      "user": 76882,
+      "move": "Blessing",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 287, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1068, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 524, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 260, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 77,
+      "user": 62411,
+      "move": "auto",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 287, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1068, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 421, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 260, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 900, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1205, Statuses: "
+      ]
+    },
+    {
+      "turn": 78,
+      "user": 16201,
+      "move": "Thunder",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 287, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1068, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 356, Statuses: stun",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 158, Statuses: cleansing_aura,stun",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 706, Statuses: stun",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1122, Statuses: stun"
+      ]
+    },
+    {
+      "turn": 79,
+      "user": 30028,
+      "move": "auto",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 201, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1068, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 356, Statuses: stun",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 158, Statuses: cleansing_aura,stun",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 706, Statuses: stun",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1122, Statuses: stun"
+      ]
+    },
+    {
+      "turn": 80,
+      "user": 15513,
+      "move": "auto",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 201, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1068, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 356, Statuses: stun",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 158, Statuses: cleansing_aura,stun",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 706, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1122, Statuses: stun"
+      ]
+    },
+    {
+      "turn": 81,
+      "user": 61818,
+      "move": "auto",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 151, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1068, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 356, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 158, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 706, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1122, Statuses: "
+      ]
+    },
+    {
+      "turn": 82,
+      "user": 59909,
+      "move": "auto",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 151, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1068, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 356, Statuses: ",
+        "Id: 61818, Name: Godlike +--- Healer, Health: 59, Statuses: cleansing_aura",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 706, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1122, Statuses: "
+      ]
+    },
+    {
+      "turn": 83,
+      "user": 76882,
+      "move": "auto",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 151, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1068, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 356, Statuses: ",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 706, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1122, Statuses: "
+      ]
+    },
+    {
+      "turn": 84,
+      "user": 32220,
+      "move": "auto",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 42, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1068, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 356, Statuses: ",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 706, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1122, Statuses: "
+      ]
+    },
+    {
+      "turn": 85,
+      "user": 62411,
+      "move": "auto",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 42, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1068, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 253, Statuses: ",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 706, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1122, Statuses: "
+      ]
+    },
+    {
+      "turn": 86,
+      "user": 30028,
+      "move": "Meditate",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 42, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1068, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 253, Statuses: ",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 706, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1122, Statuses: "
+      ]
+    },
+    {
+      "turn": 87,
+      "user": 76882,
+      "move": "auto",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 42, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1068, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 203, Statuses: ",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 706, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1122, Statuses: "
+      ]
+    },
+    {
+      "turn": 88,
+      "user": 59909,
+      "move": "Devestating Smash",
+      "team1": [
+        "Id: 62411, Name: Godlike ---- Enlightened, Health: 42, Statuses: ",
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1068, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 138, Statuses: ",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 706, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1122, Statuses: "
+      ]
+    },
+    {
+      "turn": 89,
+      "user": 15513,
+      "move": "auto",
+      "team1": [
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1068, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 138, Statuses: ",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 706, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1122, Statuses: "
+      ]
+    },
+    {
+      "turn": 90,
+      "user": 16201,
+      "move": "auto",
+      "team1": [
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1068, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 28, Statuses: ",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 706, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1122, Statuses: "
+      ]
+    },
+    {
+      "turn": 91,
+      "user": 30028,
+      "move": "auto",
+      "team1": [
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1068, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 729, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 28, Statuses: ",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 706, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1122, Statuses: "
+      ]
+    },
+    {
+      "turn": 92,
+      "user": 76882,
+      "move": "Blessing",
+      "team1": [
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1205, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 30028, Name: Godlike --+- Enlightened, Health: 28, Statuses: ",
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 706, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1122, Statuses: "
+      ]
+    },
+    {
+      "turn": 93,
+      "user": 59909,
+      "move": "auto",
+      "team1": [
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1205, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 706, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1122, Statuses: "
+      ]
+    },
+    {
+      "turn": 94,
+      "user": 32220,
+      "move": "auto",
+      "team1": [
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 1114, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 900, Statuses: "
+      ],
+      "team2": [
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 706, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1122, Statuses: "
+      ]
+    },
+    {
+      "turn": 95,
+      "user": 15513,
+      "move": "Cleave",
+      "team1": [
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 873, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 838, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 838, Statuses: "
+      ],
+      "team2": [
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 706, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1122, Statuses: "
+      ]
+    },
+    {
+      "turn": 96,
+      "user": 16201,
+      "move": "auto",
+      "team1": [
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 873, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 838, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 838, Statuses: "
+      ],
+      "team2": [
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 447, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 1122, Statuses: "
+      ]
+    },
+    {
+      "turn": 97,
+      "user": 76882,
+      "move": "auto",
+      "team1": [
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 873, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 838, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 838, Statuses: "
+      ],
+      "team2": [
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 447, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 863, Statuses: "
+      ]
+    },
+    {
+      "turn": 98,
+      "user": 59909,
+      "move": "auto",
+      "team1": [
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 873, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 838, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 838, Statuses: "
+      ],
+      "team2": [
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 282, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 863, Statuses: "
+      ]
+    },
+    {
+      "turn": 99,
+      "user": 15513,
+      "move": "auto",
+      "team1": [
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 873, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 838, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 756, Statuses: "
+      ],
+      "team2": [
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 282, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 863, Statuses: "
+      ]
+    },
+    {
+      "turn": 100,
+      "user": 32220,
+      "move": "Thunder",
+      "team1": [
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 805, Statuses: stun",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 752, Statuses: stun",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 670, Statuses: stun"
+      ],
+      "team2": [
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 282, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 863, Statuses: "
+      ]
+    },
+    {
+      "turn": 101,
+      "user": 59909,
+      "move": "auto",
+      "team1": [
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 805, Statuses: stun",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 752, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 670, Statuses: stun"
+      ],
+      "team2": [
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 282, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 863, Statuses: "
+      ]
+    },
+    {
+      "turn": 102,
+      "user": 76882,
+      "move": "auto",
+      "team1": [
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 805, Statuses: stun",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 752, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 670, Statuses: stun"
+      ],
+      "team2": [
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 282, Statuses: ",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 604, Statuses: "
+      ]
+    },
+    {
+      "turn": 103,
+      "user": 16201,
+      "move": "Thunder",
+      "team1": [
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 805, Statuses: stun",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 752, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 670, Statuses: stun"
+      ],
+      "team2": [
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 152, Statuses: stun",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 521, Statuses: stun"
+      ]
+    },
+    {
+      "turn": 104,
+      "user": 15513,
+      "move": "auto",
+      "team1": [
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 805, Statuses: stun",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 752, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 588, Statuses: stun"
+      ],
+      "team2": [
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 152, Statuses: stun",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 521, Statuses: stun"
+      ]
+    },
+    {
+      "turn": 105,
+      "user": 59909,
+      "move": "Devestating Smash",
+      "team1": [
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 805, Statuses: stun",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 752, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 588, Statuses: stun"
+      ],
+      "team2": [
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 152, Statuses: stun",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 184, Statuses: stun"
+      ]
+    },
+    {
+      "turn": 106,
+      "user": 76882,
+      "move": "Blessing",
+      "team1": [
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 985, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 900, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 768, Statuses: "
+      ],
+      "team2": [
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 152, Statuses: stun",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 184, Statuses: stun"
+      ]
+    },
+    {
+      "turn": 107,
+      "user": 15513,
+      "move": "Cleave",
+      "team1": [
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 824, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 838, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 706, Statuses: "
+      ],
+      "team2": [
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 152, Statuses: stun",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 184, Statuses: stun"
+      ]
+    },
+    {
+      "turn": 108,
+      "user": 32220,
+      "move": "auto",
+      "team1": [
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 733, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 838, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 706, Statuses: "
+      ],
+      "team2": [
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 152, Statuses: stun",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 184, Statuses: stun"
+      ]
+    },
+    {
+      "turn": 109,
+      "user": 16201,
+      "move": "auto",
+      "team1": [
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 733, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 838, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 706, Statuses: "
+      ],
+      "team2": [
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 152, Statuses: stun",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 19, Statuses: stun"
+      ]
+    },
+    {
+      "turn": 110,
+      "user": 76882,
+      "move": "auto",
+      "team1": [
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 733, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 838, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 706, Statuses: "
+      ],
+      "team2": [
+        "Id: 15513, Name: Godlike +++- Cleavers, Health: 42, Statuses: stun",
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 19, Statuses: stun"
+      ]
+    },
+    {
+      "turn": 111,
+      "user": 59909,
+      "move": "auto",
+      "team1": [
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 733, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 838, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 706, Statuses: "
+      ],
+      "team2": [
+        "Id: 32220, Name: Godlike -+++ Mage, Health: 19, Statuses: stun"
+      ]
+    },
+    {
+      "turn": 112,
+      "user": 76882,
+      "move": "auto",
+      "team1": [
+        "Id: 16201, Name: Godlike -+++ Mage, Health: 733, Statuses: ",
+        "Id: 59909, Name: Godlike +--- Troll, Health: 838, Statuses: ",
+        "Id: 76882, Name: Godlike +--- Healer, Health: 706, Statuses: "
+      ],
+      "team2": []
+    }
+  ],
+  "result": {
+    "winner": 1,
+    "loser": 2,
+    "winningTeam": [
+      {
+        "id": 16201,
+        "name": "Godlike -+++ Mage",
+        "brs": 900,
+        "health": 733
+      },
+      {
+        "id": 59909,
+        "name": "Godlike +--- Troll",
+        "brs": 900,
+        "health": 838
+      },
+      {
+        "id": 76882,
+        "name": "Godlike +--- Healer",
+        "brs": 900,
+        "health": 706
+      }
+    ],
+    "numOfTurns": 113
+  }
+}

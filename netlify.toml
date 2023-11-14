@@ -1,0 +1,5 @@
+## https://docs.netlify.com/routing/redirects/rewrites-proxies/
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

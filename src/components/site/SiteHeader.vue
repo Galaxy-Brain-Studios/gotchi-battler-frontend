@@ -31,18 +31,19 @@
       >
         Training
       </RouterLink>
+      <a
+        href="https://gotchi-battler-1.gitbook.io/gotchi-battler/"
+        target="_blank"
+        class="link-reset link-reset--hover-underline"
+      >
+        Game Guide
+      </a>
       <RouterLink
         to="/about"
         class="link-reset link-reset--hover-underline"
       >
         About
       </RouterLink>
-      <a
-        href="https://gotchi-battler-1.gitbook.io/gotchi-battler/"
-        class="link-reset link-reset--hover-underline"
-      >
-        Game Guide
-      </a>
       <RouterLink
         v-if="DEV_MODE"
         to="/dev"

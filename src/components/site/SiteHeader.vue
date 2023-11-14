@@ -65,6 +65,7 @@
     column-gap: 2rem;
     align-items: center;
     padding: 1.5rem 2rem 0.5rem;
+    z-index: 1;
   }
   .site-header nav {
     display: flex;

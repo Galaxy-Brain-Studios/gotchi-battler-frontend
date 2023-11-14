@@ -59,7 +59,7 @@
   }
   .hero-video-container {
     grid-row: 1 / 3;
-    z-index: -1;
+    z-index: 0;
     position: relative;
     overflow: hidden;
   }

@@ -47,10 +47,24 @@
   --color-text: var(--c-white);
 }
 
+::-webkit-scrollbar {
+  background-color: rgb(67 52 141);
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgb(67 52 141);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
 html {
   font-size: 16px;
   /* use reserved gutter width to avoid layout reflow when opening dialog */
   scrollbar-gutter: stable;
+  background-color: rgb(67 52 141);
 }
 
 html {

@@ -6,17 +6,17 @@
     "info": {
       "header": "Attack ignores armor",
       "description": "Applies bleed status. Cannot be countered",
-      "leader": "Sharpen blades. All allies get 20% bleed chance on hit; Ignore resistance and stacks with any other status effects the move already does"
+      "leader": "Sharpen blades. All allies get 20% bleed chance on hit."
     }
   },
   {
     "id": 2,
-    "class": "Tank",
-    "name": "Taunt",
+    "class": "Enlightened",
+    "name": "Meditate",
     "info": {
-      "header": "Applies taunt status to self",
-      "description": "Increases armor by 20%",
-      "leader": "Steel Counter. Leader has a 50% chance to counter when attacked with taunt active; Taunt increases armor by 50%; A counter attack is for 100% attack power; A counter attack cannot be countered; A counter always hits."
+      "header": "Boost magic and physical",
+      "description": "",
+      "leader": "Cloud of Zen. The leader's Meditate also boosts magic, and physical of all allies"
     }
   },
   {
@@ -26,17 +26,17 @@
     "info": {
       "header": "Attack full row for 75% attack power",
       "description": "Attacks the row with most gotchis",
-      "leader": "Frenzy. Critical hits multiplier for all allies increases from 150% to 200% attack power."
+      "leader": "Frenzy. Critical hits are stronger for all allies."
     }
   },
   {
     "id": 4,
-    "class": "Enlightened",
-    "name": "Meditate",
+    "class": "Tank",
+    "name": "Taunt",
     "info": {
-      "header": "Boost speed, magic, physical by 20%",
-      "description": "",
-      "leader": "Cloud of Zen. The leader's Meditate also boosts speed, magic, and physical of all allies by 10%."
+      "header": "Applies taunt status to self",
+      "description": "Increases armor by 20%",
+      "leader": "Steel Counter. Leader has a 50% chance to counter when attacked with taunt active; Taunt increases armor by 50%; A counter attack is for 100% attack power; A counter attack cannot be countered; A counter always hits."
     }
   },
   {
@@ -64,7 +64,7 @@
     "class": "Mage",
     "name": "Thunder",
     "info": {
-      "header": "Attack all Gotchis for 50% attack power",
+      "header": "Attack all Gotchis and apply stun.",
       "description": "",
       "leader": "Channel the coven. The leader's Thunder attacks for an extra 25% attack power per alive mage ally."
     }
@@ -74,9 +74,9 @@
     "class": "Troll",
     "name": "Devastating Smash",
     "info": {
-      "header": "Attack Random Gotchi for 130% attack power.",
+      "header": "Attack Random Gotchi with devastating force.",
       "description": "",
-      "leader": "Clan momentum. Every troll ally does an auto attack after a successful special."
+      "leader": "Clan momentum. Every troll ally does an extra attack after a devesating smash."
     }
   }
 ]

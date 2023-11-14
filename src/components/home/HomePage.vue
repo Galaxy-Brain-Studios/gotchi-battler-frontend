@@ -14,10 +14,10 @@
 <template>
   <section class="hero-banner">
     <h2 class="hero-title">
-      An Aavegotchi NFT BATTLE GAME
+      An Aavegotchi Auto Battler
     </h2>
     <div class="hero-text">
-      Henlo! I'm a digital ghost trapped forever on the blockchain.Gaming helps distract me from my existential dread.
+      Craft your ultimate Aavegotchi squad and deploy unique special moves to secure victory in thrilling gotchi battles to the death!
     </div>
     <SiteButtonPrimary
       @click="goToTraining"
@@ -61,6 +61,7 @@
     grid-row: 1 / 3;
     z-index: -1;
     position: relative;
+    overflow: hidden;
   }
   .tournaments {
     grid-row: 3 / 4;
@@ -69,7 +70,8 @@
   .hero-video {
     /* video: 1280 x 720 */
     position: absolute; /* absolute position within the container so the video doesn't stretch the grid dimensions */
-    width: 100%;
+    left: 25%;
+    width: 76%; /* An extra 1 % as there's a black line on the side of the video*/
     height: 100%;
     object-fit: cover;
     object-position: center;
@@ -87,7 +89,7 @@
     right: 0;
     bottom: 0;
     left: 0;
-    background: linear-gradient(91deg, #14082F 3rem, rgba(20, 8, 47, 0.00) 97.56%),
+    background: linear-gradient(91deg, #14082F 25%, rgba(20, 8, 47, 0.00) 97.56%),
       linear-gradient(0deg, rgba(21, 9, 48, 0.50) 0%, rgba(21, 9, 48, 0.50) 100%),
       linear-gradient(180deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.00) 6rem, rgba(0, 0, 0, 0.00) 100%);
   }

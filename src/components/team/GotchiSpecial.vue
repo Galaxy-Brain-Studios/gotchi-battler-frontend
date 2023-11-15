@@ -85,13 +85,13 @@
     --gotchi-special-color-background: #3E80BE;
   }
   .gotchi-special--type-2 {
-    --gotchi-special-color-background: #F98A25;
+    --gotchi-special-color-background: #D46DC3;
   }
   .gotchi-special--type-3 {
     --gotchi-special-color-background: #D9322A;
   }
   .gotchi-special--type-4 {
-    --gotchi-special-color-background: #D46DC3;
+    --gotchi-special-color-background: #F98A25;
   }
   .gotchi-special--type-5 {
     --gotchi-special-color-background: #6C6C6C;

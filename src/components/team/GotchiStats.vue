@@ -21,32 +21,32 @@
         value: gotchi.speed
       },
       {
-        label: 'Armor',
-        value: gotchi.armor
-      },
-      {
-        label: 'Physical Power',
-        value: gotchi.physical
-      },
-      {
         label: 'Health',
         value: gotchi.health
-      },
-      {
-        label: 'Evasiveness %',
-        value: gotchi.evade
-      },
-      {
-        label: 'Magic Power',
-        value: gotchi.magic
       },
       {
         label: 'Critical Hit %',
         value: gotchi.crit
       },
       {
+        label: 'Armor',
+        value: gotchi.armor
+      },
+      {
+        label: 'Evasiveness %',
+        value: gotchi.evade
+      },
+      {
         label: 'Resistance %',
         value: gotchi.resist
+      },
+      {
+        label: 'Magic Power',
+        value: gotchi.magic
+      },
+      {
+        label: 'Physical Power',
+        value: gotchi.physical
       },
       {
         label: 'Accuracy %',

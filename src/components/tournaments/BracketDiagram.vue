@@ -409,7 +409,7 @@
     font-size: 1rem;
     line-height: 1.5rem;
   }
-  .bracket-diagram__battle-id + ..bracket-diagram__battle-id {
+  .bracket-diagram__battle-id + .bracket-diagram__battle-id {
     margin-top: 0.25rem;
   }
   .bracket-diagram__team--empty {

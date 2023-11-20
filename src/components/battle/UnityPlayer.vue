@@ -3,10 +3,10 @@
   import dataUrlDev from './unity/Build/build.data?url'
   import frameworkUrlDev from './unity/Build/build.framework.js?url'
   import codeUrlDev from './unity/Build/build.wasm?url'
-  import loaderUrlProd from './unity/BuildProd/build.loader.js?url'
-  import dataUrlProd from './unity/BuildProd/build.data.br?url'
-  import frameworkUrlProd from './unity/BuildProd/build.framework.js.br?url'
-  import codeUrlProd from './unity/BuildProd/build.wasm.br?url'
+  import loaderUrlProd from './unity/BuildProd/Build.loader.js?url'
+  import dataUrlProd from './unity/BuildProd/Build.data.br?url'
+  import frameworkUrlProd from './unity/BuildProd/Build.framework.js.br?url'
+  import codeUrlProd from './unity/BuildProd/Build.wasm.br?url'
 
   const loaderUrl = import.meta.env.MODE === 'production' ? loaderUrlProd : loaderUrlDev
   const dataUrl = import.meta.env.MODE === 'production' ? dataUrlProd : dataUrlDev

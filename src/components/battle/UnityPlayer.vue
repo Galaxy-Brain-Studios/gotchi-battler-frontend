@@ -1,8 +1,17 @@
 <script setup>
-  import loaderUrl from './unity/Build/build.loader.js?url'
-  import dataUrl from './unity/Build/build.data?url'
-  import frameworkUrl from './unity/Build/build.framework.js?url'
-  import codeUrl from './unity/Build/build.wasm?url'
+  import loaderUrlDev from './unity/Build/build.loader.js?url'
+  import dataUrlDev from './unity/Build/build.data?url'
+  import frameworkUrlDev from './unity/Build/build.framework.js?url'
+  import codeUrlDev from './unity/Build/build.wasm?url'
+  import loaderUrlProd from './unity/BuildProd/build.loader.js?url'
+  import dataUrlProd from './unity/BuildProd/build.data.br?url'
+  import frameworkUrlProd from './unity/BuildProd/build.framework.js.br?url'
+  import codeUrlProd from './unity/BuildProd/build.wasm.br?url'
+
+  const loaderUrl = import.meta.env.MODE === 'production' ? loaderUrlProd : loaderUrlDev
+  const dataUrl = import.meta.env.MODE === 'production' ? dataUrlProd : dataUrlDev
+  const frameworkUrl = import.meta.env.MODE === 'production' ? frameworkUrlProd : frameworkUrlDev
+  const codeUrl = import.meta.env.MODE === 'production' ? codeUrlProd : codeUrlDev
 
   import uniqueId from 'lodash.uniqueid'
   import { ref, onMounted, onBeforeUnmount } from 'vue'

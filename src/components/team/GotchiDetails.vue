@@ -161,9 +161,10 @@
           :id="displayGotchi.specialId"
           variant="large"
         />
-        <GotchiSpecial
+        <GotchiSpecialWithInfo
           v-if="isLeader"
-          id="leader"
+          :id="displayGotchi.specialId"
+          :forSpecial="false"
           variant="large"
         />
       </div>

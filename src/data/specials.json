@@ -3,6 +3,17 @@
     "id": 1,
     "class": "Ninja",
     "name": "Spectral strike",
+    "effects": [
+        "Attack a random target with a strong hit",
+        "Attack bypasses armor",
+        "Inflicts bleed status on the target",
+        "Cannot be countered"
+    ],
+    "leader": "Sharpen blades",
+    "leaderEffects": [
+        "All allies gain a chance to cause bleed on each non-special attack",
+        "Ignores resistance"
+    ],
     "info": {
       "header": "Attack ignores armor",
       "description": "Applies bleed status. Cannot be countered",
@@ -13,6 +24,14 @@
     "id": 2,
     "class": "Enlightened",
     "name": "Meditate",
+    "effects": [
+      "Increases Magic Power",
+      "Increases Physical Power"
+    ],
+    "leader": "Cloud of Zen",
+    "leaderEffects": [
+        "Meditate also applies a small buff to all allies"
+    ],
     "info": {
       "header": "Boost magic and physical",
       "description": "",
@@ -23,6 +42,15 @@
     "id": 3,
     "class": "Cleavers",
     "name": "Cleave",
+    "effects": [
+      "Attacks a full row with a powerful strike",
+      "The row with the most enemies is targeted",
+      "Cannot be countered"
+    ],
+    "leader": "Frenzy",
+    "leaderEffects": [
+        "Increases the strength of all ally's critical hits"
+    ],
     "info": {
       "header": "Attack full row for 75% attack power",
       "description": "Attacks the row with most gotchis",
@@ -33,6 +61,15 @@
     "id": 4,
     "class": "Tank",
     "name": "Taunt",
+    "effects": [
+      "Applies taunt status to self, forcing enemies to target the Tank.",
+      "Increases Armor"
+    ],
+    "leader": "Steel Counter",
+    "leaderEffects": [
+        "The leader gains a chance to launch a counterattack when hit whilst taunting.",
+        "Counterattacks cannot be countered by opponents."
+    ],
     "info": {
       "header": "Applies taunt status to self",
       "description": "Increases armor by 20%",
@@ -43,6 +80,16 @@
     "id": 5,
     "class": "Cursed",
     "name": "Curse",
+    "effects": [
+      "Attacks a random enemy",
+      "Inflicts fear on the targeted enemy, causing them to skip their next turn.",
+      "Removes all positive buffs from the target"
+    ],
+    "leader": "Spread the Fear",
+    "leaderEffects": [
+        "All allies gain a chance to cause fear on each non-special attack",
+        "Ignores resistance"
+    ],
     "info": {
       "header": "Attack random for 100% attack power and fear for 1 round",
       "description": "Remove all Buffs.",
@@ -53,6 +100,15 @@
     "id": 6,
     "class": "Healer",
     "name": "Blessing",
+    "effects": [
+      "Heals all allies for 20% of their maximum health",
+      "Cleanses all allies, removing any negative status effects",
+      "Cannot heal/cleanse other Healers including self"
+    ],
+    "leader": "Cleansing Aura",
+    "leaderEffects": [
+        "Leader cleanses all allies on all of their turns"
+    ],
     "info": {
       "header": "Heal all for 20% and Cleanse (remove status effects)",
       "description": "",
@@ -63,6 +119,13 @@
     "id": 7,
     "class": "Mage",
     "name": "Thunder",
+    "effects": [
+      "Attacks all enemy Gotchis"
+    ],
+    "leader": "Channel the Coven",
+    "leaderEffects": [
+        "All ally mage's thunder attacks inflict stun on hit"
+    ],
     "info": {
       "header": "Attack all Gotchis and apply stun.",
       "description": "",
@@ -73,6 +136,13 @@
     "id": 8,
     "class": "Troll",
     "name": "Devastating Smash",
+    "effects": [
+      "Attacks a random gotchi with a devastating blow"
+    ],
+    "leader": "Clan Momentum",
+    "leaderEffects": [
+        "Every troll ally does another strong hit when killing with a devastating smash"
+    ],
     "info": {
       "header": "Attack Random Gotchi with devastating force.",
       "description": "",

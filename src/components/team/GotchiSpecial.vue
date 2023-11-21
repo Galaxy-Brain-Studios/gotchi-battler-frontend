@@ -16,18 +16,18 @@
     fullWidth: {
       type: Boolean,
       default: false
+    },
+    forSpecial: {
+      type: Boolean,
+      default: true
     }
   })
 
   const store = useSpecialsStore()
   const { specialsById } = storeToRefs(store)
 
-  const label = computed(() => {
-    if (props.id === 'leader') {
-      return "Leader's ability"
-    }
-    return specialsById.value[props.id]?.['class']
-  })
+  const name = computed(() => specialsById.value[props.id]?.name)
+  const leader = computed(() => specialsById.value[props.id]?.leader)
 </script>
 
 <template>
@@ -35,7 +35,7 @@
     class="gotchi-special"
     :class="{
       [`gotchi-special--variant-${variant}`]: true,
-      [`gotchi-special--type-${id}`]: true,
+      [`gotchi-special--type-${id}`]: forSpecial,
       'gotchi-special--full-width': fullWidth
     }"
   >
@@ -45,7 +45,12 @@
       class="gotchi-special__icon"
     />
     <div class="gotchi-special__label">
-      {{ label }}
+      <SiteIcon
+        v-if="!forSpecial"
+        name="special-leader"
+        class="gotchi-special__leader-badge-icon"
+      />
+      {{ forSpecial ? name : leader }}
     </div>
     <slot name="after" />
   </div>
@@ -64,6 +69,10 @@
   }
   .gotchi-special--full-width {
     justify-content: center;
+  }
+  .gotchi-special__label {
+    display: flex;
+    align-items: center;
   }
   .gotchi-special--variant-large .gotchi-special__label {
     padding: 0.25rem 0.75rem;
@@ -104,5 +113,11 @@
   }
   .gotchi-special--type-8 {
     --gotchi-special-color-background: #1CA806;
+  }
+  .gotchi-special__leader-badge-icon {
+    height: 1.5rem !important;
+    width: 1.5rem !important;
+    margin-right: 0.5rem;
+    color: var(--c-light-yellow);
   }
 </style>

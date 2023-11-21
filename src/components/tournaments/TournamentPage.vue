@@ -138,9 +138,6 @@
           />
         </div>
       </div>
-      <div class="tournament__description word-break">
-        {{ tournament.description }}
-      </div>
       <SiteButtonGroup
         class="tournament__tabs"
         :numButtons="2"
@@ -217,12 +214,6 @@
   }
   .tournament__join {
     margin-top: 1.5rem;
-  }
-  .tournament__description {
-    margin-top: 2rem;
-    font-size: 1.125rem;
-    line-height: 2rem;
-    letter-spacing: 0.1125rem;
   }
   .tournament__tabs {
     margin-top: 2rem;

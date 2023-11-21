@@ -17,6 +17,10 @@
     fullWidth: {
       type: Boolean,
       default: false
+    },
+    forSpecial: {
+      type: Boolean,
+      default: true
     }
   })
 
@@ -25,6 +29,9 @@
 
   const name = computed(() => specialsById.value[props.id]?.name)
   const info = computed(() => specialsById.value[props.id]?.info)
+  const effects = computed(() => specialsById.value[props.id]?.effects)
+  const leader = computed(() => specialsById.value[props.id]?.leader)
+  const leaderEffects = computed(() => specialsById.value[props.id]?.leaderEffects)
 </script>
 
 <template>
@@ -39,6 +46,7 @@
       <GotchiSpecial
         :id="id"
         :variant="variant"
+        :forSpecial="forSpecial"
         :fullWidth="fullWidth"
       />
     </button>
@@ -46,16 +54,26 @@
     <template #popper>
       <div class="gotchi-special__popup">
         <template v-if="info">
-          <div class="gotchi-special__popup-header">
-            {{ name }}:
-            {{ info.header }}
-          </div>
-          <div v-if="info.description">
-            {{ info.description }}
-          </div>
-          <div v-if="info.leader">
-            <b>Leader bonus:</b>  {{ info.leader }}
-          </div>
+          <template v-if="forSpecial">
+            <div class="gotchi-special__popup-header">
+              {{ name }}
+            </div>
+            <ul class="gotchi-special__popup-effects">
+              <li v-for="effect in effects" :key="effect">
+                {{ effect }}
+              </li>
+            </ul>
+          </template>
+          <template v-else>
+            <div class="gotchi-special__popup-header">
+              {{ leader }}
+            </div>
+            <ul class="gotchi-special__popup-effects">
+              <li v-for="leaderEffect in leaderEffects" :key="leaderEffect">
+                {{ leaderEffect }}
+              </li>
+            </ul>
+          </template>
         </template>
         <div v-else>
           Unknown special.
@@ -77,10 +95,16 @@
   .gotchi-special__popup {
     display: grid;
     row-gap: 0.5rem;
-    font-size: 0.75rem;
+    font-size: 0.9rem;
     line-height: 1rem;
   }
   .gotchi-special__popup-header {
     font-weight: bold;
+  }
+
+  .gotchi-special__popup-effects {
+    line-height: 1.4rem;
+    margin: 0;
+    padding-left: 20px;
   }
 </style>

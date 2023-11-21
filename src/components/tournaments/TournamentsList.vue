@@ -182,7 +182,6 @@
     --tournament-color-date-text: var(--c-light-yellow);
   }
   .tournament--type-upcoming,
-  .tournament--type-registering,
   .tournament--type-completed {
     --tournament-color-border-opacity: 0.5;
     --tournament-color-background-opacity: 0.5;

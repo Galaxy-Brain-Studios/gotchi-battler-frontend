@@ -76,7 +76,12 @@
       console.log('Unexpected round structure: expected a tree with a single root node but found', { rootNodes })
     }
     const dataForTree = hierarchy(rootNodes[0])
-    const configuredTree = tree().nodeSize([NODE_HEIGHT + NODE_GAP_Y, NODE_WIDTH + NODE_GAP_X]) // reverse height and width because we will be rotating the tree
+    const configuredTree = tree()
+      .nodeSize([NODE_HEIGHT + NODE_GAP_Y, NODE_WIDTH + NODE_GAP_X]) // reverse height and width because we will be rotating the tree
+      .separation((a, b) => {
+        // controls vertical space between nodes. https://d3js.org/d3-hierarchy/tree#tree_separation
+        return a.parent === b.parent ? 1 : 1.1
+      })
     const treeWithPositions = configuredTree(dataForTree)
     const allNodes = treeWithPositions.descendants()
 
@@ -281,6 +286,7 @@
     overflow: auto;
     padding-bottom: 2em;
     user-select: none;
+    cursor: grab;
   }
 
   /* positioning */

@@ -20,6 +20,10 @@
     forSpecial: {
       type: Boolean,
       default: true
+    },
+    forSpecialShowClass: {
+      type: Boolean,
+      default: false
     }
   })
 
@@ -27,6 +31,7 @@
   const { specialsById } = storeToRefs(store)
 
   const name = computed(() => specialsById.value[props.id]?.name)
+  const gotchiClass = computed(() => specialsById.value[props.id]?.class)
   const leader = computed(() => specialsById.value[props.id]?.leader)
 </script>
 
@@ -50,7 +55,12 @@
         name="special-leader"
         class="gotchi-special__leader-badge-icon"
       />
-      {{ forSpecial ? name : leader }}
+      <template v-if="forSpecial">
+        {{ forSpecialShowClass ? gotchiClass : name }}
+      </template>
+      <template v-else>
+        {{ leader }}
+      </template> 
     </div>
     <slot name="after" />
   </div>

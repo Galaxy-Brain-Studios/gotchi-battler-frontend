@@ -21,6 +21,10 @@
     forSpecial: {
       type: Boolean,
       default: true
+    },
+    forSpecialShowClass: {
+      type: Boolean,
+      default: false
     }
   })
 
@@ -28,6 +32,7 @@
   const { specialsById } = storeToRefs(store)
 
   const name = computed(() => specialsById.value[props.id]?.name)
+  const gotchiClass = computed(() => specialsById.value[props.id]?.class)
   const info = computed(() => specialsById.value[props.id]?.info)
   const effects = computed(() => specialsById.value[props.id]?.effects)
   const leader = computed(() => specialsById.value[props.id]?.leader)
@@ -48,6 +53,7 @@
         :variant="variant"
         :forSpecial="forSpecial"
         :fullWidth="fullWidth"
+        :forSpecialShowClass="forSpecialShowClass"
       />
     </button>
 
@@ -56,7 +62,7 @@
         <template v-if="info">
           <template v-if="forSpecial">
             <div class="gotchi-special__popup-header">
-              {{ name }}
+              {{ forSpecialShowClass ? gotchiClass : name }}
             </div>
             <ul class="gotchi-special__popup-effects">
               <li v-for="effect in effects" :key="effect">

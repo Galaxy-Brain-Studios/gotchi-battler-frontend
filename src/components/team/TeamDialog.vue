@@ -149,6 +149,7 @@
                 <GotchiSpecialWithInfo
                   v-if="gotchi.specialId"
                   :id="gotchi.specialId"
+                  :forSpecialShowClass="true"
                   variant="small"
                   class="team__formation-gotchi-special"
                 />

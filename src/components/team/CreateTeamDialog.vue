@@ -717,6 +717,7 @@
                   <GotchiSpecial
                     v-if="!gotchi.canSelectSpecial && specialByGotchiId[gotchi.id]"
                     :id="specialByGotchiId[gotchi.id]"
+                    :forSpecialShowClass="true"
                   />
                   <GotchiSpecialSelect
                     v-if="gotchi.canSelectSpecial"

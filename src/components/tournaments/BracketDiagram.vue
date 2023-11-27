@@ -286,6 +286,7 @@
     overflow: auto;
     padding-bottom: 2em;
     user-select: none;
+    cursor: grab;
   }
 
   /* positioning */

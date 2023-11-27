@@ -159,6 +159,7 @@
       v-if="(withSpecialBadge || withSpecialInfoBadge) && gotchi.specialId"
       :is="withSpecialBadge ? GotchiSpecial : GotchiSpecialWithInfo"
       :id="gotchi.specialId"
+      :forSpecialShowClass="true"
       variant="small"
       fullWidth
       class="gotchi-in-formation__special-badge"

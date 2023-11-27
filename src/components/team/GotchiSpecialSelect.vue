@@ -47,6 +47,7 @@
       <GotchiSpecial
         v-if="modelValue"
         :id="modelValue"
+        :forSpecialShowClass="true"
       >
         <template #after>
           <SiteIcon

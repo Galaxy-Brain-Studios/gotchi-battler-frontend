@@ -146,6 +146,21 @@
                   @click="sort('name', 'desc')"
                 />
               </th>
+              <th class="site-table--no-grow">
+                <span>BRS</span>
+                <SiteButtonIcon
+                  label="Sort Ascending"
+                  iconName="chevron-up"
+                  :active="sorting.property === 'brs' && sorting.direction === 'asc'"
+                  @click="sort('brs', 'asc')"
+                />
+                <SiteButtonIcon
+                  label="Sort Descending"
+                  iconName="chevron-down"
+                  :active="sorting.property === 'brs' && sorting.direction === 'desc'"
+                  @click="sort('brs', 'desc')"
+                />
+              </th>
               <th>
                 <span>Team</span>
                 <SiteButtonIcon
@@ -196,6 +211,9 @@
               </td>
               <td class="word-break">
                 {{ gotchi.name }}
+              </td>
+              <td>
+                {{ gotchi.brs }}
               </td>
               <td
                 class="word-break"

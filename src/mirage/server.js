@@ -430,6 +430,7 @@ export function makeServer({ environment = 'development' } = {}) {
             onchainId: i,
             name: ((i + 1) % 7) ? `Gotchi ${String.fromCharCode(65 + i % 26)}${i > 26 ? i : ''}` : '',
             svgFront: `/dev/gotchi_g${(i + 1) % 10}_front.svg`,
+            brs: 100 + i%10,
             teamId,
             teamName: `Team ${String.fromCharCode(64 + teamId % 26)}${teamId > 26 ? teamId : ''}`,
             teamOwner: `0x000000000000000000000000000000000000000${i % 5}`

@@ -189,6 +189,7 @@ export default {
         onchainId: gotchi.onchainId,
         name: gotchi.name,
         svgFront: gotchi.svgFront,
+        brs: gotchi.brs,
         teamId: gotchi.teamId,
         teamName: gotchi.teamName,
         teamOwner: gotchi.teamOwner

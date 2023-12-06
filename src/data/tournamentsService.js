@@ -179,5 +179,23 @@ export default {
       console.error('fetchTournamentTeams error', { ...e })
       throw new Error(e.json?.error || e.json?.message || 'Error fetching tournament teams')
     }
+  },
+
+  async fetchTournamentGotchis ({ tournamentId }) {
+    try {
+      const gotchis = await api.get(urls.tournamentGotchis(tournamentId))
+      return (gotchis || []).map(gotchi => ({
+        id: gotchi.id,
+        onchainId: gotchi.onchainId,
+        name: gotchi.name,
+        svgFront: gotchi.svgFront,
+        teamId: gotchi.teamId,
+        teamName: gotchi.teamName,
+        teamOwner: gotchi.teamOwner
+      }))
+    } catch (e) {
+      console.error('fetchTournamentGotchis error', { ...e })
+      throw new Error(e.json?.error || e.json?.message || 'Error fetching tournament gotchis')
+    }
   }
 }

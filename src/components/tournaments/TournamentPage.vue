@@ -196,7 +196,7 @@
 
       <TournamentGotchis
         v-else-if="tab === 'gotchis'"
-        :tournament="tournament"
+        :tournamentId="tournament.id"
       >
       </TournamentGotchis>
     </template>

@@ -99,6 +99,12 @@ const mirageConfig = window.mirageConfig = {
     error: false,
     slow: false
   },
+  tournamentGotchis: {
+    error: false,
+    slow: false,
+    empty: false,
+    long: false
+  },
 };
 
 const errorResponse = ({ statusCode=400, message='Error from the server', response=null }={}) => new Response(
@@ -409,6 +415,29 @@ export function makeServer({ environment = 'development' } = {}) {
         ]
       }, {
         timing: mirageConfig.tournamentTeams.slow ? 5000 : 100
+      })
+
+      this.get(fixUrl(urls.tournamentGotchis(':tournamentId')), () => {
+        if (mirageConfig.tournamentGotchis.error) {
+          return errorResponse()
+        }
+        const gotchis = []
+        const NUM_GOTCHIS = mirageConfig.tournamentGotchis.empty ? 0 : mirageConfig.tournamentGotchis.long ? 200 : 30
+        for (let i = 0; i < NUM_GOTCHIS; i++) {
+          const teamId = (i + 1) % 10 || (i + 1)
+          gotchis.push({
+            id: 1000 + i,
+            onchainId: i,
+            name: ((i + 1) % 7) ? `Gotchi ${String.fromCharCode(65 + i % 26)}${i > 26 ? i : ''}` : '',
+            svgFront: `/dev/gotchi_g${(i + 1) % 10}_front.svg`,
+            teamId,
+            teamName: `Team ${String.fromCharCode(64 + teamId % 26)}${teamId > 26 ? teamId : ''}`,
+            teamOwner: `0x000000000000000000000000000000000000000${i % 5}`
+          })
+        }
+        return gotchis
+      }, {
+        timing: mirageConfig.tournamentGotchis.slow ? 5000 : 100
       })
 
       this.passthrough(request => {

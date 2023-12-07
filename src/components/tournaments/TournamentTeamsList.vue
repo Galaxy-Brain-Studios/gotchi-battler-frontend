@@ -98,7 +98,7 @@
     if (team.owner && team.owner.startsWith(q)) { return true }
     return false;
   }
-  const teamsToDisplay = computed(() => {
+  const filteredAndSortedTeams = computed(() => {
     if (!props.tournament?.teams?.length) { return null }
     const teams = props.tournament.teams
     const filteredTeams = debouncedQuery.value ? teams.filter(matchesQuery) : teams
@@ -114,13 +114,17 @@
         bubbledTeams = [...myTeams, ...otherTeams]
       }
     }
-    return bubbledTeams.slice(0, numToShow.value)
+    return bubbledTeams
+  })
+  const teamsToDisplay = computed(() => {
+    if (!filteredAndSortedTeams.value) { return null }
+    return filteredAndSortedTeams.value.slice(0, numToShow.value)
   })
 
   function loadMoreTeams () {
     numToShow.value += 10
   }
-  const canLoadMoreTeams = computed(() => props.tournament?.teams?.length > numToShow.value)
+  const canLoadMoreTeams = computed(() => filteredAndSortedTeams.value?.length > numToShow.value)
 
   function sort(property, direction) {
     sorting.value.property = property;

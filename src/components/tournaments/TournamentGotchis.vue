@@ -6,6 +6,7 @@
   import SiteTextField from '../common/SiteTextField.vue'
   import SiteTable from '../common/SiteTable.vue'
   import SiteButtonIcon from '../common/SiteButtonIcon.vue'
+  import SiteButton from '../common/SiteButton.vue'
   import SiteEthAddress from '../common/SiteEthAddress.vue'
   import TeamDialog from '../team/TeamDialog.vue'
 
@@ -54,7 +55,9 @@
   }
   const debouncedSetQuery = debounce(setQuery, 200)
 
-  const gotchisToDisplay = computed(() => {
+  const numToShow = ref(10)
+
+  const filteredAndSortedGotchis = computed(() => {
     if (!gotchis.value?.length) { return [] }
     let result = gotchis.value
     if (query.value) {
@@ -64,6 +67,15 @@
     result = orderBy(result, [sorting.value.property], [sorting.value.direction])
     return result
   })
+  const gotchisToDisplay = computed(() => {
+    if (!filteredAndSortedGotchis.value) { return null }
+    return filteredAndSortedGotchis.value.slice(0, numToShow.value)
+  })
+
+  function loadMore () {
+    numToShow.value += 10
+  }
+  const canLoadMore = computed(() => filteredAndSortedGotchis.value?.length > numToShow.value)
 
   const showTeam = function (gotchiTeamId) {
     teamId.value = gotchiTeamId
@@ -236,6 +248,14 @@
             </tr>
           </tbody>
         </SiteTable>
+        <div class="tournament-gotchis__footer">
+          <SiteButton
+            v-if="canLoadMore"
+            @click="loadMore"
+          >
+            Load More Gotchis
+          </SiteButton>
+        </div>
         <TeamDialog
           v-if="teamId"
           v-model:isOpen="teamDialogIsOpen"
@@ -273,5 +293,9 @@
   font-size: 1rem;
   letter-spacing: 0.03rem;
   opacity: 0.5;
+}
+.tournament-gotchis__footer {
+  display: grid;
+  place-items: center;
 }
 </style>

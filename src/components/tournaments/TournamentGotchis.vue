@@ -115,7 +115,7 @@
           <thead>
             <tr>
               <th class="site-table--no-grow">
-                <span>Onchain ID</span>
+                <span>ID</span>
                 <SiteButtonIcon
                   label="Sort Ascending"
                   iconName="chevron-up"

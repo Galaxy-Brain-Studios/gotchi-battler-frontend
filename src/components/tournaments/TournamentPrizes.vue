@@ -43,6 +43,8 @@
               v-if="currencyIcons[prize.currency]"
               :name="currencyIcons[prize.currency]"
               :alt="prize.currency"
+              :height="1.5"
+              :width="1.5"
               class="prizes-table__currency-icon"
             />
             {{ prize.prize }}

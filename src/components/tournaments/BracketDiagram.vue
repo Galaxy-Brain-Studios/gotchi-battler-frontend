@@ -62,6 +62,10 @@
   const revealRound = function (roundIndex) {
     revealedRoundIndex.value = roundIndex
   }
+  const revealFinalRound = function () {
+    revealedRoundIndex.value = props.rounds.length
+  }
+
   const roundIdsWithRevealedTeams = computed(() => {
     let revealToIndex = revealedRoundIndex.value || 0
     return props.rounds.slice(0, revealToIndex + 1).map(round => round.id)
@@ -122,6 +126,7 @@
     if (rootNodes.length !== 1) {
       console.log('Unexpected round structure: expected a tree with a single root node but found', { rootNodes })
     }
+    rootNodes[0].isFinale = true
     const dataForTree = hierarchy(rootNodes[0])
     const configuredTree = tree()
       .nodeSize([NODE_HEIGHT + NODE_GAP_Y, NODE_WIDTH + NODE_GAP_X]) // reverse height and width because we will be rotating the tree
@@ -296,6 +301,7 @@
           <RouterLink
             :to="{ name: 'tournament-bracket', params: { id: tournamentId, bracketId, battleId: node.data.id } }"
             class="link-reset link-reset--hover-underline extended-target"
+            @click="node.data.isFinale && node.data.round.status === 'completed' && revealFinalRound()"
           >
             {{ node.data.id?.substring(0, 6) }}
           </RouterLink>

@@ -2,10 +2,8 @@
   import { ref, computed, watch } from 'vue'
   import { useRouter } from 'vue-router'
   import { storeToRefs } from 'pinia'
-  import { formatDateTime } from '../../utils/date'
   import { useTournamentStore } from '../../data/tournamentStore'
   import SiteBackLink from '../common/SiteBackLink.vue'
-  import BracketStatusBadge from './BracketStatusBadge.vue'
   import BracketDiagram from './BracketDiagram.vue'
   import BattleDialog from '../battle/BattleDialog.vue'
 
@@ -117,49 +115,6 @@
     <template
       v-else-if="bracket"
     >
-      <div
-        class="bracket__info-container"
-      >
-        <BracketStatusBadge
-          :bracket="bracket"
-          class="bracket__status-badge"
-        />
-        <h1 class="word-break">{{ bracket.name }}</h1>
-        <div class="bracket__meta">
-          <div>
-            <span class="bracket__meta-label">
-              Start:
-            </span>
-            <span class="bracket__meta-value">
-               {{ formatDateTime(bracket.startDate) }}
-            </span>
-          </div>
-          <div>
-            <span class="bracket__meta-label">
-              Entrants:
-            </span>
-            <span class="bracket__meta-value">
-              {{ bracket.numberOfTeams }} {{ bracket.numberOfTeams === 1 ? 'Entrant' : 'Entrants' }}
-            </span>
-          </div>
-          <div>
-            <span class="bracket__meta-label">
-              Rules:
-            </span>
-            <span class="bracket__meta-value">
-               {{ bracket.rules }}
-            </span>
-          </div>
-          <div>
-            <span class="bracket__meta-label">
-              Status:
-            </span>
-            <span class="bracket__meta-value">
-               {{ bracket.statusLabel }}
-            </span>
-          </div>
-        </div>
-      </div>
       <BracketDiagram
         v-if="bracket.rounds && tournament?.teams"
         :tournamentId="id"
@@ -180,47 +135,5 @@
 <style scoped>
   .nav-back {
     margin-bottom: 1.5rem;
-  }
-
-  h1 {
-    margin: 0 0 1rem 0;
-    font-weight: bold;
-    font-size: 2rem;
-    line-height: 2.5rem;
-    letter-spacing: 0.06rem;
-    text-transform: uppercase;
-  }
-
-  .bracket__info-container {
-    position: relative;
-    margin-bottom: 2em;
-    border: 3px solid var(--c-light-blue);
-    padding: 2rem;
-    background: var(--c-medium-blue);
-  }
-
-  .bracket__status-badge {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-
-  .bracket__meta {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 1rem;
-    row-gap: 0.5rem;
-    font-size: 1.125rem;
-    line-height: 1.5rem;
-    letter-spacing: 0.03375rem;
-  }
-  .bracket__meta-label {
-    margin-right: 0.75rem;
-    opacity: 0.5;
-  }
-
-  .bracket__tabs {
-    margin-top: 2rem;
-    margin-bottom: 2rem;
   }
 </style>

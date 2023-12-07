@@ -170,6 +170,55 @@
                 "ranking": 1,
                 "battlesWon": 12
             }
+        ],
+        "prizes": [
+            {
+                "place": 1,
+                "prize": 250,
+                "currency": "dai"
+            },
+            {
+                "place": 2,
+                "prize": 150,
+                "currency": "dai"
+            },
+            {
+                "place": 3,
+                "prize": 88,
+                "currency": "dai"
+            },
+            {
+                "place": 4,
+                "prize": 40,
+                "currency": "dai"
+            },
+            {
+                "place": 5,
+                "prize": 20,
+                "currency": "dai"
+            },
+            {
+                "place": 6,
+                "prize": 10,
+                "currency": "dai"
+            },
+            {
+                "place": 7,
+                "prize": 5,
+                "currency": "dai"
+            },
+            {
+                "place": 8,
+                "prize": 1,
+                "label": "Custom label for this place",
+                "currency": "dai"
+            },
+            {
+                "place": 9,
+                "prize": 0.5,
+                "label": "Test unknown currency",
+                "currency": "misc"
+            }
         ]
     },
     {

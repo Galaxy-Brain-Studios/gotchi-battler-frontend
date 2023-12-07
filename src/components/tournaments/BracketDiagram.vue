@@ -1,12 +1,13 @@
 <script setup>
   import { hierarchy, tree } from 'd3-hierarchy'
-  import { ref, computed } from 'vue'
+  import { ref, computed, watch } from 'vue'
   import { RouterLink } from 'vue-router'
   import { storeToRefs } from 'pinia'
   import { useAccountStore } from '../../data/accountStore'
   import { formatRelativeDateTime, formatDateTime } from '../../utils/date'
   import useHorizontalDragScroll from '../../utils/useHorizontalDragScroll'
   import SiteIcon from '../common/SiteIcon.vue'
+  import SiteButtonSmall from '../common/SiteButtonSmall.vue'
 
   const props = defineProps({
     tournamentId: {
@@ -30,6 +31,54 @@
   const accountStore = useAccountStore()
   const { isConnected, address } = storeToRefs(accountStore)
 
+  const revealedRoundIndex = ref(null)
+
+  const getRevealedRoundIndexKey = function({ tournamentId, bracketId }) {
+    return `revealedRoundIndex__${tournamentId}__${bracketId}`
+  }
+  // Initialize revealedRoundIndex for the bracket
+  watch(
+    () => ({ tournamentId: props.tournamentId, bracketId: props.bracketId }),
+    subject => {
+      const key = getRevealedRoundIndexKey(subject)
+      const storedIndexString = localStorage.getItem(key)
+      revealedRoundIndex.value = storedIndexString ? (storedIndexString - 0) : null
+    },
+    { immediate: true }
+  )
+  // Store revealedRoundIndex for later
+  watch(
+    () => revealedRoundIndex.value,
+    newIndex => {
+      const key = getRevealedRoundIndexKey({ tournamentId: props.tournamentId, bracketId: props.bracketId })
+      if (newIndex) {
+        localStorage.setItem(key,`${newIndex}`)
+      } else {
+        localStorage.removeItem(key)
+      }
+    }
+  )
+
+  const revealRound = function (roundIndex) {
+    revealedRoundIndex.value = roundIndex
+  }
+  const revealFinalRound = function () {
+    revealedRoundIndex.value = props.rounds.length
+  }
+
+  const roundIdsWithRevealedTeams = computed(() => {
+    let revealToIndex = revealedRoundIndex.value || 0
+    return props.rounds.slice(0, revealToIndex + 1).map(round => round.id)
+  })
+  const roundIdsWithRevealedWinners = computed(() => {
+    // We only want to reveal winners up to (but not including) the revealedRoundIndex
+    let revealToIndex = revealedRoundIndex.value
+    if (revealToIndex) {
+      return props.rounds.slice(0, revealToIndex).map(round => round.id)
+    }
+    return []
+  })
+
   const container = ref(null)
   useHorizontalDragScroll(container)
 
@@ -46,18 +95,20 @@
     // construct the tree from the 'root' node i.e. the final round
     const battleNodesById = {}
     for (const round of props.rounds) {
+      const hasRevealedTeams = roundIdsWithRevealedTeams.value.includes(round.id)
+      const hasRevealedWinners = roundIdsWithRevealedWinners.value.includes(round.id)
       for (const battle of round.battles) {
         battleNodesById[battle.id] = {
           id: battle.id,
           fromBattles: battle.fromBattles,
-          teams: [battle.team1Id, battle.team2Id].map(teamId => (teamId && {
+          teams: hasRevealedTeams && [battle.team1Id, battle.team2Id].map(teamId => (teamId && {
             id: teamId,
             name: teamsById.value[teamId]?.name,
             owner: teamsById.value[teamId]?.owner
           } || null)),
           hasATeam: (battle.team1Id !== null),
           isBye: (battle.winnerId !== null) && ((battle.team1Id !== null && battle.team2Id === null) || (battle.team1Id === null && battle.team2Id !== null)),
-          winner: battle.winnerId,
+          winner: hasRevealedWinners ? battle.winnerId : null,
           round,
           children: []
         }
@@ -75,6 +126,7 @@
     if (rootNodes.length !== 1) {
       console.log('Unexpected round structure: expected a tree with a single root node but found', { rootNodes })
     }
+    rootNodes[0].isFinale = true
     const dataForTree = hierarchy(rootNodes[0])
     const configuredTree = tree()
       .nodeSize([NODE_HEIGHT + NODE_GAP_Y, NODE_WIDTH + NODE_GAP_X]) // reverse height and width because we will be rotating the tree
@@ -116,6 +168,7 @@
           connectors.push({
             id: `${fromNode.data.id}--${node.data.id}`,
             status: fromNode.data.round.status,
+            round: fromNode.data.round,
             startX,
             startY,
             width: Math.abs(startX - endX),
@@ -192,19 +245,29 @@
         <div class="bracket-diagram__round-name">
           {{ getRoundNumberText(index + 1) }} Round
         </div>
-        <div
-          v-if="round.startDate"
-          class="bracket-diagram__round-status"
-        >
-          <template v-if="round.status === 'completed'">
-            Finished
-          </template>
-          <template v-else-if="isFutureDate(round.startDate)">
-            Starting in {{ formatRelativeDateTime(round.startDate) }}
-          </template>
-          <template v-else>
-            Start: {{ formatDateTime(round.startDate) }}
-          </template>
+        <div style="display: flex; column-gap: 1rem">
+          <div
+            v-if="round.startDate"
+            class="bracket-diagram__round-status"
+          >
+            <template v-if="round.status === 'completed'">
+              Finished
+            </template>
+            <template v-else-if="isFutureDate(round.startDate)">
+              Starting in {{ formatRelativeDateTime(round.startDate) }}
+            </template>
+            <template v-else>
+              Start: {{ formatDateTime(round.startDate) }}
+            </template>
+          </div>
+          <div>
+            <SiteButtonSmall
+              v-if="index > 0 && round.status === 'completed' && !roundIdsWithRevealedTeams.includes(round.id)"
+              @click="revealRound(index)"
+            >
+              Show
+            </SiteButtonSmall>
+          </div>
         </div>
       </div>
     </div>
@@ -221,6 +284,7 @@
         class="bracket-diagram__tree-node"
         :class="{
           [`bracket-diagram__tree-node--status-${node.data.round.status}`]: true,
+          'bracket-diagram__tree-node--winner-hidden': node.data.round.status === 'completed' && !roundIdsWithRevealedWinners.includes(node.data.round.id),
           'bracket-diagram__tree-node--clickable': !node.data.isBye
         }"
         :style="{
@@ -237,6 +301,7 @@
           <RouterLink
             :to="{ name: 'tournament-bracket', params: { id: tournamentId, bracketId, battleId: node.data.id } }"
             class="link-reset link-reset--hover-underline extended-target"
+            @click="node.data.isFinale && node.data.round.status === 'completed' && revealFinalRound()"
           >
             {{ node.data.id?.substring(0, 6) }}
           </RouterLink>
@@ -265,6 +330,7 @@
         class="bracket-diagram__connector"
         :class="{
           [`bracket-diagram__connector--status-${connector.status}`]: true,
+          'bracket-diagram__connector--winner-hidden': connector.round.status === 'completed' && !roundIdsWithRevealedWinners.includes(connector.round.id),
           'bracket-diagram__connector--from-top': connector.fromTop,
           'bracket-diagram__connector--from-bottom': !connector.fromTop
         }"
@@ -372,7 +438,9 @@
     --bd-color-background: rgba(var(--c-medium-blue-rgb), var(--bd-color-background-opacity));
   }
   .bracket-diagram__tree-node--status-started,
-  .bracket-diagram__connector--status-started {
+  .bracket-diagram__connector--status-started,
+  .bracket-diagram__tree-node--winner-hidden,
+  .bracket-diagram__connector--winner-hidden {
     --bd-color-border-opacity: 0.7;
     --bd-color-background-opacity: 0.7;
     --bd-color-border: rgba(var(--c-light-yellow-rgb), var(--bd-color-border-opacity));

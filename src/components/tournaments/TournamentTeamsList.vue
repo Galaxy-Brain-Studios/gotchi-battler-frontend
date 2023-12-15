@@ -11,6 +11,7 @@
   import SiteTextField from '../common/SiteTextField.vue'
   import SiteEthAddress from '../common/SiteEthAddress.vue'
   import SiteCheckbox from '../common/SiteCheckbox.vue'
+  import SiteTable from '../common/SiteTable.vue'
   import TeamDialog from '../team/TeamDialog.vue'
   import EditTeamDialog from '../team/EditTeamDialog.vue'
 
@@ -97,7 +98,7 @@
     if (team.owner && team.owner.startsWith(q)) { return true }
     return false;
   }
-  const teamsToDisplay = computed(() => {
+  const filteredAndSortedTeams = computed(() => {
     if (!props.tournament?.teams?.length) { return null }
     const teams = props.tournament.teams
     const filteredTeams = debouncedQuery.value ? teams.filter(matchesQuery) : teams
@@ -113,13 +114,17 @@
         bubbledTeams = [...myTeams, ...otherTeams]
       }
     }
-    return bubbledTeams.slice(0, numToShow.value)
+    return bubbledTeams
+  })
+  const teamsToDisplay = computed(() => {
+    if (!filteredAndSortedTeams.value) { return null }
+    return filteredAndSortedTeams.value.slice(0, numToShow.value)
   })
 
   function loadMoreTeams () {
     numToShow.value += 10
   }
-  const canLoadMoreTeams = computed(() => props.tournament?.teams?.length > numToShow.value)
+  const canLoadMoreTeams = computed(() => filteredAndSortedTeams.value?.length > numToShow.value)
 
   function sort(property, direction) {
     sorting.value.property = property;
@@ -204,10 +209,10 @@
         />
       </div>
     </div>
-    <table class="teams-list__table">
+    <SiteTable class="teams-list__table">
       <thead>
         <tr>
-          <th class="team__ranking">
+          <th class="team__ranking site-table--no-grow">
             <SiteButtonIcon
               label="Sort Ascending"
               iconName="chevron-up"
@@ -227,7 +232,7 @@
           <th>
             <span>Owner</span>
           </th>
-          <th class="team__wins">
+          <th class="site-table--no-grow">
             <span>Wins</span>
             <SiteButtonIcon
               label="Sort Ascending"
@@ -276,7 +281,7 @@
           <td class="team__wins">{{ team.battlesWon }}</td>
         </tr>
       </tbody>
-    </table>
+    </SiteTable>
     <div class="teams-list__footer">
       <SiteButton
         v-if="canLoadMoreTeams"
@@ -334,36 +339,6 @@
     border: none;
   }
 
-  /* prevent columns from growing by setting their first cell to width 0 */
-  .teams-list__table tbody tr:first-child .team__ranking,
-  .teams-list__table tbody tr:first-child .team__wins {
-    width: 0;
-  }
-
-  .teams-list__table th {
-    white-space: nowrap;
-    text-align: left;
-    padding-bottom: 1.5rem;
-    text-transform: uppercase;
-    font-size: 1.125rem;
-    line-height: 1.5rem;
-  }
-  .teams-list__table th > span {
-    opacity: 0.5;
-  }
-  .teams-list__table th:not(:last-child) {
-    padding-right: 1rem;
-  }
-  .teams-list__table td {
-    vertical-align: top;
-    padding-top: 1rem;
-    font-size: 1.5rem;
-    line-height: 2rem;
-    letter-spacing: 0.045rem;
-  }
-  .teams-list__table td:not(:last-child) {
-    padding-right: 1rem;
-  }
   .teams-list__footer {
     display: grid;
     place-items: center;

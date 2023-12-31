@@ -232,6 +232,21 @@
           <th>
             <span>Owner</span>
           </th>
+          <th>
+            <span>Total BRS</span>
+            <SiteButtonIcon
+              label="Sort Ascending"
+              iconName="chevron-up"
+              :active="sorting.property === 'totalBrs' && sorting.direction === 'asc'"
+              @click="sort('totalBrs', 'asc')"
+            />
+            <SiteButtonIcon
+              label="Sort Descending"
+              iconName="chevron-down"
+              :active="sorting.property === 'totalBrs' && sorting.direction === 'desc'"
+              @click="sort('totalBrs', 'desc')"
+            />
+          </th>
           <th class="site-table--no-grow">
             <span>Wins</span>
             <SiteButtonIcon
@@ -278,6 +293,7 @@
               :address="team.owner"
             />
           </td>
+          <td class="team__brs">{{ team.totalBrs }}</td>
           <td class="team__wins">{{ team.battlesWon }}</td>
         </tr>
       </tbody>

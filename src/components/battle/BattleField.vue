@@ -22,7 +22,7 @@
 
   const team1 = computed(() => props.battle?.teams[0])
   const team2 = computed(() => props.battle?.teams[1])
-  const viewerId = computed(() => (props.battle?.status === 'completed' || (props.battle?.winnerId !== null && typeof props.battle?.winnerId !== 'undefined')) ? props.battle.id : null )
+  const battleLogsUrl = computed(() => props.battle?.logs ? props.battle.logs : null )
 </script>
 
 <template>
@@ -83,17 +83,17 @@
       <div
         class="battle__display"
         :class="{
-          'battle__display--not-ready': !viewerId
+          'battle__display--not-ready': !battleLogsUrl
         }"
       >
-        <template v-if="!viewerId">
+        <template v-if="!battleLogsUrl">
           <slot name="not-started">
             Result not available yet
           </slot>
         </template>
         <BattleUnityPlayer
           v-else
-          :id="viewerId"
+          :logsUrl="battleLogsUrl"
         />
       </div>
       <div class="battle__team-formation">

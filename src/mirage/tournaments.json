@@ -56,6 +56,7 @@
                 "name": "Team name 1",
                 "owner": "0x385Eeac5cB85A38A9a07A70c73e0a3271CfB54A7",
                 "ranking": 1,
+                "totalBrs": 100,
                 "battlesWon": 12
             },
             {
@@ -63,6 +64,7 @@
                 "name": "Team name 2 Testing Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String",
                 "owner": "0x86935F11C86623deC8a25696E1C19a8659CbF95d",
                 "ranking": 2,
+                "totalBrs": 200,
                 "battlesWon": 110
             },
             {
@@ -70,6 +72,7 @@
                 "name": "Team name 3 TestingLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWord",
                 "owner": "0x86935F11C86623deC8a25696E1C19a8659CbF95d",
                 "ranking": 3,
+                "totalBrs": 105,
                 "battlesWon": 10
             },
             {
@@ -77,6 +80,7 @@
                 "name": "Team name 4 - Test my team",
                 "owner": "0xBfe09443556773958bae1699b786d8E9680B5571",
                 "ranking": 4,
+                "totalBrs": 150,
                 "battlesWon": 9
             },
             {
@@ -84,6 +88,7 @@
                 "name": "Team name 5",
                 "owner": "0x385Eeac5cB85A38A9a07A70c73e0a3271CfB54A7",
                 "ranking": 5,
+                "totalBrs": 105,
                 "battlesWon": 8
             },
             {
@@ -91,6 +96,7 @@
                 "name": "Team name 6 - another one with my address",
                 "owner": "0xBfe09443556773958bae1699b786d8E9680B5571",
                 "ranking": 6,
+                "totalBrs": 106,
                 "battlesWon": 7
             },
             {
@@ -98,6 +104,7 @@
                 "name": "Team name 7",
                 "owner": "0x3F382DbD960E3a9bbCeaE22651E88158d2791550",
                 "ranking": 7,
+                "totalBrs": 107,
                 "battlesWon": 6
             },
             {
@@ -105,6 +112,7 @@
                 "name": "Team name 8",
                 "owner": "0x385Eeac5cB85A38A9a07A70c73e0a3271CfB54A7",
                 "ranking": 8,
+                "totalBrs": 108,
                 "battlesWon": 5
             },
             {
@@ -112,6 +120,7 @@
                 "name": "Team name 9",
                 "owner": "0xd8D4BDb89D64B7A2971Dc987DD67F101fea6c7D8",
                 "ranking": 9,
+                "totalBrs": 1009,
                 "battlesWon": 4
             },
             {
@@ -119,6 +128,7 @@
                 "name": "Team name 10",
                 "owner": "0x1906fd9c4AC440561F7197Da0A4BD2E88DF5fA70",
                 "ranking": 10,
+                "totalBrs": 110,
                 "battlesWon": 3
             },
             {
@@ -126,6 +136,7 @@
                 "name": "Team name 11",
                 "owner": "0x58de9AaBCaeEC0f69883C94318810ad79Cc6a44f",
                 "ranking": 11,
+                "totalBrs": 111,
                 "battlesWon": 2
             },
             {
@@ -133,6 +144,7 @@
                 "name": "Team name 12",
                 "owner": "0x58de9AaBCaeEC0f69883C94318810ad79Cc6a44f",
                 "ranking": 12,
+                "totalBrs": 112,
                 "battlesWon": 0
             },
             {
@@ -140,6 +152,7 @@
                 "name": "Team name 13",
                 "owner": "0x58de9AaBCaeEC0f69883C94318810ad79Cc6a44f",
                 "ranking": 13,
+                "totalBrs": 113,
                 "battlesWon": 0
             },
             {
@@ -147,6 +160,7 @@
                 "name": "Team name 14",
                 "owner": "0x1906fd9c4AC440561F7197Da0A4BD2E88DF5fA70",
                 "ranking": 14,
+                "totalBrs": 114,
                 "battlesWon": 0
             },
             {
@@ -154,6 +168,7 @@
                 "name": "Team name 15",
                 "owner": "0x1906fd9c4AC440561F7197Da0A4BD2E88DF5fA70",
                 "ranking": 15,
+                "totalBrs": 115,
                 "battlesWon": 0
             },
             {
@@ -161,6 +176,7 @@
                 "name": "Team name 16",
                 "owner": "0x3F382DbD960E3a9bbCeaE22651E88158d2791550",
                 "ranking": 16,
+                "totalBrs": 116,
                 "battlesWon": 0
             },
             {
@@ -168,6 +184,7 @@
                 "name": "Team 17",
                 "owner": "0xd8D4BDb89D64B7A2971Dc987DD67F101fea6c7D8",
                 "ranking": 1,
+                "totalBrs": 117,
                 "battlesWon": 12
             }
         ],

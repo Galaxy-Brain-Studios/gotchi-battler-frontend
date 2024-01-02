@@ -236,7 +236,7 @@ export function makeServer({ environment = 'development' } = {}) {
         return result
       })
 
-      this.get(fixUrl(urls.battleLogs(':id')), () => {
+      this.get(fixUrl(urls.battleLogs(':url')), () => {
         if (mirageConfig.battleLogs.error) {
           return errorResponse()
         }

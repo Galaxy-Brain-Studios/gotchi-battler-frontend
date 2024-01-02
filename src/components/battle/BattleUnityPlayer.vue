@@ -6,7 +6,7 @@
   import SiteError from '../common/SiteError.vue'
 
   const props = defineProps({
-    id: {
+    logsUrl: {
       type: String,
       required: true
     }
@@ -15,10 +15,10 @@
   const logs = ref(null);
   const { status: fetchStatus, setLoading, reset: resetFetch } = useStatus()
 
-  async function fetchBattleLogs(id) {
+  async function fetchBattleLogs(logsUrl) {
     const [isStale, setLoaded, setError] = setLoading()
     try {
-      const result = await battlesService.fetchBattleLogs(id)
+      const result = await battlesService.fetchBattleLogs(logsUrl)
       if (isStale()) { return; }
       logs.value = result
       setLoaded()
@@ -28,10 +28,10 @@
   }
 
   watch(
-    () => props.id,
+    () => props.logsUrl,
     () => {
-      if (props.id) {
-        fetchBattleLogs(props.id)
+      if (props.logsUrl) {
+        fetchBattleLogs(props.logsUrl)
       } else {
         resetFetch()
       }

@@ -38,6 +38,13 @@
         <br>
         <button
           type="button"
+          @click="setBaseUrl('http://localhost:8888')"
+        >
+          Set API to localhost:8888
+        </button>
+        <br>
+        <button
+          type="button"
           @click="setBaseUrl('https://gotchi-battler-backend-76ns3tfg6q-ew.a.run.app')"
         >
           Set API to gotchi-battler-backend-76ns3tfg6q-ew

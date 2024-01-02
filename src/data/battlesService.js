@@ -26,9 +26,9 @@ export default {
     }
   },
 
-  async fetchBattleLogs (id) {
+  async fetchBattleLogs (url) {
     try {
-      const logs = await api.get(urls.battleLogs(id))
+      const logs = await api.get(urls.battleLogs(url))
       return logs
     } catch (e) {
       console.error('fetchBattleLogs error', { ...e })

@@ -48,16 +48,7 @@
         />
       </div>
       <div class="bracket__secondary">
-        <div class="bracket__num-teams">
-          {{ bracket.numberOfTeams }}
-          {{ bracket.numberOfTeams === 1 ? 'Entrant' : 'Entrants' }}
-        </div>
-        <div
-          v-if="bracket.rules"
-          class="bracket__rules word-break"
-        >
-          {{ bracket.rules }}
-        </div>
+        
       </div>
     </li>
   </ol>

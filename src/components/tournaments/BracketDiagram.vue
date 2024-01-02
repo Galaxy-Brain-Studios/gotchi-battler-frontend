@@ -243,7 +243,7 @@
         }"
       >
         <div class="bracket-diagram__round-name">
-          {{ getRoundNumberText(index + 1) }} Round
+          {{ round.name }}
         </div>
         <div style="display: flex; column-gap: 1rem">
           <div

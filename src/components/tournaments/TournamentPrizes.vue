@@ -14,7 +14,8 @@
   ]
 
   const currencyIcons = {
-    dai: 'token-dai'
+    dai: 'token-dai',
+    ghst: 'token-ghst'
   }
 </script>
 

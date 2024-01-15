@@ -25,7 +25,7 @@
     }"
     aria-hidden="true"
   >
-    <use href="`#icon_${name}`"></use>
+    <use :href="`#icon_${name}`"></use>
   </svg>
 </template>
 

@@ -14,6 +14,10 @@
       type: Boolean,
       default: false
     },
+    withRowBoosts: {
+      type: Boolean,
+      default: false
+    },
     reverseRows: {
       type: Boolean,
       default: false
@@ -51,8 +55,24 @@
   })
 
   const rowLabels = computed(() => {
-    if (props.reverseRows) { return ['Front', 'Back'] }
-    return ['Back', 'Front']
+    const labels = ['Front', 'Back']
+    if (props.reverseRows) { return labels }
+    return labels.reverse();
+  })
+
+  const rowBoosts = computed(() => {
+    const boosts = [
+      {
+        label: '+20% ATTACK',
+        color: '#FF5038'
+      },
+      {
+        label: '+20% ARMOR',
+        color: 'rgb(53, 73, 254)'
+      }
+    ]
+    if (props.reverseRows) { return boosts }
+    return boosts.reverse();
   })
 </script>
 
@@ -139,6 +159,18 @@
         '--team-formation-position': selectedGotchiPosition.position
       }"
     />
+    <template v-if="withRowBoosts">
+      <div
+        v-for="boost in rowBoosts"
+        :key="boost.label"
+        class="team-formation__row-boost"
+        :style="{
+          '--boost-bg-color': boost.color
+        }"
+      >
+        {{ boost.label }}
+      </div>
+    </template>
   </section>
 </template>
 
@@ -213,7 +245,33 @@
     rotate: 180deg;
     margin: 0;
     padding-left: 0.8rem;
-    font-size: 0.875rem;
-    letter-spacing: 0.02625rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.0225rem;
+  }
+  /* Boost styles only defined for horizontal formation so far */
+  .team-formation--horizontal > .team-formation__row-boost {
+    --boost-bg-color: #FF5038;
+    rotate: 180deg;
+    margin-left: 0.75rem;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    padding: 0 0.75em;
+    text-align: center;
+    font-size: 0.75rem;
+    letter-spacing: 0.015rem;
+    font-weight: 600;
+    background-color: var(--boost-bg-color);
+    color: var(--c-white);
+  }
+  .team-formation--horizontal > .team-formation__row-boost::before {
+    --boost-arrow-height: 0.5rem;
+    content: '';
+    position: absolute;
+    right: calc(-1 * var(--boost-arrow-height) + 1px);
+    top: calc(50% - var(--boost-arrow-height) / 2);
+    height: var(--boost-arrow-height);
+    border-left: var(--boost-arrow-height) solid var(--boost-bg-color);
+    border-top: var(--boost-arrow-height) solid transparent;
+    border-bottom: var(--boost-arrow-height) solid transparent;
   }
 </style>

@@ -826,6 +826,7 @@
             <TeamFormation
               :team="teamToDisplay"
               withRowLabels
+              withRowBoosts
               horizontal
               reverseRows
             >
@@ -950,7 +951,7 @@
       height: 100%;
       margin: 0;
       display: grid;
-      grid-template-columns: 50% 50%;
+      grid-template-columns: minmax(0, 1fr) 40rem;
       grid-template-rows: minmax(0, auto);
       gap: 0;
     }
@@ -970,7 +971,7 @@
       height: fit-content; /* this will be the scroll container but only if its contents are too tall */
       max-height: 100%;
       margin: 0;
-      padding: 2rem 1.8rem 2rem 2.8rem;
+      padding: 2rem 2.5rem 2rem 2.8rem;
       overflow: auto;
     }
   }
@@ -996,8 +997,12 @@
   .create-team__formation {
     grid-column: 1 / span 2;
   }
-  .create-team__formation-display {
-    margin-left: -1.8rem; /* align the start of the grid with the common left margin, putting the row labels in the negative margin */
+  @media (min-width: 1300px) {
+    /* align the start of the grid with the common left margin, putting the row labels in the negative margin */
+    /* only do this with the larger layout as it has more margin */
+    .create-team__formation-display {
+      margin-left: -1.8rem;
+    }
   }
 
   .create-team__submit {

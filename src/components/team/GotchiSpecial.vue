@@ -78,6 +78,7 @@
     font-weight: normal; /* reset any parent bold styles */
   }
   .gotchi-special--full-width {
+    width: 100%;
     justify-content: center;
   }
   .gotchi-special__label {
@@ -97,7 +98,7 @@
     width: 0.75rem;
   }
   .gotchi-special--variant-small .gotchi-special__label {
-    font-size: 0.725rem;
+    font-size: 0.625rem;
     line-height: 0.625rem;
   }
   .gotchi-special--type-1 {

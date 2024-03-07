@@ -51,8 +51,8 @@
   })
 
   const rowLabels = computed(() => {
-    if (props.reverseRows) { return ['Front Row', 'Back Row'] }
-    return ['Back Row', 'Front Row']
+    if (props.reverseRows) { return ['Front', 'Back'] }
+    return ['Back', 'Front']
   })
 </script>
 
@@ -157,6 +157,7 @@
   .team-formation__row-header {
     grid-row: 1 / 2;
     margin-bottom: 1rem;
+    text-align: center;
     font-size: 1rem;
     line-height: 1rem;
     letter-spacing: 0.03rem;

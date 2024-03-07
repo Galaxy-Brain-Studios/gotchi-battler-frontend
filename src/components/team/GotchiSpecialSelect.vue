@@ -15,6 +15,10 @@
     availableSpecials: {
       type: Array,
       required: true
+    },
+    fullWidth: {
+      type: Boolean,
+      default: false
     }
   })
   const emit = defineEmits(['update:modelValue'])
@@ -41,13 +45,15 @@
       class="button-reset gotchi-special-select__popup-trigger"
       :class="{
         'gotchi-special-select__popup-trigger--without-special': !modelValue,
-        'gotchi-special-select__popup-trigger--with-special': !!modelValue
+        'gotchi-special-select__popup-trigger--with-special': !!modelValue,
+        'gotchi-special-select__popup-trigger--full-width': fullWidth
       }"
     >
       <GotchiSpecial
         v-if="modelValue"
         :id="modelValue"
         :forSpecialShowClass="true"
+        :fullWidth="fullWidth"
       >
         <template #after>
           <SiteIcon
@@ -111,10 +117,14 @@
     background: var(--c-white);
     color: var(--c-black);
     text-transform: uppercase;
-    font-size: 0.75rem;
-    line-height: 0.75rem;
+    font-size: 0.625rem;
+    line-height: 0.625rem;
     font-weight: bold;
   }
+  .gotchi-special-select__popup-trigger--full-width {
+    width: 100%;
+  }
+
   .gotchi-special-select__options {
     background: var(--c-white);
   }

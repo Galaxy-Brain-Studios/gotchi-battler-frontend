@@ -49,10 +49,8 @@
 
 <style scoped>
   .leader-slots {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 2.5rem);
-    gap: 0.5rem;
-    justify-content: start;
+    display: flex;
+    flex-wrap: wrap;
   }
 
   .leader-slot-label {

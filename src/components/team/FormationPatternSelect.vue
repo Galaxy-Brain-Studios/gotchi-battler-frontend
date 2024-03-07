@@ -84,18 +84,9 @@
   .formation-pattern-label {
     /* generate formation block pattern using linear-gradients with sharp color/opacity changes */
     background-image:
-      linear-gradient(90deg,
-        rgba(255, 255, 255, var(--pattern-back-0)) 0%,
-        rgba(255, 255, 255, var(--pattern-back-0)) 20%,
-        rgba(255, 255, 255, var(--pattern-back-1)) 20%,
-        rgba(255, 255, 255, var(--pattern-back-1)) 40%,
-        rgba(255, 255, 255, var(--pattern-back-2)) 40%,
-        rgba(255, 255, 255, var(--pattern-back-2)) 60%,
-        rgba(255, 255, 255, var(--pattern-back-3)) 60%,
-        rgba(255, 255, 255, var(--pattern-back-3)) 80%,
-        rgba(255, 255, 255, var(--pattern-back-4)) 80%,
-        rgba(255, 255, 255, var(--pattern-back-4)) 100%
-      ),
+      /* display a tiny gotchi at every position */
+      url('./pattern-gotchi.png'),
+      /* front row, with unoccupied spaces filled in with opaque white */
       linear-gradient(90deg,
         rgba(255, 255, 255, var(--pattern-front-0)) 0%,
         rgba(255, 255, 255, var(--pattern-front-0)) 20%,
@@ -107,9 +98,22 @@
         rgba(255, 255, 255, var(--pattern-front-3)) 80%,
         rgba(255, 255, 255, var(--pattern-front-4)) 80%,
         rgba(255, 255, 255, var(--pattern-front-4)) 100%
+      ),
+      /* back row, with unoccupied spaces filled in with opaque white */
+      linear-gradient(90deg,
+        rgba(255, 255, 255, var(--pattern-back-0)) 0%,
+        rgba(255, 255, 255, var(--pattern-back-0)) 20%,
+        rgba(255, 255, 255, var(--pattern-back-1)) 20%,
+        rgba(255, 255, 255, var(--pattern-back-1)) 40%,
+        rgba(255, 255, 255, var(--pattern-back-2)) 40%,
+        rgba(255, 255, 255, var(--pattern-back-2)) 60%,
+        rgba(255, 255, 255, var(--pattern-back-3)) 60%,
+        rgba(255, 255, 255, var(--pattern-back-3)) 80%,
+        rgba(255, 255, 255, var(--pattern-back-4)) 80%,
+        rgba(255, 255, 255, var(--pattern-back-4)) 100%
       );
-    background-size: 100% 50%, 100% 50%;
-    background-repeat: no-repeat, no-repeat;
-    background-position: top, bottom;
+    background-size: 20% 50%, 100% 50%, 100% 50%;
+    background-repeat: repeat, no-repeat, no-repeat;
+    background-position: top, top, bottom;
   }
 </style>

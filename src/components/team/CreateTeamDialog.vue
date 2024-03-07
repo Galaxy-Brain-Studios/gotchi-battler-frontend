@@ -8,6 +8,8 @@
   import VueDraggable from 'vuedraggable'
   import SiteDialog from '../common/SiteDialog.vue'
   import SiteButtonPrimary from '../common/SiteButtonPrimary.vue'
+  import SiteButton from '../common/SiteButton.vue'
+  import SiteButtonGroup from '../common/SiteButtonGroup.vue'
   import SitePopupHoverMenu from '../common/SitePopupHoverMenu.vue'
   import SiteSelect from '../common/SiteSelect.vue'
   import SiteTextField from '../common/SiteTextField.vue'
@@ -599,15 +601,10 @@
 <template>
   <SiteDialog
     :isOpen="isOpen"
-    variant="large"
+    variant="full"
     strict
     @update:isOpen="$emit('update:isOpen', $event)"
   >
-    <template #title>
-      <span style="text-transform: capitalize;">{{ mode }}</span>
-      Team
-    </template>
-
     <SiteError
       v-if="showError && errorMessage"
       class="create-team-error"
@@ -628,253 +625,282 @@
         'create-team--is-dragging': isDragging
       }"
     >
-      <section class="create-team__name">
-        <label
-          for="create-team__name-input"
-          class="create-team__section-label"
-        >
-          1. Team name:
-        </label>
-        <div>
-          <template v-if="canChangeName">
-            <SiteTextField
-              id="create-team__name-input"
-              v-model="teamName"
-              placeholder="Team Name"
-              style="width: 100%"
-            />
-            <button
-              v-if="DEV_MODE"
-              type="button"
-              @click="autofill"
-            >
-              I feel lucky
-            </button>
-          </template>
-          <template v-else>
-            {{ teamName }}
-          </template>
+      <div class="create-team__container create-team__container-1">
+        <div class="create-team__title">
+          <SiteButton
+            aria-label="Close dialog"
+            class="create-team__title-close-button"
+            icon="chevron-left"
+            @click="$emit('update:isOpen', false)"
+          />
+          <h1 class="create-team__title-text">
+            <span style="text-transform: capitalize;">{{ mode }}</span>
+            Team
+          </h1>
         </div>
-      </section>
-      <section class="create-team__formation-pattern">
-        <label class="create-team__section-label">
-          2. Select formation:
-        </label>
-        <FormationPatternSelect
-          v-model="selectedFormationPatternId"
-        />
-      </section>
-      <section class="create-team__formation">
-        <TeamFormation
-          :team="teamToDisplay"
-          withRowLabels
-        >
-          <template #position="{ row, position }">
+        <section class="create-team__gotchis">
+          <SiteButtonGroup
+            :numButtons="2"
+            class="create-team__gotchis-source"
+          >
+            <SiteButton
+              grouped="start"
+              active
+            >
+              My Gotchis
+            </SiteButton>
+            <SiteButton grouped="end">
+              Training Gotchis
+            </SiteButton>
+          </SiteButtonGroup>
+          <div class="create-team__gotchis-search">
+            <SiteTextField
+              v-model="query"
+              placeholder="Search gotchis"
+              search
+              subtle
+            />
+          </div>
+          <div class="create-team__gotchis-sort">
+            Sort by:
+            <SiteSelect v-model="resultSort">
+              <option
+                v-for="option in sortOptions"
+                :key="option.id"
+                :value="option.id"
+              >
+                {{ option.label }}
+              </option>
+            </SiteSelect>
+          </div>
+          <div class="create-team__gotchis-available word-break">
             <div
-              class="create-team__formation-placeholder"
+              v-if="myGotchisFetchStatus.loading"
+              class="create-team__gotchis-loading"
             >
-              <template v-if="selectedFormationPattern?.[row][position - 1]">
-                <GotchiInFormation
-                  emptyMode="placeholder"
-                  variant="large"
-                  :slotNumber="selectedFormationPattern[row][position - 1]"
-                  :isLeader="`${selectedLeaderSlot}` === `${selectedFormationPattern[row][position - 1]}`"
-                />
-                <VueDraggable
-                  v-model="draggableTargets[row][position - 1]"
-                  item-key="id"
-                  :group="{ name: `target_${row}_${position - 1}`, pull: false, put: true }"
-                  tag="ol"
-                  class="list-reset create-team__formation-position-target"
-                >
-                  <template #item><!-- not needed as we remove gotchis from this list after dropping --></template>
-                </VueDraggable>
-              </template>
-              <GotchiInFormation
-                v-else
-                emptyMode="disabled"
-              />
+              Loading...
             </div>
-          </template>
-          <template #gotchi="{ gotchi, row, position }">
-            <GotchiInFormation
-              :gotchi="{ ...gotchi, specialId: specialByGotchiId[gotchi.id] }"
-              variant="large"
-              :slotNumber="selectedFormationPattern[row][position - 1]"
-              :isLeader="teamToDisplay.leader === gotchi.id"
-              isRemovable
-              isSelectable
-              @remove="removeGotchiFromFormation(gotchi.id)"
-              @select="displayGotchiId = gotchi.id"
+            <div
+              v-if="myGotchisFetchStatus.error"
+              class="create-team__gotchis-error"
             >
-              <template #after-name>
+              {{ myGotchisFetchStatus.errorMessage }}
+            </div>
+            <template v-else-if="availableGotchis">
+              <div
+                v-if="!results?.length"
+                class="create-team__gotchis-empty"
+              >
+                No gotchis found.
+              </div>
+              <VueDraggable
+                v-model="results"
+                item-key="id"
+                :group="{ name: 'available', pull: 'clone', put: false }"
+                tag="ol"
+                class="list-reset create-team__gotchis-results"
+                ghost-class="create-team__gotchis-draggable--ghost"
+                chosen-class="create-team__gotchis-draggable--chosen"
+                drag-class="create-team__gotchis-draggable--drag"
+                filter=".create-team__gotchis-result--not-draggable"
+                :move="onMoveFromAvailable"
+                @start="isDragging = true"
+                @end="isDragging = false"
+              >
+                <template #item="{ element }">
+                  <li
+                    class="create-team__gotchis-result"
+                    :class="{
+                      'create-team__gotchis-result--not-draggable': !!differentTeamForGotchi[element.id]
+                    }"
+                  >
+                    <SitePopupHoverMenu>
+                      <button
+                        type="button"
+                        class="button-reset"
+                        style="display: block;"
+                      >
+                        <img
+                          :src="element.svgFront"
+                          :alt="`${element.name} #${element.id}`"
+                          class="create-team__gotchis-result-image"
+                          loading="lazy"
+                        />
+                      </button>
+
+                      <template #popper>
+                        <div class="create-team__gotchis-result-popup">
+                          <div class="create-team__gotchis-result-popup-header">
+                            {{ element.name }} #{{ element.id }}
+                          </div>
+                          <div
+                            v-if="differentTeamForGotchi[element.id]"
+                          >
+                            Already in a team in this tournament:
+                            <br>
+                            "{{ differentTeamForGotchi[element.id].name }}"
+                            (#{{ differentTeamForGotchi[element.id].id }})
+                          </div>
+                          <template v-else>
+                            <GotchiStats
+                              :gotchi="element"
+                              variant="small"
+                              class="create-team__gotchis-result-popup-stats"
+                            />
+                            <div>
+                              Add to:
+                              <button
+                                v-for="i in 5"
+                                :key="i"
+                                type="button"
+                                class="button-reset create-team__gotchis-result-popup-slot-button"
+                                :class="{
+                                  'create-team__gotchis-result-popup-slot-button--selected': gotchiIdBySlotNumber[i] === element.id
+                                }"
+                                @click="addGotchiToSlot({ gotchiId: element.id, slotNumber: i })"
+                              >
+                                {{ i }}
+                              </button>
+                            </div>
+                          </template>
+                        </div>
+                      </template>
+                    </SitePopupHoverMenu>
+                  </li>
+                </template>
+              </VueDraggable>
+            </template>
+          </div>
+        </section>
+      </div>
+      <div class="create-team__container create-team__container-2">
+        <section class="create-team__name">
+          <label
+            for="create-team__name-input"
+            class="create-team__section-label"
+          >
+            1. Team name:
+          </label>
+          <div>
+            <template v-if="canChangeName">
+              <SiteTextField
+                id="create-team__name-input"
+                v-model="teamName"
+                placeholder="Team Name"
+                style="width: 100%"
+              />
+              <button
+                v-if="DEV_MODE"
+                type="button"
+                @click="autofill"
+              >
+                I feel lucky
+              </button>
+            </template>
+            <template v-else>
+              {{ teamName }}
+            </template>
+          </div>
+        </section>
+        <section class="create-team__leader">
+          <label class="create-team__section-label">
+            2. Choose leader slot:
+          </label>
+          <LeaderSlotSelect
+            v-model="selectedLeaderSlot"
+          />
+        </section>
+        <section class="create-team__formation-pattern">
+          <label class="create-team__section-label">
+            3. Select formation:
+          </label>
+          <FormationPatternSelect
+            v-model="selectedFormationPatternId"
+          />
+        </section>
+        <section class="create-team__formation">
+          <label class="create-team__section-label">
+            4. Drag at least 5 Gotchis into team
+          </label>
+          <div class="create-team__formation-display">
+            <TeamFormation
+              :team="teamToDisplay"
+              withRowLabels
+              horizontal
+              reverseRows
+            >
+              <template #position="{ row, position }">
                 <div
-                  class="create-team__formation-special"
-                  :class="{
-                    'create-team__formation-special--interactive': gotchi.canSelectSpecial
-                  }"
+                  class="create-team__formation-placeholder"
                 >
-                  <GotchiSpecial
-                    v-if="!gotchi.canSelectSpecial && specialByGotchiId[gotchi.id]"
-                    :id="specialByGotchiId[gotchi.id]"
-                    :forSpecialShowClass="true"
-                  />
-                  <GotchiSpecialSelect
-                    v-if="gotchi.canSelectSpecial"
-                    :key="`${gotchi.id}_${row}_${position}`"
-                    v-model="specialByGotchiId[gotchi.id]"
-                    :availableSpecials="gotchi.availableSpecials"
+                  <template v-if="selectedFormationPattern?.[row][position - 1]">
+                    <GotchiInFormation
+                      emptyMode="placeholder"
+                      variant="small"
+                      :slotNumber="selectedFormationPattern[row][position - 1]"
+                      :isLeader="`${selectedLeaderSlot}` === `${selectedFormationPattern[row][position - 1]}`"
+                    />
+                    <VueDraggable
+                      v-model="draggableTargets[row][position - 1]"
+                      item-key="id"
+                      :group="{ name: `target_${row}_${position - 1}`, pull: false, put: true }"
+                      tag="ol"
+                      class="list-reset create-team__formation-position-target"
+                    >
+                      <template #item><!-- not needed as we remove gotchis from this list after dropping --></template>
+                    </VueDraggable>
+                  </template>
+                  <GotchiInFormation
+                    v-else
+                    emptyMode="disabled"
+                    variant="small"
                   />
                 </div>
               </template>
-            </GotchiInFormation>
-          </template>
-        </TeamFormation>
-      </section>
-      <section class="create-team__gotchis">
-        <label class="create-team__section-label">
-          3. Drag 5 Gotchi to team grid
-        </label>
-        <div class="create-team__gotchis-search">
-          <SiteTextField
-            v-model="query"
-            placeholder="Search gotchis"
-            search
-            subtle
-          />
-        </div>
-        <div class="create-team__gotchis-sort">
-          Sort by:
-          <SiteSelect v-model="resultSort">
-            <option
-              v-for="option in sortOptions"
-              :key="option.id"
-              :value="option.id"
-            >
-              {{ option.label }}
-            </option>
-          </SiteSelect>
-        </div>
-        <div class="create-team__gotchis-available word-break">
-          <div
-            v-if="myGotchisFetchStatus.loading"
-            class="create-team__gotchis-loading"
-          >
-            Loading...
-          </div>
-          <div
-            v-if="myGotchisFetchStatus.error"
-            class="create-team__gotchis-error"
-          >
-            {{ myGotchisFetchStatus.errorMessage }}
-          </div>
-          <template v-else-if="availableGotchis">
-            <div
-              v-if="!results?.length"
-              class="create-team__gotchis-empty"
-            >
-              No gotchis found.
-            </div>
-            <VueDraggable
-              v-model="results"
-              item-key="id"
-              :group="{ name: 'available', pull: 'clone', put: false }"
-              tag="ol"
-              class="list-reset create-team__gotchis-results"
-              ghost-class="create-team__gotchis-draggable--ghost"
-              chosen-class="create-team__gotchis-draggable--chosen"
-              drag-class="create-team__gotchis-draggable--drag"
-              filter=".create-team__gotchis-result--not-draggable"
-              :move="onMoveFromAvailable"
-              @start="isDragging = true"
-              @end="isDragging = false"
-            >
-              <template #item="{ element }">
-                <li
-                  class="create-team__gotchis-result"
-                  :class="{
-                    'create-team__gotchis-result--not-draggable': !!differentTeamForGotchi[element.id]
-                  }"
+              <template #gotchi="{ gotchi, row, position }">
+                <GotchiInFormation
+                  :gotchi="{ ...gotchi, specialId: specialByGotchiId[gotchi.id] }"
+                  variant="small"
+                  :slotNumber="selectedFormationPattern[row][position - 1]"
+                  :isLeader="teamToDisplay.leader === gotchi.id"
+                  isRemovable
+                  isSelectable
+                  :warning="gotchi.canSelectSpecial && !specialByGotchiId[gotchi.id]"
+                  withSpecialBadge
+                  @remove="removeGotchiFromFormation(gotchi.id)"
+                  @select="displayGotchiId = gotchi.id"
                 >
-                  <SitePopupHoverMenu>
-                    <button
-                      type="button"
-                      class="button-reset"
-                      style="display: block;"
-                    >
-                      <img
-                        :src="element.svgFront"
-                        :alt="`${element.name} #${element.id}`"
-                        class="create-team__gotchis-result-image"
-                        loading="lazy"
-                      />
-                    </button>
-
-                    <template #popper>
-                      <div class="create-team__gotchis-result-popup">
-                        <div class="create-team__gotchis-result-popup-header">
-                          {{ element.name }} #{{ element.id }}
-                        </div>
-                        <div
-                          v-if="differentTeamForGotchi[element.id]"
-                        >
-                          Already in a team in this tournament:
-                          <br>
-                          "{{ differentTeamForGotchi[element.id].name }}"
-                          (#{{ differentTeamForGotchi[element.id].id }})
-                        </div>
-                        <template v-else>
-                          <GotchiStats
-                            :gotchi="element"
-                            variant="small"
-                            class="create-team__gotchis-result-popup-stats"
-                          />
-                          <div>
-                            Add to:
-                            <button
-                              v-for="i in 5"
-                              :key="i"
-                              type="button"
-                              class="button-reset create-team__gotchis-result-popup-slot-button"
-                              :class="{
-                                'create-team__gotchis-result-popup-slot-button--selected': gotchiIdBySlotNumber[i] === element.id
-                              }"
-                              @click="addGotchiToSlot({ gotchiId: element.id, slotNumber: i })"
-                            >
-                              {{ i }}
-                            </button>
-                          </div>
-                        </template>
-                      </div>
-                    </template>
-                  </SitePopupHoverMenu>
-                </li>
+                  <template
+                    v-if="gotchi.canSelectSpecial"
+                    #special
+                  >
+                    <GotchiSpecialSelect
+                      :key="`${gotchi.id}_${row}_${position}`"
+                      v-model="specialByGotchiId[gotchi.id]"
+                      :availableSpecials="gotchi.availableSpecials"
+                      fullWidth
+                    />
+                  </template>
+                </GotchiInFormation>
               </template>
-            </VueDraggable>
-          </template>
+            </TeamFormation>
+          </div>
+        </section>
+
+        <div class="create-team__submit">
+          <SiteButtonPrimary
+            v-if="isSaving"
+            disabled
+          >
+            Saving...
+          </SiteButtonPrimary>
+          <SiteButtonPrimary
+            v-else
+            @click="saveTeam"
+          >
+            Save Team
+          </SiteButtonPrimary>
         </div>
-      </section>
-      <section class="create-team__leader">
-        <label class="create-team__section-label">
-          4. Choose leader slot:
-        </label>
-        <LeaderSlotSelect
-          v-model="selectedLeaderSlot"
-        />
-      </section>
-      <div class="create-team__submit">
-        <SiteButtonPrimary
-          v-if="isSaving"
-          disabled
-        >
-          Saving...
-        </SiteButtonPrimary>
-        <SiteButtonPrimary
-          v-else
-          @click="saveTeam"
-        >
-          Save Team
-        </SiteButtonPrimary>
       </div>
     </div>
     <GotchiDetailsDialog
@@ -903,22 +929,80 @@
     gap: 2rem;
   }
 
+  .create-team__container-1,
+  .create-team__container-2 {
+    margin: 0 1rem;
+  }
+  .create-team__container-1 {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 2rem;
+  }
+  .create-team__container-2 {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    row-gap: 1.5rem;
+    column-gap: 1.5rem;
+  }
+
   @media (min-width: 1300px) {
     .create-team {
+      height: 100%;
       margin: 0;
       display: grid;
-      grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto);
-      grid-template-rows: auto minmax(0, 1fr) auto;
-      gap: 2rem;
+      grid-template-columns: 50% 50%;
+      grid-template-rows: minmax(0, auto);
+      gap: 0;
+    }
+
+    .create-team__container-1 {
+      height: 100%; /* want this to be full height so the internal scrolling gotchis container can fill available height */
+      margin: 0;
+      padding: 0 1.8rem 1rem 1.8rem;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+
+      border-right: 2px solid var(--c-black);
+      background: var(--color-background);
+      background-image: url('@/assets/bg.png');
+    }
+    .create-team__container-2 {
+      height: fit-content; /* this will be the scroll container but only if its contents are too tall */
+      max-height: 100%;
+      margin: 0;
+      padding: 2rem 1.8rem 2rem 2.8rem;
+      overflow: auto;
     }
   }
 
-  .create-team__formation-pattern,
-  .create-team__gotchis {
-    grid-column: 2 / span 2;
+  .create-team__title {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 2rem 0 0 4px;
   }
+  .create-team__title-close-button {
+    flex: none;
+  }
+  .create-team__title-text {
+    flex: 1 1 auto;
+    margin: 0;
+  }
+
+  .create-team__name {
+    grid-column: 1 / span 2;
+  }
+
   .create-team__formation {
-    grid-row: 2 / span 2;
+    grid-column: 1 / span 2;
+  }
+  .create-team__formation-display {
+    margin-left: -1.8rem; /* align the start of the grid with the common left margin, putting the row labels in the negative margin */
+  }
+
+  .create-team__submit {
+    grid-column: 1 / span 2;
+    display: grid;
   }
 
   .create-team__section-label {
@@ -941,22 +1025,22 @@
     grid-row: 1 / 2;
   }
 
-  .create-team__formation-special {
-    display: inline-block;
-    margin-top: 0.5rem;
-  }
-  .create-team__formation-special--interactive {
-    position: relative;
-    z-index: 1; /* bring above the gotchi click area */
-  }
-
   .create-team__gotchis {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto auto;
-    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-rows: auto auto minmax(0, 1fr);
     column-gap: 1rem;
     row-gap: 0.5rem;
     align-items: center;
+  }
+  @media (max-width: 1299px) {
+    .create-team__gotchis {
+      max-height: 24rem;
+    }
+  }
+  .create-team__gotchis-source {
+    grid-column: 1 / 4;
+    margin: 0 4px 1rem;
   }
   .create-team__gotchis .create-team__section-label {
     margin-bottom: 0;
@@ -970,7 +1054,6 @@
     grid-column: 1 / 4;
     border: 2px solid var(--c-black);
     overflow-y: auto;
-    max-height: 24rem;
     background: rgba(var(--c-black-rgb), 0.25);
   }
   .create-team__gotchis-results {
@@ -1015,12 +1098,6 @@
   .create-team__gotchis-result-popup-slot-button:hover {
     background: white;
     color: var(--c-black);
-  }
-
-
-  .create-team__submit {
-    display: grid;
-    align-items: end;
   }
 
 

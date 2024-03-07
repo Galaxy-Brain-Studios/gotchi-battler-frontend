@@ -49,6 +49,17 @@ const gotchis = teams.map(
 })
 
 const trainingTeams = generateTrainingTeams()
+const trainingGotchis = trainingTeams.map(
+  team => [
+    team.back1Gotchi, team.back2Gotchi, team.back3Gotchi, team.back4Gotchi, team.back5Gotchi,
+    team.front1Gotchi, team.front2Gotchi, team.front3Gotchi, team.front4Gotchi, team.front5Gotchi
+  ].filter(g => g)
+).flat().map(gotchi => {
+  // remove specialId as that only exists within a team
+  const newGotchi = { ...gotchi }
+  delete newGotchi.specialId
+  return newGotchi
+})
 
 const mirageConfig = window.mirageConfig = {
   tournaments: {
@@ -77,6 +88,11 @@ const mirageConfig = window.mirageConfig = {
   },
   trainingteams: {
     error: false,
+    empty: false
+  },
+  traininggotchis: {
+    error: false,
+    slow: false,
     empty: false
   },
   trainingbattle: {
@@ -204,6 +220,18 @@ export function makeServer({ environment = 'development' } = {}) {
           return errorResponse()
         }
         return trainingTeams
+      })
+
+      this.get(urls.trainingGotchis(), () => {
+        if (mirageConfig.traininggotchis.empty) {
+          return []
+        }
+        if (mirageConfig.traininggotchis.error) {
+          return errorResponse()
+        }
+        return trainingGotchis
+      }, {
+        timing: mirageConfig.traininggotchis.slow ? 5000 : 1000
       })
 
       this.get(fixUrl(urls.team(':teamId')), (schema, request) => {
@@ -559,7 +587,10 @@ function generateTrainingTeams () {
   const DEFAULT_TRAINING_GOTCHI = {
     onchainId: 0,
     name: 'Training Gotchi',
+    svgBack: '/dev/gotchi_TRAINING.svg',
     svgFront: '/dev/gotchi_TRAINING.svg',
+    svgLeft: '/dev/gotchi_TRAINING.svg',
+    svgRight: '/dev/gotchi_TRAINING.svg',
     brs: 569,
     kinship: 829,
     level: 6,
@@ -594,10 +625,13 @@ function generateTrainingTeams () {
         const patternRow = pattern[rowKey]
         for (let j = 0; j < patternRow.length; j++) {
           if (patternRow[j]) {
+            const specialId = SPECIAL_IDS[gotchiIds.length]
             const gotchi = {
               ...DEFAULT_TRAINING_GOTCHI,
+              speed: DEFAULT_TRAINING_GOTCHI.speed + teams.length, // Change a value, so we can test sorting
               onchainId: lastTrainingGotchiId,
-              specialId: SPECIAL_IDS[gotchiIds.length]
+              specialId,
+              availableSpecials: [{ id: specialId }]
             }
             gotchiIds.push(gotchi.onchainId)
             const gotchiNumber = j + 1

@@ -48,6 +48,7 @@ const urls = {
   battleLogs: (url) => url,
   trainingBattle: ({ address, message='', signature='' }) =>
     `${BASE_URL}/api/v1/me/${encodeURIComponent(address)}/training?message=${encodeURIComponent(message)}&signature=${encodeURIComponent(signature)}`,
+  trainingGotchis: () =>  `${BASE_URL}/api/v1/traininggotchis`,
   gotchis: ({ address }) =>  `${BASE_URL}/api/v1/me/${encodeURIComponent(address)}/gotchis`
 }
 

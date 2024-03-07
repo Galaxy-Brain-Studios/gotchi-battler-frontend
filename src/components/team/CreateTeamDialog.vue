@@ -4,6 +4,7 @@
   import { ref, computed, watch } from 'vue'
   import { storeToRefs } from 'pinia'
   import { useAccountStore } from '../../data/accountStore'
+  import useTrainingGotchis from '../../data/useTrainingGotchis'
   import useTournamentTeams from '../../data/useTournamentTeams'
   import VueDraggable from 'vuedraggable'
   import SiteDialog from '../common/SiteDialog.vue'
@@ -18,7 +19,6 @@
   import FORMATION_PATTERNS from './formationPatterns.json'
   import TeamFormation from './TeamFormation.vue'
   import GotchiInFormation from './GotchiInFormation.vue'
-  import GotchiSpecial from './GotchiSpecial.vue'
   import GotchiSpecialSelect from './GotchiSpecialSelect.vue'
   import GotchiDetailsDialog from './GotchiDetailsDialog.vue'
   import GotchiStats from './GotchiStats.vue'
@@ -28,6 +28,8 @@
 
   const EDIT_MODES = {
     CREATE: 'create',
+    CREATE_TRAINING: 'create_training',
+    EDIT_TRAINING: 'edit_training',
     REPLACE: 'replace',
     EDIT: 'edit'
   }
@@ -63,7 +65,25 @@
   })
   const emit = defineEmits(['update:isOpen', 'update:team'])
 
+  const modeLabel = computed(() => {
+    if (props.mode === EDIT_MODES.CREATE_TRAINING) { return 'Create'; }
+    if (props.mode === EDIT_MODES.EDIT_TRAINING) { return 'Customize'; }
+    return props.mode
+  })
+
   const isEditMode = computed(() => props.mode === EDIT_MODES.EDIT)
+  const myGotchisAllowed = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.CREATE_TRAINING].includes(props.mode))
+  const trainingGotchisAllowed = computed(() => [EDIT_MODES.CREATE_TRAINING].includes(props.mode))
+
+  const showGotchisSource = ref('my') // 'my', 'training', 'team'
+  watch(
+    () => [myGotchisAllowed.value, trainingGotchisAllowed.value],
+    () => {
+      showGotchisSource.value = myGotchisAllowed.value ? 'my' : trainingGotchisAllowed.value ? 'training' : 'team'
+    },
+    { immediate: true }
+  )
+
   const canChangeName = computed(() => !isEditMode.value)
 
   // Fetch existing teams in tournament
@@ -116,21 +136,56 @@
     { immediate: true }
   )
 
+  // Fetch training gotchis - if these are allowed as selections
+  const { fetchGotchis: fetchTrainingGotchis, gotchis: trainingGotchis, fetchGotchisStatus: trainingGotchisFetchStatus } = useTrainingGotchis()
+  watch(
+    () => trainingGotchisAllowed.value,
+    () => {
+      if (trainingGotchisAllowed.value && !trainingGotchis.value) {
+        fetchTrainingGotchis()
+      }
+    },
+    { immediate: true }
+  )
+
   const availableGotchis = computed(() => {
     if (isEditMode.value) {
       // editing an existing team: use the gotchis from the team
       if (!props.team?.gotchis) { return null }
       return props.team.gotchis
-    } else {
-      // use the list of gotchis available to this address
-      if (!myGotchisFetchStatus.value.loaded){ return null }
-      return myGotchis.value
     }
+    // Either or both of My/Training gotchis should be available
+    // If both are allowed, wait till both have been fetched
+    let gotchis = []
+    if (myGotchisAllowed.value) {
+      // include the list of gotchis available to this address
+      if (!myGotchisFetchStatus.value.loaded){ return null }
+      gotchis = gotchis.concat(myGotchis.value)
+    }
+    if (trainingGotchisAllowed.value) {
+      // include the list of training gotchis
+      if (!trainingGotchisFetchStatus.value.loaded) { return null }
+      gotchis = gotchis.concat(trainingGotchis.value)
+    }
+    return gotchis;
   })
 
   const availableGotchisById = computed(() => {
     if (!availableGotchis.value) { return {} }
     return Object.fromEntries(availableGotchis.value.map(item => [item.id, item]))
+  })
+
+  const availableGotchisFromSource = computed(() => {
+    if (!availableGotchis.value) { return null }
+    if (myGotchisAllowed.value && trainingGotchisAllowed.value) {
+      // two sources are allowed, so only display the currently selected source
+      if (showGotchisSource.value === 'my') {
+        return myGotchis.value
+      } else {
+        return trainingGotchis.value
+      }
+    }
+    return availableGotchis.value
   })
 
   // List of available gotchis
@@ -186,16 +241,16 @@
     }
   ]
   const resultSort = ref(sortOptions[0].id)
-  const allGotchis = computed(() => {
-    if (!availableGotchis.value) { return null }
-    return availableGotchis.value.map(g => ({
+  const availableGotchisFromSourceAnnotated = computed(() => {
+    if (!availableGotchisFromSource.value) { return null }
+    return availableGotchisFromSource.value.map(g => ({
       ...g,
       nameLowercase: g.name?.toLowerCase() || ''
     }))
   })
-  const results = computed(() => {
-    if (!allGotchis.value) { return null }
-    let filtered = allGotchis.value
+  const filteredAvailableGotchis = computed(() => {
+    if (!availableGotchisFromSourceAnnotated.value) { return null }
+    let filtered = availableGotchisFromSourceAnnotated.value
     if (query.value) {
       const q = query.value.toLowerCase()
       filtered = filtered.filter(gotchi => {
@@ -394,7 +449,7 @@
   )
 
   const gotchisInTeam = computed(() => {
-    if (!results.value) { return null }
+    if (!filteredAvailableGotchis.value) { return null }
     const gotchiIds = [
       ...teamFormation.value.front,
       ...teamFormation.value.back
@@ -634,22 +689,28 @@
             @click="$emit('update:isOpen', false)"
           />
           <h1 class="create-team__title-text">
-            <span style="text-transform: capitalize;">{{ mode }}</span>
+            <span style="text-transform: capitalize;">{{ modeLabel }}</span>
             Team
           </h1>
         </div>
         <section class="create-team__gotchis">
           <SiteButtonGroup
+            v-if="myGotchisAllowed && trainingGotchisAllowed"
             :numButtons="2"
             class="create-team__gotchis-source"
           >
             <SiteButton
               grouped="start"
-              active
+              :active="showGotchisSource === 'my'"
+              @click="showGotchisSource = 'my'"
             >
               My Gotchis
             </SiteButton>
-            <SiteButton grouped="end">
+            <SiteButton
+              grouped="end"
+              :active="showGotchisSource === 'training'"
+              @click="showGotchisSource = 'training'"
+            >
               Training Gotchis
             </SiteButton>
           </SiteButtonGroup>
@@ -675,26 +736,27 @@
           </div>
           <div class="create-team__gotchis-available word-break">
             <div
-              v-if="myGotchisFetchStatus.loading"
+              v-if="myGotchisFetchStatus.loading || trainingGotchisFetchStatus.loading"
               class="create-team__gotchis-loading"
             >
               Loading...
             </div>
             <div
-              v-if="myGotchisFetchStatus.error"
+              v-if="myGotchisFetchStatus.error || trainingGotchisFetchStatus.error"
               class="create-team__gotchis-error"
             >
               {{ myGotchisFetchStatus.errorMessage }}
+              {{ trainingGotchisFetchStatus.errorMessage }}
             </div>
-            <template v-else-if="availableGotchis">
+            <template v-else-if="availableGotchisFromSource">
               <div
-                v-if="!results?.length"
+                v-if="!filteredAvailableGotchis?.length"
                 class="create-team__gotchis-empty"
               >
                 No gotchis found.
               </div>
               <VueDraggable
-                v-model="results"
+                v-model="filteredAvailableGotchis"
                 item-key="id"
                 :group="{ name: 'available', pull: 'clone', put: false }"
                 tag="ol"

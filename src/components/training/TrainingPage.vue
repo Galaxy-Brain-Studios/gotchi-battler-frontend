@@ -286,7 +286,7 @@
     v-if="createTeamDialogIsOpen"
     v-model:isOpen="createTeamDialogIsOpen"
     v-model:team="team1"
-    mode="create"
+    mode="create_training"
     closeOnSave
   />
   <TrainingTeamsDialog

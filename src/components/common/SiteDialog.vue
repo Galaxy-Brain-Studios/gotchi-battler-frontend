@@ -20,6 +20,7 @@
   const dialogTitleId = ref(uniqueId('site-dialog-title'))
 
   const VARIANT = {
+    FULL: 'full',
     LARGE: 'large',
     MEDIUM: 'medium',
     SCROLLING: 'scrolling'
@@ -27,15 +28,27 @@
 
   let dialog = null
 
+  const addBodyMarker = function () {
+    document.documentElement.classList.add('site-dialog-is-open');
+    document.documentElement.dataset.siteDialogVariant = props.variant;
+  }
+
+  const removeBodyMarker = function () {
+    document.documentElement.classList.remove('site-dialog-is-open');
+    document.documentElement.dataset.siteDialogVariant = '';
+  }
+
   onMounted(() => {
     if (dialogRef.value) {
       dialog = new A11yDialog(dialogRef.value)
       dialog.on('show', () => {
         disableBodyScroll(dialogContentRef.value)
+        addBodyMarker()
         emit('update:isOpen', true)
       })
       dialog.on('hide', () => {
         enableBodyScroll(dialogContentRef.value)
+        removeBodyMarker()
         emit('update:isOpen', false)
       })
       if (props.isOpen) {
@@ -48,6 +61,7 @@
     if (dialog) {
       // don't use dialog.destroy(), it leaves behind DOM copies of the dialog
       clearAllBodyScrollLocks()
+      removeBodyMarker()
     }
   })
 
@@ -82,6 +96,7 @@
         role="document"
         class="site-dialog__dialog"
         :class="{
+          'site-dialog__dialog--variant-full': variant === VARIANT.FULL,
           'site-dialog__dialog--variant-scrolling': variant === VARIANT.SCROLLING,
           'site-dialog__dialog--variant-large': variant === VARIANT.LARGE,
           'site-dialog__dialog--variant-medium': variant === VARIANT.MEDIUM
@@ -148,6 +163,16 @@
     </div>
   </Teleport>
 </template>
+
+<style>
+  /* global styles */
+
+  /* hide gutter and main scrollbar when a full-size dialog is open */
+  .site-dialog-is-open[data-site-dialog-variant='full'] {
+    scrollbar-gutter: auto;
+    overflow: hidden;
+  }
+</style>
 
 <style>
   /* Global styles, as these are teleported to the BODY */
@@ -221,6 +246,13 @@
     grid-template-rows: auto 1fr auto;
     padding: 0;
   }
+  .site-dialog__dialog--variant-full {
+    --site-dialog-width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    border-radius: 0;
+  }
   .site-dialog__dialog--variant-large {
     grid-template-rows: auto 1fr;
   }
@@ -232,6 +264,14 @@
     overflow: auto;
     padding-bottom: 2rem; /* put the padding here, not on the __dialog, to avoid unwanted scrollbars on content in chrome */
   }
+  /* 'full' variant */
+  .site-dialog__dialog--variant-full.site-dialog__dialog {
+    padding: 0;
+  }
+  .site-dialog__dialog--variant-full .site-dialog__body {
+    padding: 0;
+  }
+
   /* 'scrolling' variant styles are full-bleed so padding is on inner elements instead of the container */
   .site-dialog__dialog--variant-scrolling .site-dialog__header {
     border-bottom: 4px solid var(--c-black);

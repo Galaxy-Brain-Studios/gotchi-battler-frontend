@@ -19,6 +19,7 @@
   import FORMATION_PATTERNS from './formationPatterns.json'
   import TeamFormation from './TeamFormation.vue'
   import GotchiInFormation from './GotchiInFormation.vue'
+  import GotchiSpecial from './GotchiSpecial.vue'
   import GotchiSpecialSelect from './GotchiSpecialSelect.vue'
   import GotchiDetailsDialog from './GotchiDetailsDialog.vue'
   import GotchiStats from './GotchiStats.vue'
@@ -779,8 +780,7 @@
                     <SitePopupHoverMenu>
                       <button
                         type="button"
-                        class="button-reset"
-                        style="display: block;"
+                        class="button-reset create-team__gotchis-result-button"
                       >
                         <img
                           :src="element.svgFront"
@@ -788,6 +788,27 @@
                           class="create-team__gotchis-result-image"
                           loading="lazy"
                         />
+                        <div class="create-team__gotchis-result-name">
+                          {{ element.name || `#${element.onchainId || element.id}` }}
+                        </div>
+                        <GotchiSpecial
+                          v-if="element.availableSpecials.length === 1"
+                          :id="element.availableSpecials[0]"
+                          forSpecialShowClass
+                          fullWidth
+                          class="create-team__gotchis-result-special"
+                        />
+                        <div
+                          v-else-if="element.availableSpecials.length > 1"
+                          class="create-team__gotchis-result-available-specials"
+                        >
+                          <GotchiSpecial
+                            v-for="specialId in element.availableSpecials"
+                            :key="specialId"
+                            :id="specialId"
+                            variant="icon"
+                          />
+                        </div>
                       </button>
 
                       <template #popper>
@@ -1126,9 +1147,15 @@
   .create-team__gotchis-results {
     display: grid;
     grid-template-columns: repeat(auto-fill, 6rem);
-    column-gap: 1.2rem;
-    row-gap: 1rem;
+    column-gap: 1.5rem;
+    row-gap: 1.5rem;
     user-select: none;
+  }
+  .create-team__gotchis-result-button {
+    display: block;
+    max-width: 100%;
+    border: 1px solid var(--c-black);
+    background: linear-gradient(180deg, var(--c-dark-purple) 0%, var(--c-black) 100%);
   }
   .create-team__gotchis-result--not-draggable {
     opacity: 0.3;
@@ -1137,6 +1164,19 @@
   .create-team__gotchis-result-image {
     width: 6rem;
     height: 6rem;
+  }
+  .create-team__gotchis-result-name {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    padding: 0 0.2rem 0.4rem;
+    font-size: 0.75rem;
+    line-height: 0.625rem;
+    color: var(--c-white);
+  }
+  .create-team__gotchis-result-available-specials {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(1.5rem, 1fr));
   }
   .create-team__gotchis-result-popup {
     display: grid;
@@ -1194,14 +1234,21 @@
   }
   /* the item being dragged, preview in the target list before dropping */
   .create-team__formation-position-target .create-team__gotchis-draggable--chosen {
-    position: relative; /* bring above an existing gotchi */
-    z-index: 1; /* bring above an existing gotchi */
     height: 100%;
     display: grid;
     place-content: center;
   }
-  .create-team__formation-position-target .create-team__gotchis-draggable--chosen img {
-    width: 4.5rem;
-    height: 4.5rem;
+  :deep(.team-formation__position):has(.create-team__gotchis-draggable--chosen) {
+    z-index: 2; /* bring position container - which contains the preview item - above an existing gotchi */
+  }
+  .create-team__formation-position-target .create-team__gotchis-draggable--chosen button {
+    width: 6.125rem;
+    height: 7.5rem;
+    border: none;
+  }
+  .create-team__formation-position-target .create-team__gotchis-draggable--chosen .create-team__gotchis-result-name,
+  .create-team__formation-position-target .create-team__gotchis-draggable--chosen .create-team__gotchis-result-special,
+  .create-team__formation-position-target .create-team__gotchis-draggable--chosen .create-team__gotchis-result-available-specials {
+    display: none;
   }
 </style>

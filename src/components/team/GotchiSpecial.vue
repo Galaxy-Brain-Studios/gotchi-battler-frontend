@@ -11,7 +11,7 @@
     },
     variant: {
       type: String,
-      default: 'small'
+      default: 'small'  // 'small', 'large', 'icon'
     },
     fullWidth: {
       type: Boolean,
@@ -45,11 +45,14 @@
     }"
   >
     <SiteIcon
-      v-if="variant === 'small'"
+      v-if="variant === 'small' || variant === 'icon'"
       :name="`special-${id}`"
       class="gotchi-special__icon"
     />
-    <div class="gotchi-special__label">
+    <div
+      v-if="variant !== 'icon'"
+      class="gotchi-special__label"
+    >
       <SiteIcon
         v-if="!forSpecial"
         name="special-leader"
@@ -90,6 +93,10 @@
     font-size: 0.875rem;
     line-height: 1.5rem;
     letter-spacing: 0.02625rem;
+  }
+  .gotchi-special--variant-icon {
+    justify-content: center;
+    padding: 0.2rem 0.4rem;
   }
   .gotchi-special--variant-small {
     padding: 0.2rem 0.4rem;

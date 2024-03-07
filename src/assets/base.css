@@ -12,6 +12,8 @@
   --c-light-purple: rgb(var(--c-light-purple-rgb));
   --c-medium-purple-rgb: 99, 23, 121;
   --c-medium-purple: rgb(var(--c-medium-purple-rgb));
+  --c-dark-purple-rgb: 69, 33, 130;
+  --c-dark-purple: rgb(var(--c-dark-purple-rgb));
   --c-medium-pink-rgb: 244, 114, 241, 1;
   --c-medium-pink: rgb(var(--c-medium-pink-rgb));
   --c-light-yellow-rgb: 255, 208, 32;

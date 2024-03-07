@@ -227,7 +227,7 @@
     display: grid;
     grid-template-columns: auto 14rem auto;
     place-items: center;
-    background: linear-gradient(180deg, #452182 0%, var(--c-black) 100%);
+    background: linear-gradient(180deg, var(--c-dark-purple) 0%, var(--c-black) 100%);
   }
   .display-gotchi__image-nav {
     padding: 1rem;

@@ -42,6 +42,10 @@
       type: [String, Number],
       default: null
     },
+    warning: {
+      type: Boolean,
+      default: false
+    },
     withSpecialBadge: {
       type: Boolean,
       default: false
@@ -97,7 +101,8 @@
     class="gotchi-in-formation"
     :class="{
       'gotchi-in-formation--variant-large': variant === 'large',
-      'gotchi-in-formation--variant-small': variant === 'small'
+      'gotchi-in-formation--variant-small': variant === 'small',
+      'gotchi-in-formation--with-warning': warning
     }"
   >
     <button
@@ -155,15 +160,26 @@
         alt="Remove gotchi"
       />
     </button>
-    <component
-      v-if="(withSpecialBadge || withSpecialInfoBadge) && gotchi.specialId"
-      :is="withSpecialBadge ? GotchiSpecial : GotchiSpecialWithInfo"
-      :id="gotchi.specialId"
-      :forSpecialShowClass="true"
-      variant="small"
-      fullWidth
-      class="gotchi-in-formation__special-badge"
+    <SiteIcon
+      v-if="warning"
+      name="warning"
+      class="gotchi-in-formation__warning-icon"
     />
+    <div
+      v-if="withSpecialBadge || withSpecialInfoBadge"
+      class="gotchi-in-formation__special-badge-container"
+    >
+      <slot name="special">
+        <component
+          v-if="gotchi.specialId"
+          :is="withSpecialBadge ? GotchiSpecial : GotchiSpecialWithInfo"
+          :id="gotchi.specialId"
+          :forSpecialShowClass="true"
+          variant="small"
+          fullWidth
+        />
+      </slot>
+    </div>
     <div
       class="gotchi-in-formation__name"
     >
@@ -180,7 +196,7 @@
   .gotchi-in-formation,
   .gotchi-in-formation-placeholder {
     --gotchi-in-formation-small-width: calc(6.25rem - 2px);
-    --gotchi-in-formation-small-height: calc(6.25rem - 2px - 0.5rem - 0.5rem);
+    --gotchi-in-formation-small-height: calc(6.25rem - 2px - 0.5rem);
     --gotchi-in-formation__special-badge-height: 1.25rem;
     --gotchi-in-formation__name-height: 0.625rem;
     position: relative;
@@ -226,6 +242,9 @@
 
     align-items: center;
     column-gap: 0.5rem;
+  }
+  .gotchi-in-formation--with-warning {
+    background: linear-gradient(rgba(243, 106, 87, 1), rgba(137, 46, 33, 1));
   }
   .gotchi-in-formation--variant-large {
     grid-template-columns: auto minmax(0, 1fr);
@@ -286,7 +305,13 @@
     color: var(--c-white);
   }
 
-  .gotchi-in-formation__special-badge {
+  .gotchi-in-formation__warning-icon {
+    position: absolute;
+    left: 0.25rem;
+    top: 1.2rem;
+  }
+
+  .gotchi-in-formation__special-badge-container {
     position: absolute;
     left: 0;
     right: 0;
@@ -319,7 +344,7 @@
     font-size: 0.75rem;
     line-height: var(--gotchi-in-formation__name-height);
   }
-  .gotchi-in-formation--variant-small .gotchi-in-formation__special-badge + .gotchi-in-formation__name {
+  .gotchi-in-formation--variant-small .gotchi-in-formation__special-badge-container + .gotchi-in-formation__name {
     padding-bottom: var(--gotchi-in-formation__special-badge-height);
   }
 </style>

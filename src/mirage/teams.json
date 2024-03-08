@@ -228,7 +228,52 @@
             "resist": 0
         },
         "front5": null,
-        "front5Gotchi": null
+        "front5Gotchi": null,
+        "substitute1": 6,
+        "substitute1Gotchi":
+        {
+            "id": 6,
+            "onchainId": 6,
+            "name": "Sir Humphrey",
+            "svgFront": "/dev/gotchi_g6_front.svg",
+            "svgBack": "/dev/gotchi_g6_back.svg",
+            "svgLeft": "/dev/gotchi_g6_left.svg",
+            "svgRight": "/dev/gotchi_g6_right.svg",
+            "brs": 569,
+            "kinship": 829,
+            "level": 6,
+            "xp": 820,
+            "nrg": 21,
+            "agg": 79,
+            "spk": 88,
+            "brn": 76,
+            "eys": 3,
+            "eyc": 11,
+            "availableSpecials":
+            [
+                {
+                    "id": 1
+                },
+                {
+                    "id": 4
+                },
+                {
+                    "id": 5
+                }
+            ],
+            "specialId": 4,
+            "speed": 146,
+            "health": -228,
+            "accuracy": 71,
+            "evade": 23,
+            "physical": 150,
+            "magic": 380,
+            "armor": 1,
+            "crit": 1,
+            "resist": 0
+        },
+        "substitute2": null,
+        "substitute2Gotchi": null
     },
     {
         "id": 2,

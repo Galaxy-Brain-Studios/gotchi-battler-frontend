@@ -18,6 +18,7 @@
   import FormationPatternSelect from './FormationPatternSelect.vue'
   import FORMATION_PATTERNS from './formationPatterns.json'
   import TeamFormation from './TeamFormation.vue'
+  import TeamSubstitutes from './TeamSubstitutes.vue'
   import GotchiInFormation from './GotchiInFormation.vue'
   import GotchiSpecial from './GotchiSpecial.vue'
   import GotchiSpecialSelect from './GotchiSpecialSelect.vue'
@@ -26,12 +27,13 @@
   import LeaderSlotSelect from './LeaderSlotSelect.vue'
 
   const ROW_NAMES = ['front', 'back']
+  const ALL_ROW_NAMES = [...ROW_NAMES, 'substitutes']
 
   const EDIT_MODES = {
     CREATE: 'create',
     CREATE_TRAINING: 'create_training',
     EDIT_TRAINING: 'edit_training',
-    REPLACE: 'replace',
+    REPLACE: 'replace', // Not actually in use right now as server doesn't support it
     EDIT: 'edit'
   }
   const props = defineProps({
@@ -86,6 +88,7 @@
   )
 
   const canChangeName = computed(() => !isEditMode.value)
+  const withSubstitutes = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.EDIT, EDIT_MODES.REPLACE].includes(props.mode))
 
   // Fetch existing teams in tournament
   const { fetchTeams, teams } = useTournamentTeams()
@@ -269,7 +272,8 @@
   const teamName = ref('')
   const teamFormation = ref({
     front: [null, null, null, null, null],
-    back: [null, null, null, null, null]
+    back: [null, null, null, null, null],
+    substitutes: [null, null]
   })
   const selectedFormationPatternId = ref('1')
   const selectedLeaderSlot = ref('1')
@@ -278,7 +282,8 @@
   function clearTeamGotchis () {
     teamFormation.value = {
       front: [null, null, null, null, null],
-      back: [null, null, null, null, null]
+      back: [null, null, null, null, null],
+      substitutes: [null, null]
     }
     specialByGotchiId.value = {}
   }
@@ -291,7 +296,7 @@
         clearTeamGotchis()
         return
       }
-      for (const key of ROW_NAMES) {
+      for (const key of ALL_ROW_NAMES) {
         const row = teamFormation.value[key]
         for (let i = 0; i < row.length; i++) {
           const gotchiId = row[i]
@@ -316,7 +321,8 @@
       teamName.value = newTeam.name || ''
       teamFormation.value = {
         front: [...newTeam.formation.front],
-        back: [...newTeam.formation.back]
+        back: [...newTeam.formation.back],
+        substitutes: [...(newTeam.formation.substitutes || [])]
       }
       selectedFormationPatternId.value = pattern.id
       const leaderGotchisSlot = newTeam.leader ? findSlotForGotchi({ pattern, gotchiId: newTeam.leader, formation: newTeam.formation }) : null
@@ -408,6 +414,7 @@
         }
       }
       const gotchiBySlot = Object.fromEntries(gotchis.map(g => [g.slotNumber, g.id]))
+      const substitutes = [].concat(teamFormation.value.substitutes)
       // clear formation
       removeAllGotchisFromFormation()
 
@@ -422,6 +429,8 @@
             }
           }
         }
+        // substitutes stay as they were
+        teamFormation.value.substitutes = substitutes
       } else {
         // unexpected case
         console.error('New pattern not found')
@@ -453,7 +462,8 @@
     if (!filteredAvailableGotchis.value) { return null }
     const gotchiIds = [
       ...teamFormation.value.front,
-      ...teamFormation.value.back
+      ...teamFormation.value.back,
+      ...(teamFormation.value.substitutes || [])
     ].flat().filter(id => !!id)
     return gotchiIds.map(id => availableGotchisById.value[id])
   })
@@ -487,21 +497,32 @@
     }
   })
 
-  const NUM_GOTCHIS_IN_TEAM = 5
+  const REQUIRED_NUM_GOTCHIS_IN_ACTIVE_ROWS = 5
 
   const validationError = computed(() => {
     const teamData = teamToSave.value
     if (!teamData.name) {
       return 'Please provide a name for your team.'
     }
-    if (teamData.gotchis?.length !== NUM_GOTCHIS_IN_TEAM) {
-      return `Please choose ${NUM_GOTCHIS_IN_TEAM} gotchis for your team.`
+    // Require a full team for a battle (substitutes are optional)
+    const numGotchisInActiveRows = [
+      ...teamData.formation.front,
+      ...teamData.formation.back
+    ].flat().filter(id => !!id).length
+    if (numGotchisInActiveRows !== REQUIRED_NUM_GOTCHIS_IN_ACTIVE_ROWS) {
+      return `Please choose ${REQUIRED_NUM_GOTCHIS_IN_ACTIVE_ROWS} gotchis for your team.`
     }
     if (!teamData.leader) {
       return 'Please select a leader slot.'
     }
     if (!teamData.gotchis.every(g => !!g.specialId)) {
       return 'Please select a class for all gotchis in your team.'
+    }
+    // If editing a team during a tournament, keep all the same gotchis
+    if (isEditMode.value) {
+      if (teamData.gotchis.length !== props.team?.gotchis.length) {
+        return 'Please keep all gotchis in your team (or substitutes).'
+      }
     }
     return false
   })
@@ -536,13 +557,15 @@
 
   const draggableTargets = ref({
     front: [[], [], [], [], []],
-    back: [[], [], [], [], []]
+    back: [[], [], [], [], []],
+    substitutes: [[], []]
   })
 
   function removeAllGotchisFromFormation () {
     teamFormation.value = {
       front: [null, null, null, null, null],
-      back: [null, null, null, null, null]
+      back: [null, null, null, null, null],
+      substitutes: [null, null]
     }
   }
 
@@ -565,7 +588,7 @@
     teamFormation.value[row][positionIndex] = gotchiId
   }
 
-  for (let rowKey of ROW_NAMES) {
+  for (let rowKey of ALL_ROW_NAMES) {
     const row = draggableTargets.value[rowKey]
     for (let positionIndex = 0; positionIndex < row.length; positionIndex++) {
       watch(
@@ -594,6 +617,11 @@
         }
       }
     }
+  }
+
+  function addGotchiAsSubstitute ({ gotchiId, position }) {
+    removeGotchiFromFormation(gotchiId)
+    teamFormation.value.substitutes[position - 1] = gotchiId
   }
 
   function onMoveFromAvailable (event) {
@@ -845,6 +873,24 @@
                                 {{ i }}
                               </button>
                             </div>
+                            <div
+                              v-if="withSubstitutes"
+                              style="margin-top: 0.7rem"
+                            >
+                              Add as substitute:
+                              <button
+                                v-for="i in 2"
+                                :key="i"
+                                type="button"
+                                class="button-reset create-team__gotchis-result-popup-slot-button"
+                                :class="{
+                                  'create-team__gotchis-result-popup-slot-button--selected': teamFormation.substitutes[i - 1] === element.id
+                                }"
+                                @click="addGotchiAsSubstitute({ gotchiId: element.id, position: i })"
+                              >
+                                S{{ i }}
+                              </button>
+                            </div>
                           </template>
                         </div>
                       </template>
@@ -959,7 +1005,6 @@
                     #special
                   >
                     <GotchiSpecialSelect
-                      :key="`${gotchi.id}_${row}_${position}`"
                       v-model="specialByGotchiId[gotchi.id]"
                       :availableSpecials="gotchi.availableSpecials"
                       fullWidth
@@ -970,7 +1015,70 @@
             </TeamFormation>
           </div>
         </section>
-
+        <section
+          v-if="withSubstitutes"
+          class="create-team__substitutes"
+        >
+          <div class="create-team__substitutes-display">
+            <TeamSubstitutes
+              :team="teamToDisplay"
+            >
+              <template #position="{ position }">
+                <div
+                  class="create-team__formation-placeholder"
+                >
+                  <GotchiInFormation
+                    emptyMode="placeholder"
+                    variant="small"
+                    :slotNumber="`S${position}`"
+                  />
+                  <VueDraggable
+                    v-model="draggableTargets.substitutes[position - 1]"
+                    item-key="id"
+                    :group="{ name: `target_substitutes_${position - 1}`, pull: false, put: true }"
+                    tag="ol"
+                    class="list-reset create-team__formation-position-target"
+                  >
+                    <template #item><!-- not needed as we remove gotchis from this list after dropping --></template>
+                  </VueDraggable>
+                </div>
+              </template>
+              <template #gotchi="{ gotchi, position }">
+                <GotchiInFormation
+                  :gotchi="{ ...gotchi, specialId: specialByGotchiId[gotchi.id] }"
+                  variant="small"
+                  :slotNumber="`S${position}`"
+                  isRemovable
+                  isSelectable
+                  :warning="gotchi.canSelectSpecial && !specialByGotchiId[gotchi.id]"
+                  withSpecialBadge
+                  @remove="removeGotchiFromFormation(gotchi.id)"
+                  @select="displayGotchiId = gotchi.id"
+                >
+                  <template
+                    v-if="gotchi.canSelectSpecial"
+                    #special
+                  >
+                    <GotchiSpecialSelect
+                      v-model="specialByGotchiId[gotchi.id]"
+                      :availableSpecials="gotchi.availableSpecials"
+                      fullWidth
+                    />
+                  </template>
+                </GotchiInFormation>
+              </template>
+            </TeamSubstitutes>
+          </div>
+          <div class="create-team__substitutes-info">
+            <label class="create-team__section-label">
+              5. Choose substitutes <i>(optional)</i>
+            </label>
+            <div class="create-team__substitutes-help">
+              Substitutes can be swapped into your team during the "Preparation" stage between rounds of the tournament.
+              During a tournament you just need go to the Edit team dialog and switch Team players with substitutes.
+            </div>
+          </div>
+        </section>
         <div class="create-team__submit">
           <SiteButtonPrimary
             v-if="isSaving"
@@ -1083,9 +1191,28 @@
   @media (min-width: 1300px) {
     /* align the start of the grid with the common left margin, putting the row labels in the negative margin */
     /* only do this with the larger layout as it has more margin */
-    .create-team__formation-display {
+    .create-team__formation-display,
+    .create-team__substitutes-display {
       margin-left: -1.8rem;
     }
+  }
+
+  .create-team__substitutes {
+    grid-column: 1 / span 2;
+    display: flex;
+    column-gap: 1rem;
+  }
+  .create-team__substitutes-display {
+    flex: none;
+  }
+  .create-team__substitutes-info {
+    flex: 1 1 auto;
+  }
+  .create-team__substitutes-help {
+    font-size: 0.75rem;
+    line-height: 1.25rem;
+    letter-spacing: 0.0225rem;
+    opacity: 0.6;
   }
 
   .create-team__submit {

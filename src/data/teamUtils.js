@@ -3,7 +3,8 @@ import { useAccountStore } from './accountStore'
 
 const teamBackPositionPropertyNames = ['back1', 'back2', 'back3', 'back4', 'back5']
 const teamFrontPositionPropertyNames = ['front1', 'front2', 'front3', 'front4', 'front5']
-const teamPositionPropertyNames = [...teamBackPositionPropertyNames, ...teamFrontPositionPropertyNames]
+const teamSubstitutePositionPropertyNames = ['substitute1', 'substitute2']
+const teamPositionPropertyNames = [...teamBackPositionPropertyNames, ...teamFrontPositionPropertyNames, ...teamSubstitutePositionPropertyNames]
 const teamGotchiPropertyNames = teamPositionPropertyNames.map(name => name + 'Gotchi')
 
 export const processTeamModel = function(team) {
@@ -20,13 +21,14 @@ export const processTeamModel = function(team) {
   }
   const back = teamBackPositionPropertyNames.map(propertyName => team[propertyName] || null)
   const front = teamFrontPositionPropertyNames.map(propertyName => team[propertyName] || null)
+  const substitutes = teamSubstitutePositionPropertyNames.map(propertyName => team[propertyName] || null)
 
   return {
     id: team.id,
     name: team.name,
     owner: team.owner?.toLowerCase(),
     difficulty,
-    formation: { back, front },
+    formation: { back, front, substitutes },
     leader: team.leader,
     gotchis
   }
@@ -41,7 +43,8 @@ export const generateTeamToSubmit = function (team) {
   const gotchiLeader = team.leader
   const gotchiFormation = [
     ...team.formation.back.map(gotchiId => gotchiId || 0),
-    ...team.formation.front.map(gotchiId => gotchiId || 0)
+    ...team.formation.front.map(gotchiId => gotchiId || 0),
+    ...(team.formation.substitutes || []).map(gotchiId => gotchiId || 0)
   ]
   const name = team.name
   return {

@@ -28,12 +28,21 @@
 
   let dialog = null
 
+  const anotherDialogAlreadyOpen = ref(false)
+
   const addBodyMarker = function () {
+    if (document.documentElement.classList.contains('site-dialog-is-open')) {
+      anotherDialogAlreadyOpen.value = true
+      return
+    }
     document.documentElement.classList.add('site-dialog-is-open');
     document.documentElement.dataset.siteDialogVariant = props.variant;
   }
 
   const removeBodyMarker = function () {
+    if (anotherDialogAlreadyOpen.value) {
+      return
+    }
     document.documentElement.classList.remove('site-dialog-is-open');
     document.documentElement.dataset.siteDialogVariant = '';
   }

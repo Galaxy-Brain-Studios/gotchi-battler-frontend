@@ -48,6 +48,8 @@
       v-if="variant === 'small' || variant === 'icon'"
       :name="`special-${id}`"
       class="gotchi-special__icon"
+      :width="0.75"
+      :height="0.75"
     />
     <div
       v-if="variant !== 'icon'"
@@ -57,6 +59,8 @@
         v-if="!forSpecial"
         name="special-leader"
         class="gotchi-special__leader-badge-icon"
+        :width="0.75"
+        :height="0.75"
       />
       <template v-if="forSpecial">
         {{ forSpecialShowClass ? gotchiClass : name }}
@@ -96,10 +100,10 @@
   }
   .gotchi-special--variant-icon {
     justify-content: center;
-    padding: 0.2rem 0.4rem;
+    padding: 0.25rem 0.4rem;
   }
   .gotchi-special--variant-small {
-    padding: 0.2rem 0.4rem;
+    padding: 0.25rem 0.4rem;
   }
   .gotchi-special--variant-small .gotchi-special__icon {
     width: 0.75rem;

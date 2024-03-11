@@ -60,6 +60,7 @@ const trainingGotchis = trainingTeams.map(
   delete newGotchi.specialId
   return newGotchi
 })
+const trainingGotchisById = Object.fromEntries(trainingGotchis.map(g => [g.onchainId, g]))
 
 const mirageConfig = window.mirageConfig = {
   tournaments: {
@@ -264,7 +265,7 @@ export function makeServer({ environment = 'development' } = {}) {
         return result
       })
 
-      this.get(fixUrl(urls.battleLogs(':url')), () => {
+      this.get(fixUrl(urls.battleLogs('/battleLogsUrl')), () => {
         if (mirageConfig.battleLogs.error) {
           return errorResponse()
         }
@@ -316,12 +317,14 @@ export function makeServer({ environment = 'development' } = {}) {
         // We don't have the full gotchi info from the POST, so modify an existing mock battle
         const postBody = JSON.parse(request.requestBody)
         const submittedTeam = postBody.team
-        const trainingTeamId = postBody.trainingTeamId
+        const submittedTrainingTeam = postBody.trainingTeam
         const battle = JSON.parse(JSON.stringify(battles.find(b => b.status === 'completed')))
         lastTrainingBattleId++
         battle.id = lastTrainingBattleId + 'trainingBattleIdLongString'
         battlesById[battle.id] = battle
         battle.createdAt = new Date()
+        battle.logs += battle.id
+        battle.winRate = '50%'
         delete battle.status
         battle.team1.id = lastTrainingBattleId + 1
         if (submittedTeam) {
@@ -340,8 +343,30 @@ export function makeServer({ environment = 'development' } = {}) {
             }
           }
         }
-        battle.team2 = trainingTeams.find(team => team.id === trainingTeamId)
-        battle.winnerId = (trainingTeamId % 2 === 0) ? battle.team1.id : trainingTeamId
+        if (submittedTrainingTeam) {
+          battle.team2.id = battle.team1.id + 10000
+          battle.team2.name = submittedTrainingTeam.name
+          battle.team2.leader = submittedTrainingTeam.gotchiLeader
+          battle.team2.trainingPowerLevel = (battle.team1.id % 2 === 0) ? 'Common' : 'Mythical' // real server would need to calculate this
+          const getSpecialForGotchi = function (gotchiId) {
+            const index = submittedTrainingTeam.gotchiTeam.indexOf(gotchiId)
+            return submittedTrainingTeam.gotchiSpecials[index]
+          }
+          const formationIds = submittedTrainingTeam.gotchiFormation
+          for (const key of ['back1', 'back2', 'back3', 'back4', 'back5', 'front1', 'front2', 'front3', 'front4', 'front5']) {
+            const id = formationIds.shift()
+            battle.team2[key] = id || null
+            let gotchi = trainingGotchisById[id] || null
+            if (gotchi) {
+              gotchi = {
+                ...gotchi,
+                specialId: getSpecialForGotchi(id)
+              }
+            }
+            battle.team2[`${key}Gotchi`] = gotchi
+          }
+        }
+        battle.winnerId = (battle.team1.id % 2 === 0) ? battle.team1.id : battle.team2.id
 
         return battle
       }, {

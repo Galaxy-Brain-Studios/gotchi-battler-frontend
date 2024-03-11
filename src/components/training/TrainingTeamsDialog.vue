@@ -11,6 +11,7 @@
   import GotchiStats from '../team/GotchiStats.vue'
   import TrainingTeamSelect from './TrainingTeamSelect.vue'
   import TeamDifficultySelect from './TeamDifficultySelect.vue'
+  import CreateTeamDialog from '../team/CreateTeamDialog.vue'
 
   const props = defineProps({
     isOpen: {
@@ -24,6 +25,12 @@
   })
   const emit = defineEmits(['update:isOpen', 'update:team'])
 
+  const STAGES = {
+    SELECT: 'select',
+    CUSTOMIZE: 'customize'
+  }
+  const stage = ref(props.team ? STAGES.CUSTOMIZE : STAGES.SELECT)
+
   // Fetch training teams
   const store = useTrainingTeamsStore()
   const { teams, fetchStatus } = storeToRefs(store)
@@ -35,14 +42,14 @@
 
   // Form data storage
   const selectedTeamId = ref(null)
+  const customizedTeam = ref(null)
 
   // Sync incoming team data
   watch(
     () => props.team,
     (newTeam) => {
       if (!newTeam) { return }
-      selectedTeamId.value = newTeam.id
-      selectedDifficulty.value = newTeam.difficulty || DEFAULT_DIFFICULTY
+      customizedTeam.value = JSON.parse(JSON.stringify(newTeam))
     },
     { immediate: true }
   )
@@ -53,15 +60,27 @@
     return team
   })
 
-  function saveTeam () {
-    const teamData = selectedTeam.value
+
+  function selectTeam () {
+    customizedTeam.value = selectedTeam.value
+    stage.value = STAGES.CUSTOMIZE
+  }
+
+  function saveTeam (teamData) {
     emit('update:team', teamData)
     emit('update:isOpen', false)
+  }
+
+  function createTeamDialogUpdateIsOpen (newIsOpen) {
+    if (!newIsOpen) {
+      stage.value = STAGES.SELECT
+    }
   }
 </script>
 
 <template>
   <SiteDialog
+    v-if="stage === STAGES.SELECT"
     :isOpen="isOpen"
     variant="full"
     strict
@@ -187,7 +206,7 @@
             <SiteButtonPrimary
               :disabled="!selectedTeam"
               compact
-              @click="saveTeam"
+              @click="selectTeam"
             >
               Select Team and Continue
             </SiteButtonPrimary>
@@ -196,6 +215,14 @@
       </div>
     </template>
   </SiteDialog>
+  <CreateTeamDialog
+    v-if="stage === STAGES.CUSTOMIZE && customizedTeam"
+    :isOpen="isOpen"
+    mode="edit_training"
+    :team="customizedTeam"
+    @update:team="saveTeam"
+    @update:isOpen="createTeamDialogUpdateIsOpen"
+  />
 </template>
 
 <style scoped>

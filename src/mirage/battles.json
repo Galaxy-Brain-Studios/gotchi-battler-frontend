@@ -707,6 +707,7 @@
     {
         "id": "t1b2r1b0",
         "status": "completed",
+        "logs": "/battleLogsUrl?id=t1b2r1b0",
         "winnerId": 1,
         "team1":
         {
@@ -1056,6 +1057,7 @@
     {
         "id": "t1b2r1b4",
         "status": "completed",
+        "logs": "/battleLogsUrl?id=t1b2r1b4",
         "winnerId": 5,
         "team1":
         {

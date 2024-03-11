@@ -64,10 +64,10 @@ export const useBattleStore = function (id, battleModel) {
   })
 }
 
-export const submitTrainingBattle = async function ({ team, trainingTeamId, address, message, signature }) {
+export const submitTrainingBattle = async function ({ team, trainingTeam, address, message, signature }) {
   const result = await battlesService.submitTrainingBattle({
     team,
-    trainingTeamId,
+    trainingTeam,
     address,
     message,
     signature
@@ -83,8 +83,8 @@ export const submitTrainingBattle = async function ({ team, trainingTeamId, addr
   return result.id
 }
 
-export const signTrainingBattle = async function({ team, trainingTeamId }) {
-  const message = JSON.stringify({ team, trainingTeamId })
+export const signTrainingBattle = async function({ team, trainingTeam }) {
+  const message = JSON.stringify({ team, trainingTeam })
   const signature = await accountStore.signMessage({
     message
   })

@@ -76,7 +76,7 @@
 
   const isEditMode = computed(() => props.mode === EDIT_MODES.EDIT)
   const myGotchisAllowed = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.CREATE_TRAINING].includes(props.mode))
-  const trainingGotchisAllowed = computed(() => [EDIT_MODES.CREATE_TRAINING].includes(props.mode))
+  const trainingGotchisAllowed = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING].includes(props.mode))
 
   const showGotchisSource = ref('my') // 'my', 'training', 'team'
   watch(

@@ -36,11 +36,11 @@ export default {
     }
   },
 
-  async submitTrainingBattle ({ team, trainingTeamId, address, message, signature }) {
+  async submitTrainingBattle ({ team, trainingTeam, address, message, signature }) {
     try {
       const result = await api.url(urls.trainingBattle({ address, message, signature })).post({
         team,
-        trainingTeamId
+        trainingTeam
       })
       // result might just contain id
       if (!result.team1) {

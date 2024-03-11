@@ -30,7 +30,18 @@
     v-if="battle"
     class="battle__field-container"
   >
-    <div class="battle__teams-header">
+    <div
+      class="battle__teams-header"
+      :class="{
+        'battle__teams-header--with-before-slots': $slots['before-team-1'] || $slots['before-team-2']
+      }"
+    >
+      <div
+        v-if="$slots['before-team-1'] || $slots['before-team-2']"
+        class="battle__before-team-formation"
+      >
+        <slot name="before-team-1"></slot>
+      </div>
       <div
         class="battle__team-name word-break"
         :class="{
@@ -52,6 +63,12 @@
         }"
       >
         {{ team2?.name || emptyTeam2Name }}
+      </div>
+      <div
+        v-if="$slots['before-team-1'] || $slots['before-team-2']"
+        class="battle__before-team-formation"
+      >
+        <slot name="before-team-2"></slot>
       </div>
     </div>
 
@@ -121,25 +138,6 @@
           </template>
         </TeamFormation>
       </div>
-
-      <div
-        v-if="$slots['after-team-1']"
-        class="battle__after-team-formation"
-        :style="{
-          '--battle__after-team-num': 1
-        }"
-      >
-        <slot name="after-team-1"></slot>
-      </div>
-      <div
-        v-if="$slots['after-team-2']"
-        class="battle__after-team-formation"
-        :style="{
-          '--battle__after-team-num': 2
-        }"
-      >
-        <slot name="after-team-2"></slot>
-      </div>
     </div>
   </div>
 </template>
@@ -154,21 +152,25 @@
     gap: 1.5rem;
     align-items: center;
   }
+  .battle__teams-header--with-before-slots {
+    grid-template-columns: 12.5rem minmax(0, 1fr) auto minmax(0, 1fr) 12.5rem;
+  }
   .battle__team-name {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-align: right;
 
-    font-size: 2.5rem;
+    font-size: 1.5rem;
     line-height: 2.5rem;
-    letter-spacing: 0.075rem;
+    letter-spacing: 0.045rem;
     font-weight: bold;
   }
   .battle__team-name--na {
     color: var(--c-black);
   }
   .battle__teams-vs + .battle__team-name {
-    text-align: right;
+    text-align: left;
   }
 
 
@@ -186,10 +188,6 @@
     place-items: center;
     background: radial-gradient(50% 50.00% at 50% 50.00%, #421F89 0%, #150B4D 100%);
     font-size: 1.5rem;
-  }
-  .battle__after-team-formation {
-    grid-column: calc(var(--battle__after-team-num) * 2 - 1) / span 1;
-    padding-top: 1.5rem;
   }
 
 </style>

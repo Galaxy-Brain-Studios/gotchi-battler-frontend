@@ -162,7 +162,6 @@
 
 <template>
   <main>
-    <SiteHeading>Training</SiteHeading>
     <BattleField
       class="training-battle"
       :battle="completedBattle || battle"
@@ -212,14 +211,14 @@
       </template>
       <template
         v-if="team1 && !isEditingLocked"
-        #after-team-1
+        #before-team-1
       >
         <SiteButton @click="createTeamDialogIsOpen = true">
           Edit Your Team
         </SiteButton>
       </template>
       <template
-        #after-team-2
+        #before-team-2
         v-if="team2 && !isEditingLocked"
       >
         <SiteButton @click="trainingTeamsDialogIsOpen = true">
@@ -313,9 +312,6 @@
 </template>
 
 <style scoped>
-  .training-battle {
-    margin-top: 2rem;
-  }
   .training-vs {
     font-size: 1.5rem;
     line-height: 2rem;

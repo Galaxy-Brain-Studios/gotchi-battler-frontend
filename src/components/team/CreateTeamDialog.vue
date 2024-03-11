@@ -1156,7 +1156,7 @@
 
       border-right: 2px solid var(--c-black);
       background: var(--color-background);
-      background-image: url('@/assets/bg.png');
+      background-image: var(--site-background-image);
     }
     .create-team__container-2 {
       height: fit-content; /* this will be the scroll container but only if its contents are too tall */

@@ -3,9 +3,9 @@
   import { storeToRefs } from 'pinia'
   import { useTrainingTeamsStore } from '../../data/trainingTeamsStore'
   import SiteDialog from '../common/SiteDialog.vue'
+  import SiteButton from '../common/SiteButton.vue'
   import SiteButtonPrimary from '../common/SiteButtonPrimary.vue'
   import SitePopupHoverMenu from '../common/SitePopupHoverMenu.vue'
-  import SiteError from '../common/SiteError.vue'
   import TeamFormation from '../team/TeamFormation.vue'
   import GotchiInFormation from '../team/GotchiInFormation.vue'
   import GotchiStats from '../team/GotchiStats.vue'
@@ -47,33 +47,14 @@
     { immediate: true }
   )
 
-  // Validating and saving the team
-  const teamToSave = computed(() => {
+  const selectedTeam = computed(() => {
     if (!teams.value || !selectedTeamId.value) { return null }
     const team = teams.value.find(team => team.id === selectedTeamId.value)
     return team
   })
 
-  const validationError = computed(() => {
-    const teamData = teamToSave.value
-    if (!teamData) {
-      return 'Please select a team.'
-    }
-    return false
-  })
-  const showValidationError = ref(false)
-  watch(
-    () => teamToSave.value,
-    () => showValidationError.value = false
-  )
-
   function saveTeam () {
-    if (validationError.value) {
-      showValidationError.value = true
-      return
-    }
-
-    const teamData = teamToSave.value
+    const teamData = selectedTeam.value
     emit('update:team', teamData)
     emit('update:isOpen', false)
   }
@@ -82,128 +63,135 @@
 <template>
   <SiteDialog
     :isOpen="isOpen"
-    variant="scrolling"
+    variant="full"
     strict
     @update:isOpen="$emit('update:isOpen', $event)"
   >
-    <template #title>
-      Select Opponent Team
-    </template>
-
     <template #default>
-      <div class="choose-training-team__teams">
-        <div
-          v-if="fetchStatus.loading"
-          class="choose-training-team__teams-loading"
-        >
-          Loading...
+
+      <div class="choose-training-team__layout">
+        <div class="choose-training-team__title">
+          <SiteButton
+            aria-label="Close dialog"
+            class="choose-training-team__title-close-button"
+            icon="chevron-left"
+            @click="$emit('update:isOpen', false)"
+          />
+          <h1 class="choose-training-team__title-text">
+            Choose Training Team
+          </h1>
         </div>
-        <div
-          v-if="fetchStatus.error"
-          class="choose-training-team__teams-error"
-        >
-          {{ fetchStatus.errorMessage }}
-        </div>
-        <template v-else-if="fetchStatus.loaded">
+
+        <div class="choose-training-team__teams">
           <div
-            v-if="!teams?.length"
-            class="choose-training-team__teams-empty"
+            v-if="fetchStatus.loading"
+            class="choose-training-team__teams-loading"
           >
-            No teams found.
+            Loading...
           </div>
-          <ol
-            v-else
-            class="list-reset choose-training-team__teams-results"
+          <div
+            v-if="fetchStatus.error"
+            class="choose-training-team__teams-error"
           >
-            <li
-              v-for="team in teamsToDisplay"
-              :key="team.id"
-              class="choose-training-team__teams-result"
-              :class="{
-                'choose-training-team__teams-result--selected': team.id === selectedTeamId
-              }"
+            {{ fetchStatus.errorMessage }}
+          </div>
+          <template v-else-if="fetchStatus.loaded">
+            <div
+              v-if="!teams?.length"
+              class="choose-training-team__teams-empty"
             >
-              <TrainingTeamSelect
-                v-model="selectedTeamId"
-                :teamId="team.id"
-                groupName="training-team"
-                class="choose-training-team__team-name"
+              No teams found.
+            </div>
+            <ol
+              v-else
+              class="list-reset choose-training-team__teams-results"
+            >
+              <li
+                v-for="team in teamsToDisplay"
+                :key="team.id"
+                class="choose-training-team__teams-result"
+                :class="{
+                  'choose-training-team__teams-result--selected': team.id === selectedTeamId
+                }"
               >
-                {{ team.name }}
-              </TrainingTeamSelect>
+                <TrainingTeamSelect
+                  v-model="selectedTeamId"
+                  :teamId="team.id"
+                  groupName="training-team"
+                  class="choose-training-team__team-name"
+                >
+                  {{ team.name }}
+                </TrainingTeamSelect>
 
-              <TeamFormation
-                :team="team"
-                withRowLabels
-                horizontal
-                reverseRows
-              >
-                <template #position>
-                  <GotchiInFormation
-                    emptyMode="blank"
-                    variant="small"
-                  />
-                </template>
-                <template #gotchi="{ gotchi }">
-                  <template v-if="team.id === selectedTeamId">
-                    <SitePopupHoverMenu>
-                      <button
-                        type="button"
-                        class="button-reset choose-training-team__gotchi-info-button"
-                      >
-                        <GotchiInFormation
-                          :gotchi="gotchi"
-                          variant="small"
-                          :isLeader="team.leader === gotchi.id"
-                          withSpecialBadge
-                        />
-                      </button>
-
-                      <template #popper>
-                        <GotchiStats
-                          :gotchi="gotchi"
-                          variant="small"
-                        />
-                      </template>
-                    </SitePopupHoverMenu>
-                  </template>
-                  <template v-else>
+                <TeamFormation
+                  :team="team"
+                  withRowLabels
+                  horizontal
+                  reverseRows
+                >
+                  <template #position>
                     <GotchiInFormation
-                      :gotchi="gotchi"
-                      :teamId="team.id"
+                      emptyMode="blank"
                       variant="small"
-                      :isLeader="team.leader === gotchi.id"
-                      withSpecialBadge
                     />
                   </template>
-                </template>
-              </TeamFormation>
-            </li>
-          </ol>
-        </template>
-      </div>
-    </template>
+                  <template #gotchi="{ gotchi }">
+                    <template v-if="team.id === selectedTeamId">
+                      <SitePopupHoverMenu>
+                        <button
+                          type="button"
+                          class="button-reset choose-training-team__gotchi-info-button"
+                        >
+                          <GotchiInFormation
+                            :gotchi="gotchi"
+                            variant="small"
+                            :isLeader="team.leader === gotchi.id"
+                            withSpecialBadge
+                          />
+                        </button>
 
-    <template #footer>
-      <SiteError
-        v-if="showValidationError && validationError"
-        class="choose-training-team__error"
-      >
-        {{ validationError }}
-      </SiteError>
-      <div class="choose-training-team__footer">
-        <div class="choose-training-team__difficulty">
-          <div class="choose-training-team__difficulty-label">
-            Select Difficulty:
-          </div>
-          <TeamDifficultySelect
-            v-model="selectedDifficulty"
-          />
+                        <template #popper>
+                          <GotchiStats
+                            :gotchi="gotchi"
+                            variant="small"
+                          />
+                        </template>
+                      </SitePopupHoverMenu>
+                    </template>
+                    <template v-else>
+                      <GotchiInFormation
+                        :gotchi="gotchi"
+                        :teamId="team.id"
+                        variant="small"
+                        :isLeader="team.leader === gotchi.id"
+                        withSpecialBadge
+                      />
+                    </template>
+                  </template>
+                </TeamFormation>
+              </li>
+            </ol>
+          </template>
         </div>
-        <div class="choose-training-team__submit">
-          <SiteButtonPrimary @click="saveTeam">
-            Continue
-          </SiteButtonPrimary>
+
+        <div class="choose-training-team__footer">
+          <div class="choose-training-team__difficulty">
+            <div class="choose-training-team__difficulty-label">
+              Select Difficulty:
+            </div>
+            <TeamDifficultySelect
+              v-model="selectedDifficulty"
+            />
+          </div>
+          <div class="choose-training-team__submit">
+            <SiteButtonPrimary
+              :disabled="!selectedTeam"
+              compact
+              @click="saveTeam"
+            >
+              Select Team and Continue
+            </SiteButtonPrimary>
+          </div>
         </div>
       </div>
     </template>
@@ -211,8 +199,36 @@
 </template>
 
 <style scoped>
+  @media (min-height: 1000px) {
+    .choose-training-team__layout {
+      display: grid;
+      height: 100%;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+
+      background: var(--color-background);
+      background-image: var(--site-background-image);
+    }
+    .choose-training-team__footer {
+      background: linear-gradient(180deg, #6027E2 0%, #3E1F6B 100%);
+    }
+  }
+
+  .choose-training-team__title {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 2rem 0 2rem 4rem;
+  }
+  .choose-training-team__title-close-button {
+    flex: none;
+  }
+  .choose-training-team__title-text {
+    flex: 1 1 auto;
+    margin: 0;
+  }
+
   .choose-training-team__teams {
-    min-height: 50vh;
+    overflow-y: auto;
   }
 
   .choose-training-team__teams-loading,
@@ -243,29 +259,34 @@
     display: block;
     width: 100%;
   }
-  .choose-training-team__error {
-    margin: 1rem;
-  }
 
   .choose-training-team__footer {
-    margin: 0.5rem 0.75rem 0.5rem 2rem;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-    column-gap: 2rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
   }
-  .choose-training-team__difficulty {
-    margin-left: 2rem;
+  @media (min-width: 1100px) {
+    .choose-training-team__footer {
+      padding: 1.25rem 1.5rem 1.25rem 2rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      column-gap: 2rem;
+    }
+    .choose-training-team__difficulty {
+      display: flex;
+      flex-wrap: wrap;
+      row-gap: 0.75rem;
+      column-gap: 0.75rem;
+      align-items: center;
+    }
+  }
 
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    column-gap: 0.75rem;
-    align-items: center;
-  }
   .choose-training-team__difficulty-label {
     font-size: 1rem;
-    font-weight: bold;
     line-height: 1.5rem;
     letter-spacing: 0.03rem;
+    opacity: 0.6;
   }
 </style>

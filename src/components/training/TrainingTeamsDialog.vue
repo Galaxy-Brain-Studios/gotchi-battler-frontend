@@ -242,7 +242,7 @@
 
   .choose-training-team__title {
     display: flex;
-    gap: 1rem;
+    gap: 1.5rem;
     align-items: center;
     padding: 2rem 0 2rem 4rem;
   }
@@ -267,13 +267,13 @@
   .choose-training-team__teams-results {
     display: grid;
     grid-template-columns: repeat(auto-fill, 38rem);
-    gap: 0.2rem;
+    gap: 2.3rem;
     justify-content: space-around;
   }
   .choose-training-team__teams-result {
     position: relative;
     border: 3px solid transparent;
-    padding: 1.5rem 2.3rem 2rem 2rem;
+    padding: 1.5rem;
   }
   .choose-training-team__teams-result--selected {
     border-color: var(--c-light-yellow);

@@ -1169,7 +1169,7 @@
 
   .create-team__title {
     display: flex;
-    gap: 1rem;
+    gap: 1.5rem;
     align-items: center;
     padding: 2rem 0 0 4px;
   }

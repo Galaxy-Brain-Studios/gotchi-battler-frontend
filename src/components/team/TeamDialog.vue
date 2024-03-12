@@ -8,9 +8,9 @@
   import SiteButton from '../common/SiteButton.vue'
   import SiteError from '../common/SiteError.vue'
   import TeamFormation from './TeamFormation.vue'
+  import TeamSubstitutes from './TeamSubstitutes.vue'
   import GotchiInFormation from './GotchiInFormation.vue'
   import GotchiDetails from './GotchiDetails.vue'
-  import GotchiSpecialWithInfo from './GotchiSpecialWithInfo.vue'
 
   const props = defineProps({
     isOpen: {
@@ -124,39 +124,55 @@
       v-else-if="fetchStatus.loaded"
       class="team__details"
     >
-      <TeamFormation
-        :team="team"
-        :selectedGotchiId="displayGotchiId"
-        withRowLabels
-        class="team__formation"
-      >
-        <template #position>
-          <GotchiInFormation
-            emptyMode="blank"
-            variant="large"
-          />
-        </template>
-        <template #gotchi="{ gotchi }">
-          <GotchiInFormation
-            :gotchi="gotchi"
-            :isLeader="gotchi.id === team.leader"
-            :teamId="id"
-            isSelectable
-            variant="large"
-            @select="displayGotchiId = gotchi.id"
-          >
-              <template #after-name>
-                <GotchiSpecialWithInfo
-                  v-if="gotchi.specialId"
-                  :id="gotchi.specialId"
-                  :forSpecialShowClass="true"
-                  variant="small"
-                  class="team__formation-gotchi-special"
-                />
-              </template>
-            </GotchiInFormation>
-        </template>
-      </TeamFormation>
+      <div class="team__formation">
+        <TeamFormation
+          :team="team"
+          :selectedGotchiId="displayGotchiId"
+          horizontal
+          withRowLabels
+          withRowBoosts
+        >
+          <template #position>
+            <GotchiInFormation
+              emptyMode="disabled"
+              variant="small"
+            />
+          </template>
+          <template #gotchi="{ gotchi }">
+            <GotchiInFormation
+              :gotchi="gotchi"
+              :isLeader="gotchi.id === team.leader"
+              :teamId="id"
+              isSelectable
+              withSpecialInfoBadge
+              variant="small"
+              @select="displayGotchiId = gotchi.id"
+            />
+          </template>
+        </TeamFormation>
+        <TeamSubstitutes
+          :team="team"
+          :selectedGotchiId="displayGotchiId"
+          class="team__formation-substitutes"
+        >
+          <template #position>
+            <GotchiInFormation
+              emptyMode="disabled"
+              variant="small"
+            />
+          </template>
+          <template #gotchi="{ gotchi }">
+            <GotchiInFormation
+              :gotchi="gotchi"
+              :teamId="id"
+              isSelectable
+              withSpecialInfoBadge
+              variant="small"
+              @select="displayGotchiId = gotchi.id"
+            />
+          </template>
+        </TeamSubstitutes>
+      </div>
 
       <div
         v-if="showDeleteButton || showReplaceButton || showEditButton"
@@ -217,24 +233,31 @@
     text-overflow: ellipsis;
   }
 
-  .team__details {
-    display: grid;
-    grid-template-areas:
-      "formation manage"
-      "formation gotchidetails";
-    grid-template-columns: 30rem auto;
-    grid-template-rows: max(2rem, auto) auto;
-    column-gap: 3rem;
-    align-items: start;
+  @media (min-width: 1500px) {
+    .team__details {
+      display: grid;
+      grid-template-areas:
+        "formation manage"
+        "formation gotchidetails";
+      grid-template-columns: auto auto;
+      grid-template-rows: minmax(0, auto) auto;
+      column-gap: 2rem;
+      align-items: start;
+    }
+    .team__formation {
+      grid-area: formation;
+    }
+    .team__manage {
+      grid-area: manage;
+    }
+    .team__gotchi-details {
+      grid-area: gotchidetails;
+    }
   }
-  .team__formation {
-    grid-area: formation;
-  }
-  .team__manage {
-    grid-area: manage;
-  }
-  .team__gotchi-details {
-    grid-area: gotchidetails;
+
+  .team__formation-substitutes {
+    margin-top: 1.88rem;
+    margin-bottom: 2rem;
   }
   .team__manage {
     margin-top: 1rem;
@@ -250,11 +273,5 @@
     margin-right: 1rem;
     flex: none;
     align-self: flex-start;
-  }
-  .team__formation-gotchi-special {
-    margin-top: 0.5rem;
-    display: inline-block;
-    position: relative;
-    z-index: 1; /* rise above selection button */
   }
 </style>

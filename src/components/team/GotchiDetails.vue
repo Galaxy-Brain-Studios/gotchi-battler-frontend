@@ -1,7 +1,6 @@
 <script setup>
   import { ref, computed, watch} from 'vue'
   import SiteIcon from '../common/SiteIcon.vue'
-  import GotchiSpecial from './GotchiSpecial.vue'
   import GotchiSpecialWithInfo from './GotchiSpecialWithInfo.vue'
   import GotchiTraitIcon from './GotchiTraitIcon.vue'
   import GotchiStats from './GotchiStats.vue'
@@ -182,6 +181,18 @@
           </dd>
         </div>
       </dl>
+      <dl class="display-gotchi__traits dl-reset" aria-label="Gotchi traits">
+        <div
+          v-for="entry in displayGotchi.display.traits"
+          :key="entry.id"
+          class="display-gotchi__trait"
+        >
+          <dt>
+            <GotchiTraitIcon :trait="entry.id" />
+          </dt>
+          <dd>{{ entry.value }}</dd>
+        </div>
+      </dl>
     </div>
     <GotchiStats
       :gotchi="displayGotchi"
@@ -189,18 +200,6 @@
       class="display-gotchi__stats"
       aria-label="Gotchi game stats"
     />
-    <dl class="display-gotchi__traits dl-reset" aria-label="Gotchi traits">
-      <div
-        v-for="entry in displayGotchi.display.traits"
-        :key="entry.id"
-        class="display-gotchi__trait"
-      >
-        <dt>
-          <GotchiTraitIcon :trait="entry.id" />
-        </dt>
-        <dd>{{ entry.value }}</dd>
-      </div>
-    </dl>
   </section>
 </template>
 
@@ -282,6 +281,7 @@
   }
 
   .display-gotchi__attributes {
+    margin-bottom: 1rem;
     display: grid;
     row-gap: 0.25rem;
   }
@@ -313,19 +313,23 @@
   .display-gotchi__traits {
     align-self: end;
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    column-gap: 0.5rem;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 0.5rem;
+    background: rgba(0, 0, 0, 0.2);
   }
   .display-gotchi__trait {
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: 0.5rem;
     align-items: center;
-    padding: 0.5rem;
-    background: rgba(0, 0, 0, 0.2);
   }
   .display-gotchi__trait dt {
     line-height: 0.1rem;
     text-align: right;
+  }
+  .display-gotchi__trait dd {
+    font-size: 1.125rem;
+    line-height: 1.5rem;
+    letter-spacing: 0.03375rem;
   }
 </style>

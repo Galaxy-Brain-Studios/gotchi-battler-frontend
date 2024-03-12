@@ -23,7 +23,7 @@
     FULL: 'full',
     LARGE: 'large',
     MEDIUM: 'medium',
-    SCROLLING: 'scrolling'
+    SCROLLING: 'scrolling' // TODO now unused
   }
 
   let dialog = null
@@ -266,8 +266,12 @@
     grid-template-rows: auto 1fr;
   }
   .site-dialog__dialog--variant-medium {
-    --site-dialog-width: 55%;
     grid-template-rows: 1fr;
+  }
+  @media (min-width: 1400px) {
+    .site-dialog__dialog--variant-medium {
+      --site-dialog-width: 55%;
+    }
   }
   .site-dialog__body {
     overflow: auto;

@@ -587,6 +587,7 @@ function generateFullBrackets ({ brackets=[], teams=[] }) {
           id: roundId,
           startDate: new Date(roundDateMs),
           roundStage: roundNumber - 1,
+          name: `Round ${roundNumber}`,
           status,
           battles
         })

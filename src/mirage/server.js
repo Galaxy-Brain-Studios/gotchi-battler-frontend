@@ -79,6 +79,10 @@ const mirageConfig = window.mirageConfig = {
   battle: {
     error: false
   },
+  battleAnalyser: {
+    error: false,
+    slow: false
+  },
   battleLogs: {
     error: false
   },
@@ -263,6 +267,34 @@ export function makeServer({ environment = 'development' } = {}) {
         }
         delete result.status
         return result
+      })
+
+      this.get(fixUrl(urls.battleAnalyser(':id')), (schema, request) => {
+        if (mirageConfig.battleAnalyser.error) {
+          return errorResponse()
+        }
+        if (!request.params.id.match(/\d/)) {
+          return errorResponse({ statusCode: 404, message: 'Battle not found' })
+        }
+        let result = battlesById[request.params.id] || {
+          ...battlesById.DEFAULT,
+          id: request.params.id
+        }
+        // omit battle 'status' from response
+        // add analysis content if the battle is completed
+        const analysis = result.winnerId ? {
+          numberOfTurns: 45,
+          winRateTeam1: 35,
+          winRateTeam2: 65
+        } : null;
+        result = {
+          ...result,
+          analysis
+        }
+        delete result.status
+        return result
+      }, {
+        timing: mirageConfig.battleAnalyser.slow ? 5000 : 1000
       })
 
       this.get(fixUrl(urls.battleLogs('/battleLogsUrl')), () => {

@@ -26,6 +26,21 @@ export default {
     }
   },
 
+  async fetchBattleAnalyser (id) {
+    try {
+      const battle = await api.get(urls.battleAnalyser(id))
+      if (battle) {
+        // calculate battle status based on the presence of the winnerId
+        const winnerId = battle.winnerId
+        battle.status = (winnerId !== null && typeof winnerId !== 'undefined') ? 'completed' : 'upcoming'
+      }
+      return processBattleModel(battle)
+    } catch (e) {
+      console.error('fetchBattleAnalyser error', { ...e })
+      throw new Error(e.json?.error || 'Error fetching battle analysis')
+    }
+  },
+
   async fetchBattleLogs (url) {
     try {
       const logs = await api.get(urls.battleLogs(url))

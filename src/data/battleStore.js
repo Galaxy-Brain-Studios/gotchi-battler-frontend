@@ -64,6 +64,34 @@ export const useBattleStore = function (id, battleModel) {
   })
 }
 
+export const useBattleAnalyserStore = function (id) {
+  return defineStore(`battleAnalyser__${id}`, () => {
+    const battle = ref(null);
+    const { status: fetchStatus, setLoading } = useStatus()
+
+    async function fetchBattle(id) {
+      if (fetchStatus.value.loaded || fetchStatus.value.loading) { return }
+      const [isStale, setLoaded, setError] = setLoading()
+      try {
+        const result = await battlesService.fetchBattleAnalyser(id)
+        if (isStale()) { return; }
+        battle.value = result
+        setLoaded()
+      } catch (e) {
+        setError(e.message)
+      }
+    }
+
+    // immediately fetch the battle
+    fetchBattle(id)
+
+    return {
+      battle,
+      fetchStatus
+    }
+  })
+}
+
 export const submitTrainingBattle = async function ({ team, trainingTeam, address, message, signature }) {
   const result = await battlesService.submitTrainingBattle({
     team,

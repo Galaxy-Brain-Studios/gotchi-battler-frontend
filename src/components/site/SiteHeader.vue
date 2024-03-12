@@ -31,6 +31,12 @@
       >
         Training
       </RouterLink>
+      <RouterLink
+        to="/analyser"
+        class="link-reset link-reset--hover-underline"
+      >
+        Tools
+      </RouterLink>
       <a
         href="https://gotchi-battler-1.gitbook.io/gotchi-battler/"
         target="_blank"

@@ -17,12 +17,22 @@
     emptyTeam2Name: {
       type: String,
       default: 'Unknown'
+    },
+    showResult: {
+      type: Boolean,
+      default: false
     }
   })
 
   const team1 = computed(() => props.battle?.teams[0])
   const team2 = computed(() => props.battle?.teams[1])
   const battleLogsUrl = computed(() => props.battle?.logs ? props.battle.logs : null )
+
+  const battleIsCompleted = computed(() => !!props.battle?.winnerId)
+  const showTeam1Winner = computed(() => props.showResult && battleIsCompleted.value && props.battle.winnerId === team1.value?.id)
+  const showTeam2Winner = computed(() => props.showResult && battleIsCompleted.value && props.battle.winnerId === team2.value?.id)
+  const showTeam1Loser = computed(() => showTeam2Winner.value)
+  const showTeam2Loser = computed(() => showTeam1Winner.value)
 </script>
 
 <template>
@@ -48,7 +58,19 @@
           'battle__team-name--na': !team1
         }"
       >
+        <span
+          v-if="showTeam1Winner"
+          class="battle__team-name-icon"
+        >
+          🏆
+        </span>
         {{ team1?.name || emptyTeam1Name }}
+        <div
+          v-if="showTeam1Winner || showTeam1Loser"
+          class="battle__team-name-suffix"
+        >
+          ({{ showTeam1Winner ? 'Winner' : 'Loser' }})
+        </div>
       </div>
       <BattleVs
         class="battle__teams-vs"
@@ -62,7 +84,19 @@
           'battle__team-name--na': !team2
         }"
       >
+        <span
+          v-if="showTeam2Winner"
+          class="battle__team-name-icon"
+        >
+          🏆
+        </span>
         {{ team2?.name || emptyTeam2Name }}
+        <div
+          v-if="showTeam2Winner || showTeam2Loser"
+          class="battle__team-name-suffix"
+        >
+          ({{ showTeam2Winner ? 'Winner' : 'Loser' }})
+        </div>
       </div>
       <div
         v-if="$slots['before-team-1'] || $slots['before-team-2']"
@@ -162,7 +196,7 @@
     text-align: right;
 
     font-size: 1.5rem;
-    line-height: 2.5rem;
+    line-height: 1.75rem;
     letter-spacing: 0.045rem;
     font-weight: bold;
   }
@@ -171,6 +205,14 @@
   }
   .battle__teams-vs + .battle__team-name {
     text-align: left;
+  }
+  .battle__team-name-icon {
+    margin-right: 0.75rem;
+  }
+  .battle__team-name-suffix {
+    font-size: 1.25rem;
+    line-height: 1.5rem;
+    font-weight: normal;
   }
 
 

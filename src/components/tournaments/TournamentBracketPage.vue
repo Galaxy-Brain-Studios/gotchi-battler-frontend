@@ -89,10 +89,8 @@
       <SiteBackLink
         :to="backRoute"
         class="word-break"
-      >
-        Back to
-        {{ tournamentFetchStatus.loaded ? tournament.name : 'Tournament' }}
-      </SiteBackLink>
+        :aria-label="`Back to ${tournamentFetchStatus.loaded ? tournament.name : 'Tournament'}`"
+      />
     </div>
     <div
       v-if="fullBracketsFetchStatus.loading"

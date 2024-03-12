@@ -77,10 +77,22 @@
 
 <template>
   <main>
-    <div class="nav-back">
-      <SiteBackLink :to="backRoute">
-        Back to Tournaments
-      </SiteBackLink>
+    <div class="tournament__header">
+      <div class="nav-back">
+        <SiteBackLink
+          :to="backRoute"
+          aria-label="Back to Tournaments"
+        />
+      </div>
+      <template v-if="fetchStatus.loaded">
+        <h1 class="word-break">{{ tournament.name }}</h1>
+        <TournamentParticipant
+          :tournamentId="tournament.id"
+          :tournamentStatus="tournamentStatus"
+          class="tournament__join"
+          @createdTeam="onCreatedTeam"
+        />
+      </template>
     </div>
 
     <div
@@ -95,54 +107,17 @@
     >
       {{ fetchStatus.errorMessage }}
     </div>
-    <template
+    <div
       v-else-if="fetchStatus.loaded"
+      class="tournament__layout"
     >
+      <img
+        v-if="tournament.image"
+        class="tournament__image"
+        :src="tournament.image"
+      />
       <div
-        class="tournament__info-container"
-      >
-        <img
-          v-if="tournament.image"
-          class="tournament__image"
-          :src="tournament.image"
-        />
-        <div class="tournament__meta">
-          <h1 class="word-break">{{ tournament.name }}</h1>
-          <div>
-            <span class="tournament__meta-label">
-              Start:
-            </span>
-            <span class="tournament__meta-value">
-               {{ formatDateTime(tournament.startDate) }}
-            </span>
-          </div>
-          <div>
-            <span class="tournament__meta-label">
-              End:
-            </span>
-            <span class="tournament__meta-value">
-               {{ formatDateTime(tournament.endDate) }}
-            </span>
-          </div>
-          <div>
-            <span class="tournament__meta-label">
-              Rules:
-            </span>
-            <span class="tournament__meta-value">
-              {{ tournament.rules }}
-            </span>
-          </div>
-          <TournamentParticipant
-            :tournamentId="tournament.id"
-            :tournamentStatus="tournamentStatus"
-            class="tournament__join"
-            @createdTeam="onCreatedTeam"
-          />
-        </div>
-      </div>
-      <SiteButtonGroup
         class="tournament__tabs"
-        :numButtons="4"
       >
         <SiteButtonLink
           :to="{ name: 'tournament-tab', params: { id, tab: 'brackets' } }"
@@ -168,53 +143,140 @@
         >
           Prizes
         </SiteButtonLink>
-      </SiteButtonGroup>
+      </div>
 
-      <TournamentBracketsList
-        v-if="tab === 'brackets'"
-        :tournament="tournament"
+      <div
+        class="tournament__info-container"
       >
-      </TournamentBracketsList>
+        <div class="tournament__meta">
+          <div>
+            <span class="tournament__meta-label">
+              Start:
+            </span>
+            <span class="tournament__meta-value">
+               {{ formatDateTime(tournament.startDate) }}
+            </span>
+          </div>
+          <div>
+            <span class="tournament__meta-label">
+              End:
+            </span>
+            <span class="tournament__meta-value">
+               {{ formatDateTime(tournament.endDate) }}
+            </span>
+          </div>
+        </div>
+      </div>
 
-      <TournamentTeamsList
-        v-else-if="tab === 'teams'"
-        :tournament="tournament"
-        :tournamentStatus="tournamentStatus"
-        :teamId="teamId"
-        :teamMode="teamMode"
-        @deletedTeam="onDeletedTeam"
-        @replacedTeam="onReplacedTeam"
-        @editedTeam="onEditedTeam"
-      >
-      </TournamentTeamsList>
+      <div class="tournament__tab-content">
+        <TournamentBracketsList
+          v-if="tab === 'brackets'"
+          :tournament="tournament"
+        >
+        </TournamentBracketsList>
 
-      <TournamentPrizes
-        v-else-if="tab === 'prizes'"
-        :tournament="tournament"
-      >
-      </TournamentPrizes>
+        <TournamentTeamsList
+          v-else-if="tab === 'teams'"
+          :tournament="tournament"
+          :tournamentStatus="tournamentStatus"
+          :teamId="teamId"
+          :teamMode="teamMode"
+          @deletedTeam="onDeletedTeam"
+          @replacedTeam="onReplacedTeam"
+          @editedTeam="onEditedTeam"
+        >
+        </TournamentTeamsList>
 
-      <TournamentGotchis
-        v-else-if="tab === 'gotchis'"
-        :tournamentId="tournament.id"
-      >
-      </TournamentGotchis>
-    </template>
+        <TournamentPrizes
+          v-else-if="tab === 'prizes'"
+          :tournament="tournament"
+        >
+        </TournamentPrizes>
+
+        <TournamentGotchis
+          v-else-if="tab === 'gotchis'"
+          :tournamentId="tournament.id"
+        >
+        </TournamentGotchis>
+      </div>
+    </div>
   </main>
 </template>
 
 <style scoped>
-  .nav-back {
-    margin-bottom: 1.5em;
+  .tournament__header {
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .tournament__header .nav-back,
+  .tournament__header .tournament__join {
+    flex: none;
+  }
+  .tournament__header h1 {
+    flex: 1 1 auto;
+  }
+
+  .tournament__layout {
+    display: grid;
+    grid-template-areas:
+      "image"
+      "info"
+      "tabs"
+      "content";
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto auto;
+    column-gap: 2rem;
+    row-gap: 2rem;
+  }
+  .tournament__image {
+    grid-area: image;
+  }
+  .tournament__tabs {
+    grid-area: tabs;
+  }
+  .tournament__info-container {
+    grid-area: info;
+  }
+  .tournament__tab-content {
+    grid-area: content;
+  }
+
+  @media (min-width: 800px) {
+    .tournament__layout {
+      grid-template-areas:
+        "image tabs"
+        "info tabs"
+        "content content";
+      grid-template-columns: minmax(0, 50%) minmax(0, 1fr);
+      grid-template-rows: auto auto auto;
+      row-gap: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .tournament__layout {
+      grid-template-areas:
+        "image content"
+        "tabs content"
+        "info content";
+      grid-template-columns: 18rem minmax(0, auto);
+      grid-template-rows: auto auto minmax(auto, 1fr);
+      row-gap: 0;
+    }
+    .tournament__meta {
+      margin: 1.5rem;
+    }
   }
 
   h1 {
     margin: 0;
-    color: var(--c-bright-yellow);
+    color: var(--c-white);
     font-weight: bold;
-    font-size: 2.5rem;
-    line-height: 3rem;
-    letter-spacing: 0.25rem;
+    font-size: 2rem;
+    line-height: 2.5rem;
+    letter-spacing: 0.06rem;
   }
 
   .tournament__info-container {
@@ -227,22 +289,20 @@
     flex: none;
     max-width: min(400px, 100%);
   }
+  .tournament__tab-content {
+    border: 2px solid var(--c-black);
+    padding: 2rem 1.5rem;
+    background: var(--c-dark-blue);
+  }
   .tournament__meta {
     flex: 1 1 auto;
-    font-size: 1.5rem;
-    line-height: 2rem;
-    letter-spacing: 0.045rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    letter-spacing: 0.02625rem;
     color: var(--c-white);
   }
   .tournament__meta-label {
     margin-right: 0.75rem;
     opacity: 0.5;
-  }
-  .tournament__join {
-    margin-top: 1.5rem;
-  }
-  .tournament__tabs {
-    margin-top: 2rem;
-    margin-bottom: 2rem;
   }
 </style>

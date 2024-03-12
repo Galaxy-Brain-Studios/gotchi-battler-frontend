@@ -64,7 +64,7 @@
   }
   .site-button-primary__button--compact {
     --button-padding-vertical: 0.5rem;
-    --button-padding-horizontal: 2.9rem;
+    --button-padding-horizontal: 1.5rem;
     font-size: 1rem;
     letter-spacing: 0.03rem;
   }

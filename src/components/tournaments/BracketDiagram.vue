@@ -445,7 +445,7 @@
     --bd-color-background-opacity: 0.7;
     --bd-color-border: rgba(var(--c-light-yellow-rgb), var(--bd-color-border-opacity));
     --bd-color-background: rgba(var(--c-medium-yellow-rgb), var(--bd-color-background-opacity));
-    --bd-color-text-on-border: #332383;
+    --bd-color-text-on-border: var(--c-dark-blue);
   }
   .bracket-diagram__tree-node--status-upcoming,
   .bracket-diagram__connector--status-upcoming {

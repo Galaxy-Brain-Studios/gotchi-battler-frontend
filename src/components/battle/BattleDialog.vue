@@ -3,6 +3,7 @@
   import { useBattleStore } from '../../data/battleStore'
   import { formatDateTime } from '../../utils/date'
   import SiteDialog from '../common/SiteDialog.vue'
+  import SiteButtonLink from '../common/SiteButtonLink.vue'
   import BattleField from './BattleField.vue'
 
   const props = defineProps({
@@ -67,10 +68,19 @@
     >
       {{ fetchStatus.errorMessage }}
     </div>
-    <BattleField
-      v-else-if="fetchStatus.loaded"
-      :battle="battle"
-    />
+    <template v-else-if="fetchStatus.loaded">
+      <BattleField
+        :battle="battle"
+      />
+      <div
+        v-if="battle?.winnerId"
+        class="battle__link-analyser"
+      >
+        <SiteButtonLink :to="{ name: 'analyser', params: { id } }">
+          View Analytics
+        </SiteButtonLink>
+      </div>
+    </template>
   </SiteDialog>
 </template>
 
@@ -90,5 +100,10 @@
   }
   .battle__date {
     color: var(--c-medium-pink);
+  }
+  .battle__link-analyser {
+    margin-top: 1.5rem;
+    display: grid;
+    justify-content: center;
   }
 </style>

@@ -508,6 +508,7 @@ export function makeServer({ environment = 'development' } = {}) {
         }
         const gotchis = []
         const NUM_GOTCHIS = mirageConfig.tournamentGotchis.empty ? 0 : mirageConfig.tournamentGotchis.long ? 200 : 30
+        const owners = ['0x0000000000000000000000000000000000000001', '0xBfe09443556773958bae1699b786d8E9680B5571', '0x0000000000000000000000000000000000000003', '0x0000000000000000000000000000000000000004', '0x0000000000000000000000000000000000000005']
         for (let i = 0; i < NUM_GOTCHIS; i++) {
           const teamId = (i + 1) % 10 || (i + 1)
           gotchis.push({
@@ -518,7 +519,7 @@ export function makeServer({ environment = 'development' } = {}) {
             brs: 100 + i%10,
             teamId,
             teamName: `Team ${String.fromCharCode(64 + teamId % 26)}${teamId > 26 ? teamId : ''}`,
-            teamOwner: `0x000000000000000000000000000000000000000${i % 5}`
+            teamOwner: owners[i % owners.length]
           })
         }
         return gotchis

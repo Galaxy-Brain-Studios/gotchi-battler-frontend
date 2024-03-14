@@ -2,10 +2,14 @@
   import { ref, computed, watch } from 'vue'
   import debounce from 'lodash.debounce'
   import orderBy from 'lodash.orderby'
+  import { storeToRefs } from 'pinia'
+  import { useAccountStore } from '../../data/accountStore'
   import useTournamentGotchis from '../../data/useTournamentGotchis'
+  import SiteCheckbox from '../common/SiteCheckbox.vue'
   import SiteTextField from '../common/SiteTextField.vue'
+  import SiteSelect from '../common/SiteSelect.vue'
   import SiteTable from '../common/SiteTable.vue'
-  import SiteButtonIcon from '../common/SiteButtonIcon.vue'
+  import SiteIcon from '../common/SiteIcon.vue'
   import SiteButton from '../common/SiteButton.vue'
   import SiteEthAddress from '../common/SiteEthAddress.vue'
   import TeamDialog from '../team/TeamDialog.vue'
@@ -41,12 +45,35 @@
     { immediate: true }
   )
 
-  const sorting = ref({ property: 'onchainId', direction: 'asc' })
+  const store = useAccountStore()
+  const { isConnected, address } = storeToRefs(store)
 
-  function sort(property, direction) {
-    sorting.value.property = property;
-    sorting.value.direction = direction;
-  }
+  const onlyShowMine = ref(false)
+  const sortOptions = [
+    {
+      id: 'onchainId_asc',
+      label: 'ID'
+    },
+    {
+      id: 'name_asc',
+      label: 'Name'
+    },
+    {
+      id: 'brs_desc',
+      label: 'BRS'
+    },
+    {
+      id: 'teamName_asc',
+      label: 'Team Name'
+    },
+    {
+      id: 'teamOwner_asc',
+      label: 'Team Owner'
+    }
+  ]
+  const sorting = ref(sortOptions[0].id)
+  const sortingProperty = computed(() => sorting.value.split('_')[0])
+  const sortingDirection = computed(() => sorting.value.split('_')[1])
 
   const query = ref('')
   const debouncedQuery = ref('')
@@ -60,11 +87,15 @@
   const filteredAndSortedGotchis = computed(() => {
     if (!gotchis.value?.length) { return [] }
     let result = gotchis.value
+    if (isConnected.value && onlyShowMine.value) {
+      const myAddressLc = address.value.toLowerCase()
+      result = result.filter(gotchi => gotchi.teamOwner?.toLowerCase() === myAddressLc)
+    }
     if (query.value) {
       const queryLc = query.value.toLowerCase()
       result = result.filter(gotchi => `${gotchi.onchainId}` === queryLc || gotchi.name?.toLowerCase().includes(queryLc))
     }
-    result = orderBy(result, [sorting.value.property], [sorting.value.direction])
+    result = orderBy(result, [sortingProperty.value], [sortingDirection.value])
     return result
   })
   const gotchisToDisplay = computed(() => {
@@ -105,14 +136,34 @@
         No gotchis in this tournament.
       </div>
       <div v-else>
-      <div class="tournament-gotchis__search-container">
-        <SiteTextField
-          v-model="query"
-          search
-          placeholder="Find gotchi by ID or name"
-          class="tournament-gotchis__search-field"
-          @input="debouncedSetQuery"
-        />
+      <div class="tournament-gotchis__header">
+        <SiteCheckbox
+          v-if="isConnected"
+          v-model="onlyShowMine"
+        >
+          My team gotchis only
+        </SiteCheckbox>
+        <div class="tournament-gotchis__search-teams">
+          <SiteTextField
+            v-model="query"
+            search
+            placeholder="Find gotchi by ID or name"
+            class="tournament-gotchis__search-field"
+            @input="debouncedSetQuery"
+          />
+        </div>
+        <div class="tournament-gotchis__sort-teams">
+          Sort by:
+          <SiteSelect v-model="sorting">
+            <option
+              v-for="option in sortOptions"
+              :key="option.id"
+              :value="option.id"
+            >
+              {{ option.label }}
+            </option>
+          </SiteSelect>
+        </div>
       </div>
         <div
           v-if="!gotchisToDisplay.length"
@@ -128,79 +179,59 @@
             <tr>
               <th class="site-table--no-grow">
                 <span>ID</span>
-                <SiteButtonIcon
-                  label="Sort Ascending"
-                  iconName="chevron-up"
-                  :active="sorting.property === 'onchainId' && sorting.direction === 'asc'"
-                  @click="sort('onchainId', 'asc')"
-                />
-                <SiteButtonIcon
-                  label="Sort Descending"
-                  iconName="chevron-down"
-                  :active="sorting.property === 'onchainId' && sorting.direction === 'desc'"
-                  @click="sort('onchainId', 'desc')"
+                <SiteIcon
+                  v-if="sortingProperty === 'onchainId'"
+                  :label="sortingDirection === 'asc' ? 'Sorted Ascending' : 'Sorted Descending'"
+                  :name="sortingDirection === 'asc' ? 'chevron-up' : 'chevron-down'"
+                  class="tournament-gotchis__header-sort-icon"
+                  :width="0.625"
+                  :height="0.625"
                 />
               </th>
               <th class="site-table--no-grow">
               </th>
               <th>
                 <span>Name</span>
-                <SiteButtonIcon
-                  label="Sort Ascending"
-                  iconName="chevron-up"
-                  :active="sorting.property === 'name' && sorting.direction === 'asc'"
-                  @click="sort('name', 'asc')"
-                />
-                <SiteButtonIcon
-                  label="Sort Descending"
-                  iconName="chevron-down"
-                  :active="sorting.property === 'name' && sorting.direction === 'desc'"
-                  @click="sort('name', 'desc')"
+                <SiteIcon
+                  v-if="sortingProperty === 'name'"
+                  :label="sortingDirection === 'asc' ? 'Sorted Ascending' : 'Sorted Descending'"
+                  :name="sortingDirection === 'asc' ? 'chevron-up' : 'chevron-down'"
+                  class="tournament-gotchis__header-sort-icon"
+                  :width="0.625"
+                  :height="0.625"
                 />
               </th>
               <th class="site-table--no-grow">
                 <span>BRS</span>
-                <SiteButtonIcon
-                  label="Sort Ascending"
-                  iconName="chevron-up"
-                  :active="sorting.property === 'brs' && sorting.direction === 'asc'"
-                  @click="sort('brs', 'asc')"
-                />
-                <SiteButtonIcon
-                  label="Sort Descending"
-                  iconName="chevron-down"
-                  :active="sorting.property === 'brs' && sorting.direction === 'desc'"
-                  @click="sort('brs', 'desc')"
+                <SiteIcon
+                  v-if="sortingProperty === 'brs'"
+                  :label="sortingDirection === 'asc' ? 'Sorted Ascending' : 'Sorted Descending'"
+                  :name="sortingDirection === 'asc' ? 'chevron-up' : 'chevron-down'"
+                  class="tournament-gotchis__header-sort-icon"
+                  :width="0.625"
+                  :height="0.625"
                 />
               </th>
               <th>
                 <span>Team</span>
-                <SiteButtonIcon
-                  label="Sort Ascending"
-                  iconName="chevron-up"
-                  :active="sorting.property === 'teamName' && sorting.direction === 'asc'"
-                  @click="sort('teamName', 'asc')"
-                />
-                <SiteButtonIcon
-                  label="Sort Descending"
-                  iconName="chevron-down"
-                  :active="sorting.property === 'teamName' && sorting.direction === 'desc'"
-                  @click="sort('teamName', 'desc')"
+                <SiteIcon
+                  v-if="sortingProperty === 'teamName'"
+                  :label="sortingDirection === 'asc' ? 'Sorted Ascending' : 'Sorted Descending'"
+                  :name="sortingDirection === 'asc' ? 'chevron-up' : 'chevron-down'"
+                  class="tournament-gotchis__header-sort-icon"
+                  :width="0.625"
+                  :height="0.625"
                 />
               </th>
               <th class="site-table--no-grow">
                 <span>Team Owner</span>
-                <SiteButtonIcon
-                  label="Sort Ascending"
-                  iconName="chevron-up"
-                  :active="sorting.property === 'teamOwner' && sorting.direction === 'asc'"
-                  @click="sort('teamOwner', 'asc')"
-                />
-                <SiteButtonIcon
-                  label="Sort Descending"
-                  iconName="chevron-down"
-                  :active="sorting.property === 'teamOwner' && sorting.direction === 'desc'"
-                  @click="sort('teamOwner', 'desc')"
+                <SiteIcon
+                  v-if="sortingProperty === 'teamOwner'"
+                  :label="sortingDirection === 'asc' ? 'Sorted Ascending' : 'Sorted Descending'"
+                  :name="sortingDirection === 'asc' ? 'chevron-up' : 'chevron-down'"
+                  class="tournament-gotchis__header-sort-icon"
+                  :width="0.625"
+                  :height="0.625"
                 />
               </th>
             </tr>
@@ -210,7 +241,7 @@
               v-for="gotchi in gotchisToDisplay"
               :key="gotchi.id"
             >
-              <td>
+              <td class="gotchi-id">
                 {{ gotchi.onchainId }}
               </td>
               <td class="gotchi-image-cell">
@@ -275,19 +306,29 @@
   color: var(--c-white);
   font-size: 1.5rem;
 }
-.tournament-gotchis__search-container {
-  margin-bottom: 2rem;
+.tournament-gotchis__header {
+  margin-bottom: 1.75rem;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 .tournament-gotchis__search-field {
   flex: none;
 }
-.tournament-gotchis__table .gotchi-image-cell {
-  padding-top: 0.2rem;
+
+span + .tournament-gotchis__header-sort-icon {
+  margin-left: 0.4rem;
+}
+
+.tournament-gotchis__table .gotchi-id {
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  letter-spacing: 0.02625rem;
 }
 .gotchi-image {
-  width: 60px;
+  width: 3rem;
+  height: 3rem;
 }
 .tournament-gotchis__table .team-owner {
   font-size: 1rem;

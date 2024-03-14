@@ -17,7 +17,7 @@
   .site-table :deep(th) {
     white-space: nowrap;
     text-align: left;
-    padding-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
     text-transform: uppercase;
     font-size: 1rem;
     line-height: 1.5rem;
@@ -32,7 +32,7 @@
     vertical-align: middle;
     padding-top: 0.5rem;
     font-size: 1rem;
-    line-height: 2rem;
+    line-height: 1.5rem;
     letter-spacing: 0.03rem;
   }
   .site-table :deep(td:not(:last-child)) {

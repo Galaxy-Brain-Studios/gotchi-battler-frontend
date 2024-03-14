@@ -38,8 +38,8 @@
       <div class="site-checkbox__icon">
         <SiteIcon
           name="check"
-          :width="1"
-          :height="1"
+          :width="0.8"
+          :height="0.8"
         />
       </div>
       <slot />
@@ -65,17 +65,17 @@
     align-items: center;
     grid-template-columns: auto minmax(0, 1fr);
     gap: 0.75rem;
-    font-size: 1.125rem;
+    font-size: 1rem;
     line-height: 1.5rem;
-    letter-spacing: 0.03375rem;
+    letter-spacing: 0.03rem;
     user-select: none;
     cursor: pointer;
   }
   .site-checkbox__icon {
     display: grid;
     place-items: center;
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1rem;
+    height: 1rem;
     border: 2px solid var(--c-white);
     background: transparent;
     color: transparent;

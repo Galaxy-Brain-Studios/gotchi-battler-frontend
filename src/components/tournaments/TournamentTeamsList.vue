@@ -5,9 +5,10 @@
   import { useRouter, RouterLink } from 'vue-router'
   import { storeToRefs } from 'pinia'
   import { useAccountStore } from '../../data/accountStore'
-  import SiteButtonIcon from '../common/SiteButtonIcon.vue'
+  import SiteIcon from '../common/SiteIcon.vue'
   import SiteButton from '../common/SiteButton.vue'
   import SiteButtonBox from '../common/SiteButtonBox.vue'
+  import SiteSelect from '../common/SiteSelect.vue'
   import SiteTextField from '../common/SiteTextField.vue'
   import SiteEthAddress from '../common/SiteEthAddress.vue'
   import SiteCheckbox from '../common/SiteCheckbox.vue'
@@ -84,7 +85,24 @@
 
   const numToShow = ref(10)
   const onlyShowMyTeams = ref(false)
-  const sorting = ref({ property: 'ranking', direction: 'asc' })
+  const sortOptions = [
+    {
+      id: 'ranking_asc',
+      label: 'Ranking'
+    },
+    {
+      id: 'totalBrs_desc',
+      label: 'Total BRS'
+    },
+    {
+      id: 'battlesWon_desc',
+      label: 'Wins'
+    }
+  ]
+  const sorting = ref(sortOptions[0].id)
+  const sortingProperty = computed(() => sorting.value.split('_')[0])
+  const sortingDirection = computed(() => sorting.value.split('_')[1])
+
   const query = ref('')
   const debouncedQuery = ref('')
   function setQuery () {
@@ -102,7 +120,7 @@
     if (!props.tournament?.teams?.length) { return null }
     const teams = props.tournament.teams
     const filteredTeams = debouncedQuery.value ? teams.filter(matchesQuery) : teams
-    const sortedTeams = orderBy(filteredTeams, [sorting.value.property], [sorting.value.direction])
+    const sortedTeams = orderBy(filteredTeams, [sortingProperty.value], [sortingDirection.value])
     let bubbledTeams = sortedTeams;
     if (isConnected.value) {
       const myAddress = address.value
@@ -125,11 +143,6 @@
     numToShow.value += 10
   }
   const canLoadMoreTeams = computed(() => filteredAndSortedTeams.value?.length > numToShow.value)
-
-  function sort(property, direction) {
-    sorting.value.property = property;
-    sorting.value.direction = direction;
-  }
 
   const canManageTeam = computed(() => {
     if (!props.teamId || !address.value || !props.tournament.teams) { return false }
@@ -189,10 +202,6 @@
   </div>
   <div v-else>
     <div class="teams-list__header">
-      <div class="teams-list__num-teams">
-        {{ tournament.teams.length }}
-        {{ tournament.teams.length === 1 ? 'Entrant' : 'Entrants' }}
-      </div>
       <SiteCheckbox
         v-if="isConnected"
         v-model="onlyShowMyTeams"
@@ -208,22 +217,30 @@
           @input="debouncedSetQuery"
         />
       </div>
+      <div class="teams-list__sort-teams">
+        Sort by:
+        <SiteSelect v-model="sorting">
+          <option
+            v-for="option in sortOptions"
+            :key="option.id"
+            :value="option.id"
+          >
+            {{ option.label }}
+          </option>
+        </SiteSelect>
+      </div>
     </div>
     <SiteTable class="teams-list__table">
       <thead>
         <tr>
           <th class="team__ranking site-table--no-grow">
-            <SiteButtonIcon
-              label="Sort Ascending"
-              iconName="chevron-up"
-              :active="sorting.property === 'ranking' && sorting.direction === 'asc'"
-              @click="sort('ranking', 'asc')"
-            />
-            <SiteButtonIcon
-              label="Sort Descending"
-              iconName="chevron-down"
-              :active="sorting.property === 'ranking' && sorting.direction === 'desc'"
-              @click="sort('ranking', 'desc')"
+            <SiteIcon
+              v-if="sortingProperty === 'ranking'"
+              :label="sortingDirection === 'asc' ? 'Sorted Ascending' : 'Sorted Descending'"
+              :name="sortingDirection === 'asc' ? 'chevron-up' : 'chevron-down'"
+              class="teams-list__header-sort-icon"
+              :width="0.625"
+              :height="0.625"
             />
           </th>
           <th>
@@ -234,32 +251,24 @@
           </th>
           <th>
             <span>Total BRS</span>
-            <SiteButtonIcon
-              label="Sort Ascending"
-              iconName="chevron-up"
-              :active="sorting.property === 'totalBrs' && sorting.direction === 'asc'"
-              @click="sort('totalBrs', 'asc')"
-            />
-            <SiteButtonIcon
-              label="Sort Descending"
-              iconName="chevron-down"
-              :active="sorting.property === 'totalBrs' && sorting.direction === 'desc'"
-              @click="sort('totalBrs', 'desc')"
+            <SiteIcon
+              v-if="sortingProperty === 'totalBrs'"
+              :label="sortingDirection === 'asc' ? 'Sorted Ascending' : 'Sorted Descending'"
+              :name="sortingDirection === 'asc' ? 'chevron-up' : 'chevron-down'"
+              class="teams-list__header-sort-icon"
+              :width="0.625"
+              :height="0.625"
             />
           </th>
           <th class="site-table--no-grow">
             <span>Wins</span>
-            <SiteButtonIcon
-              label="Sort Ascending"
-              iconName="chevron-up"
-              :active="sorting.property === 'battlesWon' && sorting.direction === 'asc'"
-              @click="sort('battlesWon', 'asc')"
-            />
-            <SiteButtonIcon
-              label="Sort Descending"
-              iconName="chevron-down"
-              :active="sorting.property === 'battlesWon' && sorting.direction === 'desc'"
-              @click="sort('battlesWon', 'desc')"
+            <SiteIcon
+              v-if="sortingProperty === 'battlesWon'"
+              :label="sortingDirection === 'asc' ? 'Sorted Ascending' : 'Sorted Descending'"
+              :name="sortingDirection === 'asc' ? 'chevron-up' : 'chevron-down'"
+              class="teams-list__header-sort-icon"
+              :width="0.625"
+              :height="0.625"
             />
           </th>
         </tr>
@@ -340,13 +349,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
   }
   .teams-list__header > * {
     flex: 0 1 auto;
-  }
-  .teams-list__num-teams {
-    font-size: 1.5rem;
-    line-height: 2rem;
   }
 
   .teams-list__table {
@@ -359,11 +366,16 @@
     display: grid;
     place-items: center;
   }
+
+  span + .teams-list__header-sort-icon {
+    margin-left: 0.4rem;
+  }
+
   .teams-list__table .team__ranking {
     text-align: right;
   }
   .teams-list__table td.team__ranking {
-    padding: 0 1.5rem 2rem 0;
+    padding: 0.5rem 0.75rem 0.5rem 0;
   }
   .team__ranking-badge {
     position: relative;
@@ -371,8 +383,6 @@
   }
 
   .teams-list__table .team__owner {
-    font-size: 1rem;
-    letter-spacing: 0.03rem;
     opacity: 0.5;
   }
 </style>

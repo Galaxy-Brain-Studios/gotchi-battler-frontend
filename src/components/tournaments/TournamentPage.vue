@@ -6,7 +6,6 @@
   import { useTournamentStore } from '../../data/tournamentStore'
   import SiteBackLink from '../common/SiteBackLink.vue'
   import SiteButtonLink from '../common/SiteButtonLink.vue'
-  import SiteButtonGroup from '../common/SiteButtonGroup.vue'
   import TournamentBracketsList from './TournamentBracketsList.vue'
   import TournamentTeamsList from './TournamentTeamsList.vue'
   import TournamentParticipant from './TournamentParticipant.vue'
@@ -129,7 +128,7 @@
           :to="{ name: 'tournament-tab', params: { id, tab: 'teams' } }"
           grouped="middle"
         >
-          {{ tournament.numberOfTeams }} Entrants
+          {{ tournament.numberOfTeams }} Teams
         </SiteButtonLink>
         <SiteButtonLink
           :to="{ name: 'tournament-tab', params: { id, tab: 'gotchis' } }"

@@ -19,7 +19,7 @@
     text-align: left;
     padding-bottom: 1.5rem;
     text-transform: uppercase;
-    font-size: 1.125rem;
+    font-size: 1rem;
     line-height: 1.5rem;
   }
   .site-table :deep(th > span) {
@@ -29,11 +29,11 @@
     padding-right: 1rem;
   }
   .site-table :deep(td) {
-    vertical-align: top;
-    padding-top: 1rem;
-    font-size: 1.5rem;
+    vertical-align: middle;
+    padding-top: 0.5rem;
+    font-size: 1rem;
     line-height: 2rem;
-    letter-spacing: 0.045rem;
+    letter-spacing: 0.03rem;
   }
   .site-table :deep(td:not(:last-child)) {
     padding-right: 1rem;

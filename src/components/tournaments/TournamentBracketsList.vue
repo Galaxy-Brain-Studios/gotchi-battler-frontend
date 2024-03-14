@@ -190,7 +190,7 @@
     flex-wrap: wrap;
     justify-content: space-between;
     border: 3px solid var(--bracket-color-border);
-    padding: 1.5rem;
+    padding: 1.2rem 1.5rem 1.2rem 2rem;
     background-color: var(--bracket-color-background);
     text-transform: uppercase;
   }
@@ -213,9 +213,9 @@
     flex: 1 1 auto;
   }
   .bracket__name {
-    font-size: 1.125rem;
-    line-height: 1.5rem;
-    letter-spacing: 0.03375rem;
+    font-size: 1rem;
+    line-height: 1.125rem;
+    letter-spacing: 0.03rem;
   }
   .bracket__playing {
     display: flex;
@@ -240,6 +240,5 @@
     font-size: 0.875rem;
     line-height: 1.5rem;
     letter-spacing: 0.02625rem;
-    opacity: 0.6;
   }
 </style>

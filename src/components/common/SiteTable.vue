@@ -21,6 +21,7 @@
     text-transform: uppercase;
     font-size: 1rem;
     line-height: 1.5rem;
+    font-weight: normal;
   }
   .site-table :deep(th > span) {
     opacity: 0.5;

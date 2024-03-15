@@ -10,6 +10,7 @@
   import TournamentTeamsList from './TournamentTeamsList.vue'
   import TournamentParticipant from './TournamentParticipant.vue'
   import TournamentGotchis from './TournamentGotchis.vue'
+  import TournamentBattles from './TournamentBattles.vue'
   import TournamentPrizes from './TournamentPrizes.vue'
 
   const props = defineProps({
@@ -137,6 +138,12 @@
           {{ tournament.numberOfTeams * 5 }} Gotchis
         </SiteButtonLink>
         <SiteButtonLink
+          :to="{ name: 'tournament-tab', params: { id, tab: 'battles' } }"
+          grouped="middle"
+        >
+          {{ tournament.numberOfBattles }} Battles
+        </SiteButtonLink>
+        <SiteButtonLink
           :to="{ name: 'tournament-tab', params: { id, tab: 'prizes' } }"
           grouped="end"
         >
@@ -171,8 +178,7 @@
         <TournamentBracketsList
           v-if="tab === 'brackets'"
           :tournament="tournament"
-        >
-        </TournamentBracketsList>
+        />
 
         <TournamentTeamsList
           v-else-if="tab === 'teams'"
@@ -183,20 +189,22 @@
           @deletedTeam="onDeletedTeam"
           @replacedTeam="onReplacedTeam"
           @editedTeam="onEditedTeam"
-        >
-        </TournamentTeamsList>
+        />
 
         <TournamentPrizes
           v-else-if="tab === 'prizes'"
           :tournament="tournament"
-        >
-        </TournamentPrizes>
+        />
 
         <TournamentGotchis
           v-else-if="tab === 'gotchis'"
           :tournamentId="tournament.id"
-        >
-        </TournamentGotchis>
+        />
+
+        <TournamentBattles
+          v-else-if="tab === 'battles'"
+          :tournamentId="tournament.id"
+        />
       </div>
     </div>
   </main>

@@ -17,8 +17,8 @@ const battlesById = Object.fromEntries(battles.map(b => [b.id, b]))
 battlesById.DEFAULT = battles[0]
 let lastTrainingBattleId = 1000
 
-// set dates on first tournament and its brackets so we have a full range of statuses
 {
+  // set dates on first tournament and its brackets so we have a full range of statuses
   const t1 = tournaments[0]
   const nowMs = Date.now()
   const dayMs = 24 * 60 * 60 * 1000
@@ -31,6 +31,18 @@ let lastTrainingBattleId = 1000
       bracket.startDate = new Date ( nowMs - (4 * dayMs ))
     } else if (bracket.status === 'upcoming') {
       bracket.startDate = new Date ( nowMs + (40 * dayMs ))
+    }
+  }
+
+  // set dates on 'upcoming', 'registering' tournaments so we can test the lending warning
+  for (const tournament of tournaments) {
+    if (tournament.state === 'UPCOMING') {
+      tournament.startDate = new Date ( nowMs + (30 * dayMs ))
+      tournament.endDate = new Date ( nowMs + (40 * dayMs ))
+    }
+    if (tournament.state === 'REGISTERING') {
+      tournament.startDate = new Date ( nowMs + (5 * dayMs ))
+      tournament.endDate = new Date ( nowMs + (10 * dayMs ))
     }
   }
 }
@@ -125,6 +137,11 @@ const mirageConfig = window.mirageConfig = {
     slow: false,
     empty: false,
     long: false
+  },
+  availableLendings: {
+    error: false,
+    slow: false,
+    empty: false
   },
 };
 
@@ -525,6 +542,40 @@ export function makeServer({ environment = 'development' } = {}) {
         return gotchis
       }, {
         timing: mirageConfig.tournamentGotchis.slow ? 5000 : 100
+      })
+
+      this.get(fixUrl(urls.availableLendings()), () => {
+        if (mirageConfig.availableLendings.error) {
+          return errorResponse()
+        }
+        const gotchis = []
+        const NUM_GOTCHIS = mirageConfig.availableLendings.empty ? 0 : 30
+        const AVAILABLE_SPECIALS = [1, 2, 3, 4, 5].map(id => ({ id }))
+        for (let i = 0; i < NUM_GOTCHIS; i++) {
+          gotchis.push({
+            id: 1000 + i,
+            onchainId: i,
+            name: ((i + 1) % 7) ? `Gotchi ${String.fromCharCode(65 + i % 26)}${i > 26 ? i : ''}` : (i%3) ? '' : 'TestLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWord',
+            svgFront: `/dev/gotchi_g${(i + 1) % 10}_front.svg`,
+            brs: 100 + i%10,
+            speed: 50 - i%10,
+            health: 80 + i%10,
+            accuracy: 100 - i%10,
+            evade: 70 + i%10,
+            physical: 80 + i%10,
+            magic: 80 - i%10,
+            armor: 80 + i%10,
+            resist: 80 - i%10,
+            crit: 80 + i%10,
+            availableSpecials: AVAILABLE_SPECIALS.slice(0, AVAILABLE_SPECIALS.length - i % AVAILABLE_SPECIALS.length),
+            lendingId: 2000 + i,
+            lendingGhstPrice: 0 + i,
+            lendingPeriod: 60 * 60 * 12 * i
+          })
+        }
+        return gotchis
+      }, {
+        timing: mirageConfig.availableLendings.slow ? 5000 : 100
       })
 
       this.passthrough(request => {

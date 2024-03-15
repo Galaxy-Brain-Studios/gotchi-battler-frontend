@@ -136,35 +136,35 @@
         No gotchis in this tournament.
       </div>
       <div v-else>
-      <div class="tournament-gotchis__header">
-        <SiteCheckbox
-          v-if="isConnected"
-          v-model="onlyShowMine"
-        >
-          My team gotchis only
-        </SiteCheckbox>
-        <div class="tournament-gotchis__search-teams">
-          <SiteTextField
-            v-model="query"
-            search
-            placeholder="Find gotchi by ID or name"
-            class="tournament-gotchis__search-field"
-            @input="debouncedSetQuery"
-          />
+        <div class="tournament-gotchis__header">
+          <SiteCheckbox
+            v-if="isConnected"
+            v-model="onlyShowMine"
+          >
+            My team gotchis only
+          </SiteCheckbox>
+          <div class="tournament-gotchis__search-teams">
+            <SiteTextField
+              v-model="query"
+              search
+              placeholder="Find gotchi by ID or name"
+              class="tournament-gotchis__search-field"
+              @input="debouncedSetQuery"
+            />
+          </div>
+          <div class="tournament-gotchis__sort-teams">
+            Sort by:
+            <SiteSelect v-model="sorting">
+              <option
+                v-for="option in sortOptions"
+                :key="option.id"
+                :value="option.id"
+              >
+                {{ option.label }}
+              </option>
+            </SiteSelect>
+          </div>
         </div>
-        <div class="tournament-gotchis__sort-teams">
-          Sort by:
-          <SiteSelect v-model="sorting">
-            <option
-              v-for="option in sortOptions"
-              :key="option.id"
-              :value="option.id"
-            >
-              {{ option.label }}
-            </option>
-          </SiteSelect>
-        </div>
-      </div>
         <div
           v-if="!gotchisToDisplay.length"
           class="tournament-gotchis__empty"

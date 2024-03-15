@@ -11,6 +11,7 @@
   import TournamentParticipant from './TournamentParticipant.vue'
   import TournamentGotchis from './TournamentGotchis.vue'
   import TournamentBattles from './TournamentBattles.vue'
+  import TournamentLending from './TournamentLending.vue'
   import TournamentPrizes from './TournamentPrizes.vue'
 
   const props = defineProps({
@@ -48,6 +49,10 @@
       name: 'tournaments-type',
       params: { type: tournamentStatus.value }
     }
+  })
+
+  const showLending = computed(() => {
+    return ['upcoming', 'registering'].includes(tournamentStatus.value)
   })
 
   const onCreatedTeam = function () {
@@ -144,6 +149,13 @@
           {{ tournament.numberOfBattles }} Battles
         </SiteButtonLink>
         <SiteButtonLink
+          v-if="showLending"
+          :to="{ name: 'tournament-tab', params: { id, tab: 'lending' } }"
+          grouped="middle"
+        >
+          Gotchi Lending
+        </SiteButtonLink>
+        <SiteButtonLink
           :to="{ name: 'tournament-tab', params: { id, tab: 'prizes' } }"
           grouped="end"
         >
@@ -204,6 +216,11 @@
         <TournamentBattles
           v-else-if="tab === 'battles'"
           :tournamentId="tournament.id"
+        />
+
+        <TournamentLending
+          v-else-if="tab === 'lending'"
+          :tournamentStartDate="tournament.startDate"
         />
       </div>
     </div>

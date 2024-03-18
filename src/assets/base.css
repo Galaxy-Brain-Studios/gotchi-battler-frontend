@@ -41,6 +41,15 @@
   --c-rarity-mythical-contrast: var(--c-black);
   --c-rarity-godlike: rgb(71, 255, 158);
   --c-rarity-godlike-contrast: var(--c-black);
+
+  --c-special-1: #3E80BE;
+  --c-special-2: #D46DC3;
+  --c-special-3: #D9322A;
+  --c-special-4: #F98A25;
+  --c-special-5: #6C6C6C;
+  --c-special-6: #ECBE11;
+  --c-special-7: #8D33EE;
+  --c-special-8: #1CA806;
 }
 
 /* semantic color variables for this project */

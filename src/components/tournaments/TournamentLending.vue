@@ -2,8 +2,10 @@
   import { ref, computed } from 'vue'
   import debounce from 'lodash.debounce'
   import orderBy from 'lodash.orderby'
+  import { storeToRefs } from 'pinia'
   import useGotchiLendings from '@/data/useGotchiLendings'
   import useReactiveDate from '@/data/useReactiveDate'
+  import { useSpecialsStore } from '../../data/specialsStore'
   import SiteIcon from '../common/SiteIcon.vue'
   import SiteSelect from '../common/SiteSelect.vue'
   import SiteTextField from '../common/SiteTextField.vue'
@@ -23,6 +25,9 @@
   const { tickerDate } = useReactiveDate()
 
   const { fetchGotchis, gotchis, fetchGotchisStatus } = useGotchiLendings()
+
+  const specialsStore = useSpecialsStore()
+  const { specials, specialsById } = storeToRefs(specialsStore)
 
   fetchGotchis()
 
@@ -83,6 +88,19 @@
   }
   const debouncedSetQuery = debounce(setQuery, 200)
 
+  const filters = ref({
+    specials: Object.keys(specialsById.value).map(id => '' + id) // input will store value as strings
+  })
+  const matchesSpecial = function (gotchi) {
+    const filterSpecials = filters.value.specials
+    for (const id of filterSpecials) {
+      if (gotchi.availableSpecials.includes(id - 0)) {
+        return true
+      }
+    }
+    return false
+  }
+
   const numToShow = ref(20)
 
   const annotatedGotchis = computed(() => {
@@ -103,6 +121,7 @@
       const queryLc = query.value.toLowerCase()
       result = result.filter(gotchi => `${gotchi.onchainId}` === queryLc || gotchi.name?.toLowerCase().includes(queryLc))
     }
+    result = result.filter(matchesSpecial)
     result = orderBy(result, [sortingProperty.value], [sortingDirection.value])
     return result
   })
@@ -141,7 +160,7 @@
       <div v-else>
         <div class="lending-gotchis__header">
           <div class="lending-gotchis__count">
-            {{ annotatedGotchis.length }} Available
+            {{ filteredAndSortedGotchis.length }} Available
           </div>
           <div class="lending-gotchis__search">
             <SiteTextField
@@ -151,6 +170,58 @@
               class="lending-gotchis__search-field"
               @input="debouncedSetQuery"
             />
+          </div>
+          <div>
+            <SitePopupDropdown>
+                <button
+                  type="button"
+                  class="button-reset lending-gotchis__filter-popup-button"
+                >
+                  Class
+                  <SiteIcon
+                    name="chevron-down"
+                    class="lending-gotchis__filter-popup-button__icon"
+                    :width="0.625"
+                    :height="0.625"
+                  />
+                </button>
+                <template #popper>
+                  <div class="lending-gotchis__filter-container">
+                    <div class="lending-gotchis__filter-class">
+                      <label
+                        v-for="special in specials"
+                        :key="special.id"
+                        :value="special.id"
+                        :style="{
+                          '--filter-special--color-background--selected': `var(--c-special-${special.id})`
+                        }"
+                      >
+                        <SiteIcon
+                          :name="`special-${special.id}`"
+                          class="lending-gotchis__filter-class-icon"
+                          :width="2"
+                          :height="2"
+                        />
+                        <div class="lending-gotchis__filter-class-text">
+                          {{ special.class }}
+                        </div>
+                        <input
+                          v-model="filters.specials"
+                          type="checkbox"
+                          :value="special.id"
+                          class="lending-gotchis__filter-class-checkbox"
+                        />
+                        <SiteIcon
+                          name="check"
+                          class="lending-gotchis__filter-class-checked-icon"
+                          :width="0.7"
+                          :height="0.7"
+                        />
+                      </label>
+                    </div>
+                  </div>
+                </template>
+            </SitePopupDropdown>
           </div>
           <div class="lending-gotchis__sort">
             Sort by:
@@ -410,5 +481,75 @@
   .gotchi-lending-warning-link {
     display: inline-block;
     margin-top: 1rem;
+  }
+
+  .lending-gotchis__filter-popup-button {
+    display: flex;
+    align-items: center;
+    column-gap: 0.5rem;
+    color: var(--c-white);
+    font-weight: bold;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    letter-spacing: 0.03rem;
+  }
+  .lending-gotchis__filter-popup-button[data-popper-shown] {
+    color: var(--c-bright-yellow);
+  }
+
+  .lending-gotchis__filter-class {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    background-color: var(--c-black);
+    padding: 1rem;
+  }
+
+  .lending-gotchis__filter-class label {
+    --filter-special--color-background: rgba(255, 255, 255, 0.1);
+    --filter-special--opacity: 0.5;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.75rem;
+    align-items: center;
+    max-width: 5rem;
+
+    padding: 1rem 1.5rem 0.75rem 1.5rem;
+    color: var(--c-white);
+    background: var(--filter-special--color-background);
+    opacity: var(--filter-special--opacity);
+  }
+  .lending-gotchis__filter-class label:has(input:checked) {
+    --filter-special--color-background: var(--filter-special--color-background--selected, white);
+    --filter-special--opacity: 1;
+  }
+  .lending-gotchis__filter-class label:has(input:focus-visible) {
+    --filter-special--color-background: rgba(255, 255, 255, 0.15);
+    --filter-special--opacity: 1;
+  }
+  .lending-gotchis__filter-class label:hover {
+    --filter-special--color-background: rgba(255, 255, 255, 0.15);
+    --filter-special--opacity: 1;
+    cursor: pointer;
+  }
+  .lending-gotchis__filter-class-text {
+    white-space: nowrap;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
+  .lending-gotchis__filter-class-checkbox {
+    position: absolute;
+    opacity: 0;
+  }
+  .lending-gotchis__filter-class-checked-icon {
+    visibility: hidden;
+    position: absolute;
+    top: 0.3rem;
+    left: 0.3rem;
+  }
+  .lending-gotchis__filter-class-checkbox:checked + .lending-gotchis__filter-class-checked-icon {
+    visibility: visible;
   }
 </style>

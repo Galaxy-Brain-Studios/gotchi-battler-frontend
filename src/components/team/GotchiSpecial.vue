@@ -40,8 +40,10 @@
     class="gotchi-special"
     :class="{
       [`gotchi-special--variant-${variant}`]: true,
-      [`gotchi-special--type-${id}`]: forSpecial,
       'gotchi-special--full-width': fullWidth
+    }"
+    :style="{
+      '--gotchi-special-color-background': forSpecial ? `var(--c-special-${id})` : undefined
     }"
   >
     <SiteIcon
@@ -111,30 +113,6 @@
   .gotchi-special--variant-small .gotchi-special__label {
     font-size: 0.625rem;
     line-height: 0.625rem;
-  }
-  .gotchi-special--type-1 {
-    --gotchi-special-color-background: #3E80BE;
-  }
-  .gotchi-special--type-2 {
-    --gotchi-special-color-background: #D46DC3;
-  }
-  .gotchi-special--type-3 {
-    --gotchi-special-color-background: #D9322A;
-  }
-  .gotchi-special--type-4 {
-    --gotchi-special-color-background: #F98A25;
-  }
-  .gotchi-special--type-5 {
-    --gotchi-special-color-background: #6C6C6C;
-  }
-  .gotchi-special--type-6 {
-    --gotchi-special-color-background: #ECBE11;
-  }
-  .gotchi-special--type-7 {
-    --gotchi-special-color-background: #8D33EE;
-  }
-  .gotchi-special--type-8 {
-    --gotchi-special-color-background: #1CA806;
   }
   .gotchi-special__leader-badge-icon {
     height: 1.5rem !important;

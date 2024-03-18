@@ -550,7 +550,7 @@ export function makeServer({ environment = 'development' } = {}) {
         }
         const gotchis = []
         const NUM_GOTCHIS = mirageConfig.availableLendings.empty ? 0 : 30
-        const AVAILABLE_SPECIALS = [1, 2, 3, 4, 5].map(id => ({ id }))
+        const AVAILABLE_SPECIALS = [1, 2, 3, 4, 5, 6, 7, 8].map(id => ({ id }))
         const AVAILABLE_RARITIES = ['common', 'uncommon', 'rare', 'legendary', 'mythical', 'godlike', null]
         for (let i = 0; i < NUM_GOTCHIS; i++) {
           gotchis.push({

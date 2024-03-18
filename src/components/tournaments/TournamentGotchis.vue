@@ -147,6 +147,7 @@
             <SiteTextField
               v-model="query"
               search
+              subtle
               placeholder="Find gotchi by ID or name"
               class="tournament-gotchis__search-field"
               @input="debouncedSetQuery"

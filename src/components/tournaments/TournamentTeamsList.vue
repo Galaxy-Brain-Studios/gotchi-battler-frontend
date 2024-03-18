@@ -212,6 +212,7 @@
         <SiteTextField
           v-model="query"
           search
+          subtle
           placeholder="Search team or address"
           class="teams-list__search-field"
           @input="debouncedSetQuery"

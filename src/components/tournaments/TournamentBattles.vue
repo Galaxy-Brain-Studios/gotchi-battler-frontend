@@ -133,6 +133,7 @@
           <SiteTextField
             v-model="query"
             search
+            subtle
             placeholder="Search for Battle ID"
             class="tournament-battles__search-field"
             @input="debouncedSetQuery"

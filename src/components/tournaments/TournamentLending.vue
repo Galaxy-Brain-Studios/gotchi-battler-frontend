@@ -11,6 +11,7 @@
   import SiteTextField from '../common/SiteTextField.vue'
   import SiteButton from '../common/SiteButton.vue'
   import SiteButtonBox from '../common/SiteButtonBox.vue'
+  import SiteButtonIcon from '../common/SiteButtonIcon.vue'
   import SitePopupDropdown from '../common/SitePopupDropdown.vue'
   import GotchiStats from '../team/GotchiStats.vue'
   import GotchiSpecial from '../team/GotchiSpecial.vue'
@@ -31,6 +32,45 @@
 
   fetchGotchis()
 
+  const TRAITS = [
+    {
+      id: 'speed',
+      label: 'Speed'
+    },
+    {
+      id: 'health',
+      label: 'Health'
+    },
+    {
+      id: 'accuracy',
+      label: 'Accuracy'
+    },
+    {
+      id: 'evade',
+      label: 'Evasiveness'
+    },
+    {
+      id: 'physical',
+      label: 'Physical Power'
+    },
+    {
+      id: 'magic',
+      label: 'Magic Power'
+    },
+    {
+      id: 'armor',
+      label: 'Armor'
+    },
+    {
+      id: 'resist',
+      label: 'Resistance'
+    },
+    {
+      id: 'crit',
+      label: 'Critical Hit'
+    }
+  ]
+
   const sortOptions = [
     {
       id: 'brs_desc',
@@ -40,42 +80,7 @@
       id: 'lendingGhstPrice_asc',
       label: 'Lending Price'
     },
-    {
-      id: 'speed_desc',
-      label: 'Speed'
-    },
-    {
-      id: 'health_desc',
-      label: 'Health'
-    },
-    {
-      id: 'accuracy_desc',
-      label: 'Accuracy'
-    },
-    {
-      id: 'evade_desc',
-      label: 'Evasiveness'
-    },
-    {
-      id: 'physical_desc',
-      label: 'Physical Power'
-    },
-    {
-      id: 'magic_desc',
-      label: 'Magic Power'
-    },
-    {
-      id: 'armor_desc',
-      label: 'Armor'
-    },
-    {
-      id: 'resist_desc',
-      label: 'Resistance'
-    },
-    {
-      id: 'crit_desc',
-      label: 'Critical Hit'
-    }
+    ...TRAITS.map(({ id, label }) => ({ id: `${id}_desc`, label }))
   ]
   const sorting = ref(sortOptions[0].id)
   const sortingProperty = computed(() => sorting.value.split('_')[0])
@@ -88,9 +93,65 @@
   }
   const debouncedSetQuery = debounce(setQuery, 200)
 
+  const OPERATORS = [
+    {
+      id: 'GTE',
+      label: '>= Higher Than',
+      matches (actualValue, ruleValue) {
+        return actualValue >= ruleValue
+      }
+    },
+    {
+      id: 'LTE',
+      label: '<= Less Than',
+      matches (actualValue, ruleValue) {
+        return actualValue <= ruleValue
+      }
+    }
+  ]
+  const OPERATORS_BY_ID = Object.fromEntries(OPERATORS.map(item => [item.id, item]))
+
+  let lastTraitFilterId = 0;
+  const newTraitFilter = function () {
+    lastTraitFilterId++
+    return {
+      id: lastTraitFilterId,
+      trait: TRAITS[0].id,
+      operator: OPERATORS[0].id,
+      value: ''
+    }
+  }
+
   const filters = ref({
-    specials: Object.keys(specialsById.value).map(id => '' + id) // input will store value as strings
+    specials: Object.keys(specialsById.value).map(id => '' + id), // input will store value as strings
+    traits: [newTraitFilter()]
   })
+
+  const addTraitFilter = function () {
+    filters.value.traits.push(newTraitFilter())
+  }
+  const removeTraitFilter = function (filter) {
+    const index = filters.value.traits.indexOf(filter)
+    if (index !== -1) {
+      filters.value.traits.splice(index, 1)
+    }
+  }
+
+  const matchesTraitFilter = function (gotchi, filter) {
+    const operator = OPERATORS_BY_ID[filter.operator]
+    if (operator && filter.value.match(/\d/)) {
+      const valueAsNumber = filter.value - 0
+      if (!isNaN(valueAsNumber)) {
+        return operator.matches(gotchi[filter.trait], valueAsNumber)
+      }
+    }
+    return true
+  }
+
+  const matchesTraitFilters = function (gotchi) {
+    return filters.value.traits.every(filter => matchesTraitFilter(gotchi, filter))
+  }
+
   const matchesSpecial = function (gotchi) {
     const filterSpecials = filters.value.specials
     for (const id of filterSpecials) {
@@ -121,7 +182,7 @@
       const queryLc = query.value.toLowerCase()
       result = result.filter(gotchi => `${gotchi.onchainId}` === queryLc || gotchi.name?.toLowerCase().includes(queryLc))
     }
-    result = result.filter(matchesSpecial)
+    result = result.filter(matchesSpecial).filter(matchesTraitFilters)
     result = orderBy(result, [sortingProperty.value], [sortingDirection.value])
     return result
   })
@@ -166,6 +227,7 @@
             <SiteTextField
               v-model="query"
               search
+              subtle
               placeholder="Search by ID or name"
               class="lending-gotchis__search-field"
               @input="debouncedSetQuery"
@@ -221,6 +283,85 @@
                     </div>
                   </div>
                 </template>
+            </SitePopupDropdown>
+          </div>
+          <div>
+            <SitePopupDropdown>
+              <button
+                type="button"
+                class="button-reset lending-gotchis__filter-popup-button"
+              >
+                Trait
+                <SiteIcon
+                  name="chevron-down"
+                  class="lending-gotchis__filter-popup-button__icon"
+                  :width="0.625"
+                  :height="0.625"
+                />
+              </button>
+              <template #popper="{ hide }">
+                <div class="lending-gotchis__filter-container">
+                  <div class="lending-gotchis__filter-traits">
+                    <ol class="list-reset">
+                      <li
+                        v-for="filter in filters.traits"
+                        :key="filter.id"
+                      >
+                        <SiteSelect
+                          v-model="filter.trait"
+                          aria-label="Trait"
+                        >
+                          <option
+                            v-for="option in TRAITS"
+                            :key="option.id"
+                            :value="option.id"
+                          >
+                            {{ option.label }}
+                          </option>
+                        </SiteSelect>
+                        <SiteSelect
+                          v-model="filter.operator"
+                          aria-label="Operator"
+                        >
+                          <option
+                            v-for="option in OPERATORS"
+                            :key="option.id"
+                            :value="option.id"
+                          >
+                            {{ option.label }}
+                          </option>
+                        </SiteSelect>
+                        <SiteTextField
+                          v-model="filter.value"
+                          placeholder="Value"
+                          aria-label="Value"
+                        />
+                        <SiteButtonIcon
+                          v-if="filters.traits.length > 1"
+                          iconName="close"
+                          label="delete"
+                          class="lending-gotchis__filter-traits-delete-button"
+                          @click="removeTraitFilter(filter)"
+                        />
+                      </li>
+                    </ol>
+                    <div class="button-reset lending-gotchis__filter-traits-footer">
+                      <button
+                        type="button"
+                        class="button-reset lending-gotchis__filter-traits-add-button"
+                        @click="addTraitFilter"
+                      >
+                        + Add another filter
+                      </button>
+                      <SiteButton
+                        @click="hide"
+                      >
+                        Close
+                      </SiteButton>
+                    </div>
+                  </div>
+                </div>
+              </template>
             </SitePopupDropdown>
           </div>
           <div class="lending-gotchis__sort">
@@ -492,15 +633,18 @@
     font-size: 1rem;
     line-height: 1.5rem;
     letter-spacing: 0.03rem;
+    text-transform: uppercase;
   }
   .lending-gotchis__filter-popup-button[data-popper-shown] {
     color: var(--c-bright-yellow);
+  }
+  .lending-gotchis__filter-container {
+    background-color: var(--c-black);
   }
 
   .lending-gotchis__filter-class {
     display: grid;
     grid-template-columns: repeat(4, auto);
-    background-color: var(--c-black);
     padding: 1rem;
   }
 
@@ -551,5 +695,33 @@
   }
   .lending-gotchis__filter-class-checkbox:checked + .lending-gotchis__filter-class-checked-icon {
     visibility: visible;
+  }
+
+  .lending-gotchis__filter-traits {
+    padding: 1.5rem;
+    color: var(--c-white);
+  }
+  .lending-gotchis__filter-traits ol li {
+    margin-bottom: 1rem;
+    display: grid;
+    grid-template-columns: auto auto 1fr auto;
+    column-gap: 1.5rem;
+  }
+  .lending-gotchis__filter-traits-footer {
+    margin-top: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .lending-gotchis__filter-traits-add-button {
+    padding: 0.5rem 0.75rem;
+    color: var(--c-white);
+    font-size: 0.875rem;
+    font-weight: bold;
+    letter-spacing: 0.02625rem;
+    line-height: 1.5rem;
+  }
+  .lending-gotchis__filter-traits-add-button:hover {
+    background: rgba(255, 255, 255, 0.15);
   }
 </style>

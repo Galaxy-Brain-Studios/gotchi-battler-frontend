@@ -124,7 +124,12 @@
 
   const filters = ref({
     specials: Object.keys(specialsById.value).map(id => '' + id), // input will store value as strings
-    traits: [newTraitFilter()]
+    traits: [newTraitFilter()],
+    price: {
+      trait: 'lendingGhstPrice',
+      operator: 'LTE',
+      value: ''
+    }
   })
 
   const addTraitFilter = function () {
@@ -150,6 +155,10 @@
 
   const matchesTraitFilters = function (gotchi) {
     return filters.value.traits.every(filter => matchesTraitFilter(gotchi, filter))
+  }
+
+  const matchesPriceFilter = function (gotchi) {
+    return matchesTraitFilter(gotchi, filters.value.price)
   }
 
   const matchesSpecial = function (gotchi) {
@@ -182,7 +191,11 @@
       const queryLc = query.value.toLowerCase()
       result = result.filter(gotchi => `${gotchi.onchainId}` === queryLc || gotchi.name?.toLowerCase().includes(queryLc))
     }
-    result = result.filter(matchesSpecial).filter(matchesTraitFilters)
+    result = result
+      .filter(matchesSpecial)
+      .filter(matchesPriceFilter)
+      .filter(matchesTraitFilters)
+
     result = orderBy(result, [sortingProperty.value], [sortingDirection.value])
     return result
   })
@@ -353,6 +366,59 @@
                       >
                         + Add another filter
                       </button>
+                      <SiteButton
+                        @click="hide"
+                      >
+                        Close
+                      </SiteButton>
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </SitePopupDropdown>
+          </div>
+          <div>
+            <SitePopupDropdown>
+              <button
+                type="button"
+                class="button-reset lending-gotchis__filter-popup-button"
+              >
+                Price
+                <SiteIcon
+                  name="chevron-down"
+                  class="lending-gotchis__filter-popup-button__icon"
+                  :width="0.625"
+                  :height="0.625"
+                />
+              </button>
+              <template #popper="{ hide }">
+                <div class="lending-gotchis__filter-container">
+                  <div class="lending-gotchis__filter-price">
+                    <div class="lending-gotchis__filter-price-fields">
+                      <SiteSelect
+                        v-model="filters.price.operator"
+                        aria-label="Operator"
+                      >
+                        <option
+                          v-for="option in OPERATORS"
+                          :key="option.id"
+                          :value="option.id"
+                        >
+                          {{ option.label }}
+                        </option>
+                      </SiteSelect>
+                      <SiteTextField
+                        v-model="filters.price.value"
+                        placeholder="Value in GHST"
+                        aria-label="Value in GHST"
+                      />
+                      <SiteIcon
+                        name="token-ghst"
+                        :width="1.5"
+                        :height="1.5"
+                      />
+                    </div>
+                    <div class="button-reset lending-gotchis__filter-price-footer">
                       <SiteButton
                         @click="hide"
                       >
@@ -723,5 +789,20 @@
   }
   .lending-gotchis__filter-traits-add-button:hover {
     background: rgba(255, 255, 255, 0.15);
+  }
+
+  .lending-gotchis__filter-price {
+    padding: 1.5rem;
+  }
+  .lending-gotchis__filter-price-fields {
+    display: grid;
+    grid-template-columns: auto 10rem auto;
+    align-items: center;
+    column-gap: 1rem;
+  }
+  .lending-gotchis__filter-price-footer {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: flex-end;
   }
 </style>

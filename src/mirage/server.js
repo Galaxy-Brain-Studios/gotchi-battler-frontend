@@ -551,6 +551,7 @@ export function makeServer({ environment = 'development' } = {}) {
         const gotchis = []
         const NUM_GOTCHIS = mirageConfig.availableLendings.empty ? 0 : 30
         const AVAILABLE_SPECIALS = [1, 2, 3, 4, 5].map(id => ({ id }))
+        const AVAILABLE_RARITIES = ['common', 'uncommon', 'rare', 'legendary', 'mythical', 'godlike', null]
         for (let i = 0; i < NUM_GOTCHIS; i++) {
           gotchis.push({
             id: 1000 + i,
@@ -568,6 +569,7 @@ export function makeServer({ environment = 'development' } = {}) {
             resist: 80 - i%10,
             crit: 80 + i%10,
             availableSpecials: AVAILABLE_SPECIALS.slice(0, AVAILABLE_SPECIALS.length - i % AVAILABLE_SPECIALS.length),
+            rarityType: AVAILABLE_RARITIES[i % AVAILABLE_RARITIES.length],
             lendingId: 2000 + i,
             lendingGhstPrice: 0 + i,
             lendingPeriod: 60 * 60 * 12 * i

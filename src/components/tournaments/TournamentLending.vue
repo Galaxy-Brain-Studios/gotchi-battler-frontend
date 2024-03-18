@@ -179,7 +179,12 @@
             v-for="gotchi in gotchisToDisplay"
             :key="gotchi.id"
           >
-            <div class="gotchi-image-container">
+            <div
+              class="gotchi-image-container"
+              :style="{
+                '--gotchi-image-color-background': `var(--c-rarity-${gotchi.rarityType})`
+              }"
+            >
               <img
                 :src="gotchi.svgFront"
                 alt=""
@@ -323,7 +328,8 @@
   .gotchi-image-container {
     display: grid;
     place-items: center;
-    background-color: yellow;
+    padding: 1rem 0;
+    background: var(--gotchi-image-color-background, white);
   }
   .gotchi-image {
     width: 8rem;

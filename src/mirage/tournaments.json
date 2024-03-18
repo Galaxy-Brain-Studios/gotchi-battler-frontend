@@ -341,6 +341,23 @@
                 "ranking": 2,
                 "battlesWon": 0
             }
+        ],
+        "prizes": [
+            {
+                "place": 1,
+                "prize": 250,
+                "currency": "ghst"
+            },
+            {
+                "place": 2,
+                "prize": 150,
+                "currency": "ghst"
+            },
+            {
+                "place": 3,
+                "prize": 88,
+                "currency": "ghst"
+            }
         ]
     },
     {

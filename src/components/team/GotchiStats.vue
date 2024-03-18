@@ -143,6 +143,7 @@
   .gotchi-stats--variant-smallest dt {
     font-size: 0.625rem;
     letter-spacing: 0.01875rem;
+    opacity: 0.6;
   }
   .gotchi-stats--variant-smallest dd {
     font-size: 0.75rem;

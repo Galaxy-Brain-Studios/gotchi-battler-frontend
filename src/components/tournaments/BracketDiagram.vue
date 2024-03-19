@@ -158,6 +158,21 @@
       node.displayY = node.x - minX
     }
 
+    // The generated tree is symmetrical.
+    // Now we want to align nodes to the top of the diagram, so people can see the winners with less scrolling.
+    // The vertical spacing is the same, we just want to shift each column (round) upwards so that
+    // the first node in each round is top-aligned.
+    // Do this by subtracting the space between the top of the canvas and the first node in each Round column.
+    let lastRound = null
+    let topOffsetForRound = 0
+    for (const node of allNodes) {
+      if (node.data.round !== lastRound) {
+        lastRound = node.data.round
+        topOffsetForRound = node.displayY
+      }
+      node.displayY -= topOffsetForRound
+    }
+
     const nodesById = Object.fromEntries(allNodes.map(node => [node.data.id, node]))
     const connectors = []
     for (const node of allNodes) {

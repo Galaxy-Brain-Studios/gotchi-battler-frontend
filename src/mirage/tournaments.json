@@ -90,16 +90,16 @@
             },
             {
                 "id": 5,
-                "name": "Team name 5",
-                "owner": "0x385Eeac5cB85A38A9a07A70c73e0a3271CfB54A7",
+                "name": "Team name 5 - another one with my address",
+                "owner": "0xBfe09443556773958bae1699b786d8E9680B5571",
                 "ranking": 5,
                 "totalBrs": 105,
                 "battlesWon": 8
             },
             {
                 "id": 6,
-                "name": "Team name 6 - another one with my address",
-                "owner": "0xBfe09443556773958bae1699b786d8E9680B5571",
+                "name": "Team name 6",
+                "owner": "0x385Eeac5cB85A38A9a07A70c73e0a3271CfB54A7",
                 "ranking": 6,
                 "totalBrs": 106,
                 "battlesWon": 7

@@ -85,12 +85,17 @@
 
 <template>
   <main>
-    <div class="nav-back">
-      <SiteBackLink
-        :to="backRoute"
-        class="word-break"
-        :aria-label="`Back to ${tournamentFetchStatus.loaded ? tournament.name : 'Tournament'}`"
-      />
+    <div class="bracket__header">
+      <div class="nav-back">
+        <SiteBackLink
+          :to="backRoute"
+          class="word-break"
+          :aria-label="`Back to ${tournamentFetchStatus.loaded ? tournament.name : 'Tournament'}`"
+        />
+      </div>
+      <template v-if="tournamentFetchStatus.loaded">
+        <h1 class="word-break">{{ tournament.name }}</h1>
+      </template>
     </div>
     <div
       v-if="fullBracketsFetchStatus.loading"
@@ -131,7 +136,19 @@
 </template>
 
 <style scoped>
-  .nav-back {
+  .bracket__header {
     margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  h1 {
+    margin: 0;
+    color: var(--c-white);
+    font-weight: bold;
+    font-size: 2rem;
+    line-height: 2.5rem;
+    letter-spacing: 0.06rem;
   }
 </style>

@@ -2,6 +2,7 @@
   import SiteHeading from '../common/SiteHeading.vue'
   import SiteButtonLink from '../common/SiteButtonLink.vue'
   import SiteButtonPrimary from '../common/SiteButtonPrimary.vue'
+  import HomeStats from './HomeStats.vue'
   import TournamentsList from '../tournaments/TournamentsList.vue'
   import { useRouter } from 'vue-router'
 
@@ -24,6 +25,7 @@
     >
       START TRAINING
     </SiteButtonPrimary>
+
   </section>
 
   <div class="hero-video-container app__full-width">
@@ -38,6 +40,8 @@
   </div>
 
   <main class="tournaments">
+    <HomeStats class="stats" />
+
     <SiteHeading class="tournaments__header">
       Tournaments
     </SiteHeading>
@@ -116,8 +120,10 @@
     letter-spacing: 0.03375rem;
   }
 
-  .tournaments {
-    margin-top: 2rem;
+  .stats {
+    position: relative; /* above video */
+    margin-top: -2.75rem;
+    margin-bottom: 2rem;
   }
 
   .tournaments__header {

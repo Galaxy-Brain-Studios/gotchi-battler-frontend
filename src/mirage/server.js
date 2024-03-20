@@ -75,6 +75,11 @@ const trainingGotchis = trainingTeams.map(
 const trainingGotchisById = Object.fromEntries(trainingGotchis.map(g => [g.onchainId, g]))
 
 const mirageConfig = window.mirageConfig = {
+  stats: {
+    error: false,
+    slow: false,
+    small: false
+  },
   tournaments: {
     error: false,
     empty: false
@@ -193,6 +198,26 @@ export function makeServer({ environment = 'development' } = {}) {
         }
         return text
       }
+
+      this.get(urls.stats(), () => {
+        if (mirageConfig.stats.error) {
+          return errorResponse()
+        }
+        if (mirageConfig.stats.small) {
+          return {
+            numBattles: 123,
+            numTournaments: 1,
+            usdPrizes: 1234
+          }
+        }
+        return {
+          numBattles: 135001,
+          numTournaments: 7,
+          usdPrizes: 123456
+        }
+      }, {
+        timing: mirageConfig.stats.slow ? 5000 : 0
+      })
 
       this.get(urls.tournaments(), () => {
         if (mirageConfig.tournaments.empty) {

@@ -31,6 +31,7 @@ function setBaseUrl (url) {
 }
 
 const urls = {
+  stats: () => `${BASE_URL}/api/v1/stats/`,
   tournaments: () =>  `${BASE_URL}/api/v1/tournaments/`,
   tournament: (id) =>  `${BASE_URL}/api/v1/tournaments/${encodeURIComponent(id)}`,
   tournamentBrackets: (id) =>  `${BASE_URL}/api/v1/tournaments/${encodeURIComponent(id)}/brackets`,

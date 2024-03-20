@@ -26,6 +26,12 @@
       type: Array,
       required: true
     },
+    /* optionally provide map of battle ID => battle local ID, to display battles from previous brackets */
+    battleLocalIds: {
+      type: Object,
+      default: null
+    },
+    /* optionally provide next bracket details */
     nextBracketId: {
       type: [String, Number],
       default: null
@@ -33,7 +39,7 @@
     nextBracketName: {
       type: String,
       default: null
-    },
+    }
   })
 
   const accountStore = useAccountStore()
@@ -246,6 +252,11 @@
     }
   })
 
+  const hasPreviousBracketBattles = computed(() => {
+    if (!props.rounds?.[0]?.battles) { return false }
+    return props.rounds[0].battles.some(battle => battle.fromBattles?.[0] || battle.fromBattles?.[1])
+  })
+
   const nowDate = Date.now()
   function isFutureDate (date) {
     return date > nowDate
@@ -257,6 +268,9 @@
     v-if="treeResult"
     ref="container"
     class="bracket-diagram"
+    :class="{
+      'bracket-diagram--with-previous-bracket-battles': hasPreviousBracketBattles
+    }"
     :style="{
       '--bd-tree-node-width': `${NODE_WIDTH}rem`,
       '--bd-tree-node-height': `${NODE_HEIGHT}rem`,
@@ -344,25 +358,37 @@
             VIEW
           </SiteButtonBox>
         </RouterLink>
-        <div
+        <template
           v-for="(team, index) in node.data.teams"
           :key="`${node.data.id}_team${index}`"
-          class="bracket-diagram__team"
-          :class="{
-            'bracket-diagram__team--mine': team?.isMine,
-            'bracket-diagram__team--empty': !team,
-            'bracket-diagram__team--winner': node.data.winner && team ? team.id === node.data.winner : false,
-            'bracket-diagram__team--loser': node.data.winner && team ? team.id !== node.data.winner : false
-          }"
         >
           <div
-            v-if="isConnected && address && team?.owner === address"
-            class="sr-only"
+            class="bracket-diagram__team"
+            :class="{
+              'bracket-diagram__team--mine': team?.isMine,
+              'bracket-diagram__team--empty': !team,
+              'bracket-diagram__team--winner': node.data.winner && team ? team.id === node.data.winner : false,
+              'bracket-diagram__team--loser': node.data.winner && team ? team.id !== node.data.winner : false
+            }"
           >
-            (My team)
+            <div
+              v-if="isConnected && address && team?.owner === address"
+              class="sr-only"
+            >
+              (My team)
+            </div>
+            <div class="bracket-diagram__team-name">{{ team?.name || (node.data.hasATeam ? '-' : '?') }}</div>
           </div>
-          <div class="bracket-diagram__team-name">{{ team?.name || (node.data.hasATeam ? '-' : '?') }}</div>
-        </div>
+          <div
+            v-if="node.data.round?.roundStage === 0 && node.data.fromBattles[index]"
+            class="bracket-diagram__previous-bracket-battle"
+            :class="{
+              [`bracket-diagram__previous-bracket-battle--${index + 1}`]: true
+            }"
+          >
+            #{{ battleLocalIds[node.data.fromBattles[index]] }}
+          </div>
+        </template>
       </div>
       <div
         v-for="connector in treeResult.connectors"
@@ -423,6 +449,41 @@
     width: var(--bd-tree-width);
     height: var(--bd-tree-height);
   }
+
+  .bracket-diagram--with-previous-bracket-battles {
+    padding-left: 4rem;
+  }
+  .bracket-diagram__previous-bracket-battle {
+    --bd-previous-bracket-battle-color: var(--bd-color-border);
+    position: absolute;
+    left: -4rem;
+    width: 3rem;
+    height: calc(var(--bd-tree-node-height) / 2 + var(--bd-border-width) / 2);
+    border: var(--bd-border-width) solid var(--bd-previous-bracket-battle-color);
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+    color: var(--bd-previous-bracket-battle-color);
+    font-size: 0.75rem;
+    line-height: 1.4rem;
+    white-space: nowrap;
+  }
+  .bracket-diagram__previous-bracket-battle--2 {
+    top: calc(var(--bd-tree-node-height) / 2 - var(--bd-border-width) / 2);
+  }
+  .bracket-diagram__previous-bracket-battle::after {
+    content: '';
+    position: absolute;
+    right: calc(-1rem - var(--bd-border-width));
+    top: calc(var(--bd-tree-node-height) / 4 - var(--bd-border-width) / 2);
+    width: calc(1rem + var(--bd-border-width));
+    height: var(--bd-border-width);
+    background: var(--bd-previous-bracket-battle-color);
+  }
+  .bracket-diagram__team--mine + .bracket-diagram__previous-bracket-battle {
+    --bd-previous-bracket-battle-color: var(--c-light-yellow);
+    z-index: 1;
+  }
+
   .bracket-diagram__tree-node {
     position: absolute;
     left: var(--bd-tree-node-display-x);
@@ -536,7 +597,7 @@
     border: var(--bd-border-width) solid var(--bd-color-border);
     border-bottom-width: 0;
   }
-  .bracket-diagram__team + .bracket-diagram__team:not(.bracket-diagram__team--winner):not(.bracket-diagram__team--mine) {
+  .bracket-diagram__team ~ .bracket-diagram__team:not(.bracket-diagram__team--winner):not(.bracket-diagram__team--mine) {
     border-top-width: 0;
     border-bottom-width: var(--bd-border-width);
   }

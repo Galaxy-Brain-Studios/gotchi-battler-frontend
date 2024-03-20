@@ -622,6 +622,7 @@ function generateFullBrackets ({ brackets=[], teams=[] }) {
   // This tournament logic is not intended to be correct,
   // just to generate the correct data structure with enough variations
   // for testing the frontend
+  const allBattleIds = []
   const fullBrackets = brackets.map(bracket => {
     const startDate = bracket.startDate
     const numberOfTeams = bracket.numberOfTeams
@@ -655,6 +656,7 @@ function generateFullBrackets ({ brackets=[], teams=[] }) {
           const battleTeams = [winners[t].team, winners[t + 1]?.team || null]
           const winnerId = isFinished ? battleTeams[0] : null
           const battleId =`${bracket.id}${roundId}b${t}`
+          allBattleIds.push(battleId)
           const battle = {
             id: battleId,
             localId: battleId.substring(2),
@@ -689,6 +691,26 @@ function generateFullBrackets ({ brackets=[], teams=[] }) {
       rounds
     }
   })
+  // simulate data for 'previous battle in another bracket':
+  // find a 'final' bracket (without a nextBracket), and
+  // then annotate all its first-round battles with real battle ids from any OTHER bracket
+  // (do not reference battles in same bracket, that will result in an infinite loop!)
+  const lastBracket = fullBrackets.find(bracket => !bracket.nextBracket)
+  if (lastBracket?.rounds?.[0]?.battles) {
+    const battlesInThisBracket = []
+    for (const round of lastBracket.rounds) {
+      for (const battle of round.battles) {
+        battlesInThisBracket.push(battle.id)
+      }
+    }
+    const battlesFromOtherBrackets = allBattleIds.filter(id => !battlesInThisBracket.includes(id))
+    if (battlesFromOtherBrackets.length) {
+      for (const battle of lastBracket.rounds[0].battles) {
+        battle.parentBattleId1 = battlesFromOtherBrackets[Math.floor(Math.random() * battlesFromOtherBrackets.length)]
+        battle.parentBattleId2 = battlesFromOtherBrackets[Math.floor(Math.random() * battlesFromOtherBrackets.length)]
+      }
+    }
+  }
   return fullBrackets
 }
 

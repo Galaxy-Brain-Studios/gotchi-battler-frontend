@@ -70,6 +70,19 @@
     }
   }))
 
+  const battleLocalIds = computed(() => {
+    if (!fullBracketsFetchStatus.value.loaded) { return null }
+    const localIds = {}
+    for (const bracket of fullBrackets.value) {
+      for (const round of (bracket.rounds || [])) {
+        for (const battle of (round.battles || [])) {
+          localIds[battle.id] = battle.localId
+        }
+      }
+    }
+    return localIds
+  })
+
   const bracket = computed(() => {
     if (!fullBracketsFetchStatus.value.loaded) { return null }
     return fullBrackets.value.find(bracket => `${bracket.id}` === `${props.bracketId}`)
@@ -132,6 +145,7 @@
         :nextBracketId="nextBracket?.id"
         :nextBracketName="nextBracket?.name"
         :teams="tournament.teams"
+        :battleLocalIds="battleLocalIds"
       />
       <BattleDialog
         v-if="battleId"

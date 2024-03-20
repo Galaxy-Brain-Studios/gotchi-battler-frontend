@@ -21,7 +21,8 @@
                 "rules": "Top 2 to Finale",
                 "stage": 0,
                 "status": "completed",
-                "teams": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+                "teams": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
+                "nextBracket": "t1b4"
             },
             {
                 "id": "t1b2",
@@ -31,7 +32,8 @@
                 "rules": "Top 2 to Finale",
                 "stage": 0,
                 "status": "started",
-                "teams": [1, 3, 4, 5, 7, 9, 11, 13, 15, 17]
+                "teams": [1, 3, 4, 5, 7, 9, 11, 13, 15, 17],
+                "nextBracket": "t1b4"
             },
             {
                 "id": "t1b3",
@@ -41,7 +43,8 @@
                 "rules": "Top 2 to Finale",
                 "stage": 0,
                 "status": "upcoming",
-                "teams": [1, 5, 9, 13]
+                "teams": [1, 5, 9, 13],
+                "nextBracket": "t1b4"
             },
             {
                 "id": "t1b4",
@@ -51,7 +54,8 @@
                 "rules": "Top 2 to Finale",
                 "stage": 1,
                 "status": "upcoming",
-                "teams": []
+                "teams": [],
+                "nextBracket": null
             }
         ],
         "teams":
@@ -265,7 +269,8 @@
                 "rules": "TestingLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWord",
                 "stage": 0,
                 "status": "upcoming",
-                "teams": [21, 22, 23, 24]
+                "teams": [21, 22, 23, 24],
+                "nextBracket": null
             }
         ],
         "teams":
@@ -322,7 +327,8 @@
                 "rules": "Testing Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String",
                 "stage": 0,
                 "status": "upcoming",
-                "teams": [0, 1]
+                "teams": [0, 1],
+                "nextBracket": null
             }
         ],
         "teams":
@@ -381,7 +387,8 @@
                 "numberOfTeams": 0,
                 "rules": "",
                 "stage": 0,
-                "status": "completed"
+                "status": "completed",
+                "nextBracket": null
             }
         ]
     },

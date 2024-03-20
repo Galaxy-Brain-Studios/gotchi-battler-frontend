@@ -25,7 +25,15 @@
     teams: {
       type: Array,
       required: true
-    }
+    },
+    nextBracketId: {
+      type: [String, Number],
+      default: null
+    },
+    nextBracketName: {
+      type: String,
+      default: null
+    },
   })
 
   const accountStore = useAccountStore()
@@ -132,7 +140,25 @@
       console.log('Unexpected round structure: expected a tree with a single root node but found', { rootNodes })
     }
     rootNodes[0].isFinale = true
-    const dataForTree = hierarchy(rootNodes[0])
+
+    let hierarchyRoot = rootNodes[0]
+
+    // If there is a next bracket, add it as the ultimate root of the tree
+    if (props.nextBracketId && props.nextBracketName) {
+      hierarchyRoot = {
+        id: 'next_bracket' + hierarchyRoot.id, // unique id to avoid Vue caching elements between different brackets
+        isNextBracket: true,
+        bracket: {
+          id: props.nextBracketId,
+          name: props.nextBracketName
+        },
+        children: rootNodes,
+        fromBattles: [rootNodes[0].id, null]
+      }
+    }
+
+    const dataForTree = hierarchy(hierarchyRoot)
+
     const configuredTree = tree()
       .nodeSize([NODE_HEIGHT + NODE_GAP_Y, NODE_WIDTH + NODE_GAP_X]) // reverse height and width because we will be rotating the tree
       .separation((a, b) => {
@@ -288,7 +314,8 @@
         :key="node.data.id"
         class="bracket-diagram__tree-node"
         :class="{
-          'bracket-diagram__tree-node--empty': !node.data.teams?.length
+          'bracket-diagram__tree-node--empty': !node.data.teams?.length,
+          'bracket-diagram__tree-node--next-bracket': node.data.isNextBracket
         }"
         :style="{
           '--bd-tree-node-display-x': `${node.displayX}rem`,
@@ -297,6 +324,13 @@
           '--bd-tree-node-y': `${-node.y}rem`
         }"
       >
+        <RouterLink
+          v-if="node.data.isNextBracket && node.data.bracket"
+          :to="{ name: 'tournament-bracket', params: { id: tournamentId, bracketId: node.data.bracket.id } }"
+          class="link-reset link-reset--hover-underline word-break bracket-diagram__next-bracket"
+        >
+          {{ node.data.bracket.name }}
+        </RouterLink>
         <RouterLink
           v-if="!node.data.isBye && node.data.teams?.[0] || node.data.teams?.[1]"
           :to="{ name: 'tournament-bracket', params: { id: tournamentId, bracketId, battleId: node.data.id } }"
@@ -438,6 +472,22 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+  }
+  .bracket-diagram__tree-node--next-bracket {
+    align-items: center;
+    justify-content: center;
+  }
+  .bracket-diagram__next-bracket {
+    flex: 0 1 auto;
+    min-height: 0;
+    overflow: hidden;
+    padding: 0.5rem; /* put padding on the link, so the hover underline doesn't get hidden in the overflow */
+    text-align: center;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: bold;
+    color: var(--c-light-yellow);
+    text-transform: uppercase;
   }
   .bracket-diagram__battle-id {
     opacity: 0;

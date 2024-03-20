@@ -75,6 +75,12 @@
     return fullBrackets.value.find(bracket => `${bracket.id}` === `${props.bracketId}`)
   })
 
+  const nextBracket = computed(() => {
+    const nextBracketId = bracket.value?.nextBracket
+    if (!nextBracketId) { return null }
+    return fullBrackets.value.find(bracket => `${bracket.id}` === `${nextBracketId}`)
+  })
+
   const battleStartDate = computed(() => {
     if (!props.battleId || !bracket.value) { return null }
     // battle has same start date as its round: find the round
@@ -123,6 +129,8 @@
         :tournamentId="id"
         :bracketId="bracket.id"
         :rounds="bracket.rounds"
+        :nextBracketId="nextBracket?.id"
+        :nextBracketName="nextBracket?.name"
         :teams="tournament.teams"
       />
       <BattleDialog

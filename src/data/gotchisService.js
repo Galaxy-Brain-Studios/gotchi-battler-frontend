@@ -15,6 +15,12 @@ export default {
   async fetchTrainingGotchis () {
     try {
       const gotchis = await api.get(urls.trainingGotchis())
+      // Don't use provided id for training gotchis, fallback to onchainId
+      for (let gotchi of gotchis) {
+        if (gotchi.onchainId) {
+          delete gotchi.id
+        }
+      }
       return gotchis.map(processGotchiModel)
     } catch (e) {
       console.error('fetchTrainingGotchis error', { ...e })

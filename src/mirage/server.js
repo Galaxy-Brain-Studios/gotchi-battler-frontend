@@ -326,12 +326,12 @@ export function makeServer({ environment = 'development' } = {}) {
         // add analysis content if the battle is completed
         const analysis = result.winnerId ? {
           numberOfTurns: 45,
-          winRateTeam1: 35,
-          winRateTeam2: 65
+          team1WinRate: 35,
+          team2WinRate: 65
         } : null;
         result = {
           ...result,
-          analysis
+          ...analysis
         }
         delete result.status
         return result
@@ -398,7 +398,8 @@ export function makeServer({ environment = 'development' } = {}) {
         battlesById[battle.id] = battle
         battle.createdAt = new Date()
         battle.logs += battle.id
-        battle.winRate = '50%'
+        battle.team1WinRate = '40%'
+        battle.team2WinRate = '60%'
         delete battle.status
         battle.team1.id = lastTrainingBattleId + 1
         if (submittedTeam) {
@@ -436,6 +437,7 @@ export function makeServer({ environment = 'development' } = {}) {
                 ...gotchi,
                 specialId: getSpecialForGotchi(id)
               }
+              battle.team2[key] = gotchi.id // submitted onchainId, but return the gotchi.id in the battle model
             }
             battle.team2[`${key}Gotchi`] = gotchi
           }
@@ -743,8 +745,10 @@ function generateFullBrackets ({ brackets=[], teams=[] }) {
 function generateTrainingTeams () {
   const SPECIAL_IDS = [1, 2, 3, 4, 5]
   const NUM_TEAMS = 10
-  let lastTrainingGotchiId = 1000000
+  const ONCHAIN_ID_OFFSET = 1000000
+  let lastTrainingGotchiId = 1
   const DEFAULT_TRAINING_GOTCHI = {
+    id: 0,
     onchainId: 0,
     name: 'Training Gotchi',
     svgBack: '/dev/gotchi_TRAINING.svg',
@@ -789,13 +793,14 @@ function generateTrainingTeams () {
             const gotchi = {
               ...DEFAULT_TRAINING_GOTCHI,
               speed: DEFAULT_TRAINING_GOTCHI.speed + teams.length, // Change a value, so we can test sorting
-              onchainId: lastTrainingGotchiId,
+              id: lastTrainingGotchiId,
+              onchainId: lastTrainingGotchiId + ONCHAIN_ID_OFFSET,
               specialId,
               availableSpecials: [{ id: specialId }]
             }
-            gotchiIds.push(gotchi.onchainId)
+            gotchiIds.push(gotchi.id)
             const gotchiNumber = j + 1
-            formationGotchis[`${rowKey}${gotchiNumber}`] = gotchi.onchainId
+            formationGotchis[`${rowKey}${gotchiNumber}`] = gotchi.id
             formationGotchis[`${rowKey}${gotchiNumber}Gotchi`] = gotchi
             lastTrainingGotchiId++
           }

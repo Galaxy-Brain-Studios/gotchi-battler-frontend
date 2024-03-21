@@ -133,6 +133,10 @@
         }
         store.fetchMyGotchis()
       } else {
+        // If editing a training team, we don't need to be connected
+        if ([EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING].includes(props.mode)) {
+          return;
+        }
         // not connected, can't create or edit a team
         emit('update:isOpen', false)
       }

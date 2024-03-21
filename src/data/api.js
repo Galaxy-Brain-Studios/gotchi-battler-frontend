@@ -35,7 +35,7 @@ const urls = {
   tournaments: () =>  `${BASE_URL}/api/v1/tournaments/`,
   tournament: (id) =>  `${BASE_URL}/api/v1/tournaments/${encodeURIComponent(id)}`,
   tournamentBrackets: (id) =>  `${BASE_URL}/api/v1/tournaments/${encodeURIComponent(id)}/brackets`,
-  trainingTeams: () =>  `${BASE_URL}/api/v1/trainings/`,
+  trainingTeams: () =>  `${BASE_URL}/api/v1/training/teams/`,
   team: (id) => `${BASE_URL}/api/v1/teams/${encodeURIComponent(id)}`,
   createTournamentTeam: ({ tournamentId, address, message='', signature='' }) =>
     `${BASE_URL}/api/v1/me/${encodeURIComponent(address)}/tournaments/${encodeURIComponent(tournamentId)}/teams?message=${encodeURIComponent(message)}&signature=${encodeURIComponent(signature)}`,
@@ -50,7 +50,7 @@ const urls = {
   battleLogs: (url) => url,
   trainingBattle: ({ address, message='', signature='' }) =>
     `${BASE_URL}/api/v1/me/${encodeURIComponent(address)}/training?message=${encodeURIComponent(message)}&signature=${encodeURIComponent(signature)}`,
-  trainingGotchis: () =>  `${BASE_URL}/api/v1/traininggotchis`,
+  trainingGotchis: () =>  `${BASE_URL}/api/v1/training/gotchis`,
   gotchis: ({ address }) =>  `${BASE_URL}/api/v1/me/${encodeURIComponent(address)}/gotchis`,
   availableLendings: () => `${BASE_URL}/api/v1/lendings`
 }

@@ -229,8 +229,8 @@
         },
         "front5": null,
         "front5Gotchi": null,
-        "substitute1": 6,
-        "substitute1Gotchi":
+        "sub1": 6,
+        "sub1Gotchi":
         {
             "id": 6,
             "onchainId": 6,
@@ -272,8 +272,8 @@
             "crit": 1,
             "resist": 0
         },
-        "substitute2": null,
-        "substitute2Gotchi": null
+        "sub2": null,
+        "sub2Gotchi": null
     },
     {
         "id": 2,

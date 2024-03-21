@@ -4,7 +4,6 @@
   import { formatDateTime } from '../../utils/date'
   import { useAccountStore } from '../../data/accountStore'
   import { useBattleStore, submitTrainingBattle, signTrainingBattle, useTrainingBattlesStore } from '../../data/battleStore'
-  import SiteHeading from '../common/SiteHeading.vue'
   import SiteButton from '../common/SiteButton.vue'
   import SiteError from '../common/SiteError.vue'
   import SiteConnectWallet from '../site/SiteConnectWallet.vue'
@@ -74,7 +73,7 @@
     if (!team2.value) { return null }
     return {
       ...generateTeamToSubmit(team2.value),
-      owner: "TRAINING",
+      owner: address.value,
     }
   })
 
@@ -268,7 +267,7 @@
               {{ battle.teams[1]?.difficulty }}
             </td>
             <td class="training-battle__history-table-win-rate">
-              {{ battle.winRate }}
+              {{ battle.team1WinRate }} %
             </td>
             <td
               class="training-battle__history-table-result"

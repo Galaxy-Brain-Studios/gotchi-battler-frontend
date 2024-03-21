@@ -36,7 +36,7 @@
         showResult
       />
       <dl
-        v-if="battle?.analysis"
+        v-if="battle?.team1WinRate"
         class="list-reset analyser-battle__analysis"
       >
         <div>
@@ -44,7 +44,7 @@
             Number of Turns
           </dt>
           <dd>
-            {{ battle.analysis.numberOfTurns }}
+            {{ battle.numberOfTurns }}
           </dd>
         </div>
         <div>
@@ -52,7 +52,7 @@
             Team 1 Win rate
           </dt>
           <dd>
-            {{ battle.analysis.winRateTeam1 }}%
+            {{ battle.team1WinRate }}%
           </dd>
         </div>
         <div>
@@ -60,7 +60,7 @@
             Team 2 Win rate
           </dt>
           <dd>
-            {{ battle.analysis.winRateTeam2 }}%
+            {{ battle.team2WinRate }}%
           </dd>
         </div>
       </dl>

@@ -2,6 +2,9 @@
   import { ref, computed } from 'vue'
   import uniqueId from 'lodash.uniqueid'
   import FORMATION_PATTERNS from './formationPatterns.json'
+  import FormationPattern from './FormationPattern.vue'
+  import SitePopupDropdown from '@/components/common/SitePopupDropdown.vue'
+  import SiteIcon from '@/components/common/SiteIcon.vue'
 
   const props = defineProps({
     modelValue: {
@@ -21,57 +24,88 @@
   })
 
   const inputNs = ref(uniqueId('formation-pattern-select'))
+
+  const selectedPattern = computed(() => FORMATION_PATTERNS.find(pattern => pattern.id === props.modelValue))
 </script>
 
 <template>
-  <div class="formation-patterns">
-    <div
-      v-for="pattern in FORMATION_PATTERNS"
-      :key="pattern.id"
+  <SitePopupDropdown class="formation-patterns-popup">
+    <button
+      type="button"
+      class="button-reset formation-patterns-trigger"
     >
-      <input
-        :id="`${inputNs}--${pattern.id}`"
-        v-model="passThroughModel"
-        type="radio"
-        :name="`${inputNs}--formation-pattern`"
-        :value="pattern.id"
-        class="formation-pattern-input sr-only"
-      >
-      <label
-        :for="`${inputNs}--${pattern.id}`"
-        class="formation-pattern-label"
-        :style="{
-          '--pattern-back-0': pattern.back[0] ? 0 : 1,
-          '--pattern-back-1': pattern.back[1] ? 0 : 1,
-          '--pattern-back-2': pattern.back[2] ? 0 : 1,
-          '--pattern-back-3': pattern.back[3] ? 0 : 1,
-          '--pattern-back-4': pattern.back[4] ? 0 : 1,
-          '--pattern-front-0': pattern.front[0] ? 0 : 1,
-          '--pattern-front-1': pattern.front[1] ? 0 : 1,
-          '--pattern-front-2': pattern.front[2] ? 0 : 1,
-          '--pattern-front-3': pattern.front[3] ? 0 : 1,
-          '--pattern-front-4': pattern.front[4] ? 0 : 1
-        }"
-      >
-        <span class="sr-only">{{ pattern.name }}</span>
-      </label>
-    </div>
-  </div>
+      <div class="formation-patterns-trigger__content">
+        <template v-if="!selectedPattern">
+          Select formation
+        </template>
+        <template v-else>
+          <FormationPattern :pattern="selectedPattern" />
+        </template>
+      </div>
+      <SiteIcon
+        class="formation-patterns-trigger__icon"
+        name="chevron-down"
+        :width="0.5265"
+        :height="0.375"
+      />
+    </button>
+    <template #popper="{ hide }">
+      <div class="formation-patterns">
+        <div
+          v-for="pattern in FORMATION_PATTERNS"
+          :key="pattern.id"
+        >
+          <input
+            :id="`${inputNs}--${pattern.id}`"
+            v-model="passThroughModel"
+            type="radio"
+            :name="`${inputNs}--formation-pattern`"
+            :value="pattern.id"
+            class="formation-pattern-input sr-only"
+            @change="hide"
+          >
+          <label
+            :for="`${inputNs}--${pattern.id}`"
+            class="formation-pattern-label"
+          >
+            <FormationPattern :pattern="pattern" />
+          </label>
+        </div>
+      </div>
+    </template>
+  </SitePopupDropdown>
 </template>
 
 <style scoped>
+  .formation-patterns-popup {
+    display: inline-block;
+  }
+  .formation-patterns-trigger {
+    display: flex;
+    align-items: center;
+    column-gap: 1rem;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+  }
+  .formation-patterns-trigger__content {
+    flex: 1 1 auto;
+  }
+  .formation-patterns-trigger__icon {
+    flex: none;
+    margin-right: 1rem;
+    color: var(--c-white);
+  }
+</style>
+<style>
+  /* global styles for popper contents */
   .formation-patterns {
-    --formation-pattern-border-width: 4px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, calc(5rem + 2 * var(--formation-pattern-border-width)));
-    column-gap: calc(1.5rem - 2 * var(--formation-pattern-border-width));
-    row-gap: 0.8rem;
+    background: #6027E2;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.7rem;
   }
   .formation-pattern-label {
     cursor: pointer;
-    height: calc(2rem + 2 * var(--formation-pattern-border-width));
     display: block;
-    border: var(--formation-pattern-border-width) solid #fff;
     opacity: 0.3;
   }
   .formation-pattern-input:checked + .formation-pattern-label,
@@ -80,40 +114,5 @@
   }
   .formation-pattern-input:focus-visible + .formation-pattern-label {
     outline: 3px solid var(--c-light-blue);
-  }
-  .formation-pattern-label {
-    /* generate formation block pattern using linear-gradients with sharp color/opacity changes */
-    background-image:
-      /* display a tiny gotchi at every position */
-      url('./pattern-gotchi.png'),
-      /* front row, with unoccupied spaces filled in with opaque white */
-      linear-gradient(90deg,
-        rgba(255, 255, 255, var(--pattern-front-0)) 0%,
-        rgba(255, 255, 255, var(--pattern-front-0)) 20%,
-        rgba(255, 255, 255, var(--pattern-front-1)) 20%,
-        rgba(255, 255, 255, var(--pattern-front-1)) 40%,
-        rgba(255, 255, 255, var(--pattern-front-2)) 40%,
-        rgba(255, 255, 255, var(--pattern-front-2)) 60%,
-        rgba(255, 255, 255, var(--pattern-front-3)) 60%,
-        rgba(255, 255, 255, var(--pattern-front-3)) 80%,
-        rgba(255, 255, 255, var(--pattern-front-4)) 80%,
-        rgba(255, 255, 255, var(--pattern-front-4)) 100%
-      ),
-      /* back row, with unoccupied spaces filled in with opaque white */
-      linear-gradient(90deg,
-        rgba(255, 255, 255, var(--pattern-back-0)) 0%,
-        rgba(255, 255, 255, var(--pattern-back-0)) 20%,
-        rgba(255, 255, 255, var(--pattern-back-1)) 20%,
-        rgba(255, 255, 255, var(--pattern-back-1)) 40%,
-        rgba(255, 255, 255, var(--pattern-back-2)) 40%,
-        rgba(255, 255, 255, var(--pattern-back-2)) 60%,
-        rgba(255, 255, 255, var(--pattern-back-3)) 60%,
-        rgba(255, 255, 255, var(--pattern-back-3)) 80%,
-        rgba(255, 255, 255, var(--pattern-back-4)) 80%,
-        rgba(255, 255, 255, var(--pattern-back-4)) 100%
-      );
-    background-size: 20% 50%, 100% 50%, 100% 50%;
-    background-repeat: repeat, no-repeat, no-repeat;
-    background-position: top, top, bottom;
   }
 </style>

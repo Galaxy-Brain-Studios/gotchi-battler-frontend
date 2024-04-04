@@ -24,9 +24,13 @@
       :class="{
         'site-button__container--is-active': isActive,
         'site-button__container--is-grouped': !!grouped,
+        'site-button__container--is-grouped--vertical': grouped && grouped.startsWith('vertical'),
         'site-button__container--is-grouped--start': grouped === 'start',
         'site-button__container--is-grouped--middle': grouped === 'middle',
-        'site-button__container--is-grouped--end': grouped === 'end'
+        'site-button__container--is-grouped--end': grouped === 'end',
+        'site-button__container--is-grouped--vertical-start': grouped === 'vertical-start',
+        'site-button__container--is-grouped--vertical-middle': grouped === 'vertical-middle',
+        'site-button__container--is-grouped--vertical-end': grouped === 'vertical-end'
       }"
     >
       <a

@@ -95,6 +95,12 @@
     calc(100% - var(--button-corner-size)) 100%,
     0 100%
   );
+  --button-clip-path--inner: polygon(
+    var(--button-corner-size) 0,
+    calc(100% - var(--button-corner-size)) 0,
+    calc(100% - var(--button-corner-size)) 100%,
+    var(--button-corner-size) 100%
+  );
   --button-clip-path: var(--button-clip-path--full);
 
   --button-filter-shadow--full: drop-shadow(0px 0px var(--button-shadow-size) var(--button-color-border));
@@ -114,6 +120,20 @@
     drop-shadow(0px 2px 0px var(--button-color-border))
     drop-shadow(2px 0px 0px var(--button-color-border))
     drop-shadow(0px -2px 0px var(--button-color-border));
+  --button-filter-borders--vertical-start:
+    drop-shadow(0px 2px 0px var(--button-color-border))
+    drop-shadow(2px 0px 0px var(--button-color-border))
+    drop-shadow(-2px 0px 0px var(--button-color-border))
+    drop-shadow(0px -2px 0px var(--button-color-border));
+  --button-filter-borders--vertical-middle:
+    drop-shadow(0px 2px 0px rgba(255,255,255,0))
+    drop-shadow(0px -2px 0px rgba(255,255,255,0))
+    drop-shadow(-2px 0px 0px var(--button-color-border))
+    drop-shadow(2px 0px 0px var(--button-color-border));
+  --button-filter-borders--vertical-end:
+    drop-shadow(0px 2px 0px var(--button-color-border))
+    drop-shadow(2px 0px 0px var(--button-color-border))
+    drop-shadow(-2px 0px 0px var(--button-color-border));
   --button-filter-borders: var(--button-filter-borders--full);
   --button-filter: var(--button-filter-borders);
 
@@ -224,6 +244,37 @@
   --button-clip-path: var(--button-clip-path--full);
   --button-filter-borders: var(--button-filter-borders--full);
   clip-path: none;
+}
+.site-button__container--is-grouped--vertical.site-button__container--is-active {
+  position: relative; /* to ensure z-index works to bring it above others */
+}
+.site-button__container--is-grouped--vertical:not(.site-button__container--is-active) {
+  --button-clip-path: var(--button-clip-path--inner);
+}
+
+/* workaround to avoid border color bleeding through inbetween buttons */
+.site-button__container--is-grouped--vertical:not(.site-button__container--is-active) {
+  position: relative;
+}
+/* workaround to avoid fine horizontal lines of border color bleeding through inbetween buttons: place a button-coloured layer behind the buttons */
+.site-button__container--is-grouped--vertical:not(.site-button__container--is-active)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--button-corner-size);
+  right: var(--button-corner-size);
+  background-color: var(--button-color-background);
+}
+
+.site-button__container--is-grouped--vertical-start:not(.site-button__container--is-active) {
+  --button-filter-borders: var(--button-filter-borders--vertical-start);
+}
+.site-button__container--is-grouped--vertical-middle:not(.site-button__container--is-active) {
+  --button-filter-borders: var(--button-filter-borders--vertical-middle);
+}
+.site-button__container--is-grouped--vertical-end:not(.site-button__container--is-active) {
+  --button-filter-borders: var(--button-filter-borders--vertical-end);
 }
 
 </style>

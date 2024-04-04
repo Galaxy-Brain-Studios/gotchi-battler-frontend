@@ -126,38 +126,38 @@
       >
         <SiteButtonLink
           :to="{ name: 'tournament-tab', params: { id, tab: 'brackets' } }"
-          grouped="start"
+          grouped="vertical-start"
         >
           Brackets
         </SiteButtonLink>
         <SiteButtonLink
           :to="{ name: 'tournament-tab', params: { id, tab: 'teams' } }"
-          grouped="middle"
+          grouped="vertical-middle"
         >
           {{ tournament.numberOfTeams }} Teams
         </SiteButtonLink>
         <SiteButtonLink
           :to="{ name: 'tournament-tab', params: { id, tab: 'gotchis' } }"
-          grouped="middle"
+          grouped="vertical-middle"
         >
           {{ tournament.numberOfTeams * 5 }} Gotchis
         </SiteButtonLink>
         <SiteButtonLink
           :to="{ name: 'tournament-tab', params: { id, tab: 'battles' } }"
-          grouped="middle"
+          grouped="vertical-middle"
         >
           {{ tournament.numberOfBattles }} Battles
         </SiteButtonLink>
         <SiteButtonLink
           v-if="showLending"
           :to="{ name: 'tournament-tab', params: { id, tab: 'lending' } }"
-          grouped="middle"
+          grouped="vertical-middle"
         >
           Gotchi Lending
         </SiteButtonLink>
         <SiteButtonLink
           :to="{ name: 'tournament-tab', params: { id, tab: 'prizes' } }"
-          grouped="end"
+          grouped="vertical-end"
         >
           Prizes
         </SiteButtonLink>
@@ -291,6 +291,9 @@
     }
     .tournament__meta {
       margin: 1.5rem;
+    }
+    .tournament__image {
+      padding: 0 0.5rem; /* to align with vertical menu */
     }
   }
 

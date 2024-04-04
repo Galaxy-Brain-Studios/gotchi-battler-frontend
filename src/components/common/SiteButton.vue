@@ -13,6 +13,10 @@
     active: {
       type: Boolean,
       default: false
+    },
+    type: {
+      type: String,
+      default: 'button'
     }
   })
 </script>
@@ -33,7 +37,7 @@
       :class="{
         'site-button--has-icon': icon
       }"
-      type="button"
+      :type="type"
     >
       <SiteIcon
         v-if="icon"

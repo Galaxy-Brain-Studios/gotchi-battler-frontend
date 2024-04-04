@@ -6,6 +6,10 @@
       type: String,
       default: null
     },
+    grouped: {
+      type: String,
+      default: null
+    },
     active: {
       type: Boolean,
       default: false
@@ -17,7 +21,11 @@
   <div
     class="site-button__container site-button-box"
     :class="{
-      'site-button__container--is-active': active
+      'site-button__container--is-active': active,
+      'site-button__container--is-grouped': !!grouped,
+      'site-button__container--is-grouped--start': grouped === 'start',
+      'site-button__container--is-grouped--middle': grouped === 'middle',
+      'site-button__container--is-grouped--end': grouped === 'end'
     }"
   >
     <div

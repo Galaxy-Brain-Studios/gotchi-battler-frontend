@@ -11,6 +11,7 @@
   import SiteButtonPrimary from '../common/SiteButtonPrimary.vue'
   import SiteButton from '../common/SiteButton.vue'
   import SiteButtonGroup from '../common/SiteButtonGroup.vue'
+  import SiteIcon from '../common/SiteIcon.vue'
   import SitePopupHoverMenu from '../common/SitePopupHoverMenu.vue'
   import SiteSelect from '../common/SiteSelect.vue'
   import SiteTextField from '../common/SiteTextField.vue'
@@ -540,6 +541,14 @@
     }
   )
 
+  const hideError = function () {
+    if (showError.value) {
+      showError.value = false
+    } else if (showValidationError.value) {
+      showValidationError.value = false
+    }
+  }
+
   function saveTeam () {
     if (validationError.value) {
       showValidationError.value = true
@@ -693,19 +702,33 @@
     strict
     @update:isOpen="$emit('update:isOpen', $event)"
   >
-    <SiteError
-      v-if="showError && errorMessage"
+    <div
+      v-if="(showError && errorMessage) || (showValidationError && validationError)"
       class="create-team-error"
     >
-      {{ errorMessage }}
-    </SiteError>
-
-    <SiteError
-      v-if="showValidationError && validationError"
-      class="create-team-error create-team-error--validation"
-    >
-      {{ validationError }}
-    </SiteError>
+      <SiteError>
+        <div class="create-team-error__content">
+          <template v-if="(showError && errorMessage)">
+            {{ errorMessage }}
+          </template>
+          <template v-else>
+            {{ validationError }}
+          </template>
+          <button
+            type="button"
+            class="button-reset create-team-error__close-button"
+            @click="hideError"
+          >
+            <SiteIcon
+              name="close"
+              :width="1.5"
+              :height="1.5"
+            />
+            <span class="sr-only">Ok</span>
+          </button>
+        </div>
+      </SiteError>
+    </div>
 
     <div
       class="create-team"
@@ -1109,13 +1132,36 @@
 </template>
 
 <style scoped>
-  .create-team-error {
-    /* ensure error is visible even if scrolled down in the dialog */
-    position: sticky;
+  /* error overlays whole dialog */
+  .create-team-error::before {
+    content: '';
+    position: absolute;
     top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+  }
+  .create-team-error {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     z-index: 2;
-
-    margin-bottom: 1.5rem;
+    display: grid;
+    place-items: center;
+  }
+  .create-team-error__content {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 1rem;
+    align-items: center;
+  }
+  .create-team-error__close-button {
+    line-height: 0.5rem;
+    color: var(--c-black);
   }
 
   .create-team {

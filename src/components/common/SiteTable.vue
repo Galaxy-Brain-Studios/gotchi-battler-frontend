@@ -1,8 +1,19 @@
 <script setup>
+  defineProps({
+    variant: {
+      type: String,
+      default: 'subtle' // 'subtle' or 'card'
+    }
+  })
 </script>
 
 <template>
-    <table class="site-table">
+    <table
+      class="site-table"
+      :class="{
+        'site-table--variant-card': variant === 'card'
+      }"
+    >
       <slot />
     </table>
 </template>
@@ -43,5 +54,50 @@
   /* prevent a column from growing by setting their first cell to width 0 */
   .site-table :deep(tr:first-child .site-table--no-grow) {
     width: 0;
+  }
+
+
+  .site-table--variant-card {
+    /* these variables can be overridden by setting them on tr */
+    --site-table-card-border-color: rgba(var(--c-light-blue-rgb), 0.5);
+    --site-table-card-background-color: rgba(var(--c-medium-blue-rgb), 0.5);
+    border-collapse: separate;
+    border-spacing: 0 1rem;
+  }
+  .site-table--variant-card :deep(tr) {
+    margin-bottom: 1rem;
+  }
+  .site-table--variant-card :deep(th) {
+    padding: 0 1rem;
+  }
+  .site-table--variant-card :deep(td) {
+    padding: 1rem;
+  }
+  .site-table--variant-card :deep(th:last-child),
+  .site-table--variant-card :deep(td:last-child) {
+    padding-right: 1.5rem;
+  }
+  .site-table--variant-card :deep(th:first-child),
+  .site-table--variant-card :deep(td:first-child) {
+    padding-left: 1.5rem;
+  }
+  .site-table--variant-card :deep(td) {
+    vertical-align: top;
+
+    border: 1px solid var(--site-table-card-border-color);
+    border-left-width: 0;
+    border-right-width: 0;
+    background-color: var(--site-table-card-background-color);
+    font-size: 0.875rem;
+    letter-spacing: 0.02625rem;
+  }
+  .site-table--variant-card :deep(td) {
+    border-bottom-width: 1px;
+  }
+  .site-table--variant-card :deep(td:first-child) {
+    border-left-width: 1px;
+  }
+  .site-table--variant-card :deep(td:last-child) {
+    border-right-width: 1px;
   }
 </style>

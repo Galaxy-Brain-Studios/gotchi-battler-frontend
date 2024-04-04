@@ -148,6 +148,7 @@
         </div>
         <SiteTable
           v-else
+          variant="card"
           class="tournament-battles__table"
         >
           <thead>
@@ -257,46 +258,6 @@
   flex: none;
 }
 
-.tournament-battles__table {
-  border-collapse: separate;
-  border-spacing: 0 1rem;
-}
-.tournament-battles__table tr {
-  margin-bottom: 1rem;
-}
-.tournament-battles__table th {
-  padding: 0 1rem;
-}
-.tournament-battles__table td {
-  padding: 1rem;
-}
-.tournament-battles__table th:last-child,
-.tournament-battles__table td:last-child {
-  padding-right: 1.5rem;
-}
-.tournament-battles__table th:first-child,
-.tournament-battles__table td:first-child {
-  padding-left: 1.5rem;
-}
-.tournament-battles__table td {
-  vertical-align: top;
-
-  border: 1px solid rgba(var(--c-light-blue-rgb), 0.5);
-  border-left-width: 0;
-  border-right-width: 0;
-  background-color: rgba(var(--c-medium-blue-rgb), 0.5);
-  font-size: 0.875rem;
-  letter-spacing: 0.02625rem;
-}
-.tournament-battles__table td {
-  border-bottom-width: 1px;
-}
-.tournament-battles__table td:first-child {
-  border-left-width: 1px;
-}
-.tournament-battles__table td:last-child {
-  border-right-width: 1px;
-}
 .tournament-battles__footer {
   display: grid;
   place-items: center;

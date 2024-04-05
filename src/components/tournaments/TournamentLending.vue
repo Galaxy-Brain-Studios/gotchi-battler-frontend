@@ -10,7 +10,7 @@
   import SiteSelect from '../common/SiteSelect.vue'
   import SiteTextField from '../common/SiteTextField.vue'
   import SiteButton from '../common/SiteButton.vue'
-  import SiteButtonBox from '../common/SiteButtonBox.vue'
+  import SiteButtonWhiteBox from '../common/SiteButtonWhiteBox.vue'
   import SiteButtonIcon from '../common/SiteButtonIcon.vue'
   import SitePopupDropdown from '../common/SitePopupDropdown.vue'
   import GotchiStats from '../team/GotchiStats.vue'
@@ -537,9 +537,9 @@
                       target="_blank"
                       class="link-reset gotchi-lending-warning-link"
                     >
-                      <SiteButtonBox>
+                      <SiteButtonWhiteBox>
                         Continue
-                      </SiteButtonBox>
+                      </SiteButtonWhiteBox>
                     </a>
                   </div>
                 </template>

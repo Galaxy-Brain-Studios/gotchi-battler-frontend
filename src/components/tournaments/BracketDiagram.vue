@@ -6,8 +6,8 @@
   import { useAccountStore } from '../../data/accountStore'
   import { formatRelativeDateTime, formatDateTime } from '../../utils/date'
   import useHorizontalDragScroll from '../../utils/useHorizontalDragScroll'
-  import SiteButtonSmall from '../common/SiteButtonSmall.vue'
-  import SiteButtonBox from '../common/SiteButtonBox.vue'
+  import SiteButtonWhite from '../common/SiteButtonWhite.vue'
+  import SiteButtonWhiteBox from '../common/SiteButtonWhiteBox.vue'
 
   const props = defineProps({
     tournamentId: {
@@ -309,9 +309,12 @@
             </div>
           </div>
           <div v-if="index > 0 && round.status === 'completed' && !roundIdsWithRevealedTeams.includes(round.id)">
-            <SiteButtonSmall @click="revealRound(index)">
+            <SiteButtonWhite
+              small
+              @click="revealRound(index)"
+            >
               Show
-            </SiteButtonSmall>
+            </SiteButtonWhite>
           </div>
         </div>
       </div>
@@ -354,9 +357,11 @@
           <span>
             #{{ node.data.localId || node.data.id }}
           </span>
-          <SiteButtonBox>
+          <SiteButtonWhiteBox
+            small
+          >
             VIEW
-          </SiteButtonBox>
+          </SiteButtonWhiteBox>
         </RouterLink>
         <template
           v-for="(team, index) in node.data.teams"

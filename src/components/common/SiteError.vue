@@ -40,6 +40,6 @@
   }
   .site-error--small {
     padding: 0.5rem 1rem;
-    border-radius: 1.25 rem;
+    border-radius: 1.25rem;
   }
 </style>

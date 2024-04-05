@@ -39,6 +39,7 @@
   --button-color-border: var(--c-white);
   --button-color-text: var(--c-white);
   --button-color-background: rgba(0, 0, 0, 0);
+  --button-color-focus: var(--c-light-blue);
 
   --button-clip-path--full: polygon(
     0 var(--button-corner-size),
@@ -66,10 +67,16 @@
   box-shadow: inset 0 0 12px var(--button-color-border);
 }
 .site-button-white__container--interactive:focus-within {
-  box-shadow: inset 0 0 12px var(--button-color-border), inset 0 0 15px var(--c-light-blue);
+  box-shadow: inset 0 0 12px var(--button-color-border), inset 0 0 15px var(--button-color-focus);
+}
+
+.site-button-white__container--link:not(.site-button-white__container--is-active) {
+  --button-color-border: transparent;
+  opacity: 0.7;
 }
 
 .site-button-white__button {
+  display: block;
   outline-color: transparent;
   border: var(--button-border-width) solid var(--button-color-border);
   padding: calc(0.75rem - var(--button-border-width)) 2.5rem;
@@ -85,6 +92,28 @@
   padding: calc(0.5rem - var(--button-border-width)) 1rem;
   font-size: 0.75rem;
   line-height: 1rem;
+}
+
+.site-button-white__button--link {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  text-underline-offset: 0.4rem;
+}
+.site-button-white__button--link:link,
+.site-button-white__button--link:visited,
+.site-button-white__button--link:hover,
+.site-button-white__button--link:focus,
+.site-button-white__button--link:active {
+  color: var(--button-color-text);
+}
+.site-button-white__container--link:not(.site-button-white__container--is-active) .site-button-white__button--link {
+  font-weight: normal;
+}
+.site-button-white__container--link:not(.site-button-white__container--is-active) .site-button-white__button--link:hover {
+  text-decoration: underline;
+}
+.site-button-white__button--link:focus-visible {
+  text-decoration: underline;
 }
 
 .site-button-white__corner {

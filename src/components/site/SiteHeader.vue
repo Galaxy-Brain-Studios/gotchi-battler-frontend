@@ -2,6 +2,7 @@
   import { DEV_MODE } from '../../appEnv'
   import { RouterLink } from 'vue-router'
   import SiteIcon from '../common/SiteIcon.vue'
+  import SiteButtonWhiteLink from '../common/SiteButtonWhiteLink.vue'
   import SiteConnectWallet from './SiteConnectWallet.vue'
 </script>
 
@@ -19,44 +20,38 @@
       />
     </RouterLink>
     <nav>
-      <RouterLink
+      <SiteButtonWhiteLink
         to="/tournaments"
-        class="link-reset link-reset--hover-underline"
       >
         Tournaments
-      </RouterLink>
-      <RouterLink
+      </SiteButtonWhiteLink>
+      <SiteButtonWhiteLink
         to="/training"
-        class="link-reset link-reset--hover-underline"
       >
         Training
-      </RouterLink>
-      <RouterLink
+      </SiteButtonWhiteLink>
+      <SiteButtonWhiteLink
         to="/analyser"
-        class="link-reset link-reset--hover-underline"
       >
         Tools
-      </RouterLink>
-      <a
+      </SiteButtonWhiteLink>
+      <SiteButtonWhiteLink
         href="https://gotchi-battler-1.gitbook.io/gotchi-battler/"
         target="_blank"
-        class="link-reset link-reset--hover-underline"
       >
         Game Guide
-      </a>
-      <RouterLink
+      </SiteButtonWhiteLink>
+      <SiteButtonWhiteLink
         to="/about"
-        class="link-reset link-reset--hover-underline"
       >
         About
-      </RouterLink>
-      <RouterLink
+      </SiteButtonWhiteLink>
+      <SiteButtonWhiteLink
         v-if="DEV_MODE"
         to="/dev"
-        class="link-reset link-reset--hover-underline"
       >
         Dev
-      </RouterLink>
+      </SiteButtonWhiteLink>
     </nav>
     <div class="site-header__wallet">
       <SiteConnectWallet />
@@ -77,7 +72,7 @@
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    column-gap: 2.5rem;
+    column-gap: 0;
     row-gap: 0.5rem;
   }
   .site-header nav > * {

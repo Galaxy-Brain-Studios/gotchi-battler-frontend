@@ -59,8 +59,10 @@
 
   .site-table--variant-card {
     /* these variables can be overridden by setting them on tr */
-    --site-table-card-border-color: rgba(var(--c-light-blue-rgb), 0.5);
-    --site-table-card-background-color: rgba(var(--c-medium-blue-rgb), 0.5);
+    --site-table-card-border-color-rgb: var(--c-light-blue-rgb);
+    --site-table-card-border-color-opacity: 0.5;
+    --site-table-card-background-color-rgb: var(--c-medium-blue-rgb);
+    --site-table-card-background-color-opacity: 0.5;
     border-collapse: separate;
     border-spacing: 0 1rem;
   }
@@ -82,6 +84,9 @@
     padding-left: 1.5rem;
   }
   .site-table--variant-card :deep(td) {
+    --site-table-card-border-color: rgba(var(--site-table-card-border-color-rgb), var(--site-table-card-border-color-opacity));
+    --site-table-card-background-color: rgba(var(--site-table-card-background-color-rgb), var(--site-table-card-background-color-opacity));
+
     vertical-align: top;
 
     border: 1px solid var(--site-table-card-border-color);

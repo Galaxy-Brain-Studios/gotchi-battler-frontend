@@ -13,8 +13,7 @@
   const formatterDate = new Intl.DateTimeFormat(undefined, {
     year: "numeric",
     month: "short",
-    day: "numeric",
-    timeZoneName: "short"
+    day: "numeric"
   })
   const formatDate = date => formatterDate.format(date)
 

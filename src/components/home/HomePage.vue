@@ -1,5 +1,4 @@
 <script setup>
-  import SiteHeading from '../common/SiteHeading.vue'
   import SiteButtonLink from '../common/SiteButtonLink.vue'
   import SiteButtonPrimary from '../common/SiteButtonPrimary.vue'
   import HomeStats from './HomeStats.vue'
@@ -41,10 +40,6 @@
 
   <main class="tournaments">
     <HomeStats class="stats" />
-
-    <SiteHeading class="tournaments__header">
-      Tournaments
-    </SiteHeading>
 
     <TournamentsList :maxLength="6" />
 

@@ -1,5 +1,4 @@
 <script setup>
-  import SiteHeading from '../common/SiteHeading.vue'
   import SiteButtonGroup from '../common/SiteButtonGroup.vue'
   import SiteButtonLink from '../common/SiteButtonLink.vue'
   import TournamentsList from '../tournaments/TournamentsList.vue'
@@ -14,8 +13,6 @@
 
 <template>
   <main>
-    <SiteHeading>Tournaments</SiteHeading>
-
     <SiteButtonGroup
       :numButtons="4"
       class="tournament_types"

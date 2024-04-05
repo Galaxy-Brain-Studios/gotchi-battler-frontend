@@ -1,5 +1,4 @@
 <script setup>
-  import SiteHeading from '../common/SiteHeading.vue'
   import { useAccountStore } from '../../data/accountStore'
   import { setBaseUrl } from '../../data/api'
   import { storeToRefs } from 'pinia'
@@ -21,8 +20,6 @@
 
 <template>
   <main>
-    <SiteHeading>Dev Config</SiteHeading>
-
     <div style="display: grid; row-gap: 1rem;">
       <div>
         By default this site uses a fake Mirage server with test data.

@@ -736,6 +736,12 @@ function generateFullBrackets ({ brackets=[], teams=[] }) {
         battle.parentBattleId1 = battlesFromOtherBrackets[Math.floor(Math.random() * battlesFromOtherBrackets.length)]
         battle.parentBattleId2 = battlesFromOtherBrackets[Math.floor(Math.random() * battlesFromOtherBrackets.length)]
       }
+      // to test having a previous battle but no result yet, delete the teams from the last battle
+      const lastBattle = lastBracket.rounds[0].battles[lastBracket.rounds[0].battles.length - 1]
+      if (lastBattle) {
+        lastBattle.team1Id = null
+        lastBattle.team2Id = null
+      }
     }
   }
   return fullBrackets

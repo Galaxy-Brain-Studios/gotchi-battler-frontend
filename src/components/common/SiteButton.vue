@@ -152,6 +152,7 @@
 .site-button__container--is-active {
   --button-color-border: #FFD020;
 }
+
 .site-button__button {
   display: block;
   clip-path: var(--button-clip-path);
@@ -166,6 +167,17 @@
   text-transform: uppercase;
   color: var(--button-color-text);
 }
+
+.site-button__container--small {
+  --button-corner-size: 0.25rem;
+}
+.site-button__container--small .site-button__button {
+  padding: calc((2rem - 1.125rem - (2px * 2)) / 2) 0.5rem; /* final height: 2rem, subtract line-height and borders to get padding */
+  font-size: 0.875rem;
+  line-height: 1.125rem;
+  letter-spacing: 0.02625rem;
+}
+
 .site-button__button--link:link,
 .site-button__button--link:visited,
 .site-button__button--link:hover,
@@ -173,7 +185,6 @@
 .site-button__button--link:active {
   color: var(--button-color-text);
 }
-
 
 .site-button--has-icon {
   display: flex;

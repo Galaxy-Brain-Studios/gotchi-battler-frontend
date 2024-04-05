@@ -282,6 +282,7 @@
           <td class="team__ranking">
             <SiteButtonBox
               :active="isConnected && address === team.owner"
+              small
               class="team__ranking-badge"
             >
               {{ team.ranking }}

@@ -13,6 +13,10 @@
     active: {
       type: Boolean,
       default: false
+    },
+    small: {
+      type: Boolean,
+      default: false
     }
   })
 </script>
@@ -21,6 +25,7 @@
   <div
     class="site-button__container site-button-box"
     :class="{
+      'site-button__container--small': small,
       'site-button__container--is-active': active,
       'site-button__container--is-grouped': !!grouped,
       'site-button__container--is-grouped--start': grouped === 'start',

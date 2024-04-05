@@ -179,7 +179,7 @@
     const nowMs = tickerDate.value - 0
     return gotchis.value.map(gotchi => ({
       ...gotchi,
-      lendingUrl: `https://app.aavegotchi.com/lending/${encodeURIComponent(gotchi.lendingId)}`,
+      lendingUrl: `https://dapp.aavegotchi.com/lending/aavegotchis?id=${encodeURIComponent(gotchi.lendingId)}`,
       lendingEndsEarly: (nowMs + gotchi.lendingPeriod * 1000) < tournamentEndMs
     }))
   })

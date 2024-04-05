@@ -597,7 +597,7 @@ export function makeServer({ environment = 'development' } = {}) {
             crit: 80 + i%10,
             availableSpecials: AVAILABLE_SPECIALS.slice(0, AVAILABLE_SPECIALS.length - i % AVAILABLE_SPECIALS.length),
             rarityType: AVAILABLE_RARITIES[i % AVAILABLE_RARITIES.length],
-            lendingId: 2000 + i,
+            lendingId: 1780810 + i,
             lendingGhstPrice: 0 + i,
             lendingPeriod: 60 * 60 * 12 * i
           })

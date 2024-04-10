@@ -1,4 +1,5 @@
 <script setup>
+  import orderBy from 'lodash.orderby'
   import { computed } from 'vue'
   import { storeToRefs } from 'pinia'
   import { useTournamentsStore } from '../../data/tournamentsStore'
@@ -21,17 +22,23 @@
   const { tournaments, fetchStatus } = storeToRefs(store)
   store.fetchTournaments()
 
+  const ALL_TYPE = 'all'
+
   const tournamentsWithStatus = computed(() => {
     if (!fetchStatus.value.loaded || !tournaments.value) { return null }
-      return tournaments.value.map(tournament => ({
+    return orderBy(
+      tournaments.value.map(tournament => ({
         ...tournament,
         type: tournament.status
-      }))
+      })),
+      ['startDate'],
+      ['desc']
+    )
   })
 
   const filteredTournaments = computed(() => {
       if (!fetchStatus.value.loaded || !tournamentsWithStatus.value) { return null }
-      if (!props.type) { return tournamentsWithStatus.value }
+      if (!props.type || props.type === ALL_TYPE) { return tournamentsWithStatus.value }
       return tournamentsWithStatus.value.filter(tournament => tournament.type === props.type)
   })
 
@@ -42,7 +49,7 @@
   })
 
   const emptyMessage = computed(() => {
-    if (props.type) {
+    if (props.type && props.type !== ALL_TYPE) {
       return `There are no ${props.type} tournaments`
     }
     return 'There are no tournaments'
@@ -77,8 +84,11 @@
       v-if="type"
       class="tournaments_summary"
     >
-      {{ tournamentsToDisplay.length }}
-      {{ type }}
+      <b>
+        {{ tournamentsToDisplay.length }}
+        {{ type !== ALL_TYPE ? type : '' }}
+      </b>
+      {{ tournamentsToDisplay.length === 1 ? 'tournament' : 'tournaments' }}
     </div>
     <ol
       class="tournaments__list list-reset"
@@ -150,13 +160,17 @@
   .tournaments__error,
   .tournaments__empty {
     text-align: center;
-    font-size: 1.5rem;
+    font-size: 1.125rem;
   }
   .tournaments_summary {
     margin-bottom: 2rem;
-    font-size: 1.5rem;
+    font-size: 1.125rem;
+    line-height: 2rem;
+  }
+  .tournaments_summary b {
     text-transform: capitalize;
   }
+
   .tournaments__list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(17.5rem, 1fr));
@@ -172,6 +186,7 @@
   }
   .tournament::before {
     content: '🏆';
+    z-index: 1;
     display: block;
     position: absolute;
     right: calc(-1 * var(--tournament-border-width));

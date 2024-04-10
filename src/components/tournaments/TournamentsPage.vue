@@ -14,12 +14,18 @@
 <template>
   <main>
     <SiteButtonGroup
-      :numButtons="4"
+      :numButtons="5"
       class="tournament_types"
     >
       <SiteButtonLink
-        :to="{ name: 'tournaments-type', params: { type: 'upcoming' } }"
+        :to="{ name: 'tournaments-type', params: { type: 'all' } }"
         grouped="start"
+      >
+        All
+      </SiteButtonLink>
+      <SiteButtonLink
+        :to="{ name: 'tournaments-type', params: { type: 'upcoming' } }"
+        grouped="middle"
       >
         Upcoming
       </SiteButtonLink>

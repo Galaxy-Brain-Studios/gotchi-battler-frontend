@@ -28,7 +28,7 @@ const router = createRouter({
       redirect: {
         name: 'tournaments-type',
         params: {
-          type: 'upcoming'
+          type: 'all'
         }
       },
       children: [

@@ -10,12 +10,34 @@
     grouped: {
       type: String,
       default: null
+    },
+    /* set to use a plain anchor link instead of RouterLink (TODO: add support for icon/grouped too, when/if this is needed) */
+    href: {
+      type: String,
+      default: null
+    },
+    target: {
+      type: String,
+      default: null
     }
   })
 </script>
 
 <template>
+  <div
+    v-if="href"
+    class="site-button__container site-button__container--interactive"
+  >
+    <a
+      :href="href"
+      :target="target"
+      class="site-button__button site-button__button--link link-reset"
+    >
+      <slot />
+    </a>
+  </div>
   <RouterLink
+    v-else
     custom
     v-slot="{ isActive, href, navigate }"
   >
@@ -40,6 +62,7 @@
         :class="{
           'site-button--has-icon': icon
         }"
+        :target="target"
         @click="navigate"
       >
         <SiteIcon

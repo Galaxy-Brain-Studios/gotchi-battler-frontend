@@ -153,8 +153,8 @@
   }
   .tournaments__list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(17.5rem, 1fr));
+    gap: 1.5rem;
   }
   .tournament  {
     --tournament-color-border: var(--c-light-blue);
@@ -162,7 +162,6 @@
     --tournament-image-opacity: 1;
     --tournament-color-date-text: var(--c-medium-pink);
     position: relative;
-    min-height: 22rem;
     border: 0.2rem solid var(--tournament-color-border);
     background: var(--tournament-color-background);
   }

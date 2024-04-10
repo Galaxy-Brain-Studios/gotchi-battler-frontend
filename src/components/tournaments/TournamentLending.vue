@@ -323,6 +323,7 @@
                         <SiteSelect
                           v-model="filter.trait"
                           aria-label="Trait"
+                          withBorder
                         >
                           <option
                             v-for="option in TRAITS"
@@ -335,6 +336,7 @@
                         <SiteSelect
                           v-model="filter.operator"
                           aria-label="Operator"
+                          withBorder
                         >
                           <option
                             v-for="option in OPERATORS"
@@ -398,6 +400,7 @@
                       <SiteSelect
                         v-model="filters.price.operator"
                         aria-label="Operator"
+                        withBorder
                       >
                         <option
                           v-for="option in OPERATORS"
@@ -797,8 +800,10 @@
   .lending-gotchis__filter-price-fields {
     display: grid;
     grid-template-columns: auto 10rem auto;
-    align-items: center;
     column-gap: 1rem;
+  }
+  .lending-gotchis__filter-price-fields > *:last-child {
+    align-self: center;
   }
   .lending-gotchis__filter-price-footer {
     margin-top: 1.5rem;

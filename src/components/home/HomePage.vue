@@ -209,7 +209,7 @@
   .tournaments-link {
     flex: none;
   }
-  section.tournaments :last-child {
+  section.tournaments > :last-child {
     width: 100%;
   }
 

@@ -87,19 +87,25 @@
         v-for="tournament in tournamentsToDisplay"
         :key="tournament.id"
         class="tournament"
-        :class="{
-          'tournament--type-active': tournament.type === 'active',
-          'tournament--type-upcoming': tournament.type === 'upcoming',
-          'tournament--type-registering': tournament.type === 'registering',
-          'tournament--type-completed': tournament.type === 'completed'
-        }"
       >
         <div
           class="tournament__image"
           :style="{
             '--image-url': `url(${escapeUrl(tournament.image)})`
           }"
-        />
+        >
+          <div
+            class="tournament__type-badge"
+            :class="{
+              'tournament__type-badge--active': tournament.type === 'active',
+              'tournament__type-badge--upcoming': tournament.type === 'upcoming',
+              'tournament__type-badge--registering': tournament.type === 'registering',
+              'tournament__type-badge--completed': tournament.type === 'completed'
+            }"
+          >
+            {{ tournament.type }}
+          </div>
+        </div>
         <div class="tournament__info">
           <RouterLink
             :to="{ name: 'tournament', params: { id: tournament.id } }"
@@ -109,24 +115,24 @@
           </RouterLink>
           <div class="tournament__date">
             <template v-if="tournament.type === 'completed'">
-              Ended: {{ formatDateTime(tournament.endDate) }}
+              Ended: <br><b>{{ formatDateTime(tournament.endDate) }}</b>
             </template>
             <template v-else-if="tournament.type === 'active'">
               Live
             </template>
             <template v-else-if="tournament.type === 'upcoming' || tournament.type === 'registering'">
-              Start: {{ formatDateTime(tournament.startDate) }}
+              Start: <br><b>{{ formatDateTime(tournament.startDate) }}</b>
             </template>
             <template v-else>
-              Start: {{ formatDateTime(tournament.startDate) }}
-              <br>End: {{ formatDateTime(tournament.endDate) }}
+              Start: <br><b>{{ formatDateTime(tournament.startDate) }}</b>
+              <br>End: <br><b>{{ formatDateTime(tournament.endDate) }}</b>
             </template>
           </div>
           <div class="tournament__num-teams">
             <SiteIcon
               name="ghost"
-              :width="0.875"
-              :height="1.1875"
+              :width="0.73684"
+              :height="1"
             />
             <div>
               {{ tournament.numberOfTeams }}
@@ -156,70 +162,91 @@
     grid-template-columns: repeat(auto-fill, minmax(17.5rem, 1fr));
     gap: 1.5rem;
   }
-  .tournament  {
+  .tournament {
+    --tournament-border-width: 2px;
     --tournament-color-border: var(--c-light-blue);
     --tournament-color-background: var(--c-medium-blue);
-    --tournament-image-opacity: 1;
-    --tournament-color-date-text: var(--c-medium-pink);
     position: relative;
-    border: 0.2rem solid var(--tournament-color-border);
+    border: var(--tournament-border-width) solid var(--tournament-color-border);
     background: var(--tournament-color-background);
   }
-  .tournament:hover {
-    --tournament-color-border-opacity: 1;
-    --tournament-color-background-opacity: 1;
-  }
-  .tournament:focus-within {
-    --tournament-color-border-opacity: 1;
-    --tournament-color-background-opacity: 1;
-  }
-  .tournament--type-active {
-    --tournament-color-border-opacity: 0.5;
-    --tournament-color-background-opacity: 0.5;
-    --tournament-color-border: rgba(var(--c-light-yellow-rgb), var(--tournament-color-border-opacity));
-    --tournament-color-background: rgba(var(--c-medium-yellow-rgb), var(--tournament-color-background-opacity));
-    --tournament-color-date-text: var(--c-light-yellow);
-  }
-  .tournament--type-upcoming,
-  .tournament--type-completed {
-    --tournament-color-border-opacity: 0.5;
-    --tournament-color-background-opacity: 0.5;
-    --tournament-color-border: rgba(var(--c-light-blue-rgb), var(--tournament-color-border-opacity));
-    --tournament-color-background: rgba(var(--c-medium-blue-rgb), var(--tournament-color-background-opacity));
-    --tournament-image-opacity: 0.5;
-    --tournament-color-date-text: var(--c-white);
+  .tournament::before {
+    content: '🏆';
+    display: block;
+    position: absolute;
+    right: calc(-1 * var(--tournament-border-width));
+    top: calc(-1 * var(--tournament-border-width));
+    width: 2rem;
+    height: 1.5rem;
+    text-align: center;
+    background-color: var(--tournament-color-border);
+    font-size: 1rem;
+    line-height: 1.5rem;
   }
   .tournament__image {
-    height: 13rem;
-    opacity: var(--tournament-image-opacity);
+    position: relative;
+    height: 11.5rem;
     background-color: var(--tournament-color-background);
     background-image: var(--image-url);
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
   }
+  .tournament__type-badge {
+    --tournament-type-badge-color-background: var(--c-white);
+    --tournament-type-badge-color-text: var(--c-black);
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    padding: 0.12rem 0.5rem;
+    background-color: var(--tournament-type-badge-color-background);
+    color: var(--tournament-type-badge-color-text);
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    letter-spacing: 0.02625rem;
+  }
+  .tournament__type-badge--upcoming {
+    --tournament-type-badge-color-background: var(--c-bright-yellow);
+    --tournament-type-badge-color-text: var(--c-black);
+  }
+  .tournament__type-badge--registering {
+    --tournament-type-badge-color-background: #D9322A;
+    --tournament-type-badge-color-text: var(--c-white);
+  }
+  .tournament__type-badge--active {
+    --tournament-type-badge-color-background: #53BC34;
+    --tournament-type-badge-color-text: var(--c-white);
+  }
+  .tournament__type-badge--completed {
+    --tournament-type-badge-color-background: #243DAE;
+    --tournament-type-badge-color-text: var(--c-white);
+  }
   .tournament__info {
-    padding: 1rem 1.5rem 1.5rem;
+    padding: 1rem;
   }
   .tournament__name {
     margin-top: 1rem;
-    font-size: 1.5rem;
-    line-height: 2rem;
-    letter-spacing: 0.045rem;
+    font-size: 1.125rem;
+    line-height: 1.5rem;
+    letter-spacing: 0.03375rem;
   }
   .tournament__date {
-    margin-top: 0.25rem;
-    color: var(--tournament-color-date-text);
+    margin-top: 0.5rem;
+    color: var(--c-white);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    letter-spacing: 0.02625rem;
   }
   .tournament__num-teams {
-    margin-top: 1.5rem;
+    margin-top: 0.5rem;
     display: flex;
     align-items: center;
     column-gap: 0.75rem;
     color: var(--c-light-blue);
-    font-size: 1.125rem;
+    font-size: 0.875rem;
     line-height: 1.5rem;
-    letter-spacing: 0.03375rem;
+    letter-spacing: 0.02625rem;
   }
   .tournament__num-teams > * {
     flex: none;

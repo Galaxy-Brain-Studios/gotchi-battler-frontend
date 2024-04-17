@@ -1,6 +1,7 @@
 <script setup>
   import { ref, computed } from 'vue'
   import debounce from 'lodash.debounce'
+  import orderBy from 'lodash.orderby'
   import { storeToRefs } from 'pinia'
   import { useAccountStore } from '../../data/accountStore'
   import { useTournamentStore } from '../../data/tournamentStore'
@@ -62,7 +63,7 @@
         }))
       }).flat()
     }).flat()
-    return result
+    return orderBy(result, ['startDate'], ['asc'])
   })
 
   const filteredBattles = computed(() => {

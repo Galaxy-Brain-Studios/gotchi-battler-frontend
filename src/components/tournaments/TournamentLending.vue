@@ -531,8 +531,8 @@
                 <template #popper>
                   <div class="gotchi-lending-warning">
                     <div>
-                      This lending can be ended before this tournament starts, so it
-                      <b>may not be available at the time the Gotchi Battler snapshot is taken!</b>
+                      Warning: as the rental period for this gotchi ends before registration closes,
+                      the wearables for this gotchi could be changed/removed for the tournament.
                       <br>Are you sure you still want to borrow this gotchi?
                     </div>
                     <a

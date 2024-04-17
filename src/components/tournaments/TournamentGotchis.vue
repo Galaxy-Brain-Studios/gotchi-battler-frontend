@@ -141,14 +141,14 @@
             v-if="isConnected"
             v-model="onlyShowMine"
           >
-            My team gotchis only
+            My team's gotchis only
           </SiteCheckbox>
           <div class="tournament-gotchis__search-teams">
             <SiteTextField
               v-model="query"
               search
               subtle
-              placeholder="Find gotchi by ID or name"
+              placeholder="Search gotchi id or name"
               class="tournament-gotchis__search-field"
               @input="debouncedSetQuery"
             />

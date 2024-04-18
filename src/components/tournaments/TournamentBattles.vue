@@ -48,6 +48,8 @@
     return tournament.value.teams.filter(team => team.owner.toLowerCase() === addressLc).map(team => team.id)
   })
 
+  const myTeamIdsLookup = computed(() => Object.fromEntries(Object.values(myTeamIds.value).map(id => [id, true])))
+
   const battles = computed(() => {
     if (!fullBrackets.value || !tournament.value) { return [] }
     const teamsById = Object.fromEntries(tournament.value.teams.map(team => [team.id, team]))
@@ -194,7 +196,8 @@
               <td
                 class="word-break battle-team"
                 :class="{
-                  'battle-team--winner': battle.winnerId && (battle.winnerId === battle.team1Id)
+                  'battle-team--winner': battle.winnerId && (battle.winnerId === battle.team1Id),
+                  'battle-team--mine': myTeamIdsLookup[battle.team1Id]
                 }"
               >
                 {{ battle.team1Name }}
@@ -202,7 +205,8 @@
               <td
                 class="word-break battle-team"
                 :class="{
-                  'battle-team--winner': battle.winnerId && (battle.winnerId === battle.team2Id)
+                  'battle-team--winner': battle.winnerId && (battle.winnerId === battle.team2Id),
+                  'battle-team--mine': myTeamIdsLookup[battle.team2Id]
                 }"
               >
                 {{ battle.team2Name }}
@@ -270,8 +274,10 @@
 .battle-id a {
   opacity: 0.6;
 }
-.battle-team--winner {
+.battle-team--mine {
   color: var(--c-bright-yellow);
+}
+.battle-team--winner {
   font-weight: bold;
 }
 .battle-team--winner::before {

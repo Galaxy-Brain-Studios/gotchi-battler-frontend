@@ -2,6 +2,8 @@
   import { storeToRefs } from 'pinia'
   import { useBattleAnalyserStore } from '../../data/battleStore'
   import SiteError from '@/components/common/SiteError.vue'
+  import SiteButtonIcon from '../common/SiteButtonIcon.vue'
+  import SitePopupHoverMenu from '../common/SitePopupHoverMenu.vue'
   import BattleField from '../battle/BattleField.vue'
 
   const props = defineProps({
@@ -48,16 +50,34 @@
           </dd>
         </div>
         <div>
-          <dt>
-            Team 1 Win rate
+          <dt class="analyser-battle__win-rate-title">
+            <div class="win-rate-text">Team 1 Win rate</div>
+            <SitePopupHoverMenu class="analyser-battle__win-rate-popup">
+              <SiteButtonIcon
+                iconName="info"
+                label="about"
+              />
+              <template #popper>
+                This win rate shows what percentage your team wins over 200 battles.
+              </template>
+            </SitePopupHoverMenu>
           </dt>
           <dd>
             {{ battle.team1WinRate }}%
           </dd>
         </div>
         <div>
-          <dt>
-            Team 2 Win rate
+          <dt class="analyser-battle__win-rate-title">
+            <div class="analyser-battle__win-rate-text">Team 2 Win rate</div>
+            <SitePopupHoverMenu class="analyser-battle__win-rate-popup">
+              <SiteButtonIcon
+                iconName="info"
+                label="about"
+              />
+              <template #popper>
+                This win rate shows what percentage your team wins over 200 battles.
+              </template>
+            </SitePopupHoverMenu>
           </dt>
           <dd>
             {{ battle.team2WinRate }}%
@@ -99,5 +119,17 @@
     line-height: 1.5rem;
     letter-spacing: 0.075rem;
     font-weight: bold;
+  }
+  .analyser-battle__win-rate-title {
+    display: flex;
+    align-items: center;
+    column-gap: 0.25rem;
+  }
+  .analyser-battle__win-rate-text {
+    flex: 1 1 auto;
+  }
+  .analyser-battle__win-rate-popup {
+    flex: none;
+    display: grid;
   }
 </style>

@@ -31,8 +31,8 @@
     <slot>
       <SiteIcon
         :name="iconName"
-        :width="0.75"
-        :height="0.75"
+        :width="1"
+        :height="1"
       />
     </slot>
   </button>
@@ -44,7 +44,7 @@
     place-items: center;
     opacity: 0.6;
     color: var(--c-white);
-    padding: 0.3rem;
+    padding: 0;
   }
   .site-button-icon--active {
     opacity: 1;

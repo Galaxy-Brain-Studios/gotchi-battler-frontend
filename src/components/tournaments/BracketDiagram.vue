@@ -542,6 +542,7 @@
   .bracket-diagram__tree-node--next-bracket {
     align-items: center;
     justify-content: center;
+    height: auto; /* override fixed height, allow this node to expand downwards for long bracket names */
   }
   .bracket-diagram__next-bracket {
     flex: 0 1 auto;

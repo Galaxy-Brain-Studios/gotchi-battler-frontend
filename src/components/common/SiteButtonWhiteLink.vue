@@ -51,6 +51,7 @@
       <a
         :href="href"
         :aria-current="isActive ? 'page' : undefined"
+        :target="target"
         class="site-button-white__button site-button-white__button--link link-reset"
         @click="navigate"
       >

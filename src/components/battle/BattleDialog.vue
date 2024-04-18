@@ -3,7 +3,8 @@
   import { useBattleStore } from '../../data/battleStore'
   import { formatDateTime } from '../../utils/date'
   import SiteDialog from '../common/SiteDialog.vue'
-  import SiteButtonLink from '../common/SiteButtonLink.vue'
+  import SiteIcon from '../common/SiteIcon.vue'
+  import SiteButtonWhiteLink from '../common/SiteButtonWhiteLink.vue'
   import BattleField from './BattleField.vue'
 
   const props = defineProps({
@@ -54,6 +55,20 @@
             (Unknown Date)
           </template>
         </div>
+        <div
+          v-if="battle?.winnerId"
+          class="battle__link-analyser"
+        >
+          <SiteButtonWhiteLink
+            :to="{ name: 'analyser', params: { id } }"
+            target="_blank"
+          >
+            <div class="battle__link-analyser-content">
+              Analytics
+              <SiteIcon name="new-window" />
+            </div>
+          </SiteButtonWhiteLink>
+        </div>
       </div>
     </template>
     <div
@@ -72,26 +87,25 @@
       <BattleField
         :battle="battle"
       />
-      <div
-        v-if="battle?.winnerId"
-        class="battle__link-analyser"
-      >
-        <SiteButtonLink :to="{ name: 'analyser', params: { id } }">
-          View Analytics
-        </SiteButtonLink>
-      </div>
     </template>
   </SiteDialog>
 </template>
 
 <style scoped>
   .battle__dialog-header {
-    display: grid;
-    grid-template-columns: minmax(0, auto) minmax(0, auto);
+    display: flex;
     gap: 1.5rem;
     align-items: center;
-    justify-content: start;
+    justify-content: flex-start;
   }
+  .battle__title,
+  .battle__date {
+    flex: 0 1 auto;
+  }
+  .battle__link-analyser {
+    flex: none;
+  }
+
   .battle__title {
     color: var(--c-bright-yellow);
     font-size: 1.5rem;
@@ -99,11 +113,13 @@
     letter-spacing: 0.045rem;
   }
   .battle__date {
+    line-height: 1.5rem;
     color: var(--c-medium-pink);
   }
-  .battle__link-analyser {
-    margin-top: 1.5rem;
-    display: grid;
-    justify-content: center;
+  .battle__link-analyser-content {
+    display: flex;
+    align-items: center;
+    column-gap: 0.5rem;
+    text-transform: none;
   }
 </style>

@@ -82,6 +82,18 @@
     }
     return localIds
   })
+  const battleBracketIds = computed(() => {
+    if (!fullBracketsFetchStatus.value.loaded) { return null }
+    const bracketIds = {}
+    for (const bracket of fullBrackets.value) {
+      for (const round of (bracket.rounds || [])) {
+        for (const battle of (round.battles || [])) {
+          bracketIds[battle.id] = bracket.id
+        }
+      }
+    }
+    return bracketIds
+  })
 
   const bracket = computed(() => {
     if (!fullBracketsFetchStatus.value.loaded) { return null }
@@ -113,7 +125,15 @@
         />
       </div>
       <template v-if="tournamentFetchStatus.loaded">
-        <h1 class="word-break">{{ tournament.name }}</h1>
+        <h1 class="word-break">
+          {{ tournament.name }}
+          <span
+            v-if="bracket"
+            style="font-weight: normal;"
+          >
+            : {{ bracket.name }}
+          </span>
+        </h1>
       </template>
     </div>
     <div
@@ -146,6 +166,7 @@
         :nextBracketName="nextBracket?.name"
         :teams="tournament.teams"
         :battleLocalIds="battleLocalIds"
+        :battleBracketIds="battleBracketIds"
       />
       <BattleDialog
         v-if="battleId"

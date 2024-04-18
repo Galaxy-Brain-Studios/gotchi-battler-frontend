@@ -31,6 +31,11 @@
       type: Object,
       default: null
     },
+    /* optionally provide map of battle ID => bracket ID, to display links to battles from previous brackets */
+    battleBracketIds: {
+      type: Object,
+      default: null
+    },
     /* optionally provide next bracket details */
     nextBracketId: {
       type: [String, Number],
@@ -391,7 +396,14 @@
               [`bracket-diagram__previous-bracket-battle--${index + 1}`]: true
             }"
           >
-            #{{ battleLocalIds[node.data.fromBattles[index]] }}
+            <RouterLink
+              :to="{ name: 'tournament-bracket', params: { id: tournamentId, bracketId: battleBracketIds[node.data.fromBattles[index]] } }"
+              class="link-reset link-reset--hover-underline bracket-diagram__previous-bracket-battle-link"
+            >
+              <div>
+                #{{ battleLocalIds[node.data.fromBattles[index]] }}
+              </div>
+            </RouterLink>
           </div>
         </template>
       </div>
@@ -487,6 +499,22 @@
   .bracket-diagram__team--mine + .bracket-diagram__previous-bracket-battle {
     --bd-previous-bracket-battle-color: var(--c-light-yellow);
     z-index: 1;
+  }
+
+  .bracket-diagram__previous-bracket-battle-link:hover {
+    color: var(--c-white);
+  }
+  .bracket-diagram__previous-bracket-battle-link:hover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(var(--c-black-rgb), 0.75);
+  }
+  .bracket-diagram__previous-bracket-battle-link > div {
+    position: relative; /* above before-background */
   }
 
   .bracket-diagram__tree-node {

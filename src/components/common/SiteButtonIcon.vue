@@ -13,6 +13,10 @@
     iconName: {
       type: String,
       default: null
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   })
 </script>
@@ -24,6 +28,7 @@
     :class="{
       'site-button-icon--active': active
     }"
+    :disabled="disabled"
   >
     <span class="sr-only">
       {{ label }}

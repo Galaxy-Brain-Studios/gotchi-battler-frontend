@@ -234,6 +234,12 @@
       <div v-else>
         <div class="lending-gotchis__header">
           <div class="lending-gotchis__count">
+            <SiteButtonIcon
+              iconName="refresh"
+              label="Refetch available gotchis from server"
+              :disabled="fetchGotchisStatus.loading"
+              @click="fetchGotchis"
+            />
             {{ filteredAndSortedGotchis.length }} Available
           </div>
           <div class="lending-gotchis__search">
@@ -583,6 +589,9 @@
     font-size: 1rem;
     line-height: 1.5rem;
     letter-spacing: 0.03rem;
+    display: flex;
+    align-items: center;
+    column-gap: 0.5rem;
   }
 
   .lending-gotchis__list {

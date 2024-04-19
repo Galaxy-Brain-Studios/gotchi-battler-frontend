@@ -70,7 +70,7 @@
     () => revealedRoundIndex.value,
     newIndex => {
       const key = getRevealedRoundIndexKey({ tournamentId: props.tournamentId, bracketId: props.bracketId })
-      if (newIndex) {
+      if (newIndex !== null) {
         localStorage.setItem(key,`${newIndex}`)
       } else {
         localStorage.removeItem(key)
@@ -82,18 +82,18 @@
     revealedRoundIndex.value = roundIndex
   }
   const revealFinalRound = function () {
-    revealedRoundIndex.value = props.rounds.length
+    revealedRoundIndex.value = props.rounds.length - 1
   }
 
   const roundIdsWithRevealedTeams = computed(() => {
     let revealToIndex = revealedRoundIndex.value || 0
-    return props.rounds.slice(0, revealToIndex + 1).map(round => round.id)
+    return props.rounds.slice(0, revealToIndex + 2).map(round => round.id)
   })
   const roundIdsWithRevealedWinners = computed(() => {
-    // We only want to reveal winners up to (but not including) the revealedRoundIndex
+    // We want to reveal winners up to and including the revealedRoundIndex, which may be 0
     let revealToIndex = revealedRoundIndex.value
-    if (revealToIndex) {
-      return props.rounds.slice(0, revealToIndex).map(round => round.id)
+    if (revealToIndex !== null) {
+      return props.rounds.slice(0, revealToIndex + 1).map(round => round.id)
     }
     return []
   })
@@ -313,7 +313,7 @@
               </template>
             </div>
           </div>
-          <div v-if="index > 0 && round.status === 'completed' && !roundIdsWithRevealedTeams.includes(round.id)">
+          <div v-if="round.status === 'completed' && !roundIdsWithRevealedWinners.includes(round.id)">
             <SiteButtonWhite
               small
               @click="revealRound(index)"

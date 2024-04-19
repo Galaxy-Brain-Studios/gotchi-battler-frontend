@@ -32,6 +32,8 @@
 
   const onlyShowMine = ref(false)
 
+  const showWinners = ref(false)
+
   const query = ref('')
   const debouncedQuery = ref('')
   function setQuery () {
@@ -132,6 +134,11 @@
         >
           My matches only
         </SiteCheckbox>
+        <SiteCheckbox
+          v-model="showWinners"
+        >
+          Reveal Winners
+        </SiteCheckbox>
         <div class="tournament-battles__search">
           <SiteTextField
             v-model="query"
@@ -196,7 +203,7 @@
               <td
                 class="word-break battle-team"
                 :class="{
-                  'battle-team--winner': battle.winnerId && (battle.winnerId === battle.team1Id),
+                  'battle-team--winner': showWinners && battle.winnerId && (battle.winnerId === battle.team1Id),
                   'battle-team--mine': myTeamIdsLookup[battle.team1Id]
                 }"
               >
@@ -205,7 +212,7 @@
               <td
                 class="word-break battle-team"
                 :class="{
-                  'battle-team--winner': battle.winnerId && (battle.winnerId === battle.team2Id),
+                  'battle-team--winner': showWinners && battle.winnerId && (battle.winnerId === battle.team2Id),
                   'battle-team--mine': myTeamIdsLookup[battle.team2Id]
                 }"
               >
@@ -214,11 +221,17 @@
               <td
                 class="battle-result"
                 :class="{
-                  'battle-result--available': !!battle.winnerId
+                  'battle-result--available': !!battle.winnerId,
+                  'battle-result--hidden': !showWinners && !!battle.winnerId
                 }"
               >
                 <template v-if="battle.winnerId">
-                  {{ battle.winnerId === battle.team1Id ? 'Team 1 Win' : 'Team 2 Win' }}
+                  <template v-if="!showWinners">
+                    hidden
+                  </template>
+                  <template v-else>
+                    {{ battle.winnerId === battle.team1Id ? 'Team 1 Win' : 'Team 2 Win' }}
+                  </template>
                 </template>
                 <template v-else>
                   N/A
@@ -291,5 +304,11 @@
 }
 .battle-result--available {
   font-weight: bold;
+}
+.battle-result--hidden {
+  font-weight: normal;
+  text-transform: none;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.6);
 }
 </style>

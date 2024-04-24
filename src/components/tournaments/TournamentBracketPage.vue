@@ -70,9 +70,40 @@
     }
   }))
 
+  const battleLocalIds = computed(() => {
+    if (!fullBracketsFetchStatus.value.loaded) { return null }
+    const localIds = {}
+    for (const bracket of fullBrackets.value) {
+      for (const round of (bracket.rounds || [])) {
+        for (const battle of (round.battles || [])) {
+          localIds[battle.id] = battle.localId
+        }
+      }
+    }
+    return localIds
+  })
+  const battleBracketIds = computed(() => {
+    if (!fullBracketsFetchStatus.value.loaded) { return null }
+    const bracketIds = {}
+    for (const bracket of fullBrackets.value) {
+      for (const round of (bracket.rounds || [])) {
+        for (const battle of (round.battles || [])) {
+          bracketIds[battle.id] = bracket.id
+        }
+      }
+    }
+    return bracketIds
+  })
+
   const bracket = computed(() => {
     if (!fullBracketsFetchStatus.value.loaded) { return null }
     return fullBrackets.value.find(bracket => `${bracket.id}` === `${props.bracketId}`)
+  })
+
+  const nextBracket = computed(() => {
+    const nextBracketId = bracket.value?.nextBracket
+    if (!nextBracketId) { return null }
+    return fullBrackets.value.find(bracket => `${bracket.id}` === `${nextBracketId}`)
   })
 
   const battleStartDate = computed(() => {
@@ -85,14 +116,25 @@
 
 <template>
   <main>
-    <div class="nav-back">
-      <SiteBackLink
-        :to="backRoute"
-        class="word-break"
-      >
-        Back to
-        {{ tournamentFetchStatus.loaded ? tournament.name : 'Tournament' }}
-      </SiteBackLink>
+    <div class="bracket__header">
+      <div class="nav-back">
+        <SiteBackLink
+          :to="backRoute"
+          class="word-break"
+          :aria-label="`Back to ${tournamentFetchStatus.loaded ? tournament.name : 'Tournament'}`"
+        />
+      </div>
+      <template v-if="tournamentFetchStatus.loaded">
+        <h1 class="word-break">
+          {{ tournament.name }}
+          <span
+            v-if="bracket"
+            style="font-weight: normal;"
+          >
+            : {{ bracket.name }}
+          </span>
+        </h1>
+      </template>
     </div>
     <div
       v-if="fullBracketsFetchStatus.loading"
@@ -120,7 +162,11 @@
         :tournamentId="id"
         :bracketId="bracket.id"
         :rounds="bracket.rounds"
+        :nextBracketId="nextBracket?.id"
+        :nextBracketName="nextBracket?.name"
         :teams="tournament.teams"
+        :battleLocalIds="battleLocalIds"
+        :battleBracketIds="battleBracketIds"
       />
       <BattleDialog
         v-if="battleId"
@@ -133,7 +179,19 @@
 </template>
 
 <style scoped>
-  .nav-back {
+  .bracket__header {
     margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  h1 {
+    margin: 0;
+    color: var(--c-white);
+    font-weight: bold;
+    font-size: 2rem;
+    line-height: 2.5rem;
+    letter-spacing: 0.06rem;
   }
 </style>

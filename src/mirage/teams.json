@@ -228,7 +228,52 @@
             "resist": 0
         },
         "front5": null,
-        "front5Gotchi": null
+        "front5Gotchi": null,
+        "sub1": 6,
+        "sub1Gotchi":
+        {
+            "id": 6,
+            "onchainId": 6,
+            "name": "Sir Humphrey",
+            "svgFront": "/dev/gotchi_g6_front.svg",
+            "svgBack": "/dev/gotchi_g6_back.svg",
+            "svgLeft": "/dev/gotchi_g6_left.svg",
+            "svgRight": "/dev/gotchi_g6_right.svg",
+            "brs": 569,
+            "kinship": 829,
+            "level": 6,
+            "xp": 820,
+            "nrg": 21,
+            "agg": 79,
+            "spk": 88,
+            "brn": 76,
+            "eys": 3,
+            "eyc": 11,
+            "availableSpecials":
+            [
+                {
+                    "id": 1
+                },
+                {
+                    "id": 4
+                },
+                {
+                    "id": 5
+                }
+            ],
+            "specialId": 4,
+            "speed": 146,
+            "health": -228,
+            "accuracy": 71,
+            "evade": 23,
+            "physical": 150,
+            "magic": 380,
+            "armor": 1,
+            "crit": 1,
+            "resist": 0
+        },
+        "sub2": null,
+        "sub2Gotchi": null
     },
     {
         "id": 2,
@@ -517,131 +562,8 @@
         "name": "Mock Team 17",
         "owner": "0xd8D4BDb89D64B7A2971Dc987DD67F101fea6c7D8",
         "leader": 231,
-        "back1": null,
-        "back1Gotchi": null,
-        "back2": 230,
-        "back2Gotchi":
-        {
-            "id": 230,
-            "onchainId": 230,
-            "name": "",
-            "svgFront": "/dev/gotchi_g2_front.svg",
-            "svgBack": "/dev/gotchi_g2_back.svg",
-            "svgLeft": "/dev/gotchi_g2_left.svg",
-            "svgRight": "/dev/gotchi_g2_right.svg",
-            "brs": 569,
-            "kinship": 829,
-            "level": 6,
-            "xp": 820,
-            "nrg": 21,
-            "agg": 79,
-            "spk": 88,
-            "brn": 76,
-            "eys": 3,
-            "eyc": 11,
-            "availableSpecials":
-            [
-                {
-                    "id": 1
-                },
-                {
-                    "id": 4
-                },
-                {
-                    "id": 5
-                }
-            ],
-            "specialId": 1,
-            "speed": 146,
-            "health": -228,
-            "accuracy": 71,
-            "evade": 23,
-            "physical": 150,
-            "magic": 380,
-            "armor": 1,
-            "crit": 1,
-            "resist": 0
-        },
-        "back3": 231,
-        "back3Gotchi":
-        {
-            "id": 231,
-            "onchainId": 231,
-            "name": "Lead",
-            "svgFront": "/dev/gotchi_g10_front.svg",
-            "svgBack": "/dev/gotchi_g10_back.svg",
-            "svgLeft": "/dev/gotchi_g10_left.svg",
-            "svgRight": "/dev/gotchi_g10_right.svg",
-            "brs": 540,
-            "kinship": 1000,
-            "level": 3,
-            "xp": 100,
-            "nrg": -1,
-            "agg": 0,
-            "spk": 1,
-            "brn": 99,
-            "eys": 100,
-            "eyc": 101,
-            "availableSpecials":
-            [
-                {
-                    "id": 7
-                }
-            ],
-            "specialId": 7,
-            "speed": 10,
-            "health": 20,
-            "accuracy": 30,
-            "evade": 40,
-            "physical": 50,
-            "magic": 60,
-            "armor": 70,
-            "crit": 1,
-            "resist": 80
-        },
-        "back4": 232,
-        "back4Gotchi":
-        {
-            "id": 232,
-            "onchainId": 232,
-            "name": "",
-            "svgFront": "/dev/gotchi_g6_front.svg",
-            "svgBack": "/dev/gotchi_g6_back.svg",
-            "svgLeft": "/dev/gotchi_g6_left.svg",
-            "svgRight": "/dev/gotchi_g6_right.svg",
-            "brs": 500,
-            "kinship": 5000,
-            "level": 5,
-            "xp": 5000,
-            "nrg": 50,
-            "agg": 50,
-            "spk": 50,
-            "brn": 50,
-            "eys": 50,
-            "eyc": 50,
-            "availableSpecials":
-            [
-                {
-                    "id": 6
-                }
-            ],
-            "specialId": 6,
-            "speed": 50,
-            "health": 50,
-            "accuracy": 50,
-            "evade": 50,
-            "physical": 50,
-            "magic": 50,
-            "armor": 50,
-            "crit": 50,
-            "resist": 50
-        },
-        "back5": null,
-        "back5Gotchi": null,
-        "front1": null,
-        "front1Gotchi": null,
-        "front2": 233,
-        "front2Gotchi":
+        "back1": 233,
+        "back1Gotchi":
         {
             "id": 233,
             "onchainId": 233,
@@ -698,10 +620,131 @@
             "crit": 1,
             "resist": 0
         },
-        "front3": null,
-        "front3Gotchi": null,
-        "front4": 234,
-        "front4Gotchi":
+        "back2": 230,
+        "back2Gotchi":
+        {
+            "id": 230,
+            "onchainId": 230,
+            "name": "",
+            "svgFront": "/dev/gotchi_g2_front.svg",
+            "svgBack": "/dev/gotchi_g2_back.svg",
+            "svgLeft": "/dev/gotchi_g2_left.svg",
+            "svgRight": "/dev/gotchi_g2_right.svg",
+            "brs": 569,
+            "kinship": 829,
+            "level": 6,
+            "xp": 820,
+            "nrg": 21,
+            "agg": 79,
+            "spk": 88,
+            "brn": 76,
+            "eys": 3,
+            "eyc": 11,
+            "availableSpecials":
+            [
+                {
+                    "id": 1
+                },
+                {
+                    "id": 4
+                },
+                {
+                    "id": 5
+                }
+            ],
+            "specialId": 1,
+            "speed": 146,
+            "health": -228,
+            "accuracy": 71,
+            "evade": 23,
+            "physical": 150,
+            "magic": 380,
+            "armor": 1,
+            "crit": 1,
+            "resist": 0
+        },
+        "back3": null,
+        "back3Gotchi": null,
+        "back4": 232,
+        "back4Gotchi":
+        {
+            "id": 232,
+            "onchainId": 232,
+            "name": "",
+            "svgFront": "/dev/gotchi_g6_front.svg",
+            "svgBack": "/dev/gotchi_g6_back.svg",
+            "svgLeft": "/dev/gotchi_g6_left.svg",
+            "svgRight": "/dev/gotchi_g6_right.svg",
+            "brs": 500,
+            "kinship": 5000,
+            "level": 5,
+            "xp": 5000,
+            "nrg": 50,
+            "agg": 50,
+            "spk": 50,
+            "brn": 50,
+            "eys": 50,
+            "eyc": 50,
+            "availableSpecials":
+            [
+                {
+                    "id": 6
+                }
+            ],
+            "specialId": 6,
+            "speed": 50,
+            "health": 50,
+            "accuracy": 50,
+            "evade": 50,
+            "physical": 50,
+            "magic": 50,
+            "armor": 50,
+            "crit": 50,
+            "resist": 50
+        },
+        "back5": 231,
+        "back5Gotchi":
+        {
+            "id": 231,
+            "onchainId": 231,
+            "name": "Lead",
+            "svgFront": "/dev/gotchi_g10_front.svg",
+            "svgBack": "/dev/gotchi_g10_back.svg",
+            "svgLeft": "/dev/gotchi_g10_left.svg",
+            "svgRight": "/dev/gotchi_g10_right.svg",
+            "brs": 540,
+            "kinship": 1000,
+            "level": 3,
+            "xp": 100,
+            "nrg": -1,
+            "agg": 0,
+            "spk": 1,
+            "brn": 99,
+            "eys": 100,
+            "eyc": 101,
+            "availableSpecials":
+            [
+                {
+                    "id": 7
+                }
+            ],
+            "specialId": 7,
+            "speed": 10,
+            "health": 20,
+            "accuracy": 30,
+            "evade": 40,
+            "physical": 50,
+            "magic": 60,
+            "armor": 70,
+            "crit": 1,
+            "resist": 80
+        },
+        "front1": null,
+        "front1Gotchi": null,
+        "front2": null,
+        "front2Gotchi": null,
+        "front3": 234,
+        "front3Gotchi":
         {
             "id": 234,
             "onchainId": 234,
@@ -740,6 +783,8 @@
             "crit": 1,
             "resist": 0
         },
+        "front4": null,
+        "front4Gotchi": null,
         "front5": null,
         "front5Gotchi": null
     },
@@ -750,8 +795,16 @@
         "leader": 189,
         "back1": null,
         "back1Gotchi": null,
-        "back2": 201,
-        "back2Gotchi":
+        "back2": null,
+        "back2Gotchi": null,
+        "back3": null,
+        "back3Gotchi": null,
+        "back4": null,
+        "back4Gotchi": null,
+        "back5": null,
+        "back5Gotchi": null,
+        "front1": 201,
+        "front1Gotchi":
         {
             "id": 201,
             "onchainId": 201,
@@ -793,84 +846,6 @@
             "crit": 1,
             "resist": 0
         },
-        "back3": 189,
-        "back3Gotchi":
-        {
-            "id": 189,
-            "onchainId": 189,
-            "name": "Bear Market",
-            "svgFront": "/dev/gotchi_g10_front.svg",
-            "svgBack": "/dev/gotchi_g10_back.svg",
-            "svgLeft": "/dev/gotchi_g10_left.svg",
-            "svgRight": "/dev/gotchi_g10_right.svg",
-            "brs": 540,
-            "kinship": 1000,
-            "level": 3,
-            "xp": 100,
-            "nrg": -1,
-            "agg": 0,
-            "spk": 1,
-            "brn": 99,
-            "eys": 100,
-            "eyc": 101,
-            "availableSpecials":
-            [
-                {
-                    "id": 7
-                }
-            ],
-            "specialId": 7,
-            "speed": 10,
-            "health": 20,
-            "accuracy": 30,
-            "evade": 40,
-            "physical": 50,
-            "magic": 60,
-            "armor": 70,
-            "crit": 1,
-            "resist": 80
-        },
-        "back4": 235,
-        "back4Gotchi":
-        {
-            "id": 235,
-            "onchainId": 235,
-            "name": "Sunny",
-            "svgFront": "/dev/gotchi_g6_front.svg",
-            "svgBack": "/dev/gotchi_g6_back.svg",
-            "svgLeft": "/dev/gotchi_g6_left.svg",
-            "svgRight": "/dev/gotchi_g6_right.svg",
-            "brs": 500,
-            "kinship": 5000,
-            "level": 5,
-            "xp": 5000,
-            "nrg": 50,
-            "agg": 50,
-            "spk": 50,
-            "brn": 50,
-            "eys": 50,
-            "eyc": 50,
-            "availableSpecials":
-            [
-                {
-                    "id": 6
-                }
-            ],
-            "specialId": 6,
-            "speed": 50,
-            "health": 50,
-            "accuracy": 50,
-            "evade": 50,
-            "physical": 50,
-            "magic": 50,
-            "armor": 50,
-            "crit": 50,
-            "resist": 50
-        },
-        "back5": null,
-        "back5Gotchi": null,
-        "front1": null,
-        "front1Gotchi": null,
         "front2": 188,
         "front2Gotchi":
         {
@@ -929,8 +904,43 @@
             "crit": 1,
             "resist": 0
         },
-        "front3": null,
-        "front3Gotchi": null,
+        "front3": 189,
+        "front3Gotchi":
+        {
+            "id": 189,
+            "onchainId": 189,
+            "name": "Bear Market",
+            "svgFront": "/dev/gotchi_g10_front.svg",
+            "svgBack": "/dev/gotchi_g10_back.svg",
+            "svgLeft": "/dev/gotchi_g10_left.svg",
+            "svgRight": "/dev/gotchi_g10_right.svg",
+            "brs": 540,
+            "kinship": 1000,
+            "level": 3,
+            "xp": 100,
+            "nrg": -1,
+            "agg": 0,
+            "spk": 1,
+            "brn": 99,
+            "eys": 100,
+            "eyc": 101,
+            "availableSpecials":
+            [
+                {
+                    "id": 7
+                }
+            ],
+            "specialId": 7,
+            "speed": 10,
+            "health": 20,
+            "accuracy": 30,
+            "evade": 40,
+            "physical": 50,
+            "magic": 60,
+            "armor": 70,
+            "crit": 1,
+            "resist": 80
+        },
         "front4": 199,
         "front4Gotchi":
         {
@@ -971,7 +981,42 @@
             "crit": 1,
             "resist": 0
         },
-        "front5": null,
-        "front5Gotchi": null
+        "front5": 235,
+        "front5Gotchi":
+        {
+            "id": 235,
+            "onchainId": 235,
+            "name": "Sunny",
+            "svgFront": "/dev/gotchi_g6_front.svg",
+            "svgBack": "/dev/gotchi_g6_back.svg",
+            "svgLeft": "/dev/gotchi_g6_left.svg",
+            "svgRight": "/dev/gotchi_g6_right.svg",
+            "brs": 500,
+            "kinship": 5000,
+            "level": 5,
+            "xp": 5000,
+            "nrg": 50,
+            "agg": 50,
+            "spk": 50,
+            "brn": 50,
+            "eys": 50,
+            "eyc": 50,
+            "availableSpecials":
+            [
+                {
+                    "id": 6
+                }
+            ],
+            "specialId": 6,
+            "speed": 50,
+            "health": 50,
+            "accuracy": 50,
+            "evade": 50,
+            "physical": 50,
+            "magic": 50,
+            "armor": 50,
+            "crit": 50,
+            "resist": 50
+        }
     }
 ]

@@ -8,7 +8,7 @@
     },
     variant: {
       type: String,
-      default: 'small'  /* 'small' or 'large' */
+      default: 'small'  /* 'smallest' or 'small' or 'large' */
     }
   })
 
@@ -26,6 +26,7 @@
       },
       {
         label: 'Critical Hit %',
+        shortLabel: 'Crit. Hit %',
         value: gotchi.crit
       },
       {
@@ -42,10 +43,12 @@
       },
       {
         label: 'Magic Power',
+        shortLabel: 'Magic Att.',
         value: gotchi.magic
       },
       {
         label: 'Physical Power',
+        shortLabel: 'Phy. Att.',
         value: gotchi.physical
       },
       {
@@ -71,7 +74,7 @@
     >
       <div class="gotchi-stats__stat">
         <dt>
-          {{ stat.label }}
+          {{ variant === 'smallest' ? (stat.shortLabel || stat.label) : stat.label }}
         </dt>
         <dd>
           {{ stat.value }}
@@ -110,6 +113,9 @@
     font-size: 0.875rem;
     letter-spacing: 0.02625rem;
   }
+  .gotchi-stats--variant-smallest {
+    column-gap: 1.5rem;
+  }
 
   .gotchi-stats--variant-large {
     --gotchi-stats-num-columns: 3;
@@ -130,4 +136,17 @@
     letter-spacing: 0.03375rem;
   }
 
+  .gotchi-stats--variant-smallest .gotchi-stats__stat {
+    padding: 0;
+    line-height: 1.25rem;
+  }
+  .gotchi-stats--variant-smallest dt {
+    font-size: 0.625rem;
+    letter-spacing: 0.01875rem;
+    opacity: 0.6;
+  }
+  .gotchi-stats--variant-smallest dd {
+    font-size: 0.75rem;
+    letter-spacing: 0.0225rem;
+  }
 </style>

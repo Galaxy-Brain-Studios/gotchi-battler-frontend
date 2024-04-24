@@ -28,7 +28,7 @@ const router = createRouter({
       redirect: {
         name: 'tournaments-type',
         params: {
-          type: 'upcoming'
+          type: 'all'
         }
       },
       children: [
@@ -63,6 +63,12 @@ const router = createRouter({
       path: '/training',
       name: 'training',
       component: () => import('../components/training/TrainingPage.vue')
+    },
+    {
+      path: '/analyser/:id?',
+      name: 'analyser',
+      props: true,
+      component: () => import('../components/analyser/AnalyserPage.vue')
     },
     {
       path: '/about',

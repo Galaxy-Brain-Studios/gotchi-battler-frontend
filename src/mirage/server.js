@@ -17,8 +17,8 @@ const battlesById = Object.fromEntries(battles.map(b => [b.id, b]))
 battlesById.DEFAULT = battles[0]
 let lastTrainingBattleId = 1000
 
-// set dates on first tournament and its brackets so we have a full range of statuses
 {
+  // set dates on first tournament and its brackets so we have a full range of statuses
   const t1 = tournaments[0]
   const nowMs = Date.now()
   const dayMs = 24 * 60 * 60 * 1000
@@ -31,6 +31,18 @@ let lastTrainingBattleId = 1000
       bracket.startDate = new Date ( nowMs - (4 * dayMs ))
     } else if (bracket.status === 'upcoming') {
       bracket.startDate = new Date ( nowMs + (40 * dayMs ))
+    }
+  }
+
+  // set dates on 'upcoming', 'registering' tournaments so we can test the lending warning
+  for (const tournament of tournaments) {
+    if (tournament.state === 'UPCOMING') {
+      tournament.startDate = new Date ( nowMs + (30 * dayMs ))
+      tournament.endDate = new Date ( nowMs + (40 * dayMs ))
+    }
+    if (tournament.state === 'REGISTERING') {
+      tournament.startDate = new Date ( nowMs + (5 * dayMs ))
+      tournament.endDate = new Date ( nowMs + (10 * dayMs ))
     }
   }
 }
@@ -49,8 +61,25 @@ const gotchis = teams.map(
 })
 
 const trainingTeams = generateTrainingTeams()
+const trainingGotchis = trainingTeams.map(
+  team => [
+    team.back1Gotchi, team.back2Gotchi, team.back3Gotchi, team.back4Gotchi, team.back5Gotchi,
+    team.front1Gotchi, team.front2Gotchi, team.front3Gotchi, team.front4Gotchi, team.front5Gotchi
+  ].filter(g => g)
+).flat().map(gotchi => {
+  // remove specialId as that only exists within a team
+  const newGotchi = { ...gotchi }
+  delete newGotchi.specialId
+  return newGotchi
+})
+const trainingGotchisById = Object.fromEntries(trainingGotchis.map(g => [g.onchainId, g]))
 
 const mirageConfig = window.mirageConfig = {
+  stats: {
+    error: false,
+    slow: false,
+    small: false
+  },
   tournaments: {
     error: false,
     empty: false
@@ -67,6 +96,10 @@ const mirageConfig = window.mirageConfig = {
   battle: {
     error: false
   },
+  battleAnalyser: {
+    error: false,
+    slow: false
+  },
   battleLogs: {
     error: false
   },
@@ -77,6 +110,11 @@ const mirageConfig = window.mirageConfig = {
   },
   trainingteams: {
     error: false,
+    empty: false
+  },
+  traininggotchis: {
+    error: false,
+    slow: false,
     empty: false
   },
   trainingbattle: {
@@ -104,6 +142,11 @@ const mirageConfig = window.mirageConfig = {
     slow: false,
     empty: false,
     long: false
+  },
+  availableLendings: {
+    error: false,
+    slow: false,
+    empty: false
   },
 };
 
@@ -156,6 +199,26 @@ export function makeServer({ environment = 'development' } = {}) {
         return text
       }
 
+      this.get(urls.stats(), () => {
+        if (mirageConfig.stats.error) {
+          return errorResponse()
+        }
+        if (mirageConfig.stats.small) {
+          return {
+            numBattles: 123,
+            numTournaments: 1,
+            usdPrizes: 1234
+          }
+        }
+        return {
+          numBattles: 135001,
+          numTournaments: 7,
+          usdPrizes: 123456
+        }
+      }, {
+        timing: mirageConfig.stats.slow ? 5000 : 0
+      })
+
       this.get(urls.tournaments(), () => {
         if (mirageConfig.tournaments.empty) {
           return []
@@ -206,6 +269,18 @@ export function makeServer({ environment = 'development' } = {}) {
         return trainingTeams
       })
 
+      this.get(urls.trainingGotchis(), () => {
+        if (mirageConfig.traininggotchis.empty) {
+          return []
+        }
+        if (mirageConfig.traininggotchis.error) {
+          return errorResponse()
+        }
+        return trainingGotchis
+      }, {
+        timing: mirageConfig.traininggotchis.slow ? 5000 : 1000
+      })
+
       this.get(fixUrl(urls.team(':teamId')), (schema, request) => {
         if (mirageConfig.team.error) {
           return errorResponse()
@@ -236,7 +311,35 @@ export function makeServer({ environment = 'development' } = {}) {
         return result
       })
 
-      this.get(fixUrl(urls.battleLogs(':url')), () => {
+      this.get(fixUrl(urls.battleAnalyser(':id')), (schema, request) => {
+        if (mirageConfig.battleAnalyser.error) {
+          return errorResponse()
+        }
+        if (!request.params.id.match(/\d/)) {
+          return errorResponse({ statusCode: 404, message: 'Battle not found' })
+        }
+        let result = battlesById[request.params.id] || {
+          ...battlesById.DEFAULT,
+          id: request.params.id
+        }
+        // omit battle 'status' from response
+        // add analysis content if the battle is completed
+        const analysis = result.winnerId ? {
+          numberOfTurns: 45,
+          team1WinRate: 35,
+          team2WinRate: 65
+        } : null;
+        result = {
+          ...result,
+          ...analysis
+        }
+        delete result.status
+        return result
+      }, {
+        timing: mirageConfig.battleAnalyser.slow ? 5000 : 1000
+      })
+
+      this.get(fixUrl(urls.battleLogs('/battleLogsUrl')), () => {
         if (mirageConfig.battleLogs.error) {
           return errorResponse()
         }
@@ -288,12 +391,15 @@ export function makeServer({ environment = 'development' } = {}) {
         // We don't have the full gotchi info from the POST, so modify an existing mock battle
         const postBody = JSON.parse(request.requestBody)
         const submittedTeam = postBody.team
-        const trainingTeamId = postBody.trainingTeamId
+        const submittedTrainingTeam = postBody.trainingTeam
         const battle = JSON.parse(JSON.stringify(battles.find(b => b.status === 'completed')))
         lastTrainingBattleId++
         battle.id = lastTrainingBattleId + 'trainingBattleIdLongString'
         battlesById[battle.id] = battle
         battle.createdAt = new Date()
+        battle.logs += battle.id
+        battle.team1WinRate = '40%'
+        battle.team2WinRate = '60%'
         delete battle.status
         battle.team1.id = lastTrainingBattleId + 1
         if (submittedTeam) {
@@ -312,8 +418,31 @@ export function makeServer({ environment = 'development' } = {}) {
             }
           }
         }
-        battle.team2 = trainingTeams.find(team => team.id === trainingTeamId)
-        battle.winnerId = (trainingTeamId % 2 === 0) ? battle.team1.id : trainingTeamId
+        if (submittedTrainingTeam) {
+          battle.team2.id = battle.team1.id + 10000
+          battle.team2.name = submittedTrainingTeam.name
+          battle.team2.leader = submittedTrainingTeam.gotchiLeader
+          battle.team2.trainingPowerLevel = (battle.team1.id % 2 === 0) ? 'Common' : 'Mythical' // real server would need to calculate this
+          const getSpecialForGotchi = function (gotchiId) {
+            const index = submittedTrainingTeam.gotchiTeam.indexOf(gotchiId)
+            return submittedTrainingTeam.gotchiSpecials[index]
+          }
+          const formationIds = submittedTrainingTeam.gotchiFormation
+          for (const key of ['back1', 'back2', 'back3', 'back4', 'back5', 'front1', 'front2', 'front3', 'front4', 'front5']) {
+            const id = formationIds.shift()
+            battle.team2[key] = id || null
+            let gotchi = trainingGotchisById[id] || null
+            if (gotchi) {
+              gotchi = {
+                ...gotchi,
+                specialId: getSpecialForGotchi(id)
+              }
+              battle.team2[key] = gotchi.id // submitted onchainId, but return the gotchi.id in the battle model
+            }
+            battle.team2[`${key}Gotchi`] = gotchi
+          }
+        }
+        battle.winnerId = (battle.team1.id % 2 === 0) ? battle.team1.id : battle.team2.id
 
         return battle
       }, {
@@ -423,6 +552,7 @@ export function makeServer({ environment = 'development' } = {}) {
         }
         const gotchis = []
         const NUM_GOTCHIS = mirageConfig.tournamentGotchis.empty ? 0 : mirageConfig.tournamentGotchis.long ? 200 : 30
+        const owners = ['0x0000000000000000000000000000000000000001', '0xBfe09443556773958bae1699b786d8E9680B5571', '0x0000000000000000000000000000000000000003', '0x0000000000000000000000000000000000000004', '0x0000000000000000000000000000000000000005']
         for (let i = 0; i < NUM_GOTCHIS; i++) {
           const teamId = (i + 1) % 10 || (i + 1)
           gotchis.push({
@@ -433,12 +563,48 @@ export function makeServer({ environment = 'development' } = {}) {
             brs: 100 + i%10,
             teamId,
             teamName: `Team ${String.fromCharCode(64 + teamId % 26)}${teamId > 26 ? teamId : ''}`,
-            teamOwner: `0x000000000000000000000000000000000000000${i % 5}`
+            teamOwner: owners[i % owners.length]
           })
         }
         return gotchis
       }, {
         timing: mirageConfig.tournamentGotchis.slow ? 5000 : 100
+      })
+
+      this.get(fixUrl(urls.availableLendings()), () => {
+        if (mirageConfig.availableLendings.error) {
+          return errorResponse()
+        }
+        const gotchis = []
+        const NUM_GOTCHIS = mirageConfig.availableLendings.empty ? 0 : 30
+        const AVAILABLE_SPECIALS = [1, 2, 3, 4, 5, 6, 7, 8].map(id => ({ id }))
+        const AVAILABLE_RARITIES = ['common', 'uncommon', 'rare', 'legendary', 'mythical', 'godlike', null]
+        for (let i = 0; i < NUM_GOTCHIS; i++) {
+          gotchis.push({
+            id: 1000 + i,
+            onchainId: i,
+            name: ((i + 1) % 7) ? `Gotchi ${String.fromCharCode(65 + i % 26)}${i > 26 ? i : ''}` : (i%3) ? '' : 'TestLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWord',
+            svgFront: `/dev/gotchi_g${(i + 1) % 10}_front.svg`,
+            brs: 100 + i%10,
+            speed: 50 - i%10,
+            health: 80 + i%10,
+            accuracy: 100 - i%10,
+            evade: 70 + i%10,
+            physical: 80 + i%10,
+            magic: 80 - i%10,
+            armor: 80 + i%10,
+            resist: 80 - i%10,
+            crit: 80 + i%10,
+            availableSpecials: AVAILABLE_SPECIALS.slice(0, AVAILABLE_SPECIALS.length - i % AVAILABLE_SPECIALS.length),
+            rarityType: AVAILABLE_RARITIES[i % AVAILABLE_RARITIES.length],
+            lendingId: 1780810 + i,
+            lendingGhstPrice: 0 + i,
+            lendingPeriod: 60 * 60 * 12 * i
+          })
+        }
+        return gotchis
+      }, {
+        timing: mirageConfig.availableLendings.slow ? 5000 : 100
       })
 
       this.passthrough(request => {
@@ -483,6 +649,7 @@ function generateFullBrackets ({ brackets=[], teams=[] }) {
   // This tournament logic is not intended to be correct,
   // just to generate the correct data structure with enough variations
   // for testing the frontend
+  const allBattleIds = []
   const fullBrackets = brackets.map(bracket => {
     const startDate = bracket.startDate
     const numberOfTeams = bracket.numberOfTeams
@@ -516,8 +683,10 @@ function generateFullBrackets ({ brackets=[], teams=[] }) {
           const battleTeams = [winners[t].team, winners[t + 1]?.team || null]
           const winnerId = isFinished ? battleTeams[0] : null
           const battleId =`${bracket.id}${roundId}b${t}`
+          allBattleIds.push(battleId)
           const battle = {
             id: battleId,
+            localId: battleId.substring(2),
             parentBattleId1: winners[t].fromBattle,
             parentBattleId2: winners[t + 1]?.fromBattle,
             team1Id: battleTeams[0],
@@ -534,6 +703,7 @@ function generateFullBrackets ({ brackets=[], teams=[] }) {
           id: roundId,
           startDate: new Date(roundDateMs),
           roundStage: roundNumber - 1,
+          name: `Round ${roundNumber}`,
           status,
           battles
         })
@@ -548,6 +718,32 @@ function generateFullBrackets ({ brackets=[], teams=[] }) {
       rounds
     }
   })
+  // simulate data for 'previous battle in another bracket':
+  // find a 'final' bracket (without a nextBracket), and
+  // then annotate all its first-round battles with real battle ids from any OTHER bracket
+  // (do not reference battles in same bracket, that will result in an infinite loop!)
+  const lastBracket = fullBrackets.find(bracket => !bracket.nextBracket)
+  if (lastBracket?.rounds?.[0]?.battles) {
+    const battlesInThisBracket = []
+    for (const round of lastBracket.rounds) {
+      for (const battle of round.battles) {
+        battlesInThisBracket.push(battle.id)
+      }
+    }
+    const battlesFromOtherBrackets = allBattleIds.filter(id => !battlesInThisBracket.includes(id))
+    if (battlesFromOtherBrackets.length) {
+      for (const battle of lastBracket.rounds[0].battles) {
+        battle.parentBattleId1 = battlesFromOtherBrackets[Math.floor(Math.random() * battlesFromOtherBrackets.length)]
+        battle.parentBattleId2 = battlesFromOtherBrackets[Math.floor(Math.random() * battlesFromOtherBrackets.length)]
+      }
+      // to test having a previous battle but no result yet, delete the teams from the last battle
+      const lastBattle = lastBracket.rounds[0].battles[lastBracket.rounds[0].battles.length - 1]
+      if (lastBattle) {
+        lastBattle.team1Id = null
+        lastBattle.team2Id = null
+      }
+    }
+  }
   return fullBrackets
 }
 
@@ -555,11 +751,16 @@ function generateFullBrackets ({ brackets=[], teams=[] }) {
 function generateTrainingTeams () {
   const SPECIAL_IDS = [1, 2, 3, 4, 5]
   const NUM_TEAMS = 10
-  let lastTrainingGotchiId = 1000000
+  const ONCHAIN_ID_OFFSET = 1000000
+  let lastTrainingGotchiId = 1
   const DEFAULT_TRAINING_GOTCHI = {
+    id: 0,
     onchainId: 0,
     name: 'Training Gotchi',
+    svgBack: '/dev/gotchi_TRAINING.svg',
     svgFront: '/dev/gotchi_TRAINING.svg',
+    svgLeft: '/dev/gotchi_TRAINING.svg',
+    svgRight: '/dev/gotchi_TRAINING.svg',
     brs: 569,
     kinship: 829,
     level: 6,
@@ -594,14 +795,18 @@ function generateTrainingTeams () {
         const patternRow = pattern[rowKey]
         for (let j = 0; j < patternRow.length; j++) {
           if (patternRow[j]) {
+            const specialId = SPECIAL_IDS[gotchiIds.length]
             const gotchi = {
               ...DEFAULT_TRAINING_GOTCHI,
-              onchainId: lastTrainingGotchiId,
-              specialId: SPECIAL_IDS[gotchiIds.length]
+              speed: DEFAULT_TRAINING_GOTCHI.speed + teams.length, // Change a value, so we can test sorting
+              id: lastTrainingGotchiId,
+              onchainId: lastTrainingGotchiId + ONCHAIN_ID_OFFSET,
+              specialId,
+              availableSpecials: [{ id: specialId }]
             }
-            gotchiIds.push(gotchi.onchainId)
+            gotchiIds.push(gotchi.id)
             const gotchiNumber = j + 1
-            formationGotchis[`${rowKey}${gotchiNumber}`] = gotchi.onchainId
+            formationGotchis[`${rowKey}${gotchiNumber}`] = gotchi.id
             formationGotchis[`${rowKey}${gotchiNumber}Gotchi`] = gotchi
             lastTrainingGotchiId++
           }

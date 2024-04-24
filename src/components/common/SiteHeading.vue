@@ -10,19 +10,20 @@
 <style scoped>
   h1 {
     --heading-color: var(--c-white);
-    --heading-block-width: 0.75rem;
-    --heading-line-width: 0.25rem;
+    --heading-block-width: 0.5rem;
+    --heading-line-width: 0.125rem;
 
     margin: 0;
 
     display: flex;
-    gap: 0.3em;
+    gap: 2rem;
     align-items: center;
 
     color: var(--heading-color);
     text-transform: uppercase;
-    font-size: 3rem;
-    letter-spacing: 0.09rem;
+    font-size: 1.5rem;
+    letter-spacing: 0.045rem;
+    font-weight: bold;
   }
 
   h1::before,

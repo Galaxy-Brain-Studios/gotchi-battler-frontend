@@ -31,10 +31,11 @@ function setBaseUrl (url) {
 }
 
 const urls = {
+  stats: () => `${BASE_URL}/api/v1/stats/`,
   tournaments: () =>  `${BASE_URL}/api/v1/tournaments/`,
   tournament: (id) =>  `${BASE_URL}/api/v1/tournaments/${encodeURIComponent(id)}`,
   tournamentBrackets: (id) =>  `${BASE_URL}/api/v1/tournaments/${encodeURIComponent(id)}/brackets`,
-  trainingTeams: () =>  `${BASE_URL}/api/v1/trainings/`,
+  trainingTeams: () =>  `${BASE_URL}/api/v1/training/teams/`,
   team: (id) => `${BASE_URL}/api/v1/teams/${encodeURIComponent(id)}`,
   createTournamentTeam: ({ tournamentId, address, message='', signature='' }) =>
     `${BASE_URL}/api/v1/me/${encodeURIComponent(address)}/tournaments/${encodeURIComponent(tournamentId)}/teams?message=${encodeURIComponent(message)}&signature=${encodeURIComponent(signature)}`,
@@ -45,10 +46,13 @@ const urls = {
   tournamentTeams: (tournamentId) => `${BASE_URL}/api/v1/tournaments/${encodeURIComponent(tournamentId)}/teams`,
   tournamentGotchis: (tournamentId) => `${BASE_URL}/api/v1/tournaments/${encodeURIComponent(tournamentId)}/gotchis`,
   battle: (id) => `${BASE_URL}/api/v1/battles/${encodeURIComponent(id)}`,
+  battleAnalyser: (id) => `${BASE_URL}/api/v1/battles/${encodeURIComponent(id)}/analyse`,
   battleLogs: (url) => url,
   trainingBattle: ({ address, message='', signature='' }) =>
     `${BASE_URL}/api/v1/me/${encodeURIComponent(address)}/training?message=${encodeURIComponent(message)}&signature=${encodeURIComponent(signature)}`,
-  gotchis: ({ address }) =>  `${BASE_URL}/api/v1/me/${encodeURIComponent(address)}/gotchis`
+  trainingGotchis: () =>  `${BASE_URL}/api/v1/training/gotchis`,
+  gotchis: ({ address }) =>  `${BASE_URL}/api/v1/me/${encodeURIComponent(address)}/gotchis`,
+  availableLendings: () => `${BASE_URL}/api/v1/lendings`
 }
 
 export { api, apiText, urls, setBaseUrl }

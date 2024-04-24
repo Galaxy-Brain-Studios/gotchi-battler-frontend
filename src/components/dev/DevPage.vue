@@ -1,5 +1,4 @@
 <script setup>
-  import SiteHeading from '../common/SiteHeading.vue'
   import { useAccountStore } from '../../data/accountStore'
   import { setBaseUrl } from '../../data/api'
   import { storeToRefs } from 'pinia'
@@ -21,8 +20,6 @@
 
 <template>
   <main>
-    <SiteHeading>Dev Config</SiteHeading>
-
     <div style="display: grid; row-gap: 1rem;">
       <div>
         By default this site uses a fake Mirage server with test data.
@@ -45,9 +42,9 @@
         <br>
         <button
           type="button"
-          @click="setBaseUrl('https://gotchi-battler-backend-76ns3tfg6q-ew.a.run.app')"
+          @click="setBaseUrl('https://gotchi-battler-backend-v1-5-76ns3tfg6q-ew.a.run.app')"
         >
-          Set API to gotchi-battler-backend-76ns3tfg6q-ew
+          Set API to https://gotchi-battler-backend-v1-5-76ns3tfg6q-ew.a.run.app
         </button>
         <br>
         <button

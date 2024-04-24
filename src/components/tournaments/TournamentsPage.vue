@@ -1,5 +1,4 @@
 <script setup>
-  import SiteHeading from '../common/SiteHeading.vue'
   import SiteButtonGroup from '../common/SiteButtonGroup.vue'
   import SiteButtonLink from '../common/SiteButtonLink.vue'
   import TournamentsList from '../tournaments/TournamentsList.vue'
@@ -14,15 +13,19 @@
 
 <template>
   <main>
-    <SiteHeading>Tournaments</SiteHeading>
-
     <SiteButtonGroup
-      :numButtons="4"
+      :numButtons="5"
       class="tournament_types"
     >
       <SiteButtonLink
-        :to="{ name: 'tournaments-type', params: { type: 'upcoming' } }"
+        :to="{ name: 'tournaments-type', params: { type: 'all' } }"
         grouped="start"
+      >
+        All
+      </SiteButtonLink>
+      <SiteButtonLink
+        :to="{ name: 'tournaments-type', params: { type: 'upcoming' } }"
+        grouped="middle"
       >
         Upcoming
       </SiteButtonLink>

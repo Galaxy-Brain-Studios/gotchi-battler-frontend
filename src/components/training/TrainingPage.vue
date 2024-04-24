@@ -4,7 +4,6 @@
   import { formatDateTime } from '../../utils/date'
   import { useAccountStore } from '../../data/accountStore'
   import { useBattleStore, submitTrainingBattle, signTrainingBattle, useTrainingBattlesStore } from '../../data/battleStore'
-  import SiteHeading from '../common/SiteHeading.vue'
   import SiteButton from '../common/SiteButton.vue'
   import SiteError from '../common/SiteError.vue'
   import SiteConnectWallet from '../site/SiteConnectWallet.vue'
@@ -70,10 +69,17 @@
       owner: address.value,
     }
   })
+  const trainingTeamToSubmit = computed(() => {
+    if (!team2.value) { return null }
+    return {
+      ...generateTeamToSubmit(team2.value),
+      owner: address.value,
+    }
+  })
 
   const battleToSubmit = computed(() =>({
     team: teamToSubmit.value,
-    trainingTeamId: team2.value?.id
+    trainingTeam: trainingTeamToSubmit.value
   }))
 
   // if any of the data for submitting a battle changes while submitting,
@@ -155,7 +161,6 @@
 
 <template>
   <main>
-    <SiteHeading>Training</SiteHeading>
     <BattleField
       class="training-battle"
       :battle="completedBattle || battle"
@@ -205,14 +210,14 @@
       </template>
       <template
         v-if="team1 && !isEditingLocked"
-        #after-team-1
+        #before-team-1
       >
         <SiteButton @click="createTeamDialogIsOpen = true">
           Edit Your Team
         </SiteButton>
       </template>
       <template
-        #after-team-2
+        #before-team-2
         v-if="team2 && !isEditingLocked"
       >
         <SiteButton @click="trainingTeamsDialogIsOpen = true">
@@ -238,9 +243,10 @@
             <th>Date</th>
             <th>Team</th>
             <th>Training Team</th>
-            <th>Training Power Level</th>
+            <th>Training Power Lvl.</th>
+            <th>Win Rate</th>
             <th>Result</th>
-            <th></th>
+            <th>Replay</th>
           </tr>
         </thead>
         <tbody>
@@ -260,7 +266,15 @@
             <td class="training-battle__history-table-difficulty">
               {{ battle.teams[1]?.difficulty }}
             </td>
-            <td>
+            <td class="training-battle__history-table-win-rate">
+              {{ battle.team1WinRate }} %
+            </td>
+            <td
+              class="training-battle__history-table-result"
+              :class="{
+                'training-battle__history-table-result--winner': battle.winnerId === battle.teams[0]?.id
+              }"
+            >
               <template v-if="battle.winnerId">
                 <template v-if="battle.id === completedBattleId && !showCompletedBattleWinner">
                   <SiteButtonSmall @click="showCompletedBattleWinner = true">
@@ -268,7 +282,7 @@
                   </SiteButtonSmall>
                 </template>
                 <template v-else>
-                  {{ battle.winnerId === battle.teams[0]?.id ? 'Win' : 'Loss' }}
+                  {{ battle.winnerId === battle.teams[0]?.id ? 'Winner' : 'Loser' }}
                 </template>
               </template>
             </td>
@@ -286,7 +300,7 @@
     v-if="createTeamDialogIsOpen"
     v-model:isOpen="createTeamDialogIsOpen"
     v-model:team="team1"
-    mode="create"
+    mode="create_training"
     closeOnSave
   />
   <TrainingTeamsDialog
@@ -297,9 +311,6 @@
 </template>
 
 <style scoped>
-  .training-battle {
-    margin-top: 2rem;
-  }
   .training-vs {
     font-size: 1.5rem;
     line-height: 2rem;
@@ -344,6 +355,16 @@
   }
   .training-battle__history-table-difficulty {
     text-transform: capitalize;
+  }
+  .training-battle__history-table-win-rate {
+    font-weight: bold;
+  }
+  .training-battle__history-table-result {
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  .training-battle__history-table-result--winner {
+    color: var(--c-light-yellow);
   }
   .training-battle__history-table td.training-battle__history-table-select {
     padding-top: 0;

@@ -63,7 +63,7 @@
     --site-text-field-icon-offset-left: 0.4rem;
     --site-text-field-icon-space: 2.2rem;
     --site-text-field-color-border-rgb: 255, 255, 255;
-    --site-text-field-color-border: rgba(var(--site-text-field-color-border-rgb), 0.5);
+    --site-text-field-color-border: rgba(var(--site-text-field-color-border-rgb), 0.3);
     --site-text-field-color-border--focus: rgba(var(--site-text-field-color-border-rgb), 1);
     --site-text-field-outline-offset: -3px;
   }

@@ -11,7 +11,7 @@
     },
     variant: {
       type: String,
-      default: 'small'
+      default: 'small'  // 'small', 'large', 'icon'
     },
     fullWidth: {
       type: Boolean,
@@ -40,20 +40,29 @@
     class="gotchi-special"
     :class="{
       [`gotchi-special--variant-${variant}`]: true,
-      [`gotchi-special--type-${id}`]: forSpecial,
       'gotchi-special--full-width': fullWidth
+    }"
+    :style="{
+      '--gotchi-special-color-background': forSpecial ? `var(--c-special-${id})` : undefined
     }"
   >
     <SiteIcon
-      v-if="variant === 'small'"
+      v-if="variant === 'small' || variant === 'icon'"
       :name="`special-${id}`"
       class="gotchi-special__icon"
+      :width="0.75"
+      :height="0.75"
     />
-    <div class="gotchi-special__label">
+    <div
+      v-if="variant !== 'icon'"
+      class="gotchi-special__label"
+    >
       <SiteIcon
         v-if="!forSpecial"
         name="special-leader"
         class="gotchi-special__leader-badge-icon"
+        :width="0.75"
+        :height="0.75"
       />
       <template v-if="forSpecial">
         {{ forSpecialShowClass ? gotchiClass : name }}
@@ -78,6 +87,7 @@
     font-weight: normal; /* reset any parent bold styles */
   }
   .gotchi-special--full-width {
+    width: 100%;
     justify-content: center;
   }
   .gotchi-special__label {
@@ -90,39 +100,19 @@
     line-height: 1.5rem;
     letter-spacing: 0.02625rem;
   }
+  .gotchi-special--variant-icon {
+    justify-content: center;
+    padding: 0.25rem 0.4rem;
+  }
   .gotchi-special--variant-small {
-    padding: 0.2rem 0.4rem;
+    padding: 0.25rem 0.4rem;
   }
   .gotchi-special--variant-small .gotchi-special__icon {
     width: 0.75rem;
   }
   .gotchi-special--variant-small .gotchi-special__label {
-    font-size: 0.725rem;
+    font-size: 0.625rem;
     line-height: 0.625rem;
-  }
-  .gotchi-special--type-1 {
-    --gotchi-special-color-background: #3E80BE;
-  }
-  .gotchi-special--type-2 {
-    --gotchi-special-color-background: #D46DC3;
-  }
-  .gotchi-special--type-3 {
-    --gotchi-special-color-background: #D9322A;
-  }
-  .gotchi-special--type-4 {
-    --gotchi-special-color-background: #F98A25;
-  }
-  .gotchi-special--type-5 {
-    --gotchi-special-color-background: #6C6C6C;
-  }
-  .gotchi-special--type-6 {
-    --gotchi-special-color-background: #ECBE11;
-  }
-  .gotchi-special--type-7 {
-    --gotchi-special-color-background: #8D33EE;
-  }
-  .gotchi-special--type-8 {
-    --gotchi-special-color-background: #1CA806;
   }
   .gotchi-special__leader-badge-icon {
     height: 1.5rem !important;

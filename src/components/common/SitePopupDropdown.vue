@@ -10,7 +10,7 @@
 
 <style>
 .v-popper--theme-site-dropdown-theme .v-popper__inner {
-  max-width: 25rem;
+  max-width: 35rem;
   word-break: break-word;
   padding: 0;
   border-radius: 0px;

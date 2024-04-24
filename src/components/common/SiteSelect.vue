@@ -10,6 +10,10 @@
     modelValue: {
       type: String,
       default: null
+    },
+    withBorder: {
+      type: Boolean,
+      default: false
     }
   })
   const emit = defineEmits(['update:modelValue'])
@@ -25,7 +29,12 @@
 </script>
 
 <template>
-  <div class="site-select">
+  <div
+    class="site-select"
+    :class="{
+      'site-select--with-border': withBorder
+    }"
+  >
     <select
       v-model="passThroughModel"
       v-bind="$attrs"
@@ -47,6 +56,9 @@
     position: relative;
     display: inline-grid;
     padding-right: 2px; /* include browser outline styles in dimensions */
+  }
+  .site-select--with-border {
+    border: 2px solid rgba(255, 255, 255, 0.3);
   }
   .site-select__select {
     appearance: none;

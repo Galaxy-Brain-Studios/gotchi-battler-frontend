@@ -7,6 +7,7 @@
         "endDate": "2023-10-05T14:00:00.000Z",
         "state": "BATTLE",
         "numberOfTeams": 16,
+        "numberOfBattles": 100,
         "image": "https://verse.aavegotchi.com/_next/image?url=https%3A%2F%2Fverse-ugc.aavegotchi.com%2Fparcel%2FPimpGotchiBounceGate-1688830769997.png&w=1920&q=75",
         "rules": "5 vs. 5 - BRS Limited",
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse in tempor neque. Praesent convallis lectus nec lorem ornare dapibus. Curabitur venenatis ligula vitae egestas pretium. Nullam rutrum vulputate massa vel vestibulum.",
@@ -19,7 +20,9 @@
                 "numberOfTeams": 64,
                 "rules": "Top 2 to Finale",
                 "stage": 0,
-                "status": "completed"
+                "status": "completed",
+                "teams": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
+                "nextBracket": "t1b4"
             },
             {
                 "id": "t1b2",
@@ -28,7 +31,9 @@
                 "numberOfTeams": 5,
                 "rules": "Top 2 to Finale",
                 "stage": 0,
-                "status": "started"
+                "status": "started",
+                "teams": [1, 3, 4, 5, 7, 9, 11, 13, 15, 17],
+                "nextBracket": "t1b4"
             },
             {
                 "id": "t1b3",
@@ -37,16 +42,20 @@
                 "numberOfTeams": 10,
                 "rules": "Top 2 to Finale",
                 "stage": 0,
-                "status": "upcoming"
+                "status": "upcoming",
+                "teams": [1, 5, 9, 13],
+                "nextBracket": "t1b4"
             },
             {
                 "id": "t1b4",
-                "name": "Finale (Top 64)",
+                "name": "Finale (Top 64) Long Name Long Name Long Name END",
                 "startDate": "2023-10-30T14:00:00.000Z",
                 "numberOfTeams": 64,
                 "rules": "Top 2 to Finale",
                 "stage": 1,
-                "status": "upcoming"
+                "status": "upcoming",
+                "teams": [],
+                "nextBracket": null
             }
         ],
         "teams":
@@ -85,16 +94,16 @@
             },
             {
                 "id": 5,
-                "name": "Team name 5",
-                "owner": "0x385Eeac5cB85A38A9a07A70c73e0a3271CfB54A7",
+                "name": "Team name 5 - another one with my address",
+                "owner": "0xBfe09443556773958bae1699b786d8E9680B5571",
                 "ranking": 5,
                 "totalBrs": 105,
                 "battlesWon": 8
             },
             {
                 "id": 6,
-                "name": "Team name 6 - another one with my address",
-                "owner": "0xBfe09443556773958bae1699b786d8E9680B5571",
+                "name": "Team name 6",
+                "owner": "0x385Eeac5cB85A38A9a07A70c73e0a3271CfB54A7",
                 "ranking": 6,
                 "totalBrs": 106,
                 "battlesWon": 7
@@ -246,6 +255,7 @@
         "endDate": "2023-11-20T15:10:00.000Z",
         "state": "REGISTERING",
         "numberOfTeams": 4,
+        "numberOfBattles": 0,
         "image": "https://verse.aavegotchi.com/_next/image?url=https%3A%2F%2Fverse-ugc.aavegotchi.com%2Fparcel%2Fezgif-1689696876748.com-optimize%20(4).gif&w=1920&q=75",
         "rules": "Some rules text here",
         "description": "TestingLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWord",
@@ -258,7 +268,9 @@
                 "numberOfTeams": 64,
                 "rules": "TestingLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWord",
                 "stage": 0,
-                "status": "upcoming"
+                "status": "upcoming",
+                "teams": [21, 22, 23, 24],
+                "nextBracket": null
             }
         ],
         "teams":
@@ -301,6 +313,7 @@
         "endDate": "2023-12-25T16:20:00.000Z",
         "state": "REGISTERING",
         "numberOfTeams": 2,
+        "numberOfBattles": 0,
         "image": "https://www.aavegotchi.com/_next/image?url=%2Fimages%2Faavegotchis%2F01.png&w=640&q=75",
         "rules": "Some rules text here",
         "description": "",
@@ -313,7 +326,9 @@
                 "numberOfTeams": 64,
                 "rules": "Testing Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String",
                 "stage": 0,
-                "status": "upcoming"
+                "status": "upcoming",
+                "teams": [0, 1],
+                "nextBracket": null
             }
         ],
         "teams":
@@ -332,6 +347,23 @@
                 "ranking": 2,
                 "battlesWon": 0
             }
+        ],
+        "prizes": [
+            {
+                "place": 1,
+                "prize": 250,
+                "currency": "ghst"
+            },
+            {
+                "place": 2,
+                "prize": 150,
+                "currency": "ghst"
+            },
+            {
+                "place": 3,
+                "prize": 88,
+                "currency": "ghst"
+            }
         ]
     },
     {
@@ -342,6 +374,7 @@
         "endDate": "2023-01-31T10:00:00.000Z",
         "state": "FINISHED",
         "numberOfTeams": 10,
+        "numberOfBattles": 0,
         "image": "",
         "rules": "Some rules text here",
         "description": "",
@@ -354,7 +387,8 @@
                 "numberOfTeams": 0,
                 "rules": "",
                 "stage": 0,
-                "status": "completed"
+                "status": "completed",
+                "nextBracket": null
             }
         ]
     },
@@ -366,6 +400,7 @@
         "endDate": "2023-06-15T16:20:00.000Z",
         "state": "FINISHED",
         "numberOfTeams": 20,
+        "numberOfBattles": 1000,
         "image": "https://verse.aavegotchi.com/_next/image?url=https%3A%2F%2Fverse-ugc.aavegotchi.com%2Fparcel%2FPimpGotchiBounceGate-1688830769997.png&w=1920&q=75",
         "rules": "Some rules text here",
         "description": "Test with zero brackets",
@@ -380,6 +415,7 @@
         "endDate": "2024-06-15T16:20:00.000Z",
         "state": "UPCOMING",
         "numberOfTeams": 0,
+        "numberOfBattles": 0,
         "image": "",
         "rules": "Some rules text here",
         "description": "",
@@ -394,6 +430,7 @@
         "endDate": "2023-06-15T16:20:00.000Z",
         "state": "PREPARATION",
         "numberOfTeams": 5,
+        "numberOfBattles": 0,
         "image": "",
         "rules": "Some rules text here",
         "description": "",

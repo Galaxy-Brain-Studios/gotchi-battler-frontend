@@ -49,25 +49,26 @@
 
 <style scoped>
   .leader-slots {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 2.5rem);
-    gap: 0.5rem;
-    justify-content: start;
+    display: flex;
+    flex-wrap: wrap;
   }
 
   .leader-slot-label {
+    --leader-slot-border-color: rgb(140, 103, 222);
     cursor: pointer;
     display: grid;
     place-items: center;
     width: 2.5rem;
     height: 2.5rem;
-    border: 2px solid var(--c-white);
+    margin-right: -1px; /* overlap borders */
+    border: 2px solid var(--leader-slot-border-color);
     font-size: 1.125rem;
     line-height: 1.5rem;
     letter-spacing: 0.03375rem;
     user-select: none;
   }
   .leader-slot-input:checked + .leader-slot-label {
+    --leader-slot-border-color: var(--c-white);
     background: var(--c-white);
     color: var(--c-black);
   }
@@ -78,5 +79,6 @@
   }
   .leader-slot-input:focus-visible + .leader-slot-label {
     outline: 3px solid var(--c-light-blue);
+    outline-offset: -3px;
   }
 </style>

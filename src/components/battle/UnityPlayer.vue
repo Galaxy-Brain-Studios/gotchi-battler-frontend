@@ -84,7 +84,8 @@
         myUnityInstance.value = unityInstance
         const battleLogAsText = JSON.stringify(props.logs)
         // console.log('show logs', { logs: props.logs, battleLogAsText })
-        unityInstance.SendMessage('BattleManager', 'StartBattle', battleLogAsText)
+        // unityInstance.SendMessage('BattleManager', 'StartBattle', battleLogAsText)
+        unityInstance.SendMessage('BattleReplayer', 'LoadBattle', battleLogAsText)
       }).catch((message) => {
         if (isStale()){ return }
         console.error('Error creating unity instance', message);

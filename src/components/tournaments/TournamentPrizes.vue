@@ -13,6 +13,10 @@
     '1st', '2nd', '3rd - 4th', '5th - 8th', '9th - 16th', '17th - 32nd', '33rd - 64th', '65th - 128th', '129th - 256th', '257th - 512th', '513th - 1024th', '1025th - 2048th'
   ]
 
+  const doubleEliminationPlacementLabels = [
+    '1st', '2nd', '3rd', '4th', '5th - 6th', '7th - 8th','9th - 12th', '13th - 16th', '17th - 24th', '25th - 32nd', '33rd - 48th', '49th - 64th', '65th - 96th', '97th - 128th', '129th - 192nd', '193rd - 256th', '257th - 384th', '385th - 512th', '513th - 768th', '769th - 1024th', '1025th - 1536th', '1537th - 2048th'
+  ]
+
   const currencyIcons = {
     dai: 'token-dai',
     ghst: 'token-ghst'
@@ -46,7 +50,7 @@
           {{ i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '' }}
         </div>
         <div class="prizes-list__place">
-          {{ prize.label || defaultPlacementLabels[prize.place - 1] }}
+          {{ tournament.isDoubleElim ? doubleEliminationPlacementLabels[i] : defaultPlacementLabels[i]}}
         </div>
         <div class="prizes-list__prize">
           <SiteIcon

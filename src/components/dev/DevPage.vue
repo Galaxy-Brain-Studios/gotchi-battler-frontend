@@ -42,9 +42,9 @@
         <br>
         <button
           type="button"
-          @click="setBaseUrl('https://gotchi-battler-backend-v1-5-76ns3tfg6q-ew.a.run.app')"
+          @click="setBaseUrl('https://gotchi-battler-backend-76ns3tfg6q-ew.a.run.app')"
         >
-          Set API to https://gotchi-battler-backend-v1-5-76ns3tfg6q-ew.a.run.app
+          Set API to https://gotchi-battler-backend-76ns3tfg6q-ew.a.run.app
         </button>
         <br>
         <button

@@ -14,9 +14,9 @@ const processLendingModel = function (jsonData) {
   }
 }
 export default {
-  async fetchAvailableGotchis () {
+  async fetchAvailableGotchis (tournamentId) {
     try {
-      const lendings = await api.get(urls.availableLendings())
+      const lendings = await api.get(urls.availableLendings(tournamentId))
       return lendings.map(processLendingModel)
     } catch (e) {
       console.error('fetchAvailableGotchis error', { ...e })

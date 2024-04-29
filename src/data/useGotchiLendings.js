@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import useStatus from '../utils/useStatus'
 import lendingsService from './lendingsService'
 
-export default function useGotchiLendings () {
+export default function useGotchiLendings (tournamentId) {
   const gotchis = ref(null)
   const { status: fetchGotchisStatus, setLoading } = useStatus()
 
@@ -10,7 +10,7 @@ export default function useGotchiLendings () {
     gotchis.value = null
     const [isStale, setLoaded, setError] = setLoading()
     try {
-      const result = await lendingsService.fetchAvailableGotchis()
+      const result = await lendingsService.fetchAvailableGotchis(tournamentId)
       if (isStale()) { return; }
       gotchis.value = result
       setLoaded()

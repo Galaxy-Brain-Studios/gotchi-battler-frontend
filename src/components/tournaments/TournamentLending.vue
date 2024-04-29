@@ -15,7 +15,14 @@
   import GotchiStats from '../team/GotchiStats.vue'
   import GotchiSpecial from '../team/GotchiSpecial.vue'
 
-  const { fetchGotchis, gotchis, fetchGotchisStatus } = useGotchiLendings()
+  const props = defineProps({
+    tournamentId: {
+      type: Number,
+      required: true
+    }
+  })
+
+  const { fetchGotchis, gotchis, fetchGotchisStatus } = useGotchiLendings(props.tournamentId)
 
   const specialsStore = useSpecialsStore()
   const { specials, specialsById } = storeToRefs(specialsStore)

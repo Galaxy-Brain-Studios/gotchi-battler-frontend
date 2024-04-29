@@ -4,7 +4,6 @@
   import orderBy from 'lodash.orderby'
   import { storeToRefs } from 'pinia'
   import useGotchiLendings from '@/data/useGotchiLendings'
-  import useReactiveDate from '@/data/useReactiveDate'
   import { useSpecialsStore } from '../../data/specialsStore'
   import SiteIcon from '../common/SiteIcon.vue'
   import SiteSelect from '../common/SiteSelect.vue'
@@ -15,15 +14,6 @@
   import SitePopupDropdown from '../common/SitePopupDropdown.vue'
   import GotchiStats from '../team/GotchiStats.vue'
   import GotchiSpecial from '../team/GotchiSpecial.vue'
-
-  const props = defineProps({
-    tournamentStartDate: {
-      type: Object,
-      required: true
-    }
-  })
-
-  const { tickerDate } = useReactiveDate()
 
   const { fetchGotchis, gotchis, fetchGotchisStatus } = useGotchiLendings()
 
@@ -175,12 +165,9 @@
 
   const annotatedGotchis = computed(() => {
     if (!gotchis.value) { return [] }
-    const tournamentEndMs = props.tournamentStartDate - 0
-    const nowMs = tickerDate.value - 0
     return gotchis.value.map(gotchi => ({
       ...gotchi,
       lendingUrl: `https://dapp.aavegotchi.com/lending/aavegotchis?id=${encodeURIComponent(gotchi.lendingId)}`,
-      lendingEndsEarly: (nowMs + gotchi.lendingPeriod * 1000) < tournamentEndMs
     }))
   })
 

@@ -52,7 +52,7 @@
   })
 
   const showLending = computed(() => {
-    return ['upcoming', 'registering'].includes(tournamentStatus.value)
+    return ['registering'].includes(tournamentStatus.value)
   })
 
   const onCreatedTeam = function () {
@@ -220,7 +220,6 @@
 
         <TournamentLending
           v-else-if="tab === 'lending'"
-          :tournamentStartDate="tournament.startDate"
         />
       </div>
     </div>

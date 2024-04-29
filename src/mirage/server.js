@@ -34,12 +34,8 @@ let lastTrainingBattleId = 1000
     }
   }
 
-  // set dates on 'upcoming', 'registering' tournaments so we can test the lending warning
+  // set dates on 'registering' tournaments so we can test the lending warning
   for (const tournament of tournaments) {
-    if (tournament.state === 'UPCOMING') {
-      tournament.startDate = new Date ( nowMs + (30 * dayMs ))
-      tournament.endDate = new Date ( nowMs + (40 * dayMs ))
-    }
     if (tournament.state === 'REGISTERING') {
       tournament.startDate = new Date ( nowMs + (5 * dayMs ))
       tournament.endDate = new Date ( nowMs + (10 * dayMs ))
@@ -575,34 +571,46 @@ export function makeServer({ environment = 'development' } = {}) {
         if (mirageConfig.availableLendings.error) {
           return errorResponse()
         }
-        const gotchis = []
+        const lendings = []
         const NUM_GOTCHIS = mirageConfig.availableLendings.empty ? 0 : 30
         const AVAILABLE_SPECIALS = [1, 2, 3, 4, 5, 6, 7, 8].map(id => ({ id }))
         const AVAILABLE_RARITIES = ['common', 'uncommon', 'rare', 'legendary', 'mythical', 'godlike', null]
         for (let i = 0; i < NUM_GOTCHIS; i++) {
-          gotchis.push({
-            id: 1000 + i,
-            onchainId: i,
-            name: ((i + 1) % 7) ? `Gotchi ${String.fromCharCode(65 + i % 26)}${i > 26 ? i : ''}` : (i%3) ? '' : 'TestLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWord',
-            svgFront: `/dev/gotchi_g${(i + 1) % 10}_front.svg`,
-            brs: 100 + i%10,
-            speed: 50 - i%10,
-            health: 80 + i%10,
-            accuracy: 100 - i%10,
-            evade: 70 + i%10,
-            physical: 80 + i%10,
-            magic: 80 - i%10,
-            armor: 80 + i%10,
-            resist: 80 - i%10,
-            crit: 80 + i%10,
-            availableSpecials: AVAILABLE_SPECIALS.slice(0, AVAILABLE_SPECIALS.length - i % AVAILABLE_SPECIALS.length),
-            rarityType: AVAILABLE_RARITIES[i % AVAILABLE_RARITIES.length],
-            lendingId: 1780810 + i,
-            lendingGhstPrice: 0 + i,
-            lendingPeriod: 60 * 60 * 12 * i
+          lendings.push({
+            id: 1780810 + i,
+            upfrontCost: `${0 + i}`,
+            rentDuration: 60 * 60 * 12 * i,
+            warning: !(i%3),
+            gotchi: {
+              onchainId: i,
+              name: ((i + 1) % 7) ? `Gotchi ${String.fromCharCode(65 + i % 26)}${i > 26 ? i : ''}` : (i%3) ? '' : 'TestLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWord',
+              brs: 100 + i%10,
+              // nrg: 81,
+              // agg: 84,
+              // spk: 14,
+              // brn: 100,
+              // eyc: 82,
+              // eys:  98
+              // kinship: 525
+              // xp: 1570
+              svgFront: `/dev/gotchi_g${(i + 1) % 10}_front.svg`,
+              speed: 50 - i%10,
+              health: 80 + i%10,
+              crit: 80 + i%10,
+              armor: 80 + i%10,
+              evade: 70 + i%10,
+              resist: 80 - i%10,
+              magic: 80 - i%10,
+              physical: 80 + i%10,
+              accuracy: 100 - i%10,
+              // attack: "magic",
+              // actionDelay: 0.84
+              availableSpecials: AVAILABLE_SPECIALS.slice(0, AVAILABLE_SPECIALS.length - i % AVAILABLE_SPECIALS.length),
+              rarityType: AVAILABLE_RARITIES[i % AVAILABLE_RARITIES.length]
+            }
           })
         }
-        return gotchis
+        return lendings
       }, {
         timing: mirageConfig.availableLendings.slow ? 5000 : 100
       })
@@ -735,6 +743,17 @@ function generateFullBrackets ({ brackets=[], teams=[] }) {
       for (const battle of lastBracket.rounds[0].battles) {
         battle.parentBattleId1 = battlesFromOtherBrackets[Math.floor(Math.random() * battlesFromOtherBrackets.length)]
         battle.parentBattleId2 = battlesFromOtherBrackets[Math.floor(Math.random() * battlesFromOtherBrackets.length)]
+      }
+      // test having 1 missing parent battle
+      const secondBattle = lastBracket.rounds[0].battles[1]
+      if (secondBattle) {
+        secondBattle.parentBattleId2 = null
+      }
+      // test having 2 missing parent battles
+      const thirdBattle = lastBracket.rounds[0].battles[2]
+      if (thirdBattle) {
+        thirdBattle.parentBattleId1 = null
+        thirdBattle.parentBattleId2 = null
       }
       // to test having a previous battle but no result yet, delete the teams from the last battle
       const lastBattle = lastBracket.rounds[0].battles[lastBracket.rounds[0].battles.length - 1]

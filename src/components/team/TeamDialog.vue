@@ -129,6 +129,7 @@
           :team="team"
           :selectedGotchiId="displayGotchiId"
           horizontal
+          reverseRows
           withRowLabels
           withRowBoosts
         >

@@ -57,7 +57,8 @@
     const teamsById = Object.fromEntries(tournament.value.teams.map(team => [team.id, team]))
     const result = fullBrackets.value.map(bracket => {
       return bracket.rounds.map(round => {
-        return round.battles.map(battle => ({
+        // Only return battles that have a winner
+        return round.battles.filter(b => b.winnerId).map(battle => ({
           ...battle,
           team1Name: teamsById[battle.team1Id]?.name || '',
           team2Name: teamsById[battle.team2Id]?.name || '',

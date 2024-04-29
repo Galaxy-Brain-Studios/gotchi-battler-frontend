@@ -220,7 +220,6 @@
 
         <TournamentLending
           v-else-if="tab === 'lending'"
-          :tournamentStartDate="tournament.startDate"
         />
       </div>
     </div>

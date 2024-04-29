@@ -34,12 +34,8 @@ let lastTrainingBattleId = 1000
     }
   }
 
-  // set dates on 'upcoming', 'registering' tournaments so we can test the lending warning
+  // set dates on 'registering' tournaments so we can test the lending warning
   for (const tournament of tournaments) {
-    if (tournament.state === 'UPCOMING') {
-      tournament.startDate = new Date ( nowMs + (30 * dayMs ))
-      tournament.endDate = new Date ( nowMs + (40 * dayMs ))
-    }
     if (tournament.state === 'REGISTERING') {
       tournament.startDate = new Date ( nowMs + (5 * dayMs ))
       tournament.endDate = new Date ( nowMs + (10 * dayMs ))

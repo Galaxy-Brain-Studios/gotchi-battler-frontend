@@ -52,7 +52,7 @@ const urls = {
     `${BASE_URL}/api/v1/me/${encodeURIComponent(address)}/training?message=${encodeURIComponent(message)}&signature=${encodeURIComponent(signature)}`,
   trainingGotchis: () =>  `${BASE_URL}/api/v1/training/gotchis`,
   gotchis: ({ address }) =>  `${BASE_URL}/api/v1/me/${encodeURIComponent(address)}/gotchis`,
-  availableLendings: () => `${BASE_URL}/api/v1/lendings`
+  availableLendings: (tournamentId) => `${BASE_URL}/api/v1/tournaments/${encodeURIComponent(tournamentId)}/lendings`
 }
 
 export { api, apiText, urls, setBaseUrl }

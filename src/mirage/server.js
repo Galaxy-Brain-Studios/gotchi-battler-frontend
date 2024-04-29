@@ -567,7 +567,7 @@ export function makeServer({ environment = 'development' } = {}) {
         timing: mirageConfig.tournamentGotchis.slow ? 5000 : 100
       })
 
-      this.get(fixUrl(urls.availableLendings()), () => {
+      this.get(fixUrl(urls.availableLendings(':tournamentId')), () => {
         if (mirageConfig.availableLendings.error) {
           return errorResponse()
         }

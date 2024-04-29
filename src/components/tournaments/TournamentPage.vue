@@ -220,6 +220,7 @@
 
         <TournamentLending
           v-else-if="tab === 'lending'"
+          :tournamentId="tournament.id"
         />
       </div>
     </div>

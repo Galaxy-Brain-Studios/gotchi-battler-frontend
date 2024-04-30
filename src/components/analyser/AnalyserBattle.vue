@@ -42,14 +42,6 @@
         class="list-reset analyser-battle__analysis"
       >
         <div>
-          <dt>
-            Number of Turns
-          </dt>
-          <dd>
-            {{ battle.numberOfTurns }}
-          </dd>
-        </div>
-        <div>
           <dt class="analyser-battle__win-rate-title">
             <div class="win-rate-text">Team 1 Win rate</div>
             <SitePopupHoverMenu class="analyser-battle__win-rate-popup">

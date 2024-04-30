@@ -693,7 +693,7 @@ function generateFullBrackets ({ brackets=[], teams=[] }) {
           allBattleIds.push(battleId)
           const battle = {
             id: battleId,
-            localId: battleId.substring(2),
+            code: battleId.substring(2),
             parentBattleId1: winners[t].fromBattle,
             parentBattleId2: winners[t + 1]?.fromBattle,
             team1Id: battleTeams[0],

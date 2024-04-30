@@ -26,8 +26,8 @@
       type: Array,
       required: true
     },
-    /* optionally provide map of battle ID => battle local ID, to display battles from previous brackets */
-    battleLocalIds: {
+    /* optionally provide map of battle ID => battle (local) code, to display battles from previous brackets */
+    battleCodes: {
       type: Object,
       default: null
     },
@@ -126,7 +126,7 @@
           } || null))
         battleNodesById[battle.id] = {
           id: battle.id,
-          localId: battle.localId,
+          code: battle.code,
           fromBattles: battle.fromBattles,
           teams,
           hasATeam: (battle.team1Id !== null),
@@ -360,7 +360,7 @@
           @click="node.data.isFinale && node.data.round.status === 'completed' && revealFinalRound()"
         >
           <span>
-            #{{ node.data.localId || node.data.id }}
+            #{{ node.data.code || node.data.id }}
           </span>
           <SiteButtonWhiteBox
             small
@@ -401,7 +401,7 @@
               class="link-reset link-reset--hover-underline bracket-diagram__previous-bracket-battle-link"
             >
               <div>
-                #{{ battleLocalIds[node.data.fromBattles[index]] }}
+                #{{ battleCodes[node.data.fromBattles[index]] }}
               </div>
             </RouterLink>
           </div>

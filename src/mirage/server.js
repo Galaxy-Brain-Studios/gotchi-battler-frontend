@@ -321,7 +321,6 @@ export function makeServer({ environment = 'development' } = {}) {
         // omit battle 'status' from response
         // add analysis content if the battle is completed
         const analysis = result.winnerId ? {
-          numberOfTurns: 45,
           team1WinRate: 35,
           team2WinRate: 65
         } : null;

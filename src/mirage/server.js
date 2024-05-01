@@ -321,7 +321,6 @@ export function makeServer({ environment = 'development' } = {}) {
         // omit battle 'status' from response
         // add analysis content if the battle is completed
         const analysis = result.winnerId ? {
-          numberOfTurns: 45,
           team1WinRate: 35,
           team2WinRate: 65
         } : null;
@@ -694,7 +693,7 @@ function generateFullBrackets ({ brackets=[], teams=[] }) {
           allBattleIds.push(battleId)
           const battle = {
             id: battleId,
-            localId: battleId.substring(2),
+            code: battleId.substring(2),
             parentBattleId1: winners[t].fromBattle,
             parentBattleId2: winners[t + 1]?.fromBattle,
             team1Id: battleTeams[0],

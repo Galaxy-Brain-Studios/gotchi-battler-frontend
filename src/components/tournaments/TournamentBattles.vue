@@ -84,7 +84,7 @@
     }
     if (query.value) {
       const q = query.value
-      result = result.filter(battle => `${battle.localId}` === q || `${battle.id}` === q)
+      result = result.filter(battle => `${battle.code}` === q || `${battle.id}` === q)
     }
     return result
   })
@@ -198,7 +198,7 @@
                   class="link-reset link-reset--hover-underline extended-target"
                   @click.prevent="showBattle(battle)"
                 >
-                  {{ battle.localId || '-' }}
+                  {{ battle.code || '-' }}
                 </a>
               </td>
               <td

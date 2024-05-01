@@ -58,27 +58,27 @@
       </section>
 
       <section class="howto">
-        <h3>How to Play</h3>
+        <h3>How to get started</h3>
         <ol class="list-reset">
           <li>
             <SiteButtonBox small>1</SiteButtonBox>
-            Create a team for an active Tournament
+            Connect your wallet and head to our Training room
           </li>
           <li>
             <SiteButtonBox small>2</SiteButtonBox>
-            Set up your formation and special skills for your gotchis
+            Create a Team of 5 gotchis (use training gotchis for free!)
           </li>
           <li>
             <SiteButtonBox small>3</SiteButtonBox>
-            Test your team in the Training room
+            Choose your formation and leader
           </li>
           <li>
             <SiteButtonBox small>4</SiteButtonBox>
-            Let the Tournament finish and reveal each round
+            Take on one of our Training teams to test your skills
           </li>
           <li>
-            <SiteButtonBox small>5</SiteButtonBox>
-            Win great prizes!
+            <SiteButtonBox small>4</SiteButtonBox>
+            Once you're ready, enter a Tournament and battle for huge GHST prizes!
           </li>
         </ol>
       </section>
@@ -86,7 +86,7 @@
       <section class="guide">
         <h3>Game Guide</h3>
         <div class="guide-card">
-          Every gotchi has special skills in Gotchi Battler that are defined by their traits. There are 8 warrior classes, each with their own special move and leader skill. Full details can be found in our Guide:
+          Full details on how to play the game, including information on all the special moves and leader skills can be found in our Game Guide. Check it out to get the edge on your opponents and win huge GHST prizes in the next Tournament!
 
           <SiteButtonLink
             href="https://gotchi-battler-1.gitbook.io/gotchi-battler/"

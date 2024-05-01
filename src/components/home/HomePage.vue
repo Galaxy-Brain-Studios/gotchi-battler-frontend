@@ -1,7 +1,8 @@
 <script setup>
-  import SiteHeading from '../common/SiteHeading.vue'
   import SiteButtonLink from '../common/SiteButtonLink.vue'
   import SiteButtonPrimary from '../common/SiteButtonPrimary.vue'
+  import SiteButtonBox from '../common/SiteButtonBox.vue'
+  import HomeStats from './HomeStats.vue'
   import TournamentsList from '../tournaments/TournamentsList.vue'
   import { useRouter } from 'vue-router'
 
@@ -24,6 +25,7 @@
     >
       START TRAINING
     </SiteButtonPrimary>
+
   </section>
 
   <div class="hero-video-container app__full-width">
@@ -37,17 +39,63 @@
     <div class="hero-video-overlay" />
   </div>
 
-  <main class="tournaments">
-    <SiteHeading class="tournaments__header">
-      Tournaments
-    </SiteHeading>
+  <main class="home-main">
+    <HomeStats class="stats" />
 
-    <TournamentsList :maxLength="6" />
+    <div class="home-sections">
+      <section class="tournaments">
+        <h3>Tournaments</h3>
+        <div class="tournaments-link">
+          <SiteButtonLink
+            :to="{ name: 'tournaments' }"
+          >
+            View All Tournaments
+          </SiteButtonLink>
+        </div>
+        <TournamentsList
+          :maxLength="4"
+        />
+      </section>
 
-    <div class="tournaments__link">
-      <SiteButtonLink :to="{ name: 'tournaments' }">
-        View All Tournaments
-      </SiteButtonLink>
+      <section class="howto">
+        <h3>How to get started</h3>
+        <ol class="list-reset">
+          <li>
+            <SiteButtonBox small>1</SiteButtonBox>
+            Connect your wallet
+          </li>
+          <li>
+            <SiteButtonBox small>2</SiteButtonBox>
+            Head to the Training room
+          </li>
+          <li>
+            <SiteButtonBox small>3</SiteButtonBox>
+            Create a team of 5 Aavegotchis (training gotchis can be provided)
+          </li>
+          <li>
+            <SiteButtonBox small>4</SiteButtonBox>
+            Test your skills against our training teams
+          </li>
+          <li>
+            <SiteButtonBox small>5</SiteButtonBox>
+            Once you're ready, enter a Tournament and battle for huge GHST prizes!
+          </li>
+        </ol>
+      </section>
+
+      <section class="guide">
+        <h3>Game Guide</h3>
+        <div class="guide-card">
+          Full details on how to play the game, including information on all the special moves and leader skills can be found in our Game Guide. Check it out to get the edge on your opponents and win huge GHST prizes in the next Tournament!
+
+          <SiteButtonLink
+            href="https://gotchi-battler-1.gitbook.io/gotchi-battler/"
+            target="_blank"
+          >
+            Go to Game Guide
+          </SiteButtonLink>
+        </div>
+      </section>
     </div>
   </main>
 </template>
@@ -63,7 +111,7 @@
     position: relative;
     overflow: hidden;
   }
-  .tournaments {
+  .home-main {
     grid-row: 3 / 4;
   }
 
@@ -116,17 +164,92 @@
     letter-spacing: 0.03375rem;
   }
 
-  .tournaments {
-    margin-top: 2rem;
+  .stats {
+    position: relative; /* above video */
+    margin-top: -2.75rem;
+    margin-bottom: 2rem;
   }
 
-  .tournaments__header {
-    margin-bottom: 3rem;
+  .home-sections {
+    display: flex;
+    flex-direction: column;
+    row-gap: 4rem;
   }
 
-  .tournaments__link {
-    margin: 2.5rem 0 5rem;
-    display: grid;
-    place-content: center;
+  @media (min-width: 1200px) {
+    .home-sections {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      row-gap: 4rem;
+      column-gap: 2rem;
+    }
+    section.tournaments {
+      grid-column: 1 / 3;
+    }
+  }
+
+  h3 {
+    margin: 0;
+    color: var(--c-white);
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    font-weight: bold;
+    line-height: 2rem;
+    letter-spacing: 0.045rem;
+  }
+  section.tournaments {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 1rem;
+    row-gap: 2rem;
+  }
+  section.tournaments h3,
+  .tournaments-link {
+    flex: none;
+  }
+  section.tournaments > :last-child {
+    width: 100%;
+  }
+
+  section.howto {
+    display: flex;
+    flex-direction: column;
+    row-gap: 2rem;
+  }
+  .howto ol {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1.5rem;
+  }
+  .howto li {
+    font-size: 1rem;
+    line-height: 2rem;
+    letter-spacing: 0.03rem;
+  }
+  .howto li > :first-child {
+    margin-right: 0.75rem;
+  }
+
+  section.guide {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1.5rem;
+  }
+  .guide-card {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1.5rem;
+    align-items: center;
+
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    padding: 2rem;
+    background: rgba(var(--c-black-rgb), 0.25);
+
+    text-align: center;
+    font-size: 1rem;
+    line-height: 2rem;
+    letter-spacing: 0.03rem;
   }
 </style>

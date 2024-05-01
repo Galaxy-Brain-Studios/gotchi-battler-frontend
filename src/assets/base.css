@@ -12,6 +12,8 @@
   --c-light-purple: rgb(var(--c-light-purple-rgb));
   --c-medium-purple-rgb: 99, 23, 121;
   --c-medium-purple: rgb(var(--c-medium-purple-rgb));
+  --c-dark-purple-rgb: 69, 33, 130;
+  --c-dark-purple: rgb(var(--c-dark-purple-rgb));
   --c-medium-pink-rgb: 244, 114, 241, 1;
   --c-medium-pink: rgb(var(--c-medium-pink-rgb));
   --c-light-yellow-rgb: 255, 208, 32;
@@ -39,12 +41,23 @@
   --c-rarity-mythical-contrast: var(--c-black);
   --c-rarity-godlike: rgb(71, 255, 158);
   --c-rarity-godlike-contrast: var(--c-black);
+
+  --c-special-1: #3E80BE;
+  --c-special-2: #D46DC3;
+  --c-special-3: #D9322A;
+  --c-special-4: #F98A25;
+  --c-special-5: #6C6C6C;
+  --c-special-6: #ECBE11;
+  --c-special-7: #8D33EE;
+  --c-special-8: #1CA806;
 }
 
 /* semantic color variables for this project */
 :root {
   --color-background: var(--c-dark-blue);
   --color-text: var(--c-white);
+
+  --site-background-image: url('./bg.png');
 }
 
 ::-webkit-scrollbar {
@@ -79,7 +92,7 @@ body {
   min-height: 100dvh;
   color: var(--color-text);
   background-color: var(--color-background);
-  background-image: url('./bg.png');
+  background-image: var(--site-background-image);
   background-repeat: repeat;
   font-family: Kanit, Seravek, 'Gill Sans Nova', Ubuntu, Calibri, 'DejaVu Sans', source-sans-pro, sans-serif;
   text-rendering: optimizeLegibility;

@@ -13,9 +13,17 @@
     '1st', '2nd', '3rd - 4th', '5th - 8th', '9th - 16th', '17th - 32nd', '33rd - 64th', '65th - 128th', '129th - 256th', '257th - 512th', '513th - 1024th', '1025th - 2048th'
   ]
 
+  const doubleEliminationPlacementLabels = [
+    '1st', '2nd', '3rd', '4th', '5th - 6th', '7th - 8th','9th - 12th', '13th - 16th', '17th - 24th', '25th - 32nd', '33rd - 48th', '49th - 64th', '65th - 96th', '97th - 128th', '129th - 192nd', '193rd - 256th', '257th - 384th', '385th - 512th', '513th - 768th', '769th - 1024th', '1025th - 1536th', '1537th - 2048th'
+  ]
+
   const currencyIcons = {
     dai: 'token-dai',
     ghst: 'token-ghst'
+  }
+  const currencyLabels = {
+    dai: 'DAI',
+    ghst: 'GHST'
   }
 </script>
 
@@ -23,72 +31,95 @@
   <div>
     <div
       v-if="!tournament?.prizes?.length"
-      class="prizes-table__empty"
+      class="prizes-list__empty"
     >
       No prizes are available for this tournament.
     </div>
-    <table
+    <ol
       v-else
-      class="prizes-table"
+      class="list-reset prizes-list"
     >
-      <tbody>
-        <tr v-for="(prize, i) in tournament.prizes" :key="prize.place">
-          <td class="prizes-table__icon">
-            {{ i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '' }}
-          </td>
-          <td class="prizes-table__place">
-            {{ prize.label || defaultPlacementLabels[prize.place - 1] }}
-          </td>
-          <td class="prizes-table__prize">
-            <SiteIcon
-              v-if="currencyIcons[prize.currency]"
-              :name="currencyIcons[prize.currency]"
-              :alt="prize.currency"
-              :height="1.5"
-              :width="1.5"
-              class="prizes-table__currency-icon"
-            />
-            {{ prize.prize }}
-            <template v-if="!currencyIcons[prize.currency]">
-              {{ prize.currency }}
-            </template>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+      <li
+        v-for="(prize, i) in tournament.prizes"
+        :key="prize.place"
+      >
+        <div
+          v-if="i < 3"
+          class="prizes-list__icon"
+        >
+          {{ i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '' }}
+        </div>
+        <div class="prizes-list__place">
+          {{ tournament.isDoubleElim ? doubleEliminationPlacementLabels[i] : defaultPlacementLabels[i]}}
+        </div>
+        <div class="prizes-list__prize">
+          <SiteIcon
+            v-if="currencyIcons[prize.currency]"
+            :name="currencyIcons[prize.currency]"
+            :height="2"
+            :width="2"
+            class="prizes-list__currency-icon"
+          />
+          {{ prize.prize }}
+          {{ currencyLabels[prize.currency] || prize.currency }}
+        </div>
+      </li>
+    </ol>
   </div>
 </template>
 
 <style scoped>
-.prizes-table__empty {
+.prizes-list__empty {
   color: var(--c-white);
   font-size: 1.5rem;
 }
 
-.prizes-table {
+.prizes-list {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+}
+
+.prizes-list li {
+  --prize-list-border-color: var(--c-light-blue);
+  --prize-list-background-color: rgba(var(--c-medium-blue-rgb), 0.5);
+  display: flex;
+  column-gap: 0.7rem;
+
+  padding: 1rem 1.5rem;
+  border: 1px solid var(--prize-list-border-color);
+  background: var(--prize-list-background-color);
+
   color: var(--c-white);
-  font-size: 1.5rem;
-  margin: 0 auto;
-  margin-top: 5rem;
+  font-size: 1rem;
+  line-height: 2rem;
+  letter-spacing: 0.03rem;
+  font-weight: bold;
+}
+.prizes-list li:nth-child(1) {
+  --prize-list-border-color: var(--c-bright-yellow);
+  --prize-list-background-color: rgba(var(--c-bright-yellow-rgb), 0.20);
+}
+.prizes-list li:nth-child(2) {
+  --prize-list-border-color: #D3D3D3;
+  --prize-list-background-color: rgba(135, 135, 135, 0.20);
+}
+.prizes-list li:nth-child(3) {
+  --prize-list-border-color: #9B4913;
+  --prize-list-background-color: rgba(131, 49, 4, 0.20);
 }
 
-.prizes-table td {
-  padding-bottom: 2rem;
-  text-align: left;
+.prizes-list__icon,
+.prices-list__prize {
+  flex: none;
+}
+.prizes-list__place {
+  flex: 1 1 auto;
 }
 
-.prizes-table__place {
-  padding-left: 0.5rem;
-  padding-right: 3rem;
-}
-
-.prizes-table__prize {
+.prizes-list__prize {
   display: flex;
   align-items: center;
-  font-size: 1.75rem;
-}
-
-.prizes-table__currency-icon{
-  margin-right: 0.5rem;
+  column-gap: 0.75rem;
 }
 </style>

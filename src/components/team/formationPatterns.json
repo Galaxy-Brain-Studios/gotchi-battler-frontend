@@ -1,44 +1,38 @@
 [
   {
     "id": "1",
-    "name": "zigzag back-heavy",
-    "back":  [1, 0, 3, 0, 5],
-    "front": [0, 2, 0, 4, 0]
-  },
-  {
-    "id": "2",
-    "name": "zigzag front-heavy",
-    "back":  [0, 2, 0, 4, 0],
-    "front": [1, 0, 3, 0, 5]
-  },
-  {
-    "id": "3",
-    "name": "U-shape back-heavy",
-    "back":  [0, 1, 3, 4, 0],
-    "front": [0, 2, 0, 5, 0]
-  },
-  {
-    "id": "4",
-    "name": "U-shape front-heavy",
-    "back":  [0, 1, 0, 4, 0],
-    "front": [0, 2, 3, 5, 0]
-  },
-  {
-    "id": "5",
-    "name": "all at back",
-    "back":  [1, 2, 3, 4, 5],
-    "front": [0, 0, 0, 0, 0]
-  },
-  {
-    "id": "6",
-    "name": "all at front",
+    "name": "5 Front",
     "back":  [0, 0, 0, 0, 0],
     "front": [1, 2, 3, 4, 5]
   },
   {
-    "id": "7",
-    "name": "all at back except one",
+    "id": "2",
+    "name": "4 Front, 1 Back",
+    "back": [0, 0, 3, 0, 0],
+    "front":  [1, 2, 0, 4, 5]
+  },
+  {
+    "id": "3",
+    "name": "3 Front, 2 Back",
+    "back":  [0, 2, 0, 4, 0],
+    "front": [1, 0, 3, 0, 5]
+  },
+  {
+    "id": "4",
+    "name": "2 Front, 3 Back",
+    "back":  [1, 0, 3, 0, 5],
+    "front": [0, 2, 0, 4, 0]
+  },
+  {
+    "id": "5",
+    "name": "1 Front, 4 Back",
     "back":  [1, 2, 0, 4, 5],
     "front": [0, 0, 3, 0, 0]
+  },
+  {
+    "id": "6",
+    "name": "5 Back",
+    "back":  [1, 2, 3, 4, 5],
+    "front": [0, 0, 0, 0, 0]
   }
 ]

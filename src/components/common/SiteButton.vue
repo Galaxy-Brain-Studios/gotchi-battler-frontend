@@ -13,6 +13,10 @@
     active: {
       type: Boolean,
       default: false
+    },
+    type: {
+      type: String,
+      default: 'button'
     }
   })
 </script>
@@ -33,7 +37,7 @@
       :class="{
         'site-button--has-icon': icon
       }"
-      type="button"
+      :type="type"
     >
       <SiteIcon
         v-if="icon"
@@ -91,6 +95,12 @@
     calc(100% - var(--button-corner-size)) 100%,
     0 100%
   );
+  --button-clip-path--inner: polygon(
+    var(--button-corner-size) 0,
+    calc(100% - var(--button-corner-size)) 0,
+    calc(100% - var(--button-corner-size)) 100%,
+    var(--button-corner-size) 100%
+  );
   --button-clip-path: var(--button-clip-path--full);
 
   --button-filter-shadow--full: drop-shadow(0px 0px var(--button-shadow-size) var(--button-color-border));
@@ -110,6 +120,20 @@
     drop-shadow(0px 2px 0px var(--button-color-border))
     drop-shadow(2px 0px 0px var(--button-color-border))
     drop-shadow(0px -2px 0px var(--button-color-border));
+  --button-filter-borders--vertical-start:
+    drop-shadow(0px 2px 0px var(--button-color-border))
+    drop-shadow(2px 0px 0px var(--button-color-border))
+    drop-shadow(-2px 0px 0px var(--button-color-border))
+    drop-shadow(0px -2px 0px var(--button-color-border));
+  --button-filter-borders--vertical-middle:
+    drop-shadow(0px 2px 0px rgba(255,255,255,0))
+    drop-shadow(0px -2px 0px rgba(255,255,255,0))
+    drop-shadow(-2px 0px 0px var(--button-color-border))
+    drop-shadow(2px 0px 0px var(--button-color-border));
+  --button-filter-borders--vertical-end:
+    drop-shadow(0px 2px 0px var(--button-color-border))
+    drop-shadow(2px 0px 0px var(--button-color-border))
+    drop-shadow(-2px 0px 0px var(--button-color-border));
   --button-filter-borders: var(--button-filter-borders--full);
   --button-filter: var(--button-filter-borders);
 
@@ -128,6 +152,7 @@
 .site-button__container--is-active {
   --button-color-border: #FFD020;
 }
+
 .site-button__button {
   display: block;
   clip-path: var(--button-clip-path);
@@ -142,6 +167,17 @@
   text-transform: uppercase;
   color: var(--button-color-text);
 }
+
+.site-button__container--small {
+  --button-corner-size: 0.25rem;
+}
+.site-button__container--small .site-button__button {
+  padding: calc((2rem - 1.125rem - (2px * 2)) / 2) 0.5rem; /* final height: 2rem, subtract line-height and borders to get padding */
+  font-size: 0.875rem;
+  line-height: 1.125rem;
+  letter-spacing: 0.02625rem;
+}
+
 .site-button__button--link:link,
 .site-button__button--link:visited,
 .site-button__button--link:hover,
@@ -149,7 +185,6 @@
 .site-button__button--link:active {
   color: var(--button-color-text);
 }
-
 
 .site-button--has-icon {
   display: flex;
@@ -220,6 +255,37 @@
   --button-clip-path: var(--button-clip-path--full);
   --button-filter-borders: var(--button-filter-borders--full);
   clip-path: none;
+}
+.site-button__container--is-grouped--vertical.site-button__container--is-active {
+  position: relative; /* to ensure z-index works to bring it above others */
+}
+.site-button__container--is-grouped--vertical:not(.site-button__container--is-active) {
+  --button-clip-path: var(--button-clip-path--inner);
+}
+
+/* workaround to avoid border color bleeding through inbetween buttons */
+.site-button__container--is-grouped--vertical:not(.site-button__container--is-active) {
+  position: relative;
+}
+/* workaround to avoid fine horizontal lines of border color bleeding through inbetween buttons: place a button-coloured layer behind the buttons */
+.site-button__container--is-grouped--vertical:not(.site-button__container--is-active)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--button-corner-size);
+  right: var(--button-corner-size);
+  background-color: var(--button-color-background);
+}
+
+.site-button__container--is-grouped--vertical-start:not(.site-button__container--is-active) {
+  --button-filter-borders: var(--button-filter-borders--vertical-start);
+}
+.site-button__container--is-grouped--vertical-middle:not(.site-button__container--is-active) {
+  --button-filter-borders: var(--button-filter-borders--vertical-middle);
+}
+.site-button__container--is-grouped--vertical-end:not(.site-button__container--is-active) {
+  --button-filter-borders: var(--button-filter-borders--vertical-end);
 }
 
 </style>

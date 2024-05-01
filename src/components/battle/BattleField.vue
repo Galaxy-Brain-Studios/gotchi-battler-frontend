@@ -17,12 +17,22 @@
     emptyTeam2Name: {
       type: String,
       default: 'Unknown'
+    },
+    showResult: {
+      type: Boolean,
+      default: false
     }
   })
 
   const team1 = computed(() => props.battle?.teams[0])
   const team2 = computed(() => props.battle?.teams[1])
   const battleLogsUrl = computed(() => props.battle?.logs ? props.battle.logs : null )
+
+  const battleIsCompleted = computed(() => !!props.battle?.winnerId)
+  const showTeam1Winner = computed(() => props.showResult && battleIsCompleted.value && props.battle.winnerId === team1.value?.id)
+  const showTeam2Winner = computed(() => props.showResult && battleIsCompleted.value && props.battle.winnerId === team2.value?.id)
+  const showTeam1Loser = computed(() => showTeam2Winner.value)
+  const showTeam2Loser = computed(() => showTeam1Winner.value)
 </script>
 
 <template>
@@ -30,14 +40,37 @@
     v-if="battle"
     class="battle__field-container"
   >
-    <div class="battle__teams-header">
+    <div
+      class="battle__teams-header"
+      :class="{
+        'battle__teams-header--with-before-slots': $slots['before-team-1'] || $slots['before-team-2']
+      }"
+    >
+      <div
+        v-if="$slots['before-team-1'] || $slots['before-team-2']"
+        class="battle__before-team-formation"
+      >
+        <slot name="before-team-1"></slot>
+      </div>
       <div
         class="battle__team-name word-break"
         :class="{
           'battle__team-name--na': !team1
         }"
       >
+        <span
+          v-if="showTeam1Winner"
+          class="battle__team-name-icon"
+        >
+          🏆
+        </span>
         {{ team1?.name || emptyTeam1Name }}
+        <div
+          v-if="showTeam1Winner || showTeam1Loser"
+          class="battle__team-name-suffix"
+        >
+          ({{ showTeam1Winner ? 'Winner' : 'Loser' }})
+        </div>
       </div>
       <BattleVs
         class="battle__teams-vs"
@@ -51,7 +84,25 @@
           'battle__team-name--na': !team2
         }"
       >
+        <span
+          v-if="showTeam2Winner"
+          class="battle__team-name-icon"
+        >
+          🏆
+        </span>
         {{ team2?.name || emptyTeam2Name }}
+        <div
+          v-if="showTeam2Winner || showTeam2Loser"
+          class="battle__team-name-suffix"
+        >
+          ({{ showTeam2Winner ? 'Winner' : 'Loser' }})
+        </div>
+      </div>
+      <div
+        v-if="$slots['before-team-1'] || $slots['before-team-2']"
+        class="battle__before-team-formation"
+      >
+        <slot name="before-team-2"></slot>
       </div>
     </div>
 
@@ -121,25 +172,6 @@
           </template>
         </TeamFormation>
       </div>
-
-      <div
-        v-if="$slots['after-team-1']"
-        class="battle__after-team-formation"
-        :style="{
-          '--battle__after-team-num': 1
-        }"
-      >
-        <slot name="after-team-1"></slot>
-      </div>
-      <div
-        v-if="$slots['after-team-2']"
-        class="battle__after-team-formation"
-        :style="{
-          '--battle__after-team-num': 2
-        }"
-      >
-        <slot name="after-team-2"></slot>
-      </div>
     </div>
   </div>
 </template>
@@ -154,21 +186,33 @@
     gap: 1.5rem;
     align-items: center;
   }
+  .battle__teams-header--with-before-slots {
+    grid-template-columns: 12.5rem minmax(0, 1fr) auto minmax(0, 1fr) 12.5rem;
+  }
   .battle__team-name {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-align: right;
 
-    font-size: 2.5rem;
-    line-height: 2.5rem;
-    letter-spacing: 0.075rem;
+    font-size: 1.5rem;
+    line-height: 1.75rem;
+    letter-spacing: 0.045rem;
     font-weight: bold;
   }
   .battle__team-name--na {
     color: var(--c-black);
   }
   .battle__teams-vs + .battle__team-name {
-    text-align: right;
+    text-align: left;
+  }
+  .battle__team-name-icon {
+    margin-right: 0.75rem;
+  }
+  .battle__team-name-suffix {
+    font-size: 1.25rem;
+    line-height: 1.5rem;
+    font-weight: normal;
   }
 
 
@@ -186,10 +230,6 @@
     place-items: center;
     background: radial-gradient(50% 50.00% at 50% 50.00%, #421F89 0%, #150B4D 100%);
     font-size: 1.5rem;
-  }
-  .battle__after-team-formation {
-    grid-column: calc(var(--battle__after-team-num) * 2 - 1) / span 1;
-    padding-top: 1.5rem;
   }
 
 </style>

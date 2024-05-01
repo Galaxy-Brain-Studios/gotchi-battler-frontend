@@ -68,6 +68,7 @@
     v-if="canCreateTeam"
   >
     <SiteButtonPrimary
+      compact
       @click="createTeamDialogIsOpen = true"
     >
       Create Team

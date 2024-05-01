@@ -13,6 +13,10 @@
     iconName: {
       type: String,
       default: null
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   })
 </script>
@@ -24,6 +28,7 @@
     :class="{
       'site-button-icon--active': active
     }"
+    :disabled="disabled"
   >
     <span class="sr-only">
       {{ label }}
@@ -31,8 +36,8 @@
     <slot>
       <SiteIcon
         :name="iconName"
-        :width="0.75"
-        :height="0.75"
+        :width="1"
+        :height="1"
       />
     </slot>
   </button>
@@ -44,7 +49,7 @@
     place-items: center;
     opacity: 0.6;
     color: var(--c-white);
-    padding: 0.3rem;
+    padding: 0;
   }
   .site-button-icon--active {
     opacity: 1;

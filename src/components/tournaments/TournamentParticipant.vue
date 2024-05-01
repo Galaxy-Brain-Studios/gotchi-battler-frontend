@@ -26,19 +26,11 @@
 </script>
 
 <template>
-  <div v-if="address && tournamentId">
-    <template v-if="canCreateTeam">
-      Find your teams in 'Entrants' below, or create a new team.
-      <TournamentCreateTeam
-        :tournamentId="tournamentId"
-        style="margin-top: 1rem;"
-        @createdTeam="emit('createdTeam')"
-      />
-    </template>
-    <template v-else>
-      Find your teams in 'Entrants' below.
-    </template>
-  </div>
+  <TournamentCreateTeam
+    v-if="address && tournamentId && canCreateTeam"
+    :tournamentId="tournamentId"
+    @createdTeam="emit('createdTeam')"
+  />
 </template>
 
 <style scoped>

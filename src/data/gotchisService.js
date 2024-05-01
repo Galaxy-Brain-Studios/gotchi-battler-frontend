@@ -11,4 +11,20 @@ export default {
       throw new Error(e.json?.error || 'Error fetching gotchis')
     }
   },
+
+  async fetchTrainingGotchis () {
+    try {
+      const gotchis = await api.get(urls.trainingGotchis())
+      // Don't use provided id for training gotchis, fallback to onchainId
+      for (let gotchi of gotchis) {
+        if (gotchi.onchainId) {
+          delete gotchi.id
+        }
+      }
+      return gotchis.map(processGotchiModel)
+    } catch (e) {
+      console.error('fetchTrainingGotchis error', { ...e })
+      throw new Error(e.json?.error || 'Error fetching training gotchis')
+    }
+  },
 }

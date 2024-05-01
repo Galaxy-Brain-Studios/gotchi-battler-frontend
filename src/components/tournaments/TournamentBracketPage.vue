@@ -70,17 +70,17 @@
     }
   }))
 
-  const battleLocalIds = computed(() => {
+  const battleCodes = computed(() => {
     if (!fullBracketsFetchStatus.value.loaded) { return null }
-    const localIds = {}
+    const codes = {}
     for (const bracket of fullBrackets.value) {
       for (const round of (bracket.rounds || [])) {
         for (const battle of (round.battles || [])) {
-          localIds[battle.id] = battle.localId
+          codes[battle.id] = battle.code
         }
       }
     }
-    return localIds
+    return codes
   })
   const battleBracketIds = computed(() => {
     if (!fullBracketsFetchStatus.value.loaded) { return null }
@@ -165,7 +165,7 @@
         :nextBracketId="nextBracket?.id"
         :nextBracketName="nextBracket?.name"
         :teams="tournament.teams"
-        :battleLocalIds="battleLocalIds"
+        :battleCodes="battleCodes"
         :battleBracketIds="battleBracketIds"
       />
       <BattleDialog

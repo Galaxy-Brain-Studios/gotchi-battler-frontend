@@ -62,22 +62,22 @@
         <ol class="list-reset">
           <li>
             <SiteButtonBox small>1</SiteButtonBox>
-            Connect your wallet and head to our Training room
+            Connect your wallet
           </li>
           <li>
             <SiteButtonBox small>2</SiteButtonBox>
-            Create a Team of 5 gotchis (use training gotchis for free!)
+            Head to the Training room
           </li>
           <li>
             <SiteButtonBox small>3</SiteButtonBox>
-            Choose your formation and leader
+            Create a team of 5 Aavegotchis (training gotchis can be provided)
           </li>
           <li>
             <SiteButtonBox small>4</SiteButtonBox>
-            Take on one of our Training teams to test your skills
+            Test your skills against our training teams
           </li>
           <li>
-            <SiteButtonBox small>4</SiteButtonBox>
+            <SiteButtonBox small>5</SiteButtonBox>
             Once you're ready, enter a Tournament and battle for huge GHST prizes!
           </li>
         </ol>

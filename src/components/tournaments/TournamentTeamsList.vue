@@ -94,25 +94,36 @@
   const store = useAccountStore()
   const { isConnected, address } = storeToRefs(store)
 
+  const rankingIsAvailable = computed(() => props.tournamentStatus === 'completed' )
+
   const numToShow = ref(10)
   const onlyShowMyTeams = ref(false)
-  const sortOptions = [
-    {
+  const sortOptions = computed(() => [
+    ...(rankingIsAvailable.value ? [{
       id: 'ranking_asc',
       label: 'Ranking'
+    }] : []),
+    {
+      id: 'battlesWon_desc',
+      label: 'Wins'
     },
     {
       id: 'totalBrs_desc',
       label: 'Total BRS'
-    },
-    {
-      id: 'battlesWon_desc',
-      label: 'Wins'
     }
-  ]
-  const sorting = ref(sortOptions[0].id)
+  ])
+  const sorting = ref(sortOptions.value[0].id)
   const sortingProperty = computed(() => sorting.value.split('_')[0])
   const sortingDirection = computed(() => sorting.value.split('_')[1])
+
+  watch(
+    () => rankingIsAvailable.value,
+    (newValue) => {
+      if (!newValue && sorting.value.startsWith('ranking')) {
+        sorting.value = sortOptions.value[0].id
+      }
+    }
+  )
 
   const query = ref('')
   const debouncedQuery = ref('')
@@ -257,7 +268,10 @@
       <SiteTable class="teams-list__table">
         <thead>
           <tr>
-            <th class="team__ranking site-table--no-grow">
+            <th
+              v-if="rankingIsAvailable"
+              class="team__ranking site-table--no-grow"
+            >
               <SiteIcon
                 v-if="sortingProperty === 'ranking'"
                 :label="sortingDirection === 'asc' ? 'Sorted Ascending' : 'Sorted Descending'"
@@ -302,7 +316,10 @@
             v-for="team in teamsToDisplay"
             :key="team.id"
           >
-            <td class="team__ranking">
+            <td
+              v-if="rankingIsAvailable"
+              class="team__ranking"
+            >
               <SiteButtonBox
                 :active="isConnected && address === team.owner"
                 small

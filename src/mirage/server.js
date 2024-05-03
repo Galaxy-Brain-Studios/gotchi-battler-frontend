@@ -129,6 +129,10 @@ const mirageConfig = window.mirageConfig = {
     error: false,
     slow: false
   },
+  tournamentTeamsReport: {
+    error: false,
+    slow: false
+  },
   tournamentTeams: {
     error: false,
     slow: false
@@ -241,7 +245,22 @@ export function makeServer({ environment = 'development' } = {}) {
         if (!tournament) {
           return errorResponse({ statusCode: 404, message: 'Tournament not found' })
         }
-        return tournament
+        return {
+          ...tournament,
+          // only return essential team info in tournament endpoint
+          teams: tournament.teams?.map(({ id, name, owner }) => ({ id, name, owner }))
+        }
+      })
+
+      this.get(fixUrl(urls.tournamentTeamsReport(':id')), (schema, request) => {
+        if (mirageConfig.tournamentTeamsReport.error) {
+          return errorResponse()
+        }
+        const tournament = tournamentsById[request.params.id]
+        if (!tournament) {
+          return errorResponse({ statusCode: 404, message: 'Tournament not found' })
+        }
+        return tournament.teams || []
       })
 
       this.get(fixUrl(urls.tournamentBrackets(':id')), (schema, request) => {

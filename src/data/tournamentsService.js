@@ -181,6 +181,16 @@ export default {
     }
   },
 
+  async fetchTournamentTeamsReport ({ tournamentId }) {
+    try {
+      const teams = await api.get(urls.tournamentTeamsReport(tournamentId))
+      return teams || []
+    } catch (e) {
+      console.error('fetchTournamentTeamsReport error', { ...e })
+      throw new Error(e.json?.error || e.json?.message || 'Error fetching tournament teams report')
+    }
+  },
+
   async fetchTournamentGotchis ({ tournamentId }) {
     try {
       const gotchis = await api.get(urls.tournamentGotchis(tournamentId))

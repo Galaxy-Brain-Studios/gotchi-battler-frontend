@@ -20,11 +20,11 @@
       />
     </RouterLink>
     <nav>
-      <!-- <SiteButtonWhiteLink
+      <SiteButtonWhiteLink
         to="/tournaments"
       >
         Tournaments
-      </SiteButtonWhiteLink> -->
+      </SiteButtonWhiteLink>
       <SiteButtonWhiteLink
         to="/training"
       >

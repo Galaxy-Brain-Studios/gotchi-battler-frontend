@@ -5,6 +5,7 @@
   import { useRouter, RouterLink } from 'vue-router'
   import { storeToRefs } from 'pinia'
   import { useAccountStore } from '../../data/accountStore'
+  import useTournamentTeamsReport from '../../data/useTournamentTeamsReport'
   import SiteIcon from '../common/SiteIcon.vue'
   import SiteButton from '../common/SiteButton.vue'
   import SiteButtonBox from '../common/SiteButtonBox.vue'
@@ -24,8 +25,8 @@
     EDIT: 'edit' // during inscription phase, more limited editing allowed
   }
   const props = defineProps({
-    tournament: {
-      type: Object,
+    tournamentId: {
+      type: Number,
       required: true
     },
     tournamentStatus: {
@@ -42,6 +43,16 @@
     }
   })
   defineEmits(['deletedTeam', 'replacedTeam', 'editedTeam'])
+
+  // Fetch teams in tournament
+  const { fetchTeams, fetchTeamsStatus, teams } = useTournamentTeamsReport()
+  watch(
+    () => props.tournamentId,
+    (newId) => {
+      fetchTeams(newId)
+    },
+    { immediate: true }
+  )
 
   const teamIdNum = computed(() => props.teamId - 0)
 
@@ -117,9 +128,8 @@
     return false;
   }
   const filteredAndSortedTeams = computed(() => {
-    if (!props.tournament?.teams?.length) { return null }
-    const teams = props.tournament.teams
-    const filteredTeams = debouncedQuery.value ? teams.filter(matchesQuery) : teams
+    if (!(fetchTeamsStatus.value.loaded && teams.value?.length)) { return null }
+    const filteredTeams = debouncedQuery.value ? teams.value.filter(matchesQuery) : teams.value
     const sortedTeams = orderBy(filteredTeams, [sortingProperty.value], [sortingDirection.value])
     let bubbledTeams = sortedTeams;
     if (isConnected.value) {
@@ -145,8 +155,8 @@
   const canLoadMoreTeams = computed(() => filteredAndSortedTeams.value?.length > numToShow.value)
 
   const canManageTeam = computed(() => {
-    if (!props.teamId || !address.value || !props.tournament.teams) { return false }
-    const team = props.tournament.teams.find(team => team.id === props.teamId - 0)
+    if (!props.teamId || !address.value || !(fetchTeamsStatus.value.loaded && teams.value)) { return false }
+    const team = teams.value.find(team => team.id === props.teamId - 0)
     return team?.owner === address.value
   })
 
@@ -195,150 +205,164 @@
 
 <template>
   <div
-    v-if="!tournament?.teams?.length"
-    class="teams-list__empty"
+    v-if="fetchTeamsStatus.loading"
+    class="teams-list__loading"
   >
-    No teams in this tournament.
+    Loading...
   </div>
-  <div v-else>
-    <div class="teams-list__header">
-      <SiteCheckbox
-        v-if="isConnected"
-        v-model="onlyShowMyTeams"
-      >
-        My teams only
-      </SiteCheckbox>
-      <div class="teams-list__search-teams">
-        <SiteTextField
-          v-model="query"
-          search
-          subtle
-          placeholder="Search team or address"
-          class="teams-list__search-field"
-          @input="debouncedSetQuery"
-        />
-      </div>
-      <div class="teams-list__sort-teams">
-        Sort by:
-        <SiteSelect v-model="sorting">
-          <option
-            v-for="option in sortOptions"
-            :key="option.id"
-            :value="option.id"
-          >
-            {{ option.label }}
-          </option>
-        </SiteSelect>
-      </div>
+  <div
+    v-if="fetchTeamsStatus.error"
+    class="teams-list__error"
+  >
+    {{ fetchTeamsStatus.errorMessage }}
+  </div>
+  <template v-else-if="fetchTeamsStatus.loaded">
+    <div
+      v-if="!teams?.length"
+      class="teams-list__empty"
+    >
+      No teams in this tournament.
     </div>
-    <SiteTable class="teams-list__table">
-      <thead>
-        <tr>
-          <th class="team__ranking site-table--no-grow">
-            <SiteIcon
-              v-if="sortingProperty === 'ranking'"
-              :label="sortingDirection === 'asc' ? 'Sorted Ascending' : 'Sorted Descending'"
-              :name="sortingDirection === 'asc' ? 'chevron-up' : 'chevron-down'"
-              class="teams-list__header-sort-icon"
-              :width="0.625"
-              :height="0.625"
-            />
-          </th>
-          <th>
-            <span>Name</span>
-          </th>
-          <th>
-            <span>Owner</span>
-          </th>
-          <th>
-            <span>Total BRS</span>
-            <SiteIcon
-              v-if="sortingProperty === 'totalBrs'"
-              :label="sortingDirection === 'asc' ? 'Sorted Ascending' : 'Sorted Descending'"
-              :name="sortingDirection === 'asc' ? 'chevron-up' : 'chevron-down'"
-              class="teams-list__header-sort-icon"
-              :width="0.625"
-              :height="0.625"
-            />
-          </th>
-          <th class="site-table--no-grow">
-            <span>Wins</span>
-            <SiteIcon
-              v-if="sortingProperty === 'battlesWon'"
-              :label="sortingDirection === 'asc' ? 'Sorted Ascending' : 'Sorted Descending'"
-              :name="sortingDirection === 'asc' ? 'chevron-up' : 'chevron-down'"
-              class="teams-list__header-sort-icon"
-              :width="0.625"
-              :height="0.625"
-            />
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="team in teamsToDisplay"
-          :key="team.id"
+    <div v-else>
+      <div class="teams-list__header">
+        <SiteCheckbox
+          v-if="isConnected"
+          v-model="onlyShowMyTeams"
         >
-          <td class="team__ranking">
-            <SiteButtonBox
-              :active="isConnected && address === team.owner"
-              small
-              class="team__ranking-badge"
+          My teams only
+        </SiteCheckbox>
+        <div class="teams-list__search-teams">
+          <SiteTextField
+            v-model="query"
+            search
+            subtle
+            placeholder="Search team or address"
+            class="teams-list__search-field"
+            @input="debouncedSetQuery"
+          />
+        </div>
+        <div class="teams-list__sort-teams">
+          Sort by:
+          <SiteSelect v-model="sorting">
+            <option
+              v-for="option in sortOptions"
+              :key="option.id"
+              :value="option.id"
             >
-              {{ team.ranking }}
-            </SiteButtonBox>
-          </td>
-          <td
-            class="team__name word-break"
-            style="position: relative;"
+              {{ option.label }}
+            </option>
+          </SiteSelect>
+        </div>
+      </div>
+      <SiteTable class="teams-list__table">
+        <thead>
+          <tr>
+            <th class="team__ranking site-table--no-grow">
+              <SiteIcon
+                v-if="sortingProperty === 'ranking'"
+                :label="sortingDirection === 'asc' ? 'Sorted Ascending' : 'Sorted Descending'"
+                :name="sortingDirection === 'asc' ? 'chevron-up' : 'chevron-down'"
+                class="teams-list__header-sort-icon"
+                :width="0.625"
+                :height="0.625"
+              />
+            </th>
+            <th>
+              <span>Name</span>
+            </th>
+            <th>
+              <span>Owner</span>
+            </th>
+            <th>
+              <span>Total BRS</span>
+              <SiteIcon
+                v-if="sortingProperty === 'totalBrs'"
+                :label="sortingDirection === 'asc' ? 'Sorted Ascending' : 'Sorted Descending'"
+                :name="sortingDirection === 'asc' ? 'chevron-up' : 'chevron-down'"
+                class="teams-list__header-sort-icon"
+                :width="0.625"
+                :height="0.625"
+              />
+            </th>
+            <th class="site-table--no-grow">
+              <span>Wins</span>
+              <SiteIcon
+                v-if="sortingProperty === 'battlesWon'"
+                :label="sortingDirection === 'asc' ? 'Sorted Ascending' : 'Sorted Descending'"
+                :name="sortingDirection === 'asc' ? 'chevron-up' : 'chevron-down'"
+                class="teams-list__header-sort-icon"
+                :width="0.625"
+                :height="0.625"
+              />
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="team in teamsToDisplay"
+            :key="team.id"
           >
-            <RouterLink
-              :to="{ name: 'tournament-tab', params: { tab: 'teams', teamId: team.id} }"
-              class="link-reset link-reset--hover-underline extended-target"
+            <td class="team__ranking">
+              <SiteButtonBox
+                :active="isConnected && address === team.owner"
+                small
+                class="team__ranking-badge"
+              >
+                {{ team.ranking }}
+              </SiteButtonBox>
+            </td>
+            <td
+              class="team__name word-break"
+              style="position: relative;"
             >
-              {{ team.name }}
-            </RouterLink>
-          </td>
-          <td class="team__owner">
-            <SiteEthAddress
-              :address="team.owner"
-            />
-          </td>
-          <td class="team__brs">{{ team.totalBrs }}</td>
-          <td class="team__wins">{{ team.battlesWon }}</td>
-        </tr>
-      </tbody>
-    </SiteTable>
-    <div class="teams-list__footer">
-      <SiteButton
-        v-if="canLoadMoreTeams"
-        @click="loadMoreTeams"
-      >
-        Load More Teams
-      </SiteButton>
+              <RouterLink
+                :to="{ name: 'tournament-tab', params: { tab: 'teams', teamId: team.id} }"
+                class="link-reset link-reset--hover-underline extended-target"
+              >
+                {{ team.name }}
+              </RouterLink>
+            </td>
+            <td class="team__owner">
+              <SiteEthAddress
+                :address="team.owner"
+              />
+            </td>
+            <td class="team__brs">{{ team.totalBrs }}</td>
+            <td class="team__wins">{{ team.battlesWon }}</td>
+          </tr>
+        </tbody>
+      </SiteTable>
+      <div class="teams-list__footer">
+        <SiteButton
+          v-if="canLoadMoreTeams"
+          @click="loadMoreTeams"
+        >
+          Load More Teams
+        </SiteButton>
+      </div>
     </div>
-  </div>
-  <TeamDialog
-    v-if="teamId"
-    v-model:isOpen="teamDialogIsOpen"
-    :id="teamIdNum"
-    :tournamentId="tournament.id"
-    :canDelete="canDeleteTeam"
-    :canReplace="canReplaceTeam"
-    :canEdit="canEditTeam"
-    @deletedTeam="$emit('deletedTeam')"
-    @requestReplaceTeam="requestReplaceTeam"
-    @requestEditTeam="requestEditTeam"
-  />
-  <EditTeamDialog
-    v-if="teamId && (canReplaceTeam || canEditTeam) && editTeamDialogIsOpen"
-    v-model:isOpen="editTeamDialogIsOpen"
-    :id="teamIdNum"
-    :tournamentId="tournament.id"
-    :mode="teamMode"
-    @replacedTeam="$emit('replacedTeam')"
-    @editedTeam="$emit('editedTeam')"
-  />
+    <TeamDialog
+      v-if="teamId"
+      v-model:isOpen="teamDialogIsOpen"
+      :id="teamIdNum"
+      :tournamentId="tournamentId"
+      :canDelete="canDeleteTeam"
+      :canReplace="canReplaceTeam"
+      :canEdit="canEditTeam"
+      @deletedTeam="$emit('deletedTeam')"
+      @requestReplaceTeam="requestReplaceTeam"
+      @requestEditTeam="requestEditTeam"
+    />
+    <EditTeamDialog
+      v-if="teamId && (canReplaceTeam || canEditTeam) && editTeamDialogIsOpen"
+      v-model:isOpen="editTeamDialogIsOpen"
+      :id="teamIdNum"
+      :tournamentId="tournamentId"
+      :mode="teamMode"
+      @replacedTeam="$emit('replacedTeam')"
+      @editedTeam="$emit('editedTeam')"
+    />
+  </template>
 </template>
 
 <style scoped>

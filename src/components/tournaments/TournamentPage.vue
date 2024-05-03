@@ -194,7 +194,7 @@
 
         <TournamentTeamsList
           v-else-if="tab === 'teams'"
-          :tournament="tournament"
+          :tournamentId="tournament.id"
           :tournamentStatus="tournamentStatus"
           :teamId="teamId"
           :teamMode="teamMode"

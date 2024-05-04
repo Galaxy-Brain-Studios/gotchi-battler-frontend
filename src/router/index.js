@@ -22,43 +22,43 @@ const router = createRouter({
       name: 'home',
       component: HomePage
     },
-    {
-      path: '/tournaments',
-      name: 'tournaments',
-      redirect: {
-        name: 'tournaments-type',
-        params: {
-          type: 'all'
-        }
-      },
-      children: [
-        {
-          path: 'type/:type',
-          name: 'tournaments-type',
-          props: true,
-          component: () => import('../components/tournaments/TournamentsPage.vue')
-        },
-        {
-          path: 'id/:id',
-          name: 'tournament',
-          redirect: to => ({ name: 'tournament-tab', params: { id: to.params.id, tab: 'brackets' } }),
-          children: [
-            {
-              path: 'tab/:tab/:teamId?/:teamMode?',
-              name: 'tournament-tab',
-              props: true,
-              component: () => import('../components/tournaments/TournamentPage.vue')
-            },
-            {
-              path: 'bracket/:bracketId/:battleId?',
-              name: 'tournament-bracket',
-              props: true,
-              component: () => import('../components/tournaments/TournamentBracketPage.vue')
-            }
-          ]
-        }
-      ]
-    },
+    // {
+    //   path: '/tournaments',
+    //   name: 'tournaments',
+    //   redirect: {
+    //     name: 'tournaments-type',
+    //     params: {
+    //       type: 'all'
+    //     }
+    //   },
+    //   children: [
+    //     {
+    //       path: 'type/:type',
+    //       name: 'tournaments-type',
+    //       props: true,
+    //       component: () => import('../components/tournaments/TournamentsPage.vue')
+    //     },
+    //     {
+    //       path: 'id/:id',
+    //       name: 'tournament',
+    //       redirect: to => ({ name: 'tournament-tab', params: { id: to.params.id, tab: 'brackets' } }),
+    //       children: [
+    //         {
+    //           path: 'tab/:tab/:teamId?/:teamMode?',
+    //           name: 'tournament-tab',
+    //           props: true,
+    //           component: () => import('../components/tournaments/TournamentPage.vue')
+    //         },
+    //         {
+    //           path: 'bracket/:bracketId/:battleId?',
+    //           name: 'tournament-bracket',
+    //           props: true,
+    //           component: () => import('../components/tournaments/TournamentBracketPage.vue')
+    //         }
+    //       ]
+    //     }
+    //   ]
+    // },
     {
       path: '/training',
       name: 'training',

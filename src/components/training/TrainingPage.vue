@@ -4,11 +4,14 @@
   import { formatDateTime } from '../../utils/date'
   import { useAccountStore } from '../../data/accountStore'
   import { useBattleStore, submitTrainingBattle, signTrainingBattle, useTrainingBattlesStore } from '../../data/battleStore'
-  import SiteButton from '../common/SiteButton.vue'
+  import SiteButton from '../common/SiteButton.vue' 
   import SiteError from '../common/SiteError.vue'
   import SiteConnectWallet from '../site/SiteConnectWallet.vue'
   import SiteButtonPrimary from '../common/SiteButtonPrimary.vue'
   import SiteButtonSmall from '../common/SiteButtonSmall.vue'
+  import SiteButtonIcon from '../common/SiteButtonIcon.vue'
+  import SiteIcon from '../common/SiteIcon.vue'
+  import SitePopupHoverMenu from '../common/SitePopupHoverMenu.vue'
   import BattleField from '../battle/BattleField.vue'
   import BattleVs from '../battle/BattleVs.vue'
   import CreateTeamDialog from '../team/CreateTeamDialog.vue'
@@ -242,11 +245,25 @@
           <tr>
             <th>Date</th>
             <th>Team</th>
-            <th>Training Team</th>
-            <th>Training Power Lvl.</th>
-            <th>Win Rate</th>
+            <th>Opponent</th>
+            <th>Power level</th>
+            <th>
+              <div class="training-battle__win-rate-title">
+                <div>Win rate</div>
+                <SitePopupHoverMenu class="training-battle__win-rate-popup">
+                  <SiteButtonIcon
+                    iconName="info"
+                    label="about"
+                  />
+                  <template #popper>
+                    This win rate shows what percentage your team wins over 200 battles.
+                  </template>
+                </SitePopupHoverMenu>
+              </div>
+            </th>
             <th>Result</th>
             <th>Replay</th>
+            <th>Share</th>
           </tr>
         </thead>
         <tbody>
@@ -290,6 +307,15 @@
               <SiteButtonSmall @click="loadTrainingBattle(battle)">
                 Load
               </SiteButtonSmall>
+            </td>
+            <td>
+              <RouterLink 
+                class="training-battle__analytics-link"
+                :to="{ name: 'analyser', params: { id: battle.id } }"
+                target="_blank">
+                <span class="training-battle__analytics-link-text">Analytics</span>
+                <SiteIcon name="new-window" :width="0.95"/>
+              </RouterLink>
             </td>
           </tr>
         </tbody>
@@ -344,6 +370,15 @@
   .training-battle__history-table th:not(:last-child) {
     padding-right: 1rem;
   }
+  .training-battle__win-rate-title {
+    display: flex;
+    align-items: center;
+    column-gap: 0.25rem;
+  }
+  .training-battle__win-rate-popup {
+    flex: none;
+    display: grid;
+  }
   .training-battle__history-table td {
     vertical-align: top;
     padding-top: 0.3rem;
@@ -369,5 +404,16 @@
   .training-battle__history-table td.training-battle__history-table-select {
     padding-top: 0;
     padding-bottom: 0.5rem;
+  }
+  .training-battle__analytics-link {
+    color: white;
+    display: flex;
+    text-decoration: none;
+  }
+  .training-battle__analytics-link:hover {
+    text-decoration: underline;
+  }
+  .training-battle__analytics-link-text {
+    margin-right: 0.5rem;
   }
 </style>

@@ -168,7 +168,7 @@
     return false
   }
 
-  const numToShow = ref(20)
+  const numToShow = ref(18)
 
   const annotatedGotchis = computed(() => {
     if (!gotchis.value) { return [] }
@@ -199,7 +199,7 @@
   })
 
   function loadMore () {
-    numToShow.value += 20
+    numToShow.value += 18
   }
   const canLoadMore = computed(() => filteredAndSortedGotchis.value?.length > numToShow.value)
 </script>
@@ -460,12 +460,7 @@
             v-for="gotchi in gotchisToDisplay"
             :key="gotchi.id"
           >
-            <div
-              class="gotchi-image-container"
-              :style="{
-                '--gotchi-image-color-background': `var(--c-rarity-${gotchi.rarityType})`
-              }"
-            >
+            <div class="gotchi-image-container">
               <img
                 :src="gotchi.svgFront"
                 alt=""
@@ -612,8 +607,8 @@
   .gotchi-image-container {
     display: grid;
     place-items: center;
-    padding: 1rem 0;
-    background: var(--gotchi-image-color-background, white);
+    padding-top: 1rem;
+    background: linear-gradient(180deg, var(--c-dark-purple) 0%, var(--c-black) 100%);
   }
   .gotchi-image {
     width: 8rem;

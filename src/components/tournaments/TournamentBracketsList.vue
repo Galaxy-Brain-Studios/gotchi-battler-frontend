@@ -1,11 +1,7 @@
 <script setup>
   import debounce from 'lodash.debounce'
   import { ref, computed } from 'vue'
-  import { storeToRefs } from 'pinia'
-  import { useAccountStore } from '../../data/accountStore'
-  import SiteCheckbox from '../common/SiteCheckbox.vue'
   import SiteTextField from '../common/SiteTextField.vue'
-  import SiteIcon from '../common/SiteIcon.vue'
   import SiteTable from '../common/SiteTable.vue'
   import BracketStatusBadge from './BracketStatusBadge.vue'
 
@@ -16,10 +12,6 @@
     }
   })
 
-  const store = useAccountStore()
-  const { isConnected, address } = storeToRefs(store)
-
-  const onlyShowMyBrackets = ref(false)
   const query = ref('')
   const debouncedQuery = ref('')
   function setQuery () {
@@ -27,29 +19,8 @@
   }
   const debouncedSetQuery = debounce(setQuery, 200)
 
-  const myTeamIds = computed(() => {
-    if (!isConnected.value || !address.value) { return [] }
-    if (!props.tournament.teams) { return [] }
-    const addressLc = address.value.toLowerCase()
-    return props.tournament.teams.filter(team => team.owner?.toLowerCase() === addressLc).map(team => team.id)
-  })
-
-  const annotatedBrackets = computed(() => {
-    const result = props.tournament.brackets || []
-    if (myTeamIds.value.length) {
-      return result.map(bracket => ({
-        ...bracket,
-        containsMyTeams: bracket.teams?.some(teamId => myTeamIds.value.includes(teamId))
-      }))
-    }
-    return result
-  })
-
   const bracketsToDisplay = computed(() => {
-    let result = annotatedBrackets.value
-    if (isConnected.value && onlyShowMyBrackets.value) {
-      result = result.filter(bracket => bracket.containsMyTeams)
-    }
+    let result = props.tournament.brackets || []
     if (debouncedQuery.value) {
       const queryLc = debouncedQuery.value.toLowerCase()
       const matchingTeamIds = props.tournament.teams.filter(team => team.name.toLowerCase().includes(queryLc)).map(team => team.id)
@@ -68,13 +39,6 @@
   </div>
   <template v-else>
     <div class="brackets-list__header">
-      <div v-if="isConnected">
-        <SiteCheckbox
-          v-model="onlyShowMyBrackets"
-        >
-          Only brackets I'm part of
-        </SiteCheckbox>
-      </div>
       <div>
         <SiteTextField
           v-model="query"
@@ -116,20 +80,6 @@
                   {{ bracket.name }}
                 </RouterLink>
               </div>
-            </div>
-          </td>
-          <td class="site-table--no-grow">
-            <div
-              v-if="bracket.containsMyTeams"
-              class="bracket__playing"
-            >
-              <SiteIcon
-                name="star"
-                :width="1.3"
-                :height="1.3"
-                class="bracket__playing-icon"
-              />
-              PLAYING
             </div>
           </td>
           <td class="site-table--no-grow">
@@ -186,7 +136,6 @@
     gap: 1rem;
   }
 
-  .bracket__playing,
   .bracket__num-teams,
   .bracket__status {
     white-space: nowrap;
@@ -206,19 +155,6 @@
     font-size: 1rem;
     line-height: 1.125rem;
     letter-spacing: 0.03rem;
-  }
-  .bracket__playing {
-    display: flex;
-    align-items: center;
-    column-gap: 0.5rem;
-    font-weight: bold;
-    font-size: 0.875rem;
-    line-height: 1.5rem;
-    letter-spacing: 0.02625rem;
-    color: var(--c-light-yellow);
-  }
-  .bracket__playing-icon {
-    margin-top: -3px;
   }
   .bracket__num-teams {
     font-size: 0.875rem;

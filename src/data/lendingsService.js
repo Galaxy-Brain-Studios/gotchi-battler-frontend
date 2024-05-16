@@ -10,6 +10,7 @@ const processLendingModel = function (jsonData) {
     lendingGhstPrice: jsonData.upfrontCost - 0,
     lendingPeriod: jsonData.rentDuration - 0,
     lendingEndsEarly: !!jsonData.warning,
+    createdDate: jsonData.timeCreated ? new Date(jsonData.timeCreated) : null,
     ...gotchi
   }
 }

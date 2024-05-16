@@ -70,6 +70,10 @@
 
   const sortOptions = [
     {
+      id: 'createdDate_desc',
+      label: 'Most Recent'
+    },
+    {
       id: 'brs_desc',
       label: 'Rarity Score'
     },

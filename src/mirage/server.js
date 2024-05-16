@@ -593,9 +593,12 @@ export function makeServer({ environment = 'development' } = {}) {
         const NUM_GOTCHIS = mirageConfig.availableLendings.empty ? 0 : 30
         const AVAILABLE_SPECIALS = [1, 2, 3, 4, 5, 6, 7, 8].map(id => ({ id }))
         const AVAILABLE_RARITIES = ['common', 'uncommon', 'rare', 'legendary', 'mythical', 'godlike', null]
+        const startDateMs = new Date().getTime()
+
         for (let i = 0; i < NUM_GOTCHIS; i++) {
           lendings.push({
             id: 1780810 + i,
+            timeCreated: new Date(startDateMs + (1000 * 60 * 60) * i),
             upfrontCost: `${0 + i}`,
             rentDuration: 60 * 60 * 12 * i,
             warning: !(i%3),

@@ -123,6 +123,7 @@
               :isLeader="gotchi.id === team1.leader"
               :teamId="team1.id"
               variant="small"
+              withStatsPopup
               withSpecialInfoBadge
             />
           </template>
@@ -164,6 +165,7 @@
               :isLeader="gotchi.id === team2.leader"
               :teamId="team2.id"
               variant="small"
+              withStatsPopup
               withSpecialInfoBadge
             />
           </template>

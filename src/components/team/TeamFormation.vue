@@ -1,6 +1,9 @@
 <script setup>
   import { computed } from 'vue'
 
+  import SiteButtonIcon from '../common/SiteButtonIcon.vue'
+  import SitePopupHoverMenu from '../common/SitePopupHoverMenu.vue'
+
   const props = defineProps({
     team: {
       type: Object,
@@ -63,13 +66,10 @@
   const rowBoosts = computed(() => {
     const boosts = [
       {
-        label: '+20% ATTACK',
+        text: 'Gotchis in the front row will be targeted first, whilst receiving an increase to physical attack and a decrease in physical defence.',
         color: '#FF5038'
       },
-      {
-        label: '+20% ARMOR',
-        color: 'rgb(53, 73, 254)'
-      }
+      null // nothing to show for back
     ]
     if (props.reverseRows) { return boosts }
     return boosts.reverse();
@@ -161,14 +161,26 @@
     />
     <template v-if="withRowBoosts">
       <div
-        v-for="boost in rowBoosts"
-        :key="boost.label"
+        v-for="(boost, index) in rowBoosts"
+        :key="index"
         class="team-formation__row-boost"
         :style="{
-          '--boost-bg-color': boost.color
+          'visibility': !boost ? 'hidden': undefined,
+          '--boost-bg-color': boost?.color
         }"
       >
-        {{ boost.label }}
+        <SitePopupHoverMenu
+          v-if="boost"
+          class="team-formation__row-boost-popup"
+        >
+          <SiteButtonIcon
+            iconName="info"
+            label="view row effects"
+          />
+          <template #popper>
+            {{ boost.text }}
+          </template>
+        </SitePopupHoverMenu>
       </div>
     </template>
   </section>
@@ -251,15 +263,11 @@
   /* Boost styles only defined for horizontal formation so far */
   .team-formation--horizontal > .team-formation__row-boost {
     --boost-bg-color: #FF5038;
-    rotate: 180deg;
+    position: relative;
+    writing-mode: lr;
+    justify-self: center;
     margin-left: 0.75rem;
-    margin-top: 2px;
-    margin-bottom: 2px;
-    padding: 0 0.75em;
-    text-align: center;
-    font-size: 0.75rem;
-    letter-spacing: 0.015rem;
-    font-weight: 600;
+    padding: 0.75rem 0.3rem 0.5rem;
     background-color: var(--boost-bg-color);
     color: var(--c-white);
   }
@@ -267,10 +275,10 @@
     --boost-arrow-height: 0.5rem;
     content: '';
     position: absolute;
-    right: calc(-1 * var(--boost-arrow-height) + 1px);
-    top: calc(50% - var(--boost-arrow-height) / 2);
+    left: calc(-1 * var(--boost-arrow-height) + 1px);
+    top: calc(50% - var(--boost-arrow-height));
     height: var(--boost-arrow-height);
-    border-left: var(--boost-arrow-height) solid var(--boost-bg-color);
+    border-right: var(--boost-arrow-height) solid var(--boost-bg-color);
     border-top: var(--boost-arrow-height) solid transparent;
     border-bottom: var(--boost-arrow-height) solid transparent;
   }

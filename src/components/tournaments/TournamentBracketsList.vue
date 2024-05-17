@@ -1,7 +1,5 @@
 <script setup>
-  import debounce from 'lodash.debounce'
-  import { ref, computed } from 'vue'
-  import SiteTextField from '../common/SiteTextField.vue'
+  import { computed } from 'vue'
   import SiteTable from '../common/SiteTable.vue'
   import BracketStatusBadge from './BracketStatusBadge.vue'
 
@@ -12,22 +10,7 @@
     }
   })
 
-  const query = ref('')
-  const debouncedQuery = ref('')
-  function setQuery () {
-    debouncedQuery.value = query.value
-  }
-  const debouncedSetQuery = debounce(setQuery, 200)
-
-  const bracketsToDisplay = computed(() => {
-    let result = props.tournament.brackets || []
-    if (debouncedQuery.value) {
-      const queryLc = debouncedQuery.value.toLowerCase()
-      const matchingTeamIds = props.tournament.teams.filter(team => team.name.toLowerCase().includes(queryLc)).map(team => team.id)
-      result = result.filter(bracket => bracket.teams?.some(teamId => matchingTeamIds.includes(teamId)))
-    }
-    return result
-  })
+  const bracketsToDisplay = computed(() => props.tournament.brackets || [])
 </script>
 
 <template>
@@ -38,16 +21,6 @@
     No brackets in this tournament.
   </div>
   <template v-else>
-    <div class="brackets-list__header">
-      <div>
-        <SiteTextField
-          v-model="query"
-          search
-          placeholder="Search team"
-          @input="debouncedSetQuery"
-        />
-      </div>
-    </div>
     <div v-if="!bracketsToDisplay.length">
       No brackets found.
     </div>
@@ -104,12 +77,6 @@
   .brackets-list__empty {
     color: var(--c-white);
     font-size: 1.5rem;
-  }
-  .brackets-list__header {
-    margin-bottom: 1.75rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
   }
   .bracket {
     position: relative;

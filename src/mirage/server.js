@@ -106,6 +106,7 @@ const mirageConfig = window.mirageConfig = {
   },
   trainingteams: {
     error: false,
+    slow: false,
     empty: false
   },
   traininggotchis: {
@@ -282,6 +283,8 @@ export function makeServer({ environment = 'development' } = {}) {
           return errorResponse()
         }
         return trainingTeams
+      }, {
+        timing: mirageConfig.trainingteams.slow ? 5000 : 1000
       })
 
       this.get(urls.trainingGotchis(), () => {

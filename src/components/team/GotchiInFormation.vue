@@ -1,7 +1,9 @@
 <script setup>
   import GotchiSpecial from '../team/GotchiSpecial.vue'
   import GotchiSpecialWithInfo from '../team/GotchiSpecialWithInfo.vue'
+  import GotchiStats from './GotchiStats.vue'
   import SiteIcon from '../common/SiteIcon.vue'
+  import SitePopupHoverMenu from '../common/SitePopupHoverMenu.vue'
 
   const EMPTY_MODES = {
     BLANK: 'blank',
@@ -51,6 +53,11 @@
       default: false
     },
     withSpecialInfoBadge: {
+      type: Boolean,
+      default: false
+    },
+    /* Do not use in combination with isSelectable; isSelectable will take priority. */
+    withStatsPopup: {
       type: Boolean,
       default: false
     }
@@ -117,6 +124,31 @@
         alt="select gotchi"
       />
     </button>
+    <SitePopupHoverMenu
+      v-else-if="withStatsPopup"
+    >
+      <button
+        type="button"
+        class="button-reset"
+      >
+        <img
+          :src="gotchi.svgFront"
+          class="gotchi-in-formation__image"
+          alt="show gotchi stats"
+        />
+      </button>
+      <template #popper>
+        <div class="gotchi-in-formation__stats-popup">
+          <div class="gotchi-in-formation__stats-popup-header">
+            {{ gotchi.name }} #{{ gotchi.id }}
+          </div>
+          <GotchiStats
+            :gotchi="gotchi"
+            variant="small"
+          />
+        </div>
+      </template>
+    </SitePopupHoverMenu>
     <img
       v-else
       :src="gotchi.svgFront"
@@ -346,5 +378,17 @@
   }
   .gotchi-in-formation--variant-small .gotchi-in-formation__special-badge-container + .gotchi-in-formation__name {
     padding-bottom: var(--gotchi-in-formation__special-badge-height);
+  }
+
+  .gotchi-in-formation__stats-popup {
+    font-size: 0.875rem;
+    line-height: 1.5rem;
+    letter-spacing: 0.02625rem;
+  }
+  .gotchi-in-formation__stats-popup-header {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    letter-spacing: 0.03rem;
+    font-weight: bold;
   }
 </style>

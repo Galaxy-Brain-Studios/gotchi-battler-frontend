@@ -40,12 +40,6 @@ export default [
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 7 4"><path fill="currentColor" d="M0 0h1.33v1.33H0zM5.33 0h1.33v1.33H5.33zM1.33 1.33h1.33v1.33H1.33zM4 1.33h1.33v1.33H4zM2.67 2.67H4V4H2.67z" transform="rotate(180)" transform-origin="50% 50%" /></svg>    `
   },
   {
-    id: "star",
-    svg: `
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 15"><path fill="#FFD020" d="M7.05.83a1 1 0 0 1 1.9 0l1.12 3.34a1 1 0 0 0 .94.68l3.51.03a1 1 0 0 1 .6 1.8l-2.84 2.1a1 1 0 0 0-.36 1.1l1.06 3.36a1 1 0 0 1-1.53 1.12L8.58 12.3a1 1 0 0 0-1.16 0l-2.87 2.05a1 1 0 0 1-1.53-1.12L4.08 9.9a1 1 0 0 0-.36-1.1L.89 6.68a1 1 0 0 1 .59-1.8l3.51-.04a1 1 0 0 0 .94-.68L7.05.83Z"/></svg>
-    `
-  },
-  {
     id: "close",
     svg: `
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32"><mask id="close-a" width="32" height="32" x="0" y="0" maskUnits="userSpaceOnUse" style="mask-type:alpha"><path fill="#D9D9D9" d="M0 0h32v32H0z"/></mask><g mask="url(#close-a)"><path fill="currentColor" d="m8.53 25.33-1.86-1.86L14.13 16 6.67 8.53l1.86-1.86L16 14.13l7.47-7.46 1.86 1.86L17.87 16l7.46 7.47-1.86 1.86L16 17.87l-7.47 7.46Z"/></g></svg>

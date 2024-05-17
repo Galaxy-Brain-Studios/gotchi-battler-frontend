@@ -261,6 +261,7 @@
   .choose-training-team__teams-loading,
   .choose-training-team__teams-error,
   .choose-training-team__teams-empty {
+    margin-left: 4rem;
     font-size: 1.25rem;
   }
 

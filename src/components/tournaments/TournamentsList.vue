@@ -39,7 +39,7 @@
   const filteredTournaments = computed(() => {
       if (!fetchStatus.value.loaded || !tournamentsWithStatus.value) { return null }
       if (!props.type || props.type === ALL_TYPE) { return tournamentsWithStatus.value }
-      return tournamentsWithStatus.value.filter(tournament => tournament.type === props.type)
+      return tournamentsWithStatus.value.filter(tournament => tournament.type.startsWith(props.type))
   })
 
   const tournamentsToDisplay = computed(() => {
@@ -107,13 +107,13 @@
           <div
             class="tournament__type-badge"
             :class="{
-              'tournament__type-badge--active': tournament.type === 'active',
+              'tournament__type-badge--active': tournament.type.startsWith('active'),
               'tournament__type-badge--upcoming': tournament.type === 'upcoming',
               'tournament__type-badge--registering': tournament.type === 'registering',
               'tournament__type-badge--completed': tournament.type === 'completed'
             }"
           >
-            {{ tournament.type }}
+            {{ tournament.type.split('_')[0] }}
           </div>
         </div>
         <div class="tournament__info">
@@ -127,7 +127,7 @@
             <template v-if="tournament.type === 'completed'">
               Ended: <br><b>{{ formatDateTime(tournament.endDate) }}</b>
             </template>
-            <template v-else-if="tournament.type === 'active'">
+            <template v-else-if="tournament.type.startsWith('active')">
               Live
             </template>
             <template v-else-if="tournament.type === 'upcoming' || tournament.type === 'registering'">

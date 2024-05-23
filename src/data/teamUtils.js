@@ -12,21 +12,19 @@ export const processTeamModel = function(team) {
   if (!team) { return null }
   // training teams have a team difficulty
   const difficulty = team.trainingPowerLevel ? team.trainingPowerLevel.toLowerCase() : null
-  if (team.trainingPowerLevel) {
-    // for training teams, use the onchainId as the gotchi id
-    const gotchiIdToOnchainId = {}
-    for (const propertyName of teamGotchiPropertyNames) {
-      const gotchi = team[propertyName]
-      if (gotchi) {
-        gotchiIdToOnchainId[gotchi.id] = gotchi.onchainId
-        gotchi.id = gotchi.onchainId
-      }
+  // use the onchainId as the gotchi id (relevant for training teams and when editing own teams)
+  const gotchiIdToOnchainId = {}
+  for (const propertyName of teamGotchiPropertyNames) {
+    const gotchi = team[propertyName]
+    if (gotchi) {
+      gotchiIdToOnchainId[gotchi.id] = gotchi.onchainId
+      gotchi.id = gotchi.onchainId
     }
-    for (const propertyName of [...teamPositionPropertyNames, teamLeaderPositionPropertyName]) {
-      const id = team[propertyName]
-      if (id && gotchiIdToOnchainId[id]) {
-        team[propertyName] = gotchiIdToOnchainId[id]
-      }
+  }
+  for (const propertyName of [...teamPositionPropertyNames, teamLeaderPositionPropertyName]) {
+    const id = team[propertyName]
+    if (id && gotchiIdToOnchainId[id]) {
+      team[propertyName] = gotchiIdToOnchainId[id]
     }
   }
 

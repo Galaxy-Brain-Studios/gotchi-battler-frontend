@@ -174,7 +174,7 @@
   const canDeleteTeam = computed(() => canManageTeam.value && props.tournamentStatus === 'registering' )
   //const canReplaceTeam = computed(() => canDeleteTeam.value)
   const canReplaceTeam = computed(() => false) // Disabled as server doesn't yet support this, but might in future
-  const canEditTeam = computed(() => canManageTeam.value && props.tournamentStatus === 'active' )
+  const canEditTeam = computed(() => canManageTeam.value && props.tournamentStatus === 'active_preparation' )
 
   function requestReplaceTeam () {
     router.push({ name: 'tournament-tab', params: { tab: 'teams', teamId: props.teamId, teamMode: 'replace' } })

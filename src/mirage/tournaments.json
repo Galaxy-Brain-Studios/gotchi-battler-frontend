@@ -512,6 +512,49 @@
         "rules": "Some rules text here",
         "description": "",
         "brackets":
-        []
+        [],
+        "teams":
+        [
+            {
+                "id": 1,
+                "name": "Team name 1",
+                "owner": "0x385Eeac5cB85A38A9a07A70c73e0a3271CfB54A7",
+                "ranking": null,
+                "totalBrs": 100,
+                "battlesWon": 12
+            },
+            {
+                "id": 2,
+                "name": "Team name 2 Testing Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String",
+                "owner": "0x86935F11C86623deC8a25696E1C19a8659CbF95d",
+                "ranking": null,
+                "totalBrs": 200,
+                "battlesWon": 110
+            },
+            {
+                "id": 3,
+                "name": "Team name 3 TestingLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWord",
+                "owner": "0x86935F11C86623deC8a25696E1C19a8659CbF95d",
+                "ranking": null,
+                "totalBrs": 105,
+                "battlesWon": 10
+            },
+            {
+                "id": 4,
+                "name": "Team name 4 - Test my team",
+                "owner": "0xBfe09443556773958bae1699b786d8E9680B5571",
+                "ranking": null,
+                "totalBrs": 150,
+                "battlesWon": 9
+            },
+            {
+                "id": 5,
+                "name": "Team name 5 - another one with my address",
+                "owner": "0xBfe09443556773958bae1699b786d8E9680B5571",
+                "ranking": null,
+                "totalBrs": 105,
+                "battlesWon": 8
+            }
+        ]
     }
 ]

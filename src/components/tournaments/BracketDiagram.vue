@@ -86,7 +86,7 @@
   }
 
   const roundIdsWithRevealedTeams = computed(() => {
-    let revealToIndex = revealedRoundIndex.value || 0
+    let revealToIndex = revealedRoundIndex.value === null ? -1 : revealedRoundIndex.value
     return props.rounds.slice(0, revealToIndex + 2).map(round => round.id)
   })
   const roundIdsWithRevealedWinners = computed(() => {

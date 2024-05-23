@@ -42,12 +42,16 @@
     if (!fetchStatus.value.loaded || !tournament.value){ return null }
     return tournament.value.status
   })
+  const tournamentStatusBase = computed(() => {
+    if (!tournamentStatus.value) { return null }
+    return tournamentStatus.value.split('_')[0]
+  })
 
   const backRoute = computed(() => {
     if (!tournamentStatus.value){ return { name: 'tournaments' } }
     return {
       name: 'tournaments-type',
-      params: { type: tournamentStatus.value }
+      params: { type: tournamentStatusBase.value }
     }
   })
 
@@ -90,7 +94,15 @@
         />
       </div>
       <template v-if="fetchStatus.loaded">
-        <h1 class="word-break">{{ tournament.name }}</h1>
+        <h1 class="word-break">
+          {{ tournament.name }}
+          <span
+            v-if="tournamentStatusBase === 'active'"
+            class="tournament__status-badge"
+          >
+            {{ tournamentStatus.split('_')[1] }}
+          </span>
+        </h1>
         <TournamentParticipant
           :tournamentId="tournament.id"
           :tournamentStatus="tournamentStatus"
@@ -304,6 +316,19 @@
     font-size: 2rem;
     line-height: 2.5rem;
     letter-spacing: 0.06rem;
+  }
+
+  .tournament__status-badge {
+    float: right;
+    margin-left: 1rem;
+    padding: 0.12rem 0.5rem;
+    background-color: #79CA1A;
+    color: var(--c-white);
+    text-transform: uppercase;
+    font-weight: normal;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    letter-spacing: 0.02625rem;
   }
 
   .tournament__info-container {

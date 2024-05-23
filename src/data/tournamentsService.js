@@ -5,8 +5,8 @@ import orderBy from 'lodash.orderby'
 const TOURNAMENT_API_STATE_TO_STATUS = {
   UPCOMING: "upcoming",
   REGISTERING: "registering",
-  PREPARATION: "active",
-  BATTLE: "active",
+  PREPARATION: "active_preparation",
+  BATTLE: "active_battle",
   FINISHED: "completed"
 }
 

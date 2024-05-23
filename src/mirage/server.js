@@ -682,13 +682,13 @@ function generateFullBrackets ({ brackets=[], teams=[] }) {
   // just to generate the correct data structure with enough variations
   // for testing the frontend
   const allBattleIds = []
+  const gapBetweenRoundsMs = 3 * 24 * 60 * 60 * 1000
   const fullBrackets = brackets.map(bracket => {
     const startDate = bracket.startDate
     const numberOfTeams = bracket.numberOfTeams
     const rounds = []
     const nowMs = Date.now()
     const startDateMs = new Date(startDate).getTime()
-    const gapBetweenRoundsMs = 3 * 24 * 60 * 60 * 1000
     let winners = teams.slice(0, numberOfTeams).map(team => ({ team: team.id, fromBattle: null }))
     let alternates = []
     let roundNumber = 1
@@ -786,7 +786,36 @@ function generateFullBrackets ({ brackets=[], teams=[] }) {
         lastBattle.team2Id = null
       }
     }
+
+    // simulate having a later battle with one incoming team from a different bracket
+    // - add it onto the end of the hierarchy
+    if (lastBracket?.rounds?.[lastBracket.rounds.length - 1].battles?.length === 1) {
+      const lastRound = lastBracket.rounds[lastBracket.rounds.length - 1]
+      const lastBattle = lastRound.battles[0]
+      const incomingFromBattleId = battlesFromOtherBrackets[Math.floor(Math.random() * battlesFromOtherBrackets.length)]
+      const newLastBattle = {
+        id: 'testIncoming',
+        code: 'tInc',
+        parentBattleId1: lastBattle.id,
+        parentBattleId2: incomingFromBattleId,
+        losersBattleId1: null,
+        losersBattleId2: incomingFromBattleId,
+        team1Id: null,
+        team2Id: teams[0].id, // just use any valid team ID for testing
+        winnerId: null
+      }
+      const newLastRound = {
+        id: 'rTestIncoming',
+        name: 'Round w Incoming',
+        roundStage: lastRound.roundStage + 1,
+        startDate: new Date(lastRound.startDate.getTime() + gapBetweenRoundsMs),
+        status: lastRound.status,
+        battles: [newLastBattle]
+      }
+      lastBracket.rounds.push(newLastRound)
+    }
   }
+
   return fullBrackets
 }
 

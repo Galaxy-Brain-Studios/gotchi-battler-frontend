@@ -39,7 +39,8 @@ const processBracketRounds = function(rounds) {
     status: round.status === 'finished' ? 'completed' : round.status, // rename server-provided 'finished' to 'completed'
     battles: (round.battles || []).map(battle => ({
       ...battle,
-      fromBattles: [battle.parentBattleId1, battle.parentBattleId2]
+      fromBattles: [battle.parentBattleId1, battle.parentBattleId2],
+      fromExternalBattles: [battle.losersBattleId1, battle.losersBattleId2]
     }))
   }))
   // Rounds must be in order

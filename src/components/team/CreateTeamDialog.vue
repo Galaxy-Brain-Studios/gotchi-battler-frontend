@@ -1106,6 +1106,19 @@
             </div>
           </div>
         </section>
+        <div
+          v-if="isEditMode"
+          class="create-team__edit-warning"
+        >
+          <SiteIcon
+            name="warning"
+            :width="1.5"
+            :height="1.5"
+          />
+          <div>
+            Your updates will be saved and applied at the end of the preparation round. Until then, no one <b>(including yourself!)</b> can see the changes made to the team to keep it secret.
+          </div>
+        </div>
         <div class="create-team__submit">
           <SiteButtonPrimary
             v-if="isSaving"
@@ -1263,6 +1276,24 @@
     line-height: 1.25rem;
     letter-spacing: 0.0225rem;
     opacity: 0.6;
+  }
+
+  .create-team__edit-warning {
+    grid-column: 1 / span 2;
+  }
+  .create-team__edit-warning {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    column-gap: 1rem;
+
+    border-radius: 1.5rem;
+    padding: 0.8rem 1.2rem;
+    background: #FAF1E6;
+    color: rgba(204, 87, 0, 0.8);
+    font-size: 0.9rem;
+    line-height: 1.25rem;
+    letter-spacing: 0.03rem;
   }
 
   .create-team__submit {

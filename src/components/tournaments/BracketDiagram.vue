@@ -86,7 +86,7 @@
   }
 
   const roundIdsWithRevealedTeams = computed(() => {
-    let revealToIndex = revealedRoundIndex.value || 0
+    let revealToIndex = revealedRoundIndex.value === null ? -1 : revealedRoundIndex.value
     return props.rounds.slice(0, revealToIndex + 2).map(round => round.id)
   })
   const roundIdsWithRevealedWinners = computed(() => {
@@ -118,16 +118,23 @@
       const hasRevealedTeams = roundIdsWithRevealedTeams.value.includes(round.id)
       const hasRevealedWinners = roundIdsWithRevealedWinners.value.includes(round.id)
       for (const battle of round.battles) {
-        const teams = hasRevealedTeams && [battle.team1Id, battle.team2Id].map(teamId => (teamId && {
+        let teams = null
+        // we only display teams if the round teams have been revealed, or if the team is coming in from another bracket
+        if (hasRevealedTeams || [battle.fromExternalBattles[0] || battle.fromExternalBattles[1]]) {
+          const team1IdToShow = (hasRevealedTeams || battle.fromExternalBattles[0]) ? battle.team1Id : null
+          const team2IdToShow = (hasRevealedTeams || battle.fromExternalBattles[1]) ? battle.team2Id : null
+          teams = [team1IdToShow, team2IdToShow].map(teamId => (teamId && {
             id: teamId,
             name: teamsById.value[teamId]?.name,
             owner: teamsById.value[teamId]?.owner,
             isMine: (myAddress && teamsById.value[teamId]?.owner === myAddress) || false
           } || null))
+        }
         battleNodesById[battle.id] = {
           id: battle.id,
           code: battle.code,
           fromBattles: battle.fromBattles,
+          fromExternalBattles: battle.fromExternalBattles,
           teams,
           hasATeam: (battle.team1Id !== null),
           isBye: (battle.winnerId !== null) && ((battle.team1Id !== null && battle.team2Id === null) || (battle.team1Id === null && battle.team2Id !== null)),

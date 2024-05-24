@@ -168,9 +168,6 @@
                 <span>Round</span>
               </th>
               <th>
-                <span>Battle ID</span>
-              </th>
-              <th>
                 <span>Team 1</span>
               </th>
               <th>
@@ -185,20 +182,15 @@
             <tr
               v-for="battle in battlesToDisplay"
               :key="battle.id"
+              class="battle-row"
             >
               <td class="battle-round">
-                {{ battle.roundName }}
-              </td>
-              <td
-                class="battle-id"
-                style="position: relative;"
-              >
                 <a
                   href="#"
-                  class="link-reset link-reset--hover-underline extended-target"
+                  class="link-reset extended-target"
                   @click.prevent="showBattle(battle)"
                 >
-                  {{ battle.code || '-' }}
+                  {{ battle.roundName }}
                 </a>
               </td>
               <td
@@ -251,6 +243,7 @@
         </div>
         <BattleDialog
           v-if="displayBattle"
+          :key="displayBattle.id"
           v-model:isOpen="battleDialogIsOpen"
           :id="displayBattle.id"
           :startDate="displayBattle.startDate"
@@ -282,11 +275,20 @@
   place-items: center;
 }
 
+.battle-row {
+  position: relative;
+}
+.battle-row:hover {
+  --site-table-card-border-color-opacity: 1;
+  --site-table-card-background-color-opacity: 1;
+}
+.battle-row:has(a:focus-visible) {
+  --site-table-card-border-color-opacity: 1;
+  --site-table-card-background-color-opacity: 1;
+}
+
 .battle-round {
   white-space: nowrap;
-}
-.battle-id a {
-  opacity: 0.6;
 }
 .battle-team--mine {
   color: var(--c-bright-yellow);

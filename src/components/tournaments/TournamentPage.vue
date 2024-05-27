@@ -152,7 +152,7 @@
           :to="{ name: 'tournament-tab', params: { id, tab: 'gotchis' } }"
           grouped="vertical-middle"
         >
-          {{ tournament.numberOfTeams * 5 }} Gotchis
+          {{ tournament.numberOfGotchis }} Gotchis
         </SiteButtonLink>
         <SiteButtonLink
           :to="{ name: 'tournament-tab', params: { id, tab: 'battles' } }"
@@ -302,7 +302,7 @@
       row-gap: 0;
     }
     .tournament__meta {
-      margin: 1.5rem;
+      margin: 1.5rem 0;
     }
     .tournament__image {
       padding: 0 0.5rem; /* to align with vertical menu */

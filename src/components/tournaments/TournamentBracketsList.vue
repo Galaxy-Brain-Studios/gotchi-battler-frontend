@@ -56,11 +56,6 @@
             </div>
           </td>
           <td class="site-table--no-grow">
-            <div class="bracket__num-teams">
-              {{ bracket.teams?.length || 0 }} TEAMS
-            </div>
-          </td>
-          <td class="site-table--no-grow">
             <div class="bracket__status">
               <BracketStatusBadge
                 :bracket="bracket"

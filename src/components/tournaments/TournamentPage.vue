@@ -302,7 +302,7 @@
       row-gap: 0;
     }
     .tournament__meta {
-      margin: 1.5rem 0;
+      margin: 1.5rem 0.375rem;
     }
     .tournament__image {
       padding: 0 0.5rem; /* to align with vertical menu */

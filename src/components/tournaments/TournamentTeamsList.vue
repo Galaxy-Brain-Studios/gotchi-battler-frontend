@@ -298,20 +298,6 @@
                 :height="0.625"
               />
             </th>
-            <th
-              v-if="rankingIsAvailable"
-              class="team__prize site-table--no-grow"
-            >
-              <span>Prize</span>
-              <SiteIcon
-                v-if="sortingProperty === 'prize'"
-                :label="sortingDirection === 'asc' ? 'Sorted Ascending' : 'Sorted Descending'"
-                :name="sortingDirection === 'asc' ? 'chevron-up' : 'chevron-down'"
-                class="teams-list__header-sort-icon"
-                :width="0.625"
-                :height="0.625"
-              />
-            </th>
             <th>
               <span>Name</span>
             </th>
@@ -340,6 +326,20 @@
                 :height="0.625"
               />
             </th>
+            <th
+              v-if="rankingIsAvailable"
+              class="team__prize site-table--no-grow"
+            >
+              <span>Prize</span>
+              <SiteIcon
+                v-if="sortingProperty === 'prize'"
+                :label="sortingDirection === 'asc' ? 'Sorted Ascending' : 'Sorted Descending'"
+                :name="sortingDirection === 'asc' ? 'chevron-up' : 'chevron-down'"
+                class="teams-list__header-sort-icon"
+                :width="0.625"
+                :height="0.625"
+              />
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -352,32 +352,12 @@
               class="team__ranking"
             >
               <SiteButtonBox
-                v-if="team.ranking"
                 :active="isConnected && address === team.owner"
                 small
                 class="team__ranking-badge"
               >
-                {{ team.ranking }}
+                {{ team.ranking || '?' }}
               </SiteButtonBox>
-            </td>
-            <td
-              v-if="rankingIsAvailable"
-              class="team__prize"
-            >
-              <div v-if="team.ranking">
-                <template v-if="team.prize">
-                  {{ team.prize }}
-                  <SiteIcon
-                    v-if="currencyIcons[tournamentPrizeCurrency]"
-                    :name="currencyIcons[tournamentPrizeCurrency]"
-                    :height="1.3"
-                    :width="1.3"
-                  />
-                </template>
-                <template v-else>
-                  -
-                </template>
-              </div>
             </td>
             <td
               class="team__name word-break"
@@ -397,6 +377,25 @@
             </td>
             <td class="team__brs">{{ team.totalBrs }}</td>
             <td class="team__wins">{{ team.battlesWon }}</td>
+            <td
+              v-if="rankingIsAvailable"
+              class="team__prize"
+            >
+              <div v-if="team.ranking">
+                <template v-if="team.prize">
+                  {{ team.prize }}
+                  <SiteIcon
+                    v-if="currencyIcons[tournamentPrizeCurrency]"
+                    :name="currencyIcons[tournamentPrizeCurrency]"
+                    :height="1.3"
+                    :width="1.3"
+                  />
+                </template>
+                <template v-else>
+                  -
+                </template>
+              </div>
+            </td>
           </tr>
         </tbody>
       </SiteTable>

@@ -46,6 +46,10 @@
     if (!tournamentStatus.value) { return null }
     return tournamentStatus.value.split('_')[0]
   })
+  const tournamentPrizeCurrency = computed(() => {
+    if (!fetchStatus.value.loaded || !tournament.value){ return null }
+    return tournament.value.prizes?.[0]?.currency || null
+  })
 
   const backRoute = computed(() => {
     if (!tournamentStatus.value){ return { name: 'tournaments' } }
@@ -208,6 +212,7 @@
           v-else-if="tab === 'teams'"
           :tournamentId="tournament.id"
           :tournamentStatus="tournamentStatus"
+          :tournamentPrizeCurrency="tournamentPrizeCurrency"
           :teamId="teamId"
           :teamMode="teamMode"
           @deletedTeam="onDeletedTeam"

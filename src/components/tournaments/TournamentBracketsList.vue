@@ -98,7 +98,6 @@
     gap: 1rem;
   }
 
-  .bracket__num-teams,
   .bracket__status {
     white-space: nowrap;
   }
@@ -117,12 +116,6 @@
     font-size: 1rem;
     line-height: 1.125rem;
     letter-spacing: 0.03rem;
-  }
-  .bracket__num-teams {
-    font-size: 0.875rem;
-    line-height: 1.5rem;
-    letter-spacing: 0.02625rem;
-    opacity: 0.6;
   }
   .bracket__status {
     display: flex;

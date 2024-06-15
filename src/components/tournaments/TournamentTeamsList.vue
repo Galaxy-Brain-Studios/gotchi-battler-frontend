@@ -33,6 +33,10 @@
       type: String,
       default: null
     },
+    tournamentPrizeCurrency: {
+      type: String,
+      default: null
+    },
     teamId: {
       type: String,
       default: null
@@ -94,13 +98,13 @@
   const store = useAccountStore()
   const { isConnected, address } = storeToRefs(store)
 
-  const rankingIsAvailable = computed(() => props.tournamentStatus === 'completed' )
+  const rankingIsAvailable = computed(() => ['active_preparation', 'active_battle', 'completed'].includes(props.tournamentStatus) )
 
-  const numToShow = ref(10)
+  const numToShow = ref(100)
   const onlyShowMyTeams = ref(false)
   const sortOptions = computed(() => [
     ...(rankingIsAvailable.value ? [{
-      id: 'ranking_asc',
+      id: 'rankingSortable_asc',
       label: 'Ranking'
     }] : []),
     {
@@ -138,9 +142,16 @@
     if (team.owner && team.owner.startsWith(q)) { return true }
     return false;
   }
-  const filteredAndSortedTeams = computed(() => {
+  const teamsForSorting = computed(() => {
     if (!(fetchTeamsStatus.value.loaded && teams.value?.length)) { return null }
-    const filteredTeams = debouncedQuery.value ? teams.value.filter(matchesQuery) : teams.value
+    return teams.value.map(team => ({
+      ...team,
+      rankingSortable: team.ranking || 0 // if ranking is unavailable, treat it as low-value="top ranked" as the team hasn't been knocked out yet.
+    }))
+  })
+  const filteredAndSortedTeams = computed(() => {
+    if (!(teamsForSorting.value?.length)) { return null }
+    const filteredTeams = debouncedQuery.value ? teamsForSorting.value.filter(matchesQuery) : teamsForSorting.value
     const sortedTeams = orderBy(filteredTeams, [sortingProperty.value], [sortingDirection.value])
     let bubbledTeams = sortedTeams;
     if (isConnected.value) {
@@ -212,6 +223,11 @@
       immediate: true
     }
   )
+
+  const currencyIcons = {
+    dai: 'token-dai',
+    ghst: 'token-ghst'
+  }
 </script>
 
 <template>
@@ -272,8 +288,23 @@
               v-if="rankingIsAvailable"
               class="team__ranking site-table--no-grow"
             >
+              <span>Rank</span>
               <SiteIcon
-                v-if="sortingProperty === 'ranking'"
+                v-if="sortingProperty === 'rankingSortable'"
+                :label="sortingDirection === 'asc' ? 'Sorted Ascending' : 'Sorted Descending'"
+                :name="sortingDirection === 'asc' ? 'chevron-up' : 'chevron-down'"
+                class="teams-list__header-sort-icon"
+                :width="0.625"
+                :height="0.625"
+              />
+            </th>
+            <th
+              v-if="rankingIsAvailable"
+              class="team__prize site-table--no-grow"
+            >
+              <span>Prize</span>
+              <SiteIcon
+                v-if="sortingProperty === 'prize'"
                 :label="sortingDirection === 'asc' ? 'Sorted Ascending' : 'Sorted Descending'"
                 :name="sortingDirection === 'asc' ? 'chevron-up' : 'chevron-down'"
                 class="teams-list__header-sort-icon"
@@ -321,12 +352,32 @@
               class="team__ranking"
             >
               <SiteButtonBox
+                v-if="team.ranking"
                 :active="isConnected && address === team.owner"
                 small
                 class="team__ranking-badge"
               >
                 {{ team.ranking }}
               </SiteButtonBox>
+            </td>
+            <td
+              v-if="rankingIsAvailable"
+              class="team__prize"
+            >
+              <div v-if="team.ranking">
+                <template v-if="team.prize">
+                  {{ team.prize }}
+                  <SiteIcon
+                    v-if="currencyIcons[tournamentPrizeCurrency]"
+                    :name="currencyIcons[tournamentPrizeCurrency]"
+                    :height="1.3"
+                    :width="1.3"
+                  />
+                </template>
+                <template v-else>
+                  -
+                </template>
+              </div>
             </td>
             <td
               class="team__name word-break"
@@ -427,5 +478,11 @@
 
   .teams-list__table .team__owner {
     opacity: 0.5;
+  }
+
+  td.team__prize > div {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
   }
 </style>

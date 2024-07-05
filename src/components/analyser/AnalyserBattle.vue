@@ -38,7 +38,7 @@
         showResult
       />
       <dl
-        v-if="battle?.team1WinRate"
+        v-if="battle && (battle.team1WinRate !== undefined || battle.team1WinRate !== null)"
         class="list-reset analyser-battle__analysis"
       >
         <div>

@@ -4,6 +4,10 @@
       type: Boolean,
       default: false
     },
+    active: {
+      type: Boolean,
+      default: false
+    },
     type: {
       type: String,
       default: 'button'
@@ -15,7 +19,8 @@
   <div
     class="site-button-white__container site-button-white__container--interactive"
     :class="{
-      'site-button-white__container--small': small
+      'site-button-white__container--small': small,
+      'site-button-white__container--is-active': active
     }"
   >
     <div class="site-button-white__corner site-button-white__corner-1" />
@@ -71,6 +76,10 @@
 }
 
 .site-button-white__container--link:not(.site-button-white__container--is-active) {
+  --button-color-border: transparent;
+  opacity: 0.7;
+}
+.site-button-white__container:not(.site-button-white__container--link):not(.site-button-white__container--is-active):not(:hover) {
   --button-color-border: transparent;
   opacity: 0.7;
 }

@@ -1,16 +1,15 @@
 <script setup>
-  import { DEV_MODE } from '../../appEnv'
   import { storeToRefs } from 'pinia'
   import { useAccountStore } from '../../data/accountStore'
+  import { RouterLink } from 'vue-router'
   import SiteButton from '../common/SiteButton.vue'
-  import SiteButtonBox from '../common/SiteButtonBox.vue'
   import SiteEthAddress from '../common/SiteEthAddress.vue'
+  import SiteIcon from '../common/SiteIcon.vue'
+  import SitePopupDropdown from '../common/SitePopupDropdown.vue'
+  import SiteLinksMenuWhite from '../common/SiteLinksMenuWhite.vue'
 
   const store = useAccountStore()
   const { isConnected, address, connectStatus } = storeToRefs(store)
-
-  // In dev mode, it's handy to be able to disconnect quickly for testing by clicking the button.
-  // In production, people probably wouldn't want that to happen.
 </script>
 <template>
   <SiteButton
@@ -27,27 +26,54 @@
     Connect Wallet
   </SiteButton>
   <template v-else>
-    <SiteButton
-      v-if="DEV_MODE"
-      icon="wallet"
-      active
-      @click="store.disconnect"
-    >
-      <SiteEthAddress
-        class="connect-wallet__address"
-        :address="address"
-      />
-    </SiteButton>
-    <SiteButtonBox
-      v-else
-      icon="wallet"
-      active
-    >
-      <SiteEthAddress
-        class="connect-wallet__address"
-        :address="address"
-      />
-    </SiteButtonBox>
+    <SitePopupDropdown :distance="16">
+      <SiteButton
+        icon="wallet"
+        active
+      >
+        <SiteEthAddress
+          class="connect-wallet__address"
+          :address="address"
+        />
+        <SiteIcon
+          name="chevron-down"
+          :width="0.625"
+        />
+      </SiteButton>
+      <template #popper="{ hide }">
+        <SiteLinksMenuWhite
+          #default="{ linkClasses, buttonClasses }"
+        >
+          <li>
+            <RouterLink
+              :to="{ name: 'profile', params: { address } }"
+              :class="linkClasses"
+              @click="hide"
+            >
+              My Profile
+            </RouterLink>
+          </li>
+          <li>
+            <RouterLink
+              :to="{ name: 'settings' }"
+              :class="linkClasses"
+              @click="hide"
+            >
+              Settings
+            </RouterLink>
+          </li>
+          <li>
+            <button
+              type="button"
+              :class="buttonClasses"
+              @click="store.disconnect"
+            >
+              Disconnect
+            </button>
+          </li>
+        </SiteLinksMenuWhite>
+      </template>
+    </SitePopupDropdown>
   </template>
 </template>
 

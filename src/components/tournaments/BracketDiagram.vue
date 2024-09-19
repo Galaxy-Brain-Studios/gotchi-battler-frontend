@@ -323,6 +323,7 @@
           <div v-if="round.status === 'completed' && !roundIdsWithRevealedWinners.includes(round.id)">
             <SiteButtonWhite
               small
+              active
               @click="revealRound(index)"
             >
               Show

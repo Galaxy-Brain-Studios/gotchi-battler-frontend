@@ -149,6 +149,10 @@ const mirageConfig = window.mirageConfig = {
     slow: false,
     empty: false
   },
+  profile: {
+    error: false,
+    slow: false
+  }
 };
 
 const errorResponse = ({ statusCode=400, message='Error from the server', response=null }={}) => new Response(
@@ -637,6 +641,25 @@ export function makeServer({ environment = 'development' } = {}) {
         return lendings
       }, {
         timing: mirageConfig.availableLendings.slow ? 5000 : 100
+      })
+
+      this.get(fixUrl(urls.profile(':address')), (schema, request) => {
+        if (mirageConfig.profile.error) {
+          return errorResponse()
+        }
+        const address = request.params.address
+        return {
+          address,
+          name: null,
+          imageUrl: null
+        };
+        // return {
+        //   address,
+        //   name: 'Custom Name',
+        //   imageUrl: '/dev/gotchi_g1.svg'
+        // }
+      }, {
+        timing: mirageConfig.profile.slow ? 5000 : 100
       })
 
       this.passthrough(request => {

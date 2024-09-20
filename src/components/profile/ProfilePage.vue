@@ -3,6 +3,7 @@
   import { storeToRefs } from 'pinia'
   import { useAccountStore } from '../../data/accountStore'
   import { useRouter } from 'vue-router'
+  import ProfileMain from './ProfileMain.vue'
 
   const props = defineProps({
     address: {
@@ -19,7 +20,7 @@
     () => [props.address, isConnected.value, connectedAddress.value],
     () => {
       if (!props.address && isConnected.value && connectedAddress.value) {
-        router.push({ name: 'profile', params: { address: connectedAddress.value } })
+        router.push({ name: 'profile-address', params: { address: connectedAddress.value } })
       }
     },
     { immediate: true }
@@ -27,13 +28,13 @@
 </script>
 
 <template>
-  <div>
-    <template v-if="address">
-      Profile page for {{ address }}
-    </template>
-    <template v-else>
-      No wallet connected.
-    </template>
+  <ProfileMain
+    v-if="address"
+    :key="address"
+    :address="address"
+  />
+  <div v-else>
+    No wallet connected.
   </div>
 </template>
 

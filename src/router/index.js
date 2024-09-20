@@ -28,10 +28,37 @@ const router = createRouter({
       component: () => import('../components/settings/SettingsPage.vue')
     },
     {
-      path: '/profile/:address?',
+      path: '/profile',
       name: 'profile',
       props: true,
-      component: () => import('../components/profile/ProfilePage.vue')
+      component: () => import('../components/profile/ProfilePage.vue'),
+      children: [
+        {
+          path: ':address',
+          name: 'profile-address',
+          redirect: to => ({ name: 'profile-teams', params: { address: to.params.address } }),
+          children: [
+            {
+              path: 'teams',
+              name: 'profile-teams',
+              props: true,
+              component: () => import('../components/profile/ProfileTeams.vue'),
+            },
+            {
+              path: 'inventory',
+              name: 'profile-inventory',
+              props: true,
+              component: () => import('../components/profile/ProfileInventory.vue'),
+            },
+            {
+              path: 'badges',
+              name: 'profile-badges',
+              props: true,
+              component: () => import('../components/profile/ProfileBadges.vue'),
+            }
+          ]
+        }
+      ]
     },
     {
       path: '/tournaments',

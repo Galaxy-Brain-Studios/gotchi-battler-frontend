@@ -2,6 +2,7 @@ import { createServer, Response } from 'miragejs'
 import { verifyMessage } from 'viem'
 
 import { urls } from '../data/api.js'
+import profiles from './profiles.json'
 import tournaments from './tournaments.json'
 import teams from './teams.json'
 import battles from './battles.json'
@@ -10,6 +11,7 @@ import gotchisForAddress from './gotchisForAddress.js'
 import FORMATION_PATTERNS from '../components/team/formationPatterns.json'
 import DIFFICULTIES from '../data/trainingTeamDifficulties.json'
 
+const profilesByAddress = Object.fromEntries(profiles.map(p => [p.address.toLowerCase(), p]))
 const tournamentsById = Object.fromEntries(tournaments.map(t => [t.id, t]))
 const teamsById = Object.fromEntries(teams.map(t => [t.id, t]))
 teamsById.DEFAULT = teams[0]
@@ -648,16 +650,10 @@ export function makeServer({ environment = 'development' } = {}) {
           return errorResponse()
         }
         const address = request.params.address
-        return {
-          address,
-          name: null,
-          imageUrl: null
+        return profilesByAddress[address.toLowerCase()] || {
+          ...profilesByAddress['DEFAULT'.toLowerCase()],
+          address
         };
-        // return {
-        //   address,
-        //   name: 'Custom Name',
-        //   imageUrl: '/dev/gotchi_g1.svg'
-        // }
       }, {
         timing: mirageConfig.profile.slow ? 5000 : 100
       })

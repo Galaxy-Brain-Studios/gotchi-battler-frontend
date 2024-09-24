@@ -20,9 +20,29 @@ export default function useProfile (address) {
     }
   }
 
+  const teams = ref(null)
+  const { status: fetchTeamsStatus, setLoading: setTeamsLoading } = useStatus()
+  const fetchTeams = async function () {
+    teams.value = null
+    const [isStale, setLoaded, setError] = setTeamsLoading()
+    try {
+      const result = await profileService.fetchProfileTeams(address)
+      if (isStale()) { return; }
+      teams.value = result
+      setLoaded()
+    } catch (e) {
+      console.error('Error fetching profile teams', e)
+      setError(e.message)
+    }
+  }
+
+
   return {
     profile,
     fetchProfile,
-    fetchProfileStatus
+    fetchProfileStatus,
+    teams,
+    fetchTeams,
+    fetchTeamsStatus
   }
 }

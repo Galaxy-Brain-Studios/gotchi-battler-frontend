@@ -36,6 +36,7 @@ const router = createRouter({
         {
           path: ':address',
           name: 'profile-address',
+          props: true,
           redirect: to => ({ name: 'profile-teams', params: { address: to.params.address } }),
           children: [
             {

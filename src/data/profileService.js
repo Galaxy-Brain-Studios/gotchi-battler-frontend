@@ -10,4 +10,13 @@ export default {
       throw new Error(e.json?.error || 'Error fetching profile')
     }
   },
+  async fetchProfileTeams (address) {
+    try {
+      const teams = await api.get(urls.profileTeams(address))
+      return teams
+    } catch (e) {
+      console.error('fetchProfileTeams error', { ...e })
+      throw new Error(e.json?.error || 'Error fetching profile teams')
+    }
+  },
 }

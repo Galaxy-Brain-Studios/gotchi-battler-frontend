@@ -46,7 +46,7 @@
         >
           <li>
             <RouterLink
-              :to="{ name: 'profile', params: { address } }"
+              :to="{ name: 'profile-address', params: { address } }"
               :class="linkClasses"
               @click="hide"
             >

@@ -34,52 +34,49 @@
       v-else-if="fetchProfileStatus.loaded"
       class="profile-main__layout"
     >
-      <div class="profile-main__sidebar">
-        <div class="profile-main__details word-break">
-          <div
-            class="profile-main__image"
-            :style="{
-              '--image-url': `url(${escapeUrl(profile.imageUrl || DEFAULT_IMAGE_URL)})`
-            }"
-          >
-          </div>
-          <div
-            class="profile-main__name"
-            :class="{
-              'profile-main__name--unset': !profile.name
-            }"
-          >
-            <template v-if="profile.name">
-              {{ profile.name }}
-            </template>
-            <template v-else>
-              Noname
-            </template>
-          </div>
-          <div class="profile-main__address">
-            {{ profile.address }}
-          </div>
+      <div class="profile-main__details word-break">
+        <div
+          class="profile-main__image"
+          :style="{
+            '--image-url': `url(${escapeUrl(profile.imageUrl || DEFAULT_IMAGE_URL)})`
+          }"
+        />
+        <div
+          class="profile-main__name"
+          :class="{
+            'profile-main__name--unset': !profile.name
+          }"
+        >
+          <template v-if="profile.name">
+            {{ profile.name }}
+          </template>
+          <template v-else>
+            Noname
+          </template>
         </div>
-        <div>
-          <SiteButtonLink
-            :to="{ name: 'profile-teams', params: { address } }"
-            grouped="vertical-start"
-          >
-            Favorite Teams
-          </SiteButtonLink>
-          <SiteButtonLink
-            :to="{ name: 'profile-inventory', params: { address } }"
-            grouped="vertical-middle"
-          >
-            Item Inventory
-          </SiteButtonLink>
-          <SiteButtonLink
-            :to="{ name: 'profile-badges', params: { address } }"
-            grouped="vertical-end"
-          >
-            Badges / Achievements
-          </SiteButtonLink>
+        <div class="profile-main__address">
+          {{ profile.address }}
         </div>
+      </div>
+      <div class="profile-main__nav">
+        <SiteButtonLink
+          :to="{ name: 'profile-teams', params: { address } }"
+          grouped="vertical-start"
+        >
+          Favorite Teams
+        </SiteButtonLink>
+        <SiteButtonLink
+          :to="{ name: 'profile-inventory', params: { address } }"
+          grouped="vertical-middle"
+        >
+          Item Inventory
+        </SiteButtonLink>
+        <SiteButtonLink
+          :to="{ name: 'profile-badges', params: { address } }"
+          grouped="vertical-end"
+        >
+          Badges / Achievements
+        </SiteButtonLink>
       </div>
       <div class="profile-main__content">
         <router-view />
@@ -91,8 +88,46 @@
 <style scoped>
   .profile-main__layout {
     display: grid;
-    grid-template-columns: minmax(20%, 16.5rem) minmax(0, 1fr);
-    gap: 1rem;
+    grid-template-areas:
+      "details"
+      "nav"
+      "-"
+      "content";
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto 2rem auto;
+    column-gap: 2rem;
+  }
+
+  .profile-main__details {
+    grid-area: details;
+  }
+  .profile-main__nav {
+    grid-area: nav;
+  }
+  .profile-main__content {
+    grid-area: content;
+  }
+
+  @media (min-width: 800px) {
+    .profile-main__layout {
+      grid-template-areas:
+        "details nav"
+        "content content";
+      grid-template-columns: 16.5rem minmax(0, 1fr);
+      grid-template-rows: auto auto;
+      row-gap: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .profile-main__layout {
+      grid-template-areas:
+        "details content"
+        "nav content";
+      grid-template-columns: 16.5rem minmax(0, 1fr);
+      grid-template-rows: auto auto;
+      row-gap: 0;
+    }
   }
 
   .profile-main__details {
@@ -117,7 +152,6 @@
   }
 
   .profile-main__image {
-    position: relative;
     margin-bottom: 1.25rem;
     border-radius: 1rem;
     height: 12.5rem;

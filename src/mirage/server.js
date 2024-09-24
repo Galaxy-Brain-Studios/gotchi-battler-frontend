@@ -3,6 +3,7 @@ import { verifyMessage } from 'viem'
 
 import { urls } from '../data/api.js'
 import profiles from './profiles.json'
+import profileTeamsForAddress from './profileTeamsForAddress.json'
 import tournaments from './tournaments.json'
 import teams from './teams.json'
 import battles from './battles.json'
@@ -12,6 +13,22 @@ import FORMATION_PATTERNS from '../components/team/formationPatterns.json'
 import DIFFICULTIES from '../data/trainingTeamDifficulties.json'
 
 const profilesByAddress = Object.fromEntries(profiles.map(p => [p.address.toLowerCase(), p]))
+const profileTeamsByAddress = Object.fromEntries(Object.entries( profileTeamsForAddress).map( ([address, teams]) => [address.toLowerCase(), teams] ) )
+const getTeamTotalBrs = function(team) {
+  // The totalBrs might be calculated differently in the real server, this is just to get an approx mock value.
+  const gotchis = [
+    team.back1Gotchi, team.back2Gotchi, team.back3Gotchi, team.back4Gotchi, team.back5Gotchi,
+    team.front1Gotchi, team.front2Gotchi, team.front3Gotchi, team.front4Gotchi, team.front5Gotchi
+  ].filter(g => g)
+  let total = 0
+  for (const gotchi of gotchis) {
+    if (gotchi.brs) {
+      total += gotchi.brs
+    }
+  }
+  return total
+}
+
 const tournamentsById = Object.fromEntries(tournaments.map(t => [t.id, t]))
 const teamsById = Object.fromEntries(teams.map(t => [t.id, t]))
 teamsById.DEFAULT = teams[0]
@@ -152,6 +169,10 @@ const mirageConfig = window.mirageConfig = {
     empty: false
   },
   profile: {
+    error: false,
+    slow: false
+  },
+  profileTeams: {
     error: false,
     slow: false
   }
@@ -656,6 +677,40 @@ export function makeServer({ environment = 'development' } = {}) {
         };
       }, {
         timing: mirageConfig.profile.slow ? 5000 : 100
+      })
+
+      this.get(fixUrl(urls.profileTeams(':address')), (schema, request) => {
+        if (mirageConfig.profileTeams.error) {
+          return errorResponse()
+        }
+        const address = request.params.address
+        const teams = (profileTeamsByAddress[address.toLowerCase()] || []).map(team => ({
+          id: team.id,
+          name: team.name,
+          totalBrs: getTeamTotalBrs(team),
+          leader: team.leader,
+          ...Object.fromEntries(
+            ['back1Gotchi', 'back2Gotchi', 'back3Gotchi', 'back4Gotchi', 'back5Gotchi',
+            'front1Gotchi', 'front2Gotchi', 'front3Gotchi', 'front4Gotchi', 'front5Gotchi'].map(
+              key =>
+              [
+                key,
+                (
+                  team[key] ?
+                  {
+                    id: team[key].id,
+                    svgFront: team[key].svgFront,
+                    specialId: team[key].specialId
+                  }
+                  : null
+                )
+              ]
+            )
+          )
+        }));
+        return teams
+      }, {
+        timing: mirageConfig.profileTeams.slow ? 5000 : 100
       })
 
       this.passthrough(request => {

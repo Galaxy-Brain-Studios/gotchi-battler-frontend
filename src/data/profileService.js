@@ -19,4 +19,16 @@ export default {
       throw new Error(e.json?.error || 'Error fetching profile teams')
     }
   },
+  async fetchProfileInventory (address) {
+    try {
+      const inventory = await api.get(urls.profileInventory(address))
+      return inventory.map(item => ({
+        ...item,
+        nameSortable: item.nameSortable || item.name
+      }))
+    } catch (e) {
+      console.error('fetchProfileInventory error', { ...e })
+      throw new Error(e.json?.error || 'Error fetching profile inventory')
+    }
+  },
 }

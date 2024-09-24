@@ -36,6 +36,21 @@ export default function useProfile (address) {
     }
   }
 
+  const inventory = ref(null)
+  const { status: fetchInventoryStatus, setLoading: setInventoryLoading } = useStatus()
+  const fetchInventory = async function () {
+    inventory.value = null
+    const [isStale, setLoaded, setError] = setInventoryLoading()
+    try {
+      const result = await profileService.fetchProfileInventory(address)
+      if (isStale()) { return; }
+      inventory.value = result
+      setLoaded()
+    } catch (e) {
+      console.error('Error fetching profile inventory', e)
+      setError(e.message)
+    }
+  }
 
   return {
     profile,
@@ -43,6 +58,9 @@ export default function useProfile (address) {
     fetchProfileStatus,
     teams,
     fetchTeams,
-    fetchTeamsStatus
+    fetchTeamsStatus,
+    inventory,
+    fetchInventory,
+    fetchInventoryStatus
   }
 }

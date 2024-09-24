@@ -1,0 +1,45 @@
+{
+    "0x05EBFf07711A5B6042c27FDaa683a5c6D55b6684":
+    [
+        {
+            "id": 1,
+            "rarity": "common",
+            "name": "Speed +2",
+            "nameSortable": "Speed +002",
+            "description": "This item will add +2 speed to your enchanted Gotchi.",
+            "imageUrl": "/media/10k.png",
+            "count": 12,
+            "costGhst": 2.5
+        },
+        {
+            "id": 2,
+            "rarity": "uncommon",
+            "name": "Speed +5",
+            "nameSortable": "Speed +005",
+            "description": "This item will add +5 speed to your enchanted Gotchi.",
+            "imageUrl": "/media/30k.png",
+            "count": 5,
+            "costGhst": 5
+        },
+        {
+            "id": 3,
+            "rarity": "rare",
+            "name": "Speed +10",
+            "nameSortable": "Speed +010",
+            "description": "This item will add +10 speed to your enchanted Gotchi.",
+            "imageUrl": "/media/60k.png",
+            "count": 1,
+            "costGhst": 8
+        },
+        {
+            "id": 10,
+            "rarity": "uncommon",
+            "name": "Armor +20",
+            "nameSortable": "Armor +020",
+            "description": "This item will add +20 armor to your enchanted Gotchi.",
+            "imageUrl": "/media/TestTournament2.png",
+            "count": 3,
+            "costGhst": 2.5
+        }
+    ]
+}

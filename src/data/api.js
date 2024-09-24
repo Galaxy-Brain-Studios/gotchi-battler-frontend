@@ -55,7 +55,8 @@ const urls = {
   gotchis: ({ address }) =>  `${BASE_URL}/api/v1/me/${encodeURIComponent(address)}/gotchis`,
   availableLendings: (tournamentId) => `${BASE_URL}/api/v1/tournaments/${encodeURIComponent(tournamentId)}/lendings`,
   profile: (address) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}`,
-  profileTeams: (address) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/teams`
+  profileTeams: (address) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/teams`,
+  profileInventory: (address) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/inventory`
 }
 
 export { api, apiText, urls, setBaseUrl }

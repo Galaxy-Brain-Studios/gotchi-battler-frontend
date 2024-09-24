@@ -4,6 +4,7 @@ import { verifyMessage } from 'viem'
 import { urls } from '../data/api.js'
 import profiles from './profiles.json'
 import profileTeamsForAddress from './profileTeamsForAddress.json'
+import profileInventoryForAddress from './profileInventoryForAddress.json'
 import tournaments from './tournaments.json'
 import teams from './teams.json'
 import battles from './battles.json'
@@ -14,6 +15,7 @@ import DIFFICULTIES from '../data/trainingTeamDifficulties.json'
 
 const profilesByAddress = Object.fromEntries(profiles.map(p => [p.address.toLowerCase(), p]))
 const profileTeamsByAddress = Object.fromEntries(Object.entries( profileTeamsForAddress).map( ([address, teams]) => [address.toLowerCase(), teams] ) )
+const profileInventoryByAddress = Object.fromEntries(Object.entries( profileInventoryForAddress).map( ([address, teams]) => [address.toLowerCase(), teams] ) )
 const getTeamTotalBrs = function(team) {
   // The totalBrs might be calculated differently in the real server, this is just to get an approx mock value.
   const gotchis = [
@@ -173,6 +175,10 @@ const mirageConfig = window.mirageConfig = {
     slow: false
   },
   profileTeams: {
+    error: false,
+    slow: false
+  },
+  profileInventory: {
     error: false,
     slow: false
   }
@@ -711,6 +717,16 @@ export function makeServer({ environment = 'development' } = {}) {
         return teams
       }, {
         timing: mirageConfig.profileTeams.slow ? 5000 : 100
+      })
+
+      this.get(fixUrl(urls.profileInventory(':address')), (schema, request) => {
+        if (mirageConfig.profileInventory.error) {
+          return errorResponse()
+        }
+        const address = request.params.address
+        return (profileInventoryByAddress[address.toLowerCase()] || []);
+      }, {
+        timing: mirageConfig.profileInventory.slow ? 5000 : 100
       })
 
       this.passthrough(request => {

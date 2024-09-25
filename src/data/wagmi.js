@@ -1,41 +1,40 @@
-import { configureChains, createConfig, connect, disconnect, watchAccount, signMessage } from '@wagmi/core'
+import { createConfig, reconnect, connect, disconnect, watchAccount, signMessage } from '@wagmi/core'
+import { http } from 'viem'
 import { polygon } from '@wagmi/core/chains'
-import { publicProvider } from '@wagmi/core/providers/public'
-import { InjectedConnector } from '@wagmi/core/connectors/injected'
+import { injected } from '@wagmi/connectors'
 
 const chains = [polygon]
-const providers = [
-  // TODO recommended to provide alchemyProvider or infuraProvider as well as public https://wagmi.sh/core/providers/configuring-chains
-  publicProvider()
-]
-const { publicClient, webSocketPublicClient } = configureChains(
+const connectors = [injected()]
+
+const config = createConfig({
   chains,
-  providers,
-)
-
-// To make autoConnect work, need to provide connectors in createConfig https://github.com/wagmi-dev/wagmi/issues/2511#issuecomment-1594611243
-const connectors = [new InjectedConnector()] // TODO test other wallets
-
-createConfig({
-  autoConnect: true,
-  publicClient,
-  webSocketPublicClient,
-  connectors
+  connectors,
+  transports: {
+    [polygon.id]: http()
+  }
 })
 
+reconnect(config)
+
 const connectWallet = async function () {
-  const { account } = await connect({
-    connector: connectors[0]
-  })
-  return account
+  const { accounts } = await connect(config, { connector: connectors[0] })
+  return accounts[0]
 }
 
-const disconnectWallet = disconnect
-const watchWallet = watchAccount
+const disconnectWallet = async function () {
+  return await disconnect(config)
+}
+const watchWallet = function (onChange) {
+  return watchAccount(config, { onChange })
+}
+const wagmiSignMessage = async function ({ message }) {
+  return await signMessage(config, { message })
+}
 
 export {
+  config,
   connectWallet,
   disconnectWallet,
   watchWallet,
-  signMessage,
+  wagmiSignMessage,
 }

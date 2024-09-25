@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import useStatus from '../utils/useStatus'
-import { connectWallet, disconnectWallet, watchWallet, signMessage as wagmiSignMessage } from './wagmi'
+import { connectWallet, disconnectWallet, watchWallet, wagmiSignMessage } from './wagmi'
 import gotchisService from './gotchisService'
 
 export const useAccountStore = defineStore('account', () => {

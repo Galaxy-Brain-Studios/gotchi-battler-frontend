@@ -6,6 +6,10 @@ export default function useProfile (address) {
   const profile = ref(null)
   const { status: fetchProfileStatus, setLoading } = useStatus()
 
+  const setProfile = function (newProfile) {
+    profile.value = newProfile
+  }
+
   const fetchProfile = async function () {
     profile.value = null
     const [isStale, setLoaded, setError] = setLoading()
@@ -56,6 +60,7 @@ export default function useProfile (address) {
     profile,
     fetchProfile,
     fetchProfileStatus,
+    setProfile,
     teams,
     fetchTeams,
     fetchTeamsStatus,

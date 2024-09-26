@@ -56,7 +56,8 @@ const urls = {
   availableLendings: (tournamentId) => `${BASE_URL}/api/v1/tournaments/${encodeURIComponent(tournamentId)}/lendings`,
   profile: (address) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}`,
   profileTeams: (address) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/teams`,
-  profileInventory: (address) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/inventory`
+  profileInventory: (address) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/inventory`,
+  saveProfileName: (address) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/name`
 }
 
 export { api, apiText, urls, setBaseUrl }

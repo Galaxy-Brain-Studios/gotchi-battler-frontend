@@ -51,10 +51,30 @@ export const useAccountStore = defineStore('account', () => {
     }
   }
 
+  // TODO actual sign-in session procedure TBC, this just tests async paths
+  const signedSession = ref(null)
+  async function signIntoSession () {
+    console.log("TODO Simulated signIntoSession")
+    if (!isConnected.value) {
+      throw new Error('Wallet is not connected')
+    }
+    // Mock sign in
+    // eslint-disable-next-line no-unused-vars
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        signedSession.value = `${address.value}_${Date.now()}`
+        resolve()
+        // reject(new Error('Something unexpected happened'))
+      }, 100)
+    })
+  }
+
   function clearData () {
     resetConnected()
     address.value = null
     myGotchis.value = []
+    // TODO review signedSession data that needs clearing
+    signedSession.value = null
     resetMyGotchisFetchStatus()
   }
 
@@ -102,6 +122,24 @@ export const useAccountStore = defineStore('account', () => {
     myGotchis,
     fetchMyGotchis,
     myGotchisFetchStatus,
-    signMessage
+    signMessage,
+    signedSession,
+    signIntoSession
   }
 })
+
+export const getSignedSession = async function() {
+  const accountStore = useAccountStore()
+  if (!accountStore.signedSession) {
+    try {
+      await accountStore.signIntoSession()
+    } catch (e) {
+      console.error('signIntoSession error', e)
+      throw new Error('Could not sign in: ' + e.message)
+    }
+  }
+  return {
+    address: accountStore.address,
+    signedSession: accountStore.signedSession
+  }
+}

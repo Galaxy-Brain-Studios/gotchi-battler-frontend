@@ -181,6 +181,10 @@ const mirageConfig = window.mirageConfig = {
   profileInventory: {
     error: false,
     slow: false
+  },
+  saveProfileName: {
+    error: false,
+    slow: false
   }
 };
 
@@ -716,7 +720,7 @@ export function makeServer({ environment = 'development' } = {}) {
         }));
         return teams
       }, {
-        timing: mirageConfig.profileTeams.slow ? 5000 : 100
+        timing: mirageConfig.profileTeams.slow ? 3000 : 100
       })
 
       this.get(fixUrl(urls.profileInventory(':address')), (schema, request) => {
@@ -726,7 +730,28 @@ export function makeServer({ environment = 'development' } = {}) {
         const address = request.params.address
         return (profileInventoryByAddress[address.toLowerCase()] || []);
       }, {
-        timing: mirageConfig.profileInventory.slow ? 5000 : 100
+        timing: mirageConfig.profileInventory.slow ? 3000 : 100
+      })
+
+      this.post(fixUrl(urls.saveProfileName(':address')), async (schema, request) => {
+        if (mirageConfig.saveProfileName.error) {
+          return errorResponse()
+        }
+        const address = request.params.address
+        const { name } = JSON.parse(request.requestBody)
+        // save it to the profile (create one if necessary)
+        const addressLc = address.toLowerCase()
+        if (!profilesByAddress[addressLc]) {
+          profilesByAddress[addressLc] = {
+            ...profilesByAddress['DEFAULT'.toLowerCase()],
+            address
+          }
+        }
+        const profile = profilesByAddress[addressLc]
+        profile.name = name
+        return profile
+      }, {
+        timing: mirageConfig.saveProfileName.slow ? 3000 : 1000
       })
 
       this.passthrough(request => {

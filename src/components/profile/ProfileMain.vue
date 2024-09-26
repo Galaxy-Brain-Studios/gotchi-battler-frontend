@@ -2,6 +2,7 @@
   import useProfile from '@/data/useProfile'
   import SiteButtonLink from '../common/SiteButtonLink.vue'
   import DEFAULT_IMAGE_URL from './defaultProfileImage.png'
+  import ProfileName from './ProfileName.vue'
 
   const props = defineProps({
     address: {
@@ -10,10 +11,14 @@
     }
   })
 
-  const { fetchProfile, profile, fetchProfileStatus } = useProfile(props.address)
+  const { fetchProfile, profile, fetchProfileStatus, setProfile } = useProfile(props.address)
   fetchProfile()
 
   const escapeUrl = url => CSS.escape(url)
+
+  const onNameSaved = function (newProfile) {
+    setProfile(newProfile)
+  }
 </script>
 
 <template>
@@ -41,19 +46,11 @@
             '--image-url': `url(${escapeUrl(profile.imageUrl || DEFAULT_IMAGE_URL)})`
           }"
         />
-        <div
-          class="profile-main__name"
-          :class="{
-            'profile-main__name--unset': !profile.name
-          }"
-        >
-          <template v-if="profile.name">
-            {{ profile.name }}
-          </template>
-          <template v-else>
-            Noname
-          </template>
-        </div>
+        <ProfileName
+          :address="profile.address"
+          :name="profile.name"
+          @saved="onNameSaved"
+        />
         <div class="profile-main__address">
           {{ profile.address }}
         </div>
@@ -161,17 +158,6 @@
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
-  }
-
-  .profile-main__name {
-    text-align: center;
-    font-size: 1.125rem;
-    font-weight: bold;
-    line-height: 1.5rem;
-    letter-spacing: 0.03375rem;
-  }
-  .profile-main__name--unset {
-    opacity: 0.6;
   }
 
   .profile-main__address {

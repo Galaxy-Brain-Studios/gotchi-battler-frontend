@@ -8,6 +8,10 @@
       type: Boolean,
       default: false
     },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
     type: {
       type: String,
       default: 'button'
@@ -30,6 +34,7 @@
     <button
       class="site-button-white__button button-reset"
       :type="type"
+      :disabled="disabled"
     >
       <slot />
     </button>

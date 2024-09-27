@@ -185,6 +185,10 @@ const mirageConfig = window.mirageConfig = {
   saveProfileName: {
     error: false,
     slow: false
+  },
+  deleteProfileTeam: {
+    error: false,
+    slow: false
   }
 };
 
@@ -753,6 +757,23 @@ export function makeServer({ environment = 'development' } = {}) {
       }, {
         timing: mirageConfig.saveProfileName.slow ? 3000 : 1000
       })
+
+      // Not using HTTP 'delete' because we might want to include a body for auth data
+      this.post(fixUrl(urls.deleteProfileTeam({ address: ':address', teamId: ':teamId' })), async (schema, request) => {
+        if (mirageConfig.deleteProfileTeam.error) {
+          return errorResponse()
+        }
+        const { address, teamId } = request.params
+        // delete team from profile
+        const addressLc = address.toLowerCase()
+        if (profileTeamsByAddress[addressLc]) {
+          profileTeamsByAddress[addressLc] = profileTeamsByAddress[addressLc].filter(team => `${team.id}` !== teamId)
+        }
+        return
+      }, {
+        timing: mirageConfig.deleteProfileTeam.slow ? 3000 : 1000
+      })
+
 
       this.passthrough(request => {
         // pass through contract calls

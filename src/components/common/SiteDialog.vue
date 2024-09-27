@@ -23,6 +23,7 @@
     FULL: 'full',
     LARGE: 'large',
     MEDIUM: 'medium',
+    SMALL: 'small',
     SCROLLING: 'scrolling' // TODO now unused
   }
 
@@ -108,7 +109,8 @@
           'site-dialog__dialog--variant-full': variant === VARIANT.FULL,
           'site-dialog__dialog--variant-scrolling': variant === VARIANT.SCROLLING,
           'site-dialog__dialog--variant-large': variant === VARIANT.LARGE,
-          'site-dialog__dialog--variant-medium': variant === VARIANT.MEDIUM
+          'site-dialog__dialog--variant-medium': variant === VARIANT.MEDIUM,
+          'site-dialog__dialog--variant-small': variant === VARIANT.SMALL
         }"
       >
         <div
@@ -235,6 +237,7 @@
     --site-dialog-background: linear-gradient(180deg, #6027E2 0%, #3E1F6B 100%), #3E1F6B;
     --site-dialog-box-shadow: 0px 0px 24px 0px rgba(0, 0, 0, 0.25);
     --site-dialog-width: 90%;
+    --site-dialog-padding: 2rem;
     margin: auto; /* 1 */
     z-index: 2; /* 2 */
     position: relative; /* 2 */
@@ -243,7 +246,7 @@
     max-height: calc(100% - 3rem);
     border: none; /* 3 */
     border-radius: 1.5rem;
-    padding: 2rem 2rem 0 2rem;
+    padding: var(--site-dialog-padding) var(--site-dialog-padding) 0 var(--site-dialog-padding);
     background: var(--site-dialog-background); /* 3 */
     box-shadow: var(--site-dialog-box-shadow);
 
@@ -273,9 +276,18 @@
       --site-dialog-width: 55%;
     }
   }
+  .site-dialog__dialog--variant-small {
+    --site-dialog-padding: 1.3rem;
+    grid-template-rows: 1fr;
+  }
+  @media (min-width: 500px) {
+    .site-dialog__dialog--variant-small {
+      --site-dialog-width: 450px;
+    }
+  }
   .site-dialog__body {
     overflow: auto;
-    padding-bottom: 2rem; /* put the padding here, not on the __dialog, to avoid unwanted scrollbars on content in chrome */
+    padding-bottom: var(--site-dialog-padding); /* put the padding here, not on the __dialog, to avoid unwanted scrollbars on content in chrome */
   }
   /* 'full' variant */
   .site-dialog__dialog--variant-full.site-dialog__dialog {

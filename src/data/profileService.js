@@ -52,4 +52,24 @@ export default {
       throw new Error(e.json?.error || 'Error saving name')
     }
   },
+
+  async deleteTeam (teamId) {
+    let address, signedSession
+    try {
+      const result = await getSignedSession()
+      address = result.address
+      signedSession = result.signedSession
+    } catch (e) {
+      console.error('deleteTeam error signing in', e)
+      throw new Error(e.message || 'Error signing in')
+    }
+    try {
+      // TODO how to communicate signedSession to server
+      const result = await api.url(urls.deleteProfileTeam({ address, teamId })).post({ signedSession })
+      return result;
+    } catch (e) {
+      console.error('deleteTeam error', e)
+      throw new Error(e.json?.error || 'Error deleting team')
+    }
+  },
 }

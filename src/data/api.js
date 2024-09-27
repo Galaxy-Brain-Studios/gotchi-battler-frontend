@@ -57,7 +57,8 @@ const urls = {
   profile: (address) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}`,
   profileTeams: (address) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/teams`,
   profileInventory: (address) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/inventory`,
-  saveProfileName: (address) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/name`
+  saveProfileName: (address) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/name`,
+  deleteProfileTeam: ({ address, teamId }) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/team/${encodeURIComponent(teamId)}/delete`
 }
 
 export { api, apiText, urls, setBaseUrl }

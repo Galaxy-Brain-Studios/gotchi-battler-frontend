@@ -58,7 +58,9 @@ const urls = {
   profileTeams: (address) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/teams`,
   profileInventory: (address) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/inventory`,
   saveProfileName: (address) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/name`,
-  deleteProfileTeam: ({ address, teamId }) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/team/${encodeURIComponent(teamId)}/delete`
+  deleteProfileTeam: ({ address, teamId }) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/team/${encodeURIComponent(teamId)}/delete`,
+  deleteProfileImage: (address) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/image/delete`,
+  generateImageUploadUrl: (address) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/image/generateUploadUrl`
 }
 
 export { api, apiText, urls, setBaseUrl }

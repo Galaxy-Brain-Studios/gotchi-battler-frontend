@@ -1,3 +1,12 @@
+/* Adding icons:
+ * - Use SVGOMG website to minify SVG
+ * - If image is not appearing in browser, see if the origin is negative (first two numbers in viewBox="0 0 width height")
+ *   Can reset origin by opening SVG in Inkscape and moving it to the top left corner, then exporting svg.
+ *   For consistency with other icons, include a padding of 1/8 the final width around the image,
+ *     i.e. divide real image width by 6,
+ *          use that padding as an offset position from the top-left origin when positioning in inkscape,
+ *          use viewbox origin 0 0 and calculate the width and height as the (image size + padding*2).
+ */
 export default [
   {
     id: "wallet",
@@ -91,6 +100,12 @@ export default [
     id: "edit",
     svg: `
       <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"><path d="M2.8 13.98a.61.61 0 0 1-.6-.17.61.61 0 0 1-.18-.6l.58-2.84 3.03 3.03-2.83.58Zm3.92-1.4-3.3-3.3L10.3 2.4a1.29 1.29 0 0 1 .95-.38c.38 0 .7.12.95.38l1.4 1.4c.26.26.38.57.38.95s-.12.7-.38.95l-6.88 6.88Z"/></svg>
+    `
+  },
+  {
+    id: "add-image",
+    svg: `
+      <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 66 66"><path d="M13.6 58.4q-2.3 0-4-1.6Q8 55 8 52.8V13.6q0-2.3 1.6-4 1.7-1.6 4-1.6h25.2q-1.4 1.8-2.1 4-.7 2.2-.7 4.4 0 5.8 4 10 4.2 4 10 4 2.2 0 4.4-.7t4-2.1v25.2q0 2.3-1.6 4-1.7 1.6-4 1.6zm2.8-11.2H50l-10.5-14-8.4 11.2-6.3-8.4zm30.8-22.4v-5.6h-5.6v-5.6h5.6V8h5.6v5.6h5.6v5.6h-5.6v5.6z"/></svg>
     `
   },
   {

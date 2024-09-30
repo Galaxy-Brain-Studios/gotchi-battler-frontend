@@ -14,6 +14,16 @@ import FORMATION_PATTERNS from '../components/team/formationPatterns.json'
 import DIFFICULTIES from '../data/trainingTeamDifficulties.json'
 
 const profilesByAddress = Object.fromEntries(profiles.map(p => [p.address.toLowerCase(), p]))
+const initProfileForAddress = function (address) {
+  const addressLc = address.toLowerCase()
+  if (!profilesByAddress[addressLc]) {
+    profilesByAddress[addressLc] = {
+      ...profilesByAddress['DEFAULT'.toLowerCase()],
+      address
+    }
+  }
+}
+
 const profileTeamsByAddress = Object.fromEntries(Object.entries( profileTeamsForAddress).map( ([address, teams]) => [address.toLowerCase(), teams] ) )
 const profileInventoryByAddress = Object.fromEntries(Object.entries( profileInventoryForAddress).map( ([address, teams]) => [address.toLowerCase(), teams] ) )
 const getTeamTotalBrs = function(team) {
@@ -187,6 +197,18 @@ const mirageConfig = window.mirageConfig = {
     slow: false
   },
   deleteProfileTeam: {
+    error: false,
+    slow: false
+  },
+  deleteProfileImage: {
+    error: false,
+    slow: false
+  },
+  generateImageUploadUrl: {
+    error: false,
+    slow: false
+  },
+  mockCloudUploadUrl: {
     error: false,
     slow: false
   }
@@ -745,12 +767,7 @@ export function makeServer({ environment = 'development' } = {}) {
         const { name } = JSON.parse(request.requestBody)
         // save it to the profile (create one if necessary)
         const addressLc = address.toLowerCase()
-        if (!profilesByAddress[addressLc]) {
-          profilesByAddress[addressLc] = {
-            ...profilesByAddress['DEFAULT'.toLowerCase()],
-            address
-          }
-        }
+        initProfileForAddress(addressLc)
         const profile = profilesByAddress[addressLc]
         profile.name = name
         return profile
@@ -774,10 +791,48 @@ export function makeServer({ environment = 'development' } = {}) {
         timing: mirageConfig.deleteProfileTeam.slow ? 3000 : 1000
       })
 
+      // Not using HTTP 'delete' because we might want to include a body for auth data
+      this.post(fixUrl(urls.deleteProfileImage(':address')), async (schema, request) => {
+        if (mirageConfig.deleteProfileImage.error) {
+          return errorResponse()
+        }
+        const { address } = request.params
+        // delete image from profile
+        const addressLc = address.toLowerCase()
+        initProfileForAddress(addressLc)
+        profilesByAddress[addressLc].imageUrl = null
+        return profilesByAddress[addressLc]
+      }, {
+        timing: mirageConfig.deleteProfileImage.slow ? 3000 : 1000
+      })
+
+      const mockCloudUploadUrl = ({ address, code, fileName }) => `/mockCloud/${encodeURIComponent(address)}/${code}/uploadImage/${fileName}`
+
+      this.post(fixUrl(urls.generateImageUploadUrl(':address')), async (schema, request) => {
+        if (mirageConfig.generateImageUploadUrl.error) {
+          return errorResponse()
+        }
+        const { address } = request.params
+        const { fileName } = JSON.parse(request.requestBody)
+        return {
+          url: mockCloudUploadUrl({ address, code: Date.now(), fileName })
+        }
+      }, {
+        timing: mirageConfig.generateImageUploadUrl.slow ? 3000 : 1000
+      })
+
+      this.put(fixUrl(mockCloudUploadUrl({ address: ':address', code: ':code', fileName: ':fileName' })), async () => {
+        if (mirageConfig.mockCloudUploadUrl.error) {
+          return errorResponse()
+        }
+        return true
+      }, {
+        timing: mirageConfig.mockCloudUploadUrl.slow ? 3000 : 1000
+      })
 
       this.passthrough(request => {
         // pass through contract calls
-        if (request.requestBody?.includes('eth_call')) {
+        if (request.requestBody?.includes?.('eth_call')) {
           return true
         }
         // pass through unity files

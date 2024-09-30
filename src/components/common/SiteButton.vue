@@ -14,6 +14,10 @@
       type: Boolean,
       default: false
     },
+    small: {
+      type: Boolean,
+      default: false
+    },
     type: {
       type: String,
       default: 'button'
@@ -26,6 +30,7 @@
     class="site-button__container site-button__container--interactive"
     :class="{
       'site-button__container--is-active': active,
+      'site-button__container--small': small,
       'site-button__container--is-grouped': !!grouped,
       'site-button__container--is-grouped--start': grouped === 'start',
       'site-button__container--is-grouped--middle': grouped === 'middle',

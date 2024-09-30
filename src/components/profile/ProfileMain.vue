@@ -1,7 +1,8 @@
 <script setup>
   import useProfile from '@/data/useProfile'
   import SiteButtonLink from '../common/SiteButtonLink.vue'
-  import DEFAULT_IMAGE_URL from './defaultProfileImage.png'
+
+  import ProfileImage from './ProfileImage.vue'
   import ProfileName from './ProfileName.vue'
 
   const props = defineProps({
@@ -14,9 +15,12 @@
   const { fetchProfile, profile, fetchProfileStatus, setProfile } = useProfile(props.address)
   fetchProfile()
 
-  const escapeUrl = url => CSS.escape(url)
-
-  const onNameSaved = function (newProfile) {
+  const setSavedProfile = function (newProfile) {
+    // sanity check the provided profile before setting it
+    if (newProfile?.address?.toLowerCase() !== props.address.toLowerCase()) {
+      console.error('Received unexpected new profile data', newProfile)
+      return
+    }
     setProfile(newProfile)
   }
 </script>
@@ -40,16 +44,16 @@
       class="profile-main__layout"
     >
       <div class="profile-main__details word-break">
-        <div
+        <ProfileImage
           class="profile-main__image"
-          :style="{
-            '--image-url': `url(${escapeUrl(profile.imageUrl || DEFAULT_IMAGE_URL)})`
-          }"
+          :address="profile.address"
+          :imageUrl="profile.imageUrl"
+          @saved="setSavedProfile"
         />
         <ProfileName
           :address="profile.address"
           :name="profile.name"
-          @saved="onNameSaved"
+          @saved="setSavedProfile"
         />
         <div class="profile-main__address">
           {{ profile.address }}
@@ -153,11 +157,6 @@
     border-radius: 1rem;
     height: 12.5rem;
     width: 12.5rem;
-    background-color: rgba(255, 255, 255, 0.2);
-    background-image: var(--image-url);
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
   }
 
   .profile-main__address {

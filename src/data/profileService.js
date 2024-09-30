@@ -72,4 +72,56 @@ export default {
       throw new Error(e.json?.error || 'Error deleting team')
     }
   },
+
+  async deleteImage () {
+    let address, signedSession
+    try {
+      const result = await getSignedSession()
+      address = result.address
+      signedSession = result.signedSession
+    } catch (e) {
+      console.error('deleteImage error signing in', e)
+      throw new Error(e.message || 'Error signing in')
+    }
+    try {
+      // TODO how to communicate signedSession to server
+      const result = await api.url(urls.deleteProfileImage(address)).post({ signedSession })
+      return result;
+    } catch (e) {
+      console.error('deleteImage error', e)
+      throw new Error(e.json?.error || 'Error deleting image')
+    }
+  },
+  async fetchImageUploadUrl (fileName) {
+    let address, signedSession
+    try {
+      const result = await getSignedSession()
+      address = result.address
+      signedSession = result.signedSession
+    } catch (e) {
+      console.error('fetchImageUploadUrl error signing in', e)
+      throw new Error(e.message || 'Error signing in')
+    }
+    try {
+      // TODO how to communicate signedSession to server
+      const result = await api.url(urls.generateImageUploadUrl(address)).post({ signedSession, fileName })
+      return result?.url;
+    } catch (e) {
+      console.error('fetchImageUploadUrl error', e)
+      throw new Error(e.json?.error || 'Error initializing image upload')
+    }
+  },
+  async uploadImage ({ uploadUrl, file }) {
+    try {
+      // TODO what does the cloud upload URL expect?
+      const headers = {
+        'Content-Type': 'application/octet-stream'
+      }
+      const result = await api.url(uploadUrl).headers(headers).put(file)
+      return result;
+    } catch (e) {
+      console.error('uploadImage error', e)
+      throw new Error(e.json?.error || 'Error uploading image')
+    }
+  },
 }

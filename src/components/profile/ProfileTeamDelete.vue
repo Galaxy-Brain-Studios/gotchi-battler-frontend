@@ -107,7 +107,7 @@
     display: flex;
     gap: 1rem;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-evenly;
   }
   .profile-team-delete__confirm-controls > * {
     flex: none;

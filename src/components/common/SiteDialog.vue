@@ -146,7 +146,7 @@
           </div>
         </div>
         <button
-          v-else-if="variant === VARIANT.MEDIUM"
+          v-else-if="[VARIANT.MEDIUM, VARIANT.SMALL].includes(variant)"
           type="button"
           data-a11y-dialog-hide
           aria-label="Close dialog"
@@ -327,7 +327,8 @@
     font-size: 2.5rem;
   }
 
-  .site-dialog__dialog--variant-medium .site-dialog__header-close-button {
+  .site-dialog__dialog--variant-medium .site-dialog__header-close-button,
+  .site-dialog__dialog--variant-small .site-dialog__header-close-button {
     position: absolute;
     top: -0.9rem;
     right: -0.9rem;
@@ -338,5 +339,9 @@
     border-radius: 1.25rem;
     background: var(--c-white);
     color: rgba(47, 24, 120, 1);
+  }
+  .site-dialog__dialog--variant-small .site-dialog__header-close-button {
+    width: 2rem;
+    height: 2rem;
   }
 </style>

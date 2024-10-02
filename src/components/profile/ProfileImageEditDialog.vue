@@ -75,6 +75,11 @@
       await profileService.uploadImage({ uploadUrl, file: selectedFile.value })
       if (isStale()) { return; }
       setLoaded()
+      // Clear the file input
+      if (fileInputRef.value) {
+        fileInputRef.value.value = null
+        onFileInputChange()
+      }
       // TODO get updated profile?
       const newProfile = {}
       emit("saved", newProfile)

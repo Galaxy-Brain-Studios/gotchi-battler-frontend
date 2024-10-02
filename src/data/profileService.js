@@ -1,5 +1,36 @@
-import { api, urls } from './api'
+import { api, apiWithCredentials, apiTextWithCredentials, urls } from './api'
 import { getSignedSession } from './accountStore'
+
+const requireLoginSession = function (doRequest) {
+  return async (...args) => {
+    let address
+    try {
+      const signResult = await getSignedSession()
+      address = signResult.address
+    } catch (e) {
+      console.error('Error signing in', e)
+      throw new Error(e.message || 'Error signing in')
+    }
+    try {
+      return await doRequest({ address }, ...args)
+    } catch (e) {
+      if (e.message === 'Unauthorized') {
+        // Retry login once
+        try {
+          const signResult = await getSignedSession(true)
+          address = signResult.address
+        } catch (e) {
+          console.error('Error signing in (retry)', e)
+          throw new Error(e.message || 'Error signing in')
+        }
+        // Retry the request, allow it to throw errors
+        return await doRequest({ address }, ...args)
+      } else {
+        throw e
+      }
+    }
+  }
+}
 
 export default {
   async fetchProfile (address) {
@@ -33,84 +64,43 @@ export default {
     }
   },
 
-  async saveName (name) {
-    let address, signedSession
+  saveName: requireLoginSession(async function (session, name) {
     try {
-      const result = await getSignedSession()
-      address = result.address
-      signedSession = result.signedSession
-    } catch (e) {
-      console.error('saveName error signing in', e)
-      throw new Error(e.message || 'Error signing in')
-    }
-    try {
-      // TODO how to communicate signedSession to server
-      const result = await api.url(urls.saveProfileName(address)).post({ name, signedSession })
+      const result = await apiWithCredentials.url(urls.saveProfileName(session.address)).post({ name })
       return result;
     } catch (e) {
       console.error('saveName error', e)
       throw new Error(e.json?.error || 'Error saving name')
     }
-  },
+  }),
 
-  async deleteTeam (teamId) {
-    let address, signedSession
+  deleteTeam: requireLoginSession(async function (session, teamId) {
     try {
-      const result = await getSignedSession()
-      address = result.address
-      signedSession = result.signedSession
-    } catch (e) {
-      console.error('deleteTeam error signing in', e)
-      throw new Error(e.message || 'Error signing in')
-    }
-    try {
-      // TODO how to communicate signedSession to server
-      const result = await api.url(urls.deleteProfileTeam({ address, teamId })).post({ signedSession })
-      return result;
+      await apiTextWithCredentials.url(urls.deleteProfileTeam({ address: session.address, teamId })).delete()
     } catch (e) {
       console.error('deleteTeam error', e)
       throw new Error(e.json?.error || 'Error deleting team')
     }
-  },
+  }),
 
-  async deleteImage () {
-    let address, signedSession
+  deleteImage: requireLoginSession(async function (session) {
     try {
-      const result = await getSignedSession()
-      address = result.address
-      signedSession = result.signedSession
-    } catch (e) {
-      console.error('deleteImage error signing in', e)
-      throw new Error(e.message || 'Error signing in')
-    }
-    try {
-      // TODO how to communicate signedSession to server
-      const result = await api.url(urls.deleteProfileImage(address)).post({ signedSession })
-      return result;
+      const profile = await apiWithCredentials.url(urls.deleteProfileImage(session.address)).delete()
+      return profile;
     } catch (e) {
       console.error('deleteImage error', e)
       throw new Error(e.json?.error || 'Error deleting image')
     }
-  },
-  async fetchImageUploadUrl (fileName) {
-    let address, signedSession
+  }),
+  fetchImageUploadUrl: requireLoginSession(async function (session, fileName) {
     try {
-      const result = await getSignedSession()
-      address = result.address
-      signedSession = result.signedSession
-    } catch (e) {
-      console.error('fetchImageUploadUrl error signing in', e)
-      throw new Error(e.message || 'Error signing in')
-    }
-    try {
-      // TODO how to communicate signedSession to server
-      const result = await api.url(urls.generateImageUploadUrl(address)).post({ signedSession, fileName })
+      const result = await apiWithCredentials.url(urls.generateImageUploadUrl(session.address)).post({ fileName })
       return result?.url;
     } catch (e) {
       console.error('fetchImageUploadUrl error', e)
       throw new Error(e.json?.error || 'Error initializing image upload')
     }
-  },
+  }),
   async uploadImage ({ uploadUrl, file }) {
     try {
       // TODO what does the cloud upload URL expect?

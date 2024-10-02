@@ -24,6 +24,9 @@ if (DEV_MODE) {
 const api = baseApi.errorType("json").resolve(r => r.json())
 const apiText = baseApi.errorType("json").resolve(r => r.text())
 
+const apiWithCredentials = api.options({ credentials: "include", mode: "cors" })
+const apiTextWithCredentials = apiText.options({ credentials: "include", mode: "cors" })
+
 let BASE_URL = API_URL
 
 function setBaseUrl (url) {
@@ -60,7 +63,10 @@ const urls = {
   saveProfileName: (address) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/name`,
   deleteProfileTeam: ({ address, teamId }) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/team/${encodeURIComponent(teamId)}/delete`,
   deleteProfileImage: (address) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/image/delete`,
-  generateImageUploadUrl: (address) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/image/generateUploadUrl`
+  generateImageUploadUrl: (address) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/image/generateUploadUrl`,
+  sessionNonce: () => `${BASE_URL}/api/v2/auth/nonce`,
+  sessionLogin: () => `${BASE_URL}/api/v2/auth/login`,
+  sessionLogout: () => `${BASE_URL}/api/v2/auth/logout`
 }
 
-export { api, apiText, urls, setBaseUrl }
+export { api, apiText, apiWithCredentials, apiTextWithCredentials, urls, setBaseUrl }

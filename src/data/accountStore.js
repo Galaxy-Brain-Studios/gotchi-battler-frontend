@@ -1,8 +1,11 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
+import { SiweMessage } from 'siwe';
 import useStatus from '../utils/useStatus'
 import { connectWallet, disconnectWallet, watchWallet, wagmiSignMessage } from './wagmi'
+import { getAddress } from 'viem'
 import gotchisService from './gotchisService'
+import sessionService from './sessionService'
 
 export const useAccountStore = defineStore('account', () => {
   const address = ref(null)
@@ -51,35 +54,66 @@ export const useAccountStore = defineStore('account', () => {
     }
   }
 
-  // TODO actual sign-in session procedure TBC, this just tests async paths
+  // siwe login:
+  // 1. fetch nonce from server
+  // 2. construct message using nonce
+  // 3. get user to sign message
+  // 4. submit signature to server to set up session
   const signedSession = ref(null)
+
+  const scheme = window.location.protocol.slice(0, -1);
+  const domain = window.location.host;
+  function createSiweMessage (address, nonce, displayMessage) {
+    const message = new SiweMessage({
+        scheme,
+        domain,
+        address,
+        displayMessage,
+        uri: origin,
+        version: '1',
+        chainId: '1',
+        nonce,
+    });
+    return message.prepareMessage();
+  }
+
+  const { setLoading: setSigningIn, reset: resetSigningIn } = useStatus()
   async function signIntoSession () {
-    console.log("TODO Simulated signIntoSession")
     if (!isConnected.value) {
       throw new Error('Wallet is not connected')
     }
-    // Mock sign in
-    // eslint-disable-next-line no-unused-vars
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        signedSession.value = `${address.value}_${Date.now()}`
-        resolve()
-        // reject(new Error('Something unexpected happened'))
-      }, 100)
-    })
+
+    const [isStale, setLoaded] = setSigningIn()
+    // Fetch session nonce
+    const nonce = await sessionService.fetchSessionNonce()
+    if (isStale()) { throw new Error('Login cancelled') }
+    // Ask user to sign message
+    const addressChecksummed = getAddress(address.value)
+    const message = createSiweMessage(addressChecksummed, nonce, 'Sign in with Ethereum to the app.')
+    const signature = await signMessage({ message })
+    if (isStale()) { throw new Error('Login cancelled') }
+    // Submit signed message to server to initialize session
+    await sessionService.login({ message, signature })
+    if (isStale()) { throw new Error('Login cancelled') }
+    // Server session is set up, we're signed in
+    signedSession.value = nonce
+    setLoaded()
   }
 
   function clearData () {
     resetConnected()
     address.value = null
     myGotchis.value = []
-    // TODO review signedSession data that needs clearing
     signedSession.value = null
     resetMyGotchisFetchStatus()
   }
 
   async function disconnect () {
+    resetSigningIn() // if a sign-in was in progress, abort it
     await disconnectWallet()
+    if (signedSession.value) {
+      sessionService.logout() // clear server-side session: no need to wait for the request to complete
+    }
     clearData()
   }
 
@@ -128,9 +162,9 @@ export const useAccountStore = defineStore('account', () => {
   }
 })
 
-export const getSignedSession = async function() {
+export const getSignedSession = async function(forceRetry) {
   const accountStore = useAccountStore()
-  if (!accountStore.signedSession) {
+  if (!accountStore.signedSession || forceRetry) {
     try {
       await accountStore.signIntoSession()
     } catch (e) {

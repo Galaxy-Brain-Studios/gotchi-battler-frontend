@@ -211,12 +211,54 @@ const mirageConfig = window.mirageConfig = {
   mockCloudUploadUrl: {
     error: false,
     slow: false
+  },
+  sessionNonce: {
+    error: false,
+    slow: false
+  },
+  sessionLogin: {
+    error: false,
+    slow: false
+  },
+  sessionLogout: {
+    error: false,
+    slow: false
   }
 };
 
 const errorResponse = ({ statusCode=400, message='Error from the server', response=null }={}) => new Response(
   statusCode, {}, (response || { error: message })
 )
+const unauthorizedErrorResponse = function () {
+  return errorResponse({ statusCode: 401, message: "Unauthorized" })
+}
+
+const requestIncludesCredentials = function (request) {
+  return request.withCredentials;
+}
+// Real server-side session may or may not use cookies to track the user,
+// but we're using them here to make available that state which will be passed
+// along as request credentials (because the user address may not
+// be present explicitly in request path/params/body).
+const cookieDomain = window.location.hostname
+const setSessionAddressCookie = function (address) {
+  const now = new Date()
+  const cookieExpiration = new Date(now.getTime() + 24 * 3600 * 1000)
+  document.cookie = `sessionAddress=${address}; domain=${cookieDomain}; path=/; expires=${cookieExpiration.toUTCString()};`
+}
+const clearSessionAddressCookie = function () {
+  document.cookie = `sessionAddress=; domain=${cookieDomain}; path=/; expires=${new Date(0).toUTCString()};`
+}
+const getSessionAddressFromCookie = function () {
+  return document.cookie.match(/sessionAddress=(\w+)/)?.[1]
+}
+const checkCredentials = function (request) {
+  const address = getSessionAddressFromCookie()
+  if (!requestIncludesCredentials(request) || !address) {
+    return false
+  }
+  return address
+}
 
 const verifySignature = async function (request) {
   // verify the signature
@@ -245,6 +287,8 @@ const verifySignature = async function (request) {
   }
   return validSignature
 }
+
+
 
 export function makeServer({ environment = 'development' } = {}) {
   let server = createServer({
@@ -763,7 +807,9 @@ export function makeServer({ environment = 'development' } = {}) {
         if (mirageConfig.saveProfileName.error) {
           return errorResponse()
         }
-        const address = request.params.address
+        const address = checkCredentials(request)
+        if (!address) { return unauthorizedErrorResponse() }
+
         const { name } = JSON.parse(request.requestBody)
         // save it to the profile (create one if necessary)
         const addressLc = address.toLowerCase()
@@ -775,28 +821,31 @@ export function makeServer({ environment = 'development' } = {}) {
         timing: mirageConfig.saveProfileName.slow ? 3000 : 1000
       })
 
-      // Not using HTTP 'delete' because we might want to include a body for auth data
-      this.post(fixUrl(urls.deleteProfileTeam({ address: ':address', teamId: ':teamId' })), async (schema, request) => {
+      this.delete(fixUrl(urls.deleteProfileTeam({ address: ':address', teamId: ':teamId' })), async (schema, request) => {
         if (mirageConfig.deleteProfileTeam.error) {
           return errorResponse()
         }
-        const { address, teamId } = request.params
+        const address = checkCredentials(request)
+        if (!address) { return unauthorizedErrorResponse() }
+
+        const { teamId } = request.params
         // delete team from profile
         const addressLc = address.toLowerCase()
         if (profileTeamsByAddress[addressLc]) {
           profileTeamsByAddress[addressLc] = profileTeamsByAddress[addressLc].filter(team => `${team.id}` !== teamId)
         }
-        return
+        return ""
       }, {
         timing: mirageConfig.deleteProfileTeam.slow ? 3000 : 1000
       })
 
-      // Not using HTTP 'delete' because we might want to include a body for auth data
-      this.post(fixUrl(urls.deleteProfileImage(':address')), async (schema, request) => {
+      this.delete(fixUrl(urls.deleteProfileImage(':address')), async (schema, request) => {
         if (mirageConfig.deleteProfileImage.error) {
           return errorResponse()
         }
-        const { address } = request.params
+        const address = checkCredentials(request)
+        if (!address) { return unauthorizedErrorResponse() }
+
         // delete image from profile
         const addressLc = address.toLowerCase()
         initProfileForAddress(addressLc)
@@ -812,7 +861,9 @@ export function makeServer({ environment = 'development' } = {}) {
         if (mirageConfig.generateImageUploadUrl.error) {
           return errorResponse()
         }
-        const { address } = request.params
+        const address = checkCredentials(request)
+        if (!address) { return unauthorizedErrorResponse() }
+
         const { fileName } = JSON.parse(request.requestBody)
         return {
           url: mockCloudUploadUrl({ address, code: Date.now(), fileName })
@@ -828,6 +879,44 @@ export function makeServer({ environment = 'development' } = {}) {
         return true
       }, {
         timing: mirageConfig.mockCloudUploadUrl.slow ? 3000 : 1000
+      })
+
+      this.get(fixUrl(urls.sessionNonce()), async () => {
+        if (mirageConfig.sessionNonce.error) {
+          return errorResponse()
+        }
+        return {
+          nonce: 'test' + Date.now() // must be alphanumeric string
+        }
+      }, {
+        timing: mirageConfig.sessionNonce.slow ? 3000 : 1000
+      })
+
+      this.post(fixUrl(urls.sessionLogin()), async (schema, request) => {
+        if (mirageConfig.sessionLogin.error) {
+          return errorResponse()
+        }
+        const { message } = JSON.parse(request.requestBody)
+        const address = message.match(/Ethereum account:\s*(\w+)/)?.[1]
+        console.log(`Mirage server simulating sign in with cookie for:`, address)
+        setSessionAddressCookie(address)
+        return
+      }, {
+        timing: mirageConfig.sessionLogin.slow ? 3000 : 1000
+      })
+
+      this.post(fixUrl(urls.sessionLogout()), async (schema, request) => {
+        if (mirageConfig.sessionLogout.error) {
+          return errorResponse()
+        }
+        const address = checkCredentials(request)
+        if (!address) { return unauthorizedErrorResponse() }
+
+        console.log(`Mirage server simulating sign out with cookie:`, address)
+        clearSessionAddressCookie()
+        return
+      }, {
+        timing: mirageConfig.sessionLogout.slow ? 3000 : 1000
       })
 
       this.passthrough(request => {

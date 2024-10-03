@@ -63,6 +63,15 @@ export default {
       throw new Error(e.json?.error || 'Error fetching profile inventory')
     }
   },
+  async fetchProfileInventoryItemCount({ address, itemId }) {
+    try {
+      const result = await api.get(urls.profileInventoryItemCount({ address, itemId }))
+      return result
+    } catch (e) {
+      console.error('fetchProfileInventoryItemCount error', e)
+      throw new Error(e.json?.error || 'Error fetching profile inventory item count')
+    }
+  },
 
   saveName: requireLoginSession(async function (session, name) {
     try {

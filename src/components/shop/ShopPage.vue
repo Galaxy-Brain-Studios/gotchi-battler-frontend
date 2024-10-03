@@ -1,12 +1,18 @@
 <script setup>
+  import { ref } from 'vue'
   import SiteHeading from '../common/SiteHeading.vue'
   import ItemList from '../item/ItemList.vue'
   import useShop from '../../data/useShop'
+  import ItemDialog from './ItemDialog.vue'
 
   const { items, fetchItemsStatus } = useShop()
 
-  const onItemClicked = function (item) {
-    console.log("TODO show item", item)
+  const item = ref(null)
+
+  const onDialogUpdate = function(newIsOpen) {
+    if (!newIsOpen) {
+      item.value = null
+    }
   }
 </script>
 
@@ -31,7 +37,12 @@
       :items="items"
       defaultSort="costGhst_asc"
       clickable
-      @click:item="onItemClicked"
+      @click:item="item = $event"
+    />
+    <ItemDialog
+      v-if="item"
+      :item="item"
+      @update:isOpen="onDialogUpdate"
     />
   </div>
 </template>

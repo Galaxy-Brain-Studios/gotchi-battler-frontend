@@ -9,7 +9,8 @@
     isOpen: { type: Boolean, default: false },
     variant: { type: String, default: 'large' },
     /* enable 'strict' to prevent clicks on backdrop closing dialog */
-    strict: { type: Boolean, default: false }
+    strict: { type: Boolean, default: false },
+    lightMode: { type: Boolean, default: false }
   })
 
   const emit = defineEmits(['update:isOpen'])
@@ -110,7 +111,8 @@
           'site-dialog__dialog--variant-scrolling': variant === VARIANT.SCROLLING,
           'site-dialog__dialog--variant-large': variant === VARIANT.LARGE,
           'site-dialog__dialog--variant-medium': variant === VARIANT.MEDIUM,
-          'site-dialog__dialog--variant-small': variant === VARIANT.SMALL
+          'site-dialog__dialog--variant-small': variant === VARIANT.SMALL,
+          'site-dialog__dialog--mode-light': !!lightMode
         }"
       >
         <div
@@ -271,6 +273,11 @@
   .site-dialog__dialog--variant-medium {
     grid-template-rows: 1fr;
   }
+  @media (min-width: 1100px) {
+    .site-dialog__dialog--variant-medium {
+      --site-dialog-width: 75%;
+    }
+  }
   @media (min-width: 1400px) {
     .site-dialog__dialog--variant-medium {
       --site-dialog-width: 55%;
@@ -320,7 +327,8 @@
     margin-bottom: 1rem;
   }
   .site-dialog__header-close-button {
-    color: var(--c-white);
+    --site-dialog-close-button-color: var(--c-white);
+    color: var(--site-dialog-close-button-color);
   }
   .site-dialog__header h1 {
     margin: 0;
@@ -329,19 +337,26 @@
 
   .site-dialog__dialog--variant-medium .site-dialog__header-close-button,
   .site-dialog__dialog--variant-small .site-dialog__header-close-button {
+    --site-dialog-close-button-color: rgba(47, 24, 120, 1);
+    --site-dialog-close-button-size: 2.5rem;
     position: absolute;
     top: -0.9rem;
     right: -0.9rem;
     display: grid;
     place-items: center;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 1.25rem;
+    width: var(--site-dialog-close-button-size);
+    height: var(--site-dialog-close-button-size);
+    border-radius: calc(0.5 * var(--site-dialog-close-button-size));
     background: var(--c-white);
-    color: rgba(47, 24, 120, 1);
   }
   .site-dialog__dialog--variant-small .site-dialog__header-close-button {
-    width: 2rem;
-    height: 2rem;
+    --site-dialog-close-button-size: 2rem;
+  }
+
+  .site-dialog__dialog--mode-light {
+    --site-dialog-background: var(--c-white);
+  }
+  .site-dialog__dialog--mode-light .site-dialog__header-close-button {
+    outline: 2px solid var(--site-dialog-close-button-color);
   }
 </style>

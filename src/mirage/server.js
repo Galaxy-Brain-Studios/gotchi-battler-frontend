@@ -26,7 +26,9 @@ const initProfileForAddress = function (address) {
 }
 
 const profileTeamsByAddress = Object.fromEntries(Object.entries( profileTeamsForAddress).map( ([address, teams]) => [address.toLowerCase(), teams] ) )
-const profileInventoryByAddress = Object.fromEntries(Object.entries( profileInventoryForAddress).map( ([address, teams]) => [address.toLowerCase(), teams] ) )
+const profileInventoryByAddress = Object.fromEntries(Object.entries( profileInventoryForAddress).map( ([address, inventory]) => [address.toLowerCase(), inventory] ) )
+const INVENTORY_ITEMS_BY_ID = Object.fromEntries(SHOP_ITEMS.map(item => [`${item.id}`, item]))
+
 const getTeamTotalBrs = function(team) {
   // The totalBrs might be calculated differently in the real server, this is just to get an approx mock value.
   const gotchis = [
@@ -190,6 +192,10 @@ const mirageConfig = window.mirageConfig = {
     slow: false
   },
   profileInventory: {
+    error: false,
+    slow: false
+  },
+  profileInventoryItemCount: {
     error: false,
     slow: false
   },
@@ -803,9 +809,28 @@ export function makeServer({ environment = 'development' } = {}) {
           return errorResponse()
         }
         const address = request.params.address
-        return (profileInventoryByAddress[address.toLowerCase()] || []);
+        const inventoryCounts = (profileInventoryByAddress[address.toLowerCase()] || {});
+        return Object.entries(inventoryCounts).map(([itemId, count]) => ({
+          ...INVENTORY_ITEMS_BY_ID[itemId],
+          count
+        }))
       }, {
         timing: mirageConfig.profileInventory.slow ? 3000 : 100
+      })
+
+      this.get(fixUrl(urls.profileInventoryItemCount({ address: ':address', itemId: ':itemId' })), (schema, request) => {
+        if (mirageConfig.profileInventoryItemCount.error) {
+          return errorResponse()
+        }
+        const { address, itemId } = request.params
+        const inventory = (profileInventoryByAddress[address.toLowerCase()] || []);
+        let count = 0
+        if (inventory && inventory[`${itemId}`]) {
+          count = inventory[`${itemId}`]
+        }
+        return { count };
+      }, {
+        timing: mirageConfig.profileInventoryItemCount.slow ? 3000 : 100
       })
 
       this.post(fixUrl(urls.saveProfileName(':address')), async (schema, request) => {

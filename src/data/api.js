@@ -60,6 +60,7 @@ const urls = {
   profile: (address) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}`,
   profileTeams: (address) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/teams`,
   profileInventory: (address) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/inventory`,
+  profileInventoryItemCount: ({ address, itemId }) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/inventory/item/${encodeURIComponent(itemId)}/count`,
   saveProfileName: (address) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/name`,
   deleteProfileTeam: ({ address, teamId }) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/team/${encodeURIComponent(teamId)}/delete`,
   deleteProfileImage: (address) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/image/delete`,

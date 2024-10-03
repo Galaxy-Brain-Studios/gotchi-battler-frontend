@@ -12,6 +12,7 @@ import battleLog from './battleLog.json'
 import gotchisForAddress from './gotchisForAddress.js'
 import FORMATION_PATTERNS from '../components/team/formationPatterns.json'
 import DIFFICULTIES from '../data/trainingTeamDifficulties.json'
+import SHOP_ITEMS from './shopItems'
 
 const profilesByAddress = Object.fromEntries(profiles.map(p => [p.address.toLowerCase(), p]))
 const initProfileForAddress = function (address) {
@@ -221,6 +222,10 @@ const mirageConfig = window.mirageConfig = {
     slow: false
   },
   sessionLogout: {
+    error: false,
+    slow: false
+  },
+  shopItems: {
     error: false,
     slow: false
   }
@@ -917,6 +922,16 @@ export function makeServer({ environment = 'development' } = {}) {
         return
       }, {
         timing: mirageConfig.sessionLogout.slow ? 3000 : 1000
+      })
+
+
+      this.get(fixUrl(urls.shopItems()), async () => {
+        if (mirageConfig.shopItems.error) {
+          return errorResponse()
+        }
+        return SHOP_ITEMS
+      }, {
+        timing: mirageConfig.shopItems.slow ? 3000 : 1000
       })
 
       this.passthrough(request => {

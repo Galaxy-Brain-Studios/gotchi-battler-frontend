@@ -29,7 +29,7 @@
             "description": "This item will add +10 speed to your enchanted Gotchi.",
             "imageUrl": "/media/60k.png",
             "count": 1,
-            "costGhst": 8
+            "costGhst": 11
         },
         {
             "id": 10,

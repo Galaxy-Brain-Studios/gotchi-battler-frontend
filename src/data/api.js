@@ -66,7 +66,8 @@ const urls = {
   generateImageUploadUrl: (address) => `${BASE_URL}/api/v2/profile/${encodeURIComponent(address)}/image/generateUploadUrl`,
   sessionNonce: () => `${BASE_URL}/api/v2/auth/nonce`,
   sessionLogin: () => `${BASE_URL}/api/v2/auth/login`,
-  sessionLogout: () => `${BASE_URL}/api/v2/auth/logout`
+  sessionLogout: () => `${BASE_URL}/api/v2/auth/logout`,
+  shopItems: () => `${BASE_URL}/api/v2/shop/items`
 }
 
 export { api, apiText, apiWithCredentials, apiTextWithCredentials, urls, setBaseUrl }

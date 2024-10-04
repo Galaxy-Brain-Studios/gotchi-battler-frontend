@@ -162,7 +162,7 @@ export const useAccountStore = defineStore('account', () => {
   }
 })
 
-export const getSignedSession = async function(forceRetry) {
+const getSignedSession = async function(forceRetry) {
   const accountStore = useAccountStore()
   if (!accountStore.signedSession || forceRetry) {
     try {
@@ -175,5 +175,33 @@ export const getSignedSession = async function(forceRetry) {
   return {
     address: accountStore.address,
     signedSession: accountStore.signedSession
+  }
+}
+
+export const requireLoginSession = function (doRequest) {
+  return async (...args) => {
+    try {
+      await getSignedSession()
+    } catch (e) {
+      console.error('Error signing in', e)
+      throw new Error(e.message || 'Error signing in')
+    }
+    try {
+      return await doRequest(...args)
+    } catch (e) {
+      if (e.message === 'Unauthorized') {
+        // Retry login once
+        try {
+          await getSignedSession(true)
+        } catch (e) {
+          console.error('Error signing in (retry)', e)
+          throw new Error(e.message || 'Error signing in')
+        }
+        // Retry the request, allow it to throw errors
+        return await doRequest(...args)
+      } else {
+        throw e
+      }
+    }
   }
 }

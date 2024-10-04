@@ -357,6 +357,6 @@
     --site-dialog-background: var(--c-white);
   }
   .site-dialog__dialog--mode-light .site-dialog__header-close-button {
-    outline: 2px solid var(--site-dialog-close-button-color);
+    outline: 4px solid var(--site-dialog-close-button-color);
   }
 </style>

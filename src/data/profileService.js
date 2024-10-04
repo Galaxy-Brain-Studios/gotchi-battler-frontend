@@ -1,36 +1,5 @@
 import { api, apiWithCredentials, apiTextWithCredentials, urls } from './api'
-import { getSignedSession } from './accountStore'
-
-const requireLoginSession = function (doRequest) {
-  return async (...args) => {
-    let address
-    try {
-      const signResult = await getSignedSession()
-      address = signResult.address
-    } catch (e) {
-      console.error('Error signing in', e)
-      throw new Error(e.message || 'Error signing in')
-    }
-    try {
-      return await doRequest({ address }, ...args)
-    } catch (e) {
-      if (e.message === 'Unauthorized') {
-        // Retry login once
-        try {
-          const signResult = await getSignedSession(true)
-          address = signResult.address
-        } catch (e) {
-          console.error('Error signing in (retry)', e)
-          throw new Error(e.message || 'Error signing in')
-        }
-        // Retry the request, allow it to throw errors
-        return await doRequest({ address }, ...args)
-      } else {
-        throw e
-      }
-    }
-  }
-}
+import { requireLoginSession } from './accountStore'
 
 export default {
   async fetchProfile (address) {
@@ -73,9 +42,9 @@ export default {
     }
   },
 
-  saveName: requireLoginSession(async function (session, name) {
+  saveName: requireLoginSession(async function (name) {
     try {
-      const result = await apiWithCredentials.url(urls.saveProfileName(session.address)).post({ name })
+      const result = await apiWithCredentials.url(urls.saveProfileName()).post({ name })
       return result;
     } catch (e) {
       console.error('saveName error', e)
@@ -83,27 +52,27 @@ export default {
     }
   }),
 
-  deleteTeam: requireLoginSession(async function (session, teamId) {
+  deleteTeam: requireLoginSession(async function (teamId) {
     try {
-      await apiTextWithCredentials.url(urls.deleteProfileTeam({ address: session.address, teamId })).delete()
+      await apiTextWithCredentials.url(urls.deleteProfileTeam({ teamId })).delete()
     } catch (e) {
       console.error('deleteTeam error', e)
       throw new Error(e.json?.error || 'Error deleting team')
     }
   }),
 
-  deleteImage: requireLoginSession(async function (session) {
+  deleteImage: requireLoginSession(async function () {
     try {
-      const profile = await apiWithCredentials.url(urls.deleteProfileImage(session.address)).delete()
+      const profile = await apiWithCredentials.url(urls.deleteProfileImage()).delete()
       return profile;
     } catch (e) {
       console.error('deleteImage error', e)
       throw new Error(e.json?.error || 'Error deleting image')
     }
   }),
-  fetchImageUploadUrl: requireLoginSession(async function (session, fileName) {
+  fetchImageUploadUrl: requireLoginSession(async function (fileName) {
     try {
-      const result = await apiWithCredentials.url(urls.generateImageUploadUrl(session.address)).post({ fileName })
+      const result = await apiWithCredentials.url(urls.generateImageUploadUrl()).post({ fileName })
       return result?.url;
     } catch (e) {
       console.error('fetchImageUploadUrl error', e)

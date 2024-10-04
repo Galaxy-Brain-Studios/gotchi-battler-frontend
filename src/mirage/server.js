@@ -833,7 +833,7 @@ export function makeServer({ environment = 'development' } = {}) {
         timing: mirageConfig.profileInventoryItemCount.slow ? 3000 : 100
       })
 
-      this.post(fixUrl(urls.saveProfileName(':address')), async (schema, request) => {
+      this.post(fixUrl(urls.saveProfileName()), async (schema, request) => {
         if (mirageConfig.saveProfileName.error) {
           return errorResponse()
         }
@@ -851,7 +851,7 @@ export function makeServer({ environment = 'development' } = {}) {
         timing: mirageConfig.saveProfileName.slow ? 3000 : 1000
       })
 
-      this.delete(fixUrl(urls.deleteProfileTeam({ address: ':address', teamId: ':teamId' })), async (schema, request) => {
+      this.delete(fixUrl(urls.deleteProfileTeam({ teamId: ':teamId' })), async (schema, request) => {
         if (mirageConfig.deleteProfileTeam.error) {
           return errorResponse()
         }
@@ -869,7 +869,7 @@ export function makeServer({ environment = 'development' } = {}) {
         timing: mirageConfig.deleteProfileTeam.slow ? 3000 : 1000
       })
 
-      this.delete(fixUrl(urls.deleteProfileImage(':address')), async (schema, request) => {
+      this.delete(fixUrl(urls.deleteProfileImage()), async (schema, request) => {
         if (mirageConfig.deleteProfileImage.error) {
           return errorResponse()
         }
@@ -887,7 +887,7 @@ export function makeServer({ environment = 'development' } = {}) {
 
       const mockCloudUploadUrl = ({ address, code, fileName }) => `/mockCloud/${encodeURIComponent(address)}/${code}/uploadImage/${fileName}`
 
-      this.post(fixUrl(urls.generateImageUploadUrl(':address')), async (schema, request) => {
+      this.post(fixUrl(urls.generateImageUploadUrl()), async (schema, request) => {
         if (mirageConfig.generateImageUploadUrl.error) {
           return errorResponse()
         }

@@ -3,7 +3,7 @@
   import { storeToRefs } from 'pinia'
   import { formatDateTime } from '../../utils/date'
   import { useAccountStore } from '../../data/accountStore'
-  import { useBattleStore, submitTrainingBattle, signTrainingBattle, useTrainingBattlesStore } from '../../data/battleStore'
+  import { useBattleStore, submitTrainingBattle, useTrainingBattlesStore } from '../../data/battleStore'
   import SiteButton from '../common/SiteButton.vue' 
   import SiteError from '../common/SiteError.vue'
   import SiteConnectWallet from '../site/SiteConnectWallet.vue'
@@ -99,13 +99,10 @@
     if (!canStartMatch.value) { return }
     const [isStale, setLoaded, setError] = setLoading()
     try {
-      const { address, message, signature } = await signTrainingBattle(battleToSubmit.value)
       if (isStale()) { return }
       const battleId = await submitTrainingBattle({
         ...battleToSubmit.value,
-        address,
-        message,
-        signature
+        address: address.value
       })
       if (isStale()) { return }
       if (battleId) {

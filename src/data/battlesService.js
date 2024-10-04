@@ -1,5 +1,6 @@
-import { api, urls } from './api'
+import { api, apiWithCredentials, urls } from './api'
 import { processTeamModel } from './teamUtils'
+import { requireLoginSession } from './accountStore'
 
 const processBattleModel = function (jsonData) {
   const teams = [jsonData.team1 || null, jsonData.team2 || null]
@@ -51,9 +52,9 @@ export default {
     }
   },
 
-  async submitTrainingBattle ({ team, trainingTeam, address, message, signature }) {
+  submitTrainingBattle: requireLoginSession( async function ({ team, trainingTeam }) {
     try {
-      const result = await api.url(urls.trainingBattle({ address, message, signature })).post({
+      const result = await apiWithCredentials.url(urls.trainingBattle()).post({
         team,
         trainingTeam
       })
@@ -70,8 +71,8 @@ export default {
       return battle
     } catch (e) {
       console.error('submitTrainingBattle error', { ...e })
-      throw new Error(e.json?.error || 'Error submitting Training battle')
+      throw new Error(e.json?.error || e.json?.message || 'Error submitting Training battle')
     }
-  }
+  })
 
 }

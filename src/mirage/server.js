@@ -1,5 +1,4 @@
 import { createServer, Response } from 'miragejs'
-import { verifyMessage } from 'viem'
 
 import { urls } from '../data/api.js'
 import profiles from './profiles.json'
@@ -241,7 +240,7 @@ const errorResponse = ({ statusCode=400, message='Error from the server', respon
   statusCode, {}, (response || { error: message })
 )
 const unauthorizedErrorResponse = function () {
-  return errorResponse({ statusCode: 401, message: "Unauthorized" })
+  return errorResponse({ statusCode: 401, message: "Unauthorized", error: "Unauthorized" })
 }
 
 const requestIncludesCredentials = function (request) {
@@ -268,38 +267,9 @@ const checkCredentials = function (request) {
   if (!requestIncludesCredentials(request) || !address) {
     return false
   }
+  console.log('Mirage server sees request with session credentials', address)
   return address
 }
-
-const verifySignature = async function (request) {
-  // verify the signature
-  const address = request.params.address
-  const { message, signature } = request.queryParams
-  const postBody = JSON.parse(request.requestBody)
-  const reconstructedMessage = JSON.stringify(postBody)
-  console.log({ message, reconstructedMessage })
-  let validSignature = false
-  if (signature.startsWith('mockSignature')) {
-    console.log('mirage server accepting mockSignature')
-    validSignature = true
-  } else {
-    const skipValidation = !!request.requestHeaders['X-GB-DEV-SKIP-SIGNATURE']
-    if (skipValidation) {
-      console.log('mirage server skipping signature verification')
-      validSignature = true
-    } else {
-      console.log('mirage server verifying signature')
-      validSignature = await verifyMessage({
-        address,
-        message,
-        signature
-      })
-    }
-  }
-  return validSignature
-}
-
-
 
 export function makeServer({ environment = 'development' } = {}) {
   let server = createServer({
@@ -513,14 +483,12 @@ export function makeServer({ environment = 'development' } = {}) {
         return gotchis
       })
 
-      this.post(fixUrl(urls.trainingBattle({ address: ':address', message: ':message', signature: ':signature' })), async (schema, request) => {
+      this.post(fixUrl(urls.trainingBattle()), async (schema, request) => {
         if (mirageConfig.trainingbattle.error) {
           return errorResponse({ message: 'Long error from the server long text long text long text long text long text long text long text long text long text long text.' })
         }
-        const validSignature = await verifySignature(request);
-        if (!validSignature) {
-          return errorResponse({ message: 'Signature verification failed' })
-        }
+        const address = checkCredentials(request)
+        if (!address) { return unauthorizedErrorResponse() }
 
         // generate a battle report
         // We don't have the full gotchi info from the POST, so modify an existing mock battle
@@ -584,7 +552,7 @@ export function makeServer({ environment = 'development' } = {}) {
         timing: mirageConfig.trainingbattle.slow ? 5000 : 1000
       })
 
-      this.post(fixUrl(urls.createTournamentTeam({ tournamentId: ':tournamentId', address: ':address', message: ':message', signature: ':signature' })), async (schema, request) => {
+      this.post(fixUrl(urls.createTournamentTeam(':tournamentId')), async (schema, request) => {
         if (mirageConfig.createTournamentTeam.error) {
           return errorResponse({
             response: {
@@ -593,10 +561,8 @@ export function makeServer({ environment = 'development' } = {}) {
             }
           })
         }
-        const validSignature = await verifySignature(request);
-        if (!validSignature) {
-          return errorResponse({ message: 'Signature verification failed' })
-        }
+        const address = checkCredentials(request)
+        if (!address) { return unauthorizedErrorResponse() }
 
         const submittedTeam = JSON.parse(request.requestBody)
         const teamId = Date.now();
@@ -620,7 +586,7 @@ export function makeServer({ environment = 'development' } = {}) {
         timing: mirageConfig.createTournamentTeam.slow ? 5000 : 1000
       })
 
-      this.put(fixUrl(urls.editTournamentTeam({ tournamentId: ':tournamentId', teamId: ':teamId', address: ':address', message: ':message', signature: ':signature' })), async (schema, request) => {
+      this.put(fixUrl(urls.editTournamentTeam({ tournamentId: ':tournamentId', teamId: ':teamId' })), async (schema, request) => {
         if (mirageConfig.editTournamentTeam.error) {
           return errorResponse({
             response: {
@@ -629,10 +595,9 @@ export function makeServer({ environment = 'development' } = {}) {
             }
           })
         }
-        const validSignature = await verifySignature(request);
-        if (!validSignature) {
-          return errorResponse({ message: 'Signature verification failed' })
-        }
+        const address = checkCredentials(request)
+        if (!address) { return unauthorizedErrorResponse() }
+
         const teamId = request.params.teamId;
         return {
           id: teamId
@@ -641,14 +606,12 @@ export function makeServer({ environment = 'development' } = {}) {
         timing: mirageConfig.editTournamentTeam.slow ? 5000 : 1000
       })
 
-      this.delete(fixUrl(urls.deleteTournamentTeam({ tournamentId: ':tournamentId', teamId: ':teamId', address: ':address', message: ':message', signature: ':signature' })), async (schema, request) => {
+      this.delete(fixUrl(urls.deleteTournamentTeam({ tournamentId: ':tournamentId', teamId: ':teamId' })), async (schema, request) => {
         if (mirageConfig.deleteTournamentTeam.error) {
           return errorResponse({ message: 'Long error from the server long text long text long text long text long text long text long text long text long text long text.' })
         }
-        const validSignature = await verifySignature(request);
-        if (!validSignature) {
-          return errorResponse({ message: 'Signature verification failed' })
-        }
+        const address = checkCredentials(request)
+        if (!address) { return unauthorizedErrorResponse() }
 
         // remove team from the list of tournament teams so we can see the list is refetched
         const tournament = tournamentsById[request.params.tournamentId];

@@ -1,10 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { useAccountStore } from './accountStore'
 import useStatus from '../utils/useStatus'
 import battlesService from './battlesService';
-
-const accountStore = useAccountStore()
 
 export const useTrainingBattlesStore = defineStore('trainingBattles', () => {
   const battlesByAddress = ref({});
@@ -92,13 +89,10 @@ export const useBattleAnalyserStore = function (id) {
   })
 }
 
-export const submitTrainingBattle = async function ({ team, trainingTeam, address, message, signature }) {
+export const submitTrainingBattle = async function ({ team, trainingTeam, address }) {
   const result = await battlesService.submitTrainingBattle({
     team,
-    trainingTeam,
-    address,
-    message,
-    signature
+    trainingTeam
   })
   if (!result.id) {
     throw new Error('Expected battle id after submitting training battle')
@@ -109,16 +103,4 @@ export const submitTrainingBattle = async function ({ team, trainingTeam, addres
     useTrainingBattlesStore().addBattle(address, result.id)
   }
   return result.id
-}
-
-export const signTrainingBattle = async function({ team, trainingTeam }) {
-  const message = JSON.stringify({ team, trainingTeam })
-  const signature = await accountStore.signMessage({
-    message
-  })
-  return {
-    address: accountStore.address,
-    message,
-    signature
-  }
 }

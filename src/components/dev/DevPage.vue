@@ -12,10 +12,6 @@
   function shutdownMirage () {
     window.mirageServer.shutdown()
   }
-
-  function skipServerSignatureChecks () {
-    window.skipDevServerSignatureCheck = true
-  }
 </script>
 
 <template>
@@ -46,14 +42,6 @@
         >
           Set API to https://gotchi-battler-backend-76ns3tfg6q-ew.a.run.app
         </button>
-        <br>
-        <button
-          type="button"
-          @click="skipServerSignatureChecks"
-        >
-          Skip server-side signature checks
-        </button>
-        Click this button to tell the server (both real/Mirage) to allow any submitted signature.
       </div>
       <div>
         To test with a hardcoded address, click one below, and then Connect.

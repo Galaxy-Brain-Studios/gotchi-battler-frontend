@@ -156,7 +156,6 @@ export const useAccountStore = defineStore('account', () => {
     myGotchis,
     fetchMyGotchis,
     myGotchisFetchStatus,
-    signMessage,
     signedSession,
     signIntoSession
   }

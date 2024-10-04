@@ -2,7 +2,9 @@
   import { ref, computed, watch } from 'vue'
   import { storeToRefs } from 'pinia'
   import { useAccountStore } from '../../data/accountStore'
+  import useShop from '../../data/useShop'
   import useInventoryItemCount from '../../data/useInventoryItemCount'
+  import useStatus from '../../utils/useStatus'
   import SiteDialog from '../common/SiteDialog.vue'
   import SiteIcon from '../common/SiteIcon.vue'
   import SiteButtonPrimary from '../common/SiteButtonPrimary.vue'
@@ -42,6 +44,13 @@
     return true
   })
 
+  const { status: buyStatus, setLoading: setBuying, reset: resetBuying } = useStatus()
+  // If address or item changes, abort any in-progress buy
+  watch(
+    () => [connectedAddress.value, props.item?.id],
+    resetBuying
+  )
+
   const canBuy = computed(() => {
     if (!isConnected.value) { return false }
     if (!props.item?.id) { return false }
@@ -54,14 +63,61 @@
 
   const canStartBuy = computed(() => {
     if (!canBuy.value) { return false }
+    if (buyStatus.value.loading) { return false }
     if (totalBuyCost.value > 0) { return true }
     return false
   })
 
-  const startBuy = function () {
+  const { getGhstAllowance, approveGhst } = useShop()
+
+  const GHST_MULTIPLIER = 1e18
+  const GHST_MULTIPLIER_BIGINT = BigInt(GHST_MULTIPLIER)
+
+  const hasGhstAllowance = async function () {
+    console.log("Check GHST allowance is at least", totalBuyCost.value)
+    const allowance = await getGhstAllowance(connectedAddress.value)
+    console.log("Got allowance", allowance, "which rounds down to ", allowance / GHST_MULTIPLIER_BIGINT)
+    const bigintTotalBuyCost = BigInt(totalBuyCost.value * GHST_MULTIPLIER)
+    if (allowance < bigintTotalBuyCost) {
+      return false
+    }
+    return true
+  }
+
+  const startBuy = async function () {
     if (!canStartBuy.value) { return }
     console.log("TODO buy", { id: props.item.id, number: buyInteger.value, totalCostGhst: totalBuyCost.value })
+    const [isStale, setFinishedBuying, setError] = setBuying()
+    try {
+      let allowanceOk = await hasGhstAllowance()
+      if (!allowanceOk) {
+        try {
+          await approveGhst(BigInt(totalBuyCost.value * GHST_MULTIPLIER))
+        } catch (e) {
+          console.error({ e })
+          let message = e.shortMessage || e.message
+          if (message.includes('does not match the target chain')) {
+            message = "Please connect to Polygon"
+          }
+          throw new Error('Error approving GHST: ' + message)
+        }
+        if (isStale()) { return }
+        // The user might have changed the amount approved, so check the allowance again.
+        allowanceOk = await hasGhstAllowance()
+        if (!allowanceOk) {
+          throw new Error('Not enough GHST allowance.')
+        }
+      }
+      console.log("TODO buy item", { id: props.item.id, number: buyInteger.value, totalCostGhst: totalBuyCost.value })
+      if (isStale()) { return }
+      setFinishedBuying()
+      console.log("TODO refresh item count", props.item.id)
+    } catch (e) {
+      setError(e.message || 'Error buying item')
+    }
   }
+
+
   const escapeUrl = url => CSS.escape(url)
 </script>
 
@@ -136,6 +192,7 @@
               type="number"
               min="1"
               step="1"
+              :readonly="buyStatus.loading"
             />
           </div>
         </div>
@@ -153,6 +210,12 @@
             Buy for {{ totalBuyCost }} GHST
           </SiteButtonPrimary>
         </template>
+        <SiteError
+          v-if="buyStatus.error"
+          small
+        >
+          {{ buyStatus.errorMessage }}
+        </SiteError>
       </div>
     </div>
   </SiteDialog>    
@@ -285,6 +348,7 @@
   .item-dialog__buy-actions {
     display: grid;
     place-content: center;
+    gap: 1rem;
   }
 
 </style>

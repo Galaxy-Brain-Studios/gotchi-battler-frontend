@@ -416,7 +416,7 @@
       :canDelete="canDeleteTeam"
       :canReplace="canReplaceTeam"
       :canEdit="canEditTeam"
-      @deletedTeam="$emit('deletedTeam')"
+      @deletedTeam="$emit('deletedTeam', $event)"
       @requestReplaceTeam="requestReplaceTeam"
       @requestEditTeam="requestEditTeam"
     />

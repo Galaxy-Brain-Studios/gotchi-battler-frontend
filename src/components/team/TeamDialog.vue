@@ -76,7 +76,7 @@
       // To avoid disrupting activity, emit events that will only trigger refresh if this dialog is still open.
       // TODO always alert to notify user that deletion has happened and they can manually refresh the page to update the teams list.
       emit('update:isOpen', false)
-      emit('deletedTeam')
+      emit('deletedTeam', props.id)
     } catch (e) {
       if (isStale()) { return }
       console.error('Error deleting team', e)

@@ -12,6 +12,13 @@
   function shutdownMirage () {
     window.mirageServer.shutdown()
   }
+
+  function enableMockContract () {
+    window.mockContractConfig.enable = true
+  }
+  function disableMockContract () {
+    window.mockContractConfig.enable = false
+  }
 </script>
 
 <template>
@@ -41,6 +48,22 @@
           @click="setBaseUrl('https://gotchi-battler-backend-76ns3tfg6q-ew.a.run.app')"
         >
           Set API to https://gotchi-battler-backend-76ns3tfg6q-ew.a.run.app
+        </button>
+      </div>
+      <div>
+        By default this site does NOT submit real contract reads/writes, it uses a simple simulated interaction.
+        <br>Enable/disable real contract calls (polygon RPC) below:
+        <br><button
+          type="button"
+          @click="enableMockContract"
+        >
+          Use mock contract calls
+        </button> (optionally configure behaviour on <code>window.mockContractConfig</code>)
+        <br><button
+          type="button"
+          @click="disableMockContract"
+        >
+          Use real RPC contract calls
         </button>
       </div>
       <div>

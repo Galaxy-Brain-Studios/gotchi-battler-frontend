@@ -3,6 +3,7 @@
   import { storeToRefs } from 'pinia'
   import { useAccountStore } from '../../data/accountStore'
   import useShop from '../../data/useShop'
+  import { GHST_MULTIPLIER, GHST_MULTIPLIER_BIGINT } from '../../data/erc20Constants'
   import useInventoryItemCount from '../../data/useInventoryItemCount'
   import useStatus from '../../utils/useStatus'
   import SiteDialog from '../common/SiteDialog.vue'
@@ -70,15 +71,12 @@
 
   const { getGhstAllowance, approveGhst } = useShop()
 
-  const GHST_MULTIPLIER = 1e18
-  const GHST_MULTIPLIER_BIGINT = BigInt(GHST_MULTIPLIER)
-
   const hasGhstAllowance = async function () {
     console.log("Check GHST allowance is at least", totalBuyCost.value)
-    const allowance = await getGhstAllowance(connectedAddress.value)
-    console.log("Got allowance", allowance, "which rounds down to ", allowance / GHST_MULTIPLIER_BIGINT)
+    const bigintAllowance = await getGhstAllowance(connectedAddress.value)
+    console.log("Got allowance", bigintAllowance, "which rounds down to ", bigintAllowance / GHST_MULTIPLIER_BIGINT)
     const bigintTotalBuyCost = BigInt(totalBuyCost.value * GHST_MULTIPLIER)
-    if (allowance < bigintTotalBuyCost) {
+    if (bigintAllowance < bigintTotalBuyCost) {
       return false
     }
     return true
@@ -94,12 +92,7 @@
         try {
           await approveGhst(BigInt(totalBuyCost.value * GHST_MULTIPLIER))
         } catch (e) {
-          console.error({ e })
-          let message = e.shortMessage || e.message
-          if (message.includes('does not match the target chain')) {
-            message = "Please connect to Polygon"
-          }
-          throw new Error('Error approving GHST: ' + message)
+          throw new Error('Error approving GHST: ' + e.message)
         }
         if (isStale()) { return }
         // The user might have changed the amount approved, so check the allowance again.

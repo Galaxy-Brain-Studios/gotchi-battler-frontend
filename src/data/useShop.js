@@ -4,6 +4,8 @@ import useStatus from '../utils/useStatus'
 import shopService from './shopService'
 import erc20Contract from './erc20Contract'
 import erc20ContractMock from './erc20ContractMock'
+import shopContract from './shopContract'
+import shopContractMock from './shopContractMock'
 import { GHST_TOKEN_ADDRESS } from './erc20Constants'
 
 const getErc20Contract = function () {
@@ -11,6 +13,13 @@ const getErc20Contract = function () {
     return window.mockContractConfig?.enable ? erc20ContractMock : erc20Contract
   } else {
     return erc20Contract
+  }
+}
+const getShopContract = function () {
+  if (DEV_MODE) {
+    return window.mockContractConfig?.enable ? shopContractMock : shopContract
+  } else {
+    return shopContract
   }
 }
 
@@ -55,6 +64,13 @@ const approveGhst = async function (amountBigint) {
   })
 }
 
+const buyItem = async function ({ itemId, amount }) {
+  return getShopContract().buyItem({
+    itemId,
+    amount
+  })
+}
+
 export default function useShop () {
 
   if (!fetchItemsStatus.value.loaded && !fetchItemsStatus.value.loading) {
@@ -65,6 +81,7 @@ export default function useShop () {
     items, 
     fetchItemsStatus,
     getGhstAllowance,
-    approveGhst
+    approveGhst,
+    buyItem
   }
 }

@@ -781,17 +781,40 @@ export function makeServer({ environment = 'development' } = {}) {
         timing: mirageConfig.profileInventory.slow ? 3000 : 100
       })
 
+      const processPendingStoreBuys = function () {
+        // the shopContractMock stores the simulated contract buys in its config object
+        // the real server would process these blockchain events and update its database
+        const pendingBuys = window.mockContractConfig?.buyItem?.pendingBuys
+        if (pendingBuys) {
+          for (let { address, itemId, amount } of pendingBuys) {
+            const addressLc = address.toLowerCase()
+            itemId = `${itemId}`
+            if (!profileInventoryByAddress[addressLc]) {
+              profileInventoryByAddress[address.toLowerCase()] = {}
+            }
+            const inventory = profileInventoryByAddress[addressLc]
+            if (!inventory[itemId]) {
+              inventory[itemId] = 0
+            }
+            inventory[itemId] += amount
+          }
+          window.mockContractConfig.buyItem.pendingBuys = []
+        }
+      }
+
       this.get(fixUrl(urls.profileInventoryItemCount({ address: ':address', itemId: ':itemId' })), (schema, request) => {
         if (mirageConfig.profileInventoryItemCount.error) {
           return errorResponse()
         }
+        processPendingStoreBuys()
         const { address, itemId } = request.params
-        const inventory = (profileInventoryByAddress[address.toLowerCase()] || []);
+        const inventory = (profileInventoryByAddress[address.toLowerCase()] || {});
         let count = 0
         if (inventory && inventory[`${itemId}`]) {
           count = inventory[`${itemId}`]
         }
-        return { count };
+        const blockNumber = Date.now() // simulate last-synced blockNumber
+        return { count, blockNumber };
       }, {
         timing: mirageConfig.profileInventoryItemCount.slow ? 3000 : 100
       })

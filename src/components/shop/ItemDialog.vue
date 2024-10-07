@@ -9,7 +9,6 @@
   import SiteDialog from '../common/SiteDialog.vue'
   import SiteIcon from '../common/SiteIcon.vue'
   import SiteButtonPrimary from '../common/SiteButtonPrimary.vue'
-  import SiteButton from '../common/SiteButton.vue'
   import SiteError from '../common/SiteError.vue'
   import SiteConnectWallet from '../site/SiteConnectWallet.vue'
 
@@ -29,7 +28,7 @@
   const store = useAccountStore()
   const { isConnected, address: connectedAddress } = storeToRefs(store)
 
-  const { inventoryItemCount, fetchInventoryItemCountStatus, fetchInventoryItemCount } = useInventoryItemCount()
+  const { inventoryItemCount, fetchInventoryItemCountStatus, fetchInventoryItemCount, refreshCountToBlock, refreshInventoryItemCountStatus } = useInventoryItemCount()
   watch(
     () => [connectedAddress.value, props.item?.id],
     ([address, itemId]) => {
@@ -69,7 +68,7 @@
     return false
   })
 
-  const { getGhstAllowance, approveGhst } = useShop()
+  const { getGhstAllowance, approveGhst, buyItem } = useShop()
 
   const hasGhstAllowance = async function () {
     console.log("Check GHST allowance is at least", totalBuyCost.value)
@@ -84,7 +83,6 @@
 
   const startBuy = async function () {
     if (!canStartBuy.value) { return }
-    console.log("TODO buy", { id: props.item.id, number: buyInteger.value, totalCostGhst: totalBuyCost.value })
     const [isStale, setFinishedBuying, setError] = setBuying()
     try {
       let allowanceOk = await hasGhstAllowance()
@@ -101,10 +99,16 @@
           throw new Error('Not enough GHST allowance.')
         }
       }
-      console.log("TODO buy item", { id: props.item.id, number: buyInteger.value, totalCostGhst: totalBuyCost.value })
+      let blockNumber = 0
+      try {
+        const result = await buyItem({ itemId: props.item.id, amount: buyInteger.value })
+        blockNumber = result.blockNumber
+      } catch (e) {
+        throw new Error('Error buying item: ' + e.message)
+      }
       if (isStale()) { return }
+      refreshCountToBlock(blockNumber)
       setFinishedBuying()
-      console.log("TODO refresh item count", props.item.id)
     } catch (e) {
       setError(e.message || 'Error buying item')
     }
@@ -150,6 +154,15 @@
           <template v-else>
             You own: <b>{{ inventoryItemCount }}x</b>
           </template>
+          <template v-if="refreshInventoryItemCountStatus.loading">
+            <i style="margin-left: 1rem">Updating...</i>
+          </template>
+          <SiteError
+            v-if="refreshInventoryItemCountStatus.error"
+            small
+          >
+            {{ refreshInventoryItemCountStatus.errorMessage }}
+          </SiteError>
         </div>
         <SiteError
           v-if="fetchInventoryItemCountStatus.error"

@@ -1,4 +1,4 @@
-import { createConfig, reconnect, connect, disconnect, watchAccount, signMessage, readContract, writeContract, waitForTransactionReceipt } from '@wagmi/core'
+import { createConfig, reconnect, connect, disconnect, watchAccount, signMessage, readContract, simulateContract, writeContract, waitForTransactionReceipt } from '@wagmi/core'
 import { http } from 'viem'
 import { polygon } from '@wagmi/core/chains'
 import { injected } from '@wagmi/connectors'
@@ -55,10 +55,11 @@ const wagmiReadContract = async function (options) {
 
 const submitTx = async function(options) {
   try {
-    const hash = await writeContract(config, {
+    const { request } = await simulateContract(config, {
       ...options,
       chainId: polygon.id
     })
+    const hash = await writeContract(config, request)
     console.log('tx submitted', hash)
     const receipt = await waitForTransactionReceipt(config, { hash })
     console.log('tx receipt', receipt) // { transactionHash, status: 'success', blockNumber, blockHash }

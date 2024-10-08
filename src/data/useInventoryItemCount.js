@@ -1,81 +1,70 @@
-import { ref, watch, nextTick } from 'vue'
+import { ref, computed } from 'vue'
 import useStatus from '../utils/useStatus'
 import profileService from './profileService'
 
-export default function useInventoryItemCount () {
-  const fetchedAddress = ref(null)
-  const fetchedItemId = ref(null)
-  const fetchedBlock = ref(null)
+const MAX_ATTEMPTS = 10
+const delay = millis => new Promise(resolve => setTimeout(resolve, millis));
+
+/* Assume that the signed-in user and the itemId will remain the same */
+export default function useInventoryItemCount ({ itemId, blockNumber }) {
+  const requiredBlockNumber = ref(blockNumber)
+  const fetchedBlockNumber = ref(null)
   const inventoryItemCount = ref(null)
   const { status: fetchInventoryItemCountStatus, setLoading: setCountLoading, reset: resetCountLoading } = useStatus()
 
-  const fetchInventoryItemCount = async function ({ address, itemId }) {
-    fetchedAddress.value = address
-    fetchedItemId.value = itemId
-    fetchedBlock.value = null
-    inventoryItemCount.value = null
-    await nextTick() // changing fetchedAddress/fetchedItemId will reset status objects
+  const fetchedBlockNumberIsOk = computed(() => {
+    // we must have a fetched block number
+    if (!(fetchedBlockNumber.value > 0)) { return false }
+    // if there isn't a valid required block number, we're good
+    if (!requiredBlockNumber.value || requiredBlockNumber.value < 0) { return true }
+    // the fetched block number must be at or after the required block number
+    return fetchedBlockNumber.value >= requiredBlockNumber.value
+  })
+
+  const fetchInventoryItemCount = async function () {
+    if (fetchedBlockNumberIsOk.value) { return }
+
     const [isStale, setLoaded, setError] = setCountLoading()
-    try {
-      const result = await profileService.fetchProfileInventoryItemCount(itemId)
-      if (isStale()) { return; }
-      inventoryItemCount.value = result.count
-      fetchedBlock.value = result.blockNumber
-      setLoaded()
-    } catch (e) {
-      console.error('Error fetching profile inventory item', e)
-      setError(e.message)
-    }
-  }
-
-  const { status: refreshInventoryItemCountStatus, setLoading: setRefreshing, reset: resetRefreshing } = useStatus()
-  const refreshCountToBlock = async function (blockNumber) {
-    if (!fetchedAddress.value || !fetchedItemId.value) { return }
-    if (fetchedBlock.value >= blockNumber) { return }
-
-    const itemId = fetchedItemId.value
-    const [isStale, setLoaded, setError] = setRefreshing()
-    const maxAttempts = 10
     let attempt = 0
-    const delay = millis => new Promise(resolve => setTimeout(resolve, millis));
-    while (fetchedBlock.value && (fetchedBlock.value < blockNumber) && attempt < maxAttempts) {
+    while (!fetchedBlockNumberIsOk.value && attempt < MAX_ATTEMPTS) {
       try {
+        if (attempt > 0) {
+          // pause between polls
+          await delay(1000)
+          if (isStale()) { return }
+        }
         attempt++
         const result = await profileService.fetchProfileInventoryItemCount(itemId)
         if (isStale()) { return }
         inventoryItemCount.value = result.count
-        fetchedBlock.value = result.blockNumber
-        // pause between polls
-        await delay(1000)
-        if (isStale()) { return }
+        fetchedBlockNumber.value = result.blockNumber
       } catch (e) {
+        if (isStale()) { return }
         console.error(e)
-        setError('Error refreshing item count')
+        setError('Error getting item count')
         return
       }
     }
-    if (attempt >= maxAttempts) {
-      console.error('Too many attempts refreshing the item count, stopping.')
+    if (attempt >= MAX_ATTEMPTS) {
+      console.error('Too many attempts getting the item count, stopping.')
       setError('Item count may be slow to sync, try refreshing the page.')
     } else {
-      console.log('refreshed count')
       setLoaded()
     }
   }
 
-  watch(
-    () => [fetchedAddress.value, fetchedItemId.value],
-    () => {
-      resetCountLoading()
-      resetRefreshing()
-    }
-  )
+  fetchInventoryItemCount()
+
+
+  const setBlockNumber = function (blockNumber) {
+    requiredBlockNumber.value = blockNumber
+    fetchInventoryItemCount()
+  }
 
   return {
     inventoryItemCount,
-    fetchInventoryItemCount,
     fetchInventoryItemCountStatus,
-    refreshCountToBlock,
-    refreshInventoryItemCountStatus
+    setBlockNumber,
+    resetCountLoading
   }
 }

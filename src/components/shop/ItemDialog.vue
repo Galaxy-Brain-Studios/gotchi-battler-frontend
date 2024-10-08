@@ -4,13 +4,13 @@
   import { useAccountStore } from '../../data/accountStore'
   import useShop from '../../data/useShop'
   import { GHST_MULTIPLIER, GHST_MULTIPLIER_BIGINT } from '../../data/erc20Constants'
-  import useInventoryItemCount from '../../data/useInventoryItemCount'
   import useStatus from '../../utils/useStatus'
   import SiteDialog from '../common/SiteDialog.vue'
   import SiteIcon from '../common/SiteIcon.vue'
   import SiteButtonPrimary from '../common/SiteButtonPrimary.vue'
   import SiteError from '../common/SiteError.vue'
   import SiteConnectWallet from '../site/SiteConnectWallet.vue'
+  import ItemCount from './ItemCount.vue'
 
   defineEmits(['update:isOpen'])
 
@@ -28,27 +28,16 @@
   const store = useAccountStore()
   const { isConnected, address: connectedAddress } = storeToRefs(store)
 
-  const { inventoryItemCount, fetchInventoryItemCountStatus, fetchInventoryItemCount, refreshCountToBlock, refreshInventoryItemCountStatus } = useInventoryItemCount()
-  watch(
-    () => [connectedAddress.value, props.item?.id],
-    ([address, itemId]) => {
-      if (itemId && address) {
-        fetchInventoryItemCount({ address, itemId })
-      }
-    },
-    { immediate: true }
-  )
-  const hasInventoryItemCount = computed(() => {
-    if (!connectedAddress.value) { return false }
-    if (!fetchInventoryItemCountStatus.value.loaded) { return false }
-    return true
-  })
-
   const { status: buyStatus, setLoading: setBuying, reset: resetBuying } = useStatus()
-  // If address or item changes, abort any in-progress buy
+  const boughtAtBlockNumber = ref(null)
+
+  // If address or item changes, abort any in-progress buy and remove old buy record
   watch(
     () => [connectedAddress.value, props.item?.id],
-    resetBuying
+    () => {
+      resetBuying()
+      boughtAtBlockNumber.value = null
+    }
   )
 
   const canBuy = computed(() => {
@@ -107,7 +96,7 @@
         throw new Error('Error buying item: ' + e.message)
       }
       if (isStale()) { return }
-      refreshCountToBlock(blockNumber)
+      boughtAtBlockNumber.value = blockNumber
       setFinishedBuying()
     } catch (e) {
       setError(e.message || 'Error buying item')
@@ -142,34 +131,11 @@
         <div class="item-dialog__description">
           {{ item.description }}
         </div>
-        <div
+        <ItemCount
+          :itemId="item.id"
+          :blockNumber="boughtAtBlockNumber"
           class="item-dialog__own-count"
-          :class="{
-            'item-dialog__own-count--na': !hasInventoryItemCount
-          }"
-        >
-          <template v-if="inventoryItemCount === 0">
-            You do not own any of this item.
-          </template>
-          <template v-else>
-            You own: <b>{{ inventoryItemCount }}x</b>
-          </template>
-          <template v-if="refreshInventoryItemCountStatus.loading">
-            <i style="margin-left: 1rem">Updating...</i>
-          </template>
-          <SiteError
-            v-if="refreshInventoryItemCountStatus.error"
-            small
-          >
-            {{ refreshInventoryItemCountStatus.errorMessage }}
-          </SiteError>
-        </div>
-        <SiteError
-          v-if="fetchInventoryItemCountStatus.error"
-          small
-        >
-          {{ fetchInventoryItemCountStatus.errorMessage }}
-        </SiteError>
+        />
       </div>
       <div class="item-dialog__buy-selection">
         <div class="item-dialog__price">
@@ -304,15 +270,9 @@
     margin-top: 0.5rem;
     font-size: 1rem;
   }
-  .item-dialog__own-count--na {
-    visibility: hidden; /* when count isn't available yet, preserve space to avoid layout jumping */
-  }
+
   .item-dialog__own-count {
     margin-top: 0.5rem;
-    font-size: 1rem;
-  }
-  .item-dialog__own-count b {
-    letter-spacing: 0.03rem;
   }
 
   .item-dialog__buy-selection {

@@ -1,8 +1,8 @@
 <script setup>
-  import { ref, computed } from 'vue'
-  import { storeToRefs } from 'pinia'
-  import { useAccountStore } from '../../data/accountStore'
+  import { ref, computed, watch } from 'vue'
+  import { useRouter } from 'vue-router'
   import useProfile from '@/data/useProfile'
+  import ProfileSignIn from './ProfileSignIn.vue'
   import SiteTextField from '../common/SiteTextField.vue'
   import SavedTeamFormation from '../team/SavedTeamFormation.vue'
   import ProfileTeamDelete from './ProfileTeamDelete.vue'
@@ -14,8 +14,30 @@
     }
   })  
 
-  const { fetchTeams, teams, fetchTeamsStatus } = useProfile(props.address)
-  fetchTeams()
+  const router = useRouter()
+
+  const { isConnectedProfile, isConnectedSignedInProfile, fetchTeams, teams, fetchTeamsStatus } = useProfile(props.address)
+
+  watch(
+    () => isConnectedProfile.value,
+    () => {
+      if (!isConnectedProfile.value) {
+        router.push({ name: 'profile-address', params: { address: props.address } })
+      }
+    },
+    { immediate: true }
+  )
+
+  watch(
+    () => isConnectedSignedInProfile.value,
+    () => {
+      if (isConnectedSignedInProfile.value && !fetchTeamsStatus.loaded && !fetchTeamsStatus.loading) {
+        fetchTeams()
+      }
+    },
+    { immediate: true }
+  )
+
 
   const query = ref('')
 
@@ -32,87 +54,89 @@
   const teamsToDisplay = computed(() => {
     return filteredTeams.value
   })
-
-  const store = useAccountStore()
-  const { isConnected, address: connectedAddress } = storeToRefs(store)
-
-  const isConnectedProfile = computed(() => props.address && isConnected.value && connectedAddress.value && connectedAddress.value.toLowerCase() === props.address.toLowerCase())
 </script>
 
 <template>
   <div>
-    <div
-      v-if="fetchTeamsStatus.loading"
-      class="profile-teams__loading"
+    <ProfileSignIn
+      v-if="!isConnectedSignedInProfile"
     >
-      Loading...
-    </div>
-    <div
-      v-if="fetchTeamsStatus.error"
-      class="profile-teams__error"
-    >
-      {{ fetchTeamsStatus.errorMessage }}
-    </div>
-    <div
-      v-else-if="fetchTeamsStatus.loaded"
-      class="profile-teams__layout"
-    >
-      <div class="profile-teams__header">
-        <div class="profile-teams__count">
-          {{ teamsToDisplay.length }}
-          team{{ teamsToDisplay.length === 1 ? '' : 's' }}
-        </div>
-        <div class="profile-teams__search">
-          <SiteTextField
-            v-model="query"
-            search
-            subtle
-            placeholder="Search team"
-            class="profile-teams__search-field"
-          />
-        </div>
+      to view your saved teams
+    </ProfileSignIn>
+    <template v-else>
+      <div
+        v-if="fetchTeamsStatus.loading"
+        class="profile-teams__loading"
+      >
+        Loading...
       </div>
       <div
-        v-if="!teamsToDisplay.length"
-        class="profile-teams__empty"
+        v-if="fetchTeamsStatus.error"
+        class="profile-teams__error"
       >
-        No teams found.
+        {{ fetchTeamsStatus.errorMessage }}
       </div>
-      <ol
-        v-else
-        class="list-reset profile-teams__list"
+      <div
+        v-else-if="fetchTeamsStatus.loaded"
+        class="profile-teams__layout"
       >
-        <li
-          v-for="team in teamsToDisplay"
-          :key="team.id"
-          class="profile-teams__team"
+        <div class="profile-teams__header">
+          <div class="profile-teams__count">
+            {{ teamsToDisplay.length }}
+            team{{ teamsToDisplay.length === 1 ? '' : 's' }}
+          </div>
+          <div class="profile-teams__search">
+            <SiteTextField
+              v-model="query"
+              search
+              subtle
+              placeholder="Search team"
+              class="profile-teams__search-field"
+            />
+          </div>
+        </div>
+        <div
+          v-if="!teamsToDisplay.length"
+          class="profile-teams__empty"
         >
-          <div class="profile-teams__team__details">
-            <div class="profile-teams__team__name word-break">
-              {{ team.name }}
-            </div>
-            <div class="profile-teams__team__brs">
-              Total: {{ team.totalBrs }} BRS
-            </div>
-          </div>
-          <div class="profile-teams__team__formation">
-            <SavedTeamFormation
-              :team="team"
-            />
-          </div>
-          <div
-            v-if="isConnectedProfile"
-            class="profile-teams__team__manage"
+          No teams found.
+        </div>
+        <ol
+          v-else
+          class="list-reset profile-teams__list"
+        >
+          <li
+            v-for="team in teamsToDisplay"
+            :key="team.id"
+            class="profile-teams__team"
           >
-            <ProfileTeamDelete
-              :id="team.id"
-              :name="team.name"
-              @deleted="fetchTeams"
-            />
-          </div>
-        </li>
-      </ol>
-    </div>
+            <div class="profile-teams__team__details">
+              <div class="profile-teams__team__name word-break">
+                {{ team.name }}
+              </div>
+              <div class="profile-teams__team__brs">
+                Total: {{ team.totalBrs }} BRS
+              </div>
+            </div>
+            <div class="profile-teams__team__formation">
+              <SavedTeamFormation
+                :team="team"
+              />
+            </div>
+            <div
+              v-if="isConnectedProfile"
+              class="profile-teams__team__manage"
+            >
+              <ProfileTeamDelete
+                :id="team.id"
+                :name="team.name"
+                @deleted="fetchTeams"
+              />
+            </div>
+          </li>
+        </ol>
+      </div>
+    </template>
   </div>
 </template>
 

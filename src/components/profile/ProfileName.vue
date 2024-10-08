@@ -1,7 +1,6 @@
 <script setup>
-  import { ref, computed, watch } from 'vue'
-  import { storeToRefs } from 'pinia'
-  import { useAccountStore } from '../../data/accountStore'
+  import { ref, watch } from 'vue'
+  import useProfile from '../../data/useProfile'
   import profileService from '../../data/profileService'
   import useStatus from '../../utils/useStatus'
   import SiteButtonIcon from '../common/SiteButtonIcon.vue'
@@ -10,9 +9,6 @@
   import SiteError from '../common/SiteError.vue'
 
   const emit = defineEmits(['saved'])
-
-  const store = useAccountStore()
-  const { isConnected, address: connectedAddress } = storeToRefs(store)
 
   const props = defineProps({
     address: {
@@ -25,7 +21,7 @@
     }
   })
 
-  const isConnectedProfile = computed(() => props.address && isConnected.value && connectedAddress.value && connectedAddress.value.toLowerCase() === props.address.toLowerCase())
+  const { isConnectedProfile } = useProfile(props.address)
 
   const isEditMode = ref(false)
   const nameInput = ref('')

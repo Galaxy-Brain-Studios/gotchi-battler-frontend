@@ -733,11 +733,13 @@ export function makeServer({ environment = 'development' } = {}) {
         timing: mirageConfig.profile.slow ? 5000 : 100
       })
 
-      this.get(fixUrl(urls.profileTeams(':address')), (schema, request) => {
+      this.get(fixUrl(urls.profileTeams()), (schema, request) => {
         if (mirageConfig.profileTeams.error) {
           return errorResponse()
         }
-        const address = request.params.address
+        const address = checkCredentials(request)
+        if (!address) { return unauthorizedErrorResponse() }
+
         const teams = (profileTeamsByAddress[address.toLowerCase()] || []).map(team => ({
           id: team.id,
           name: team.name,
@@ -767,11 +769,13 @@ export function makeServer({ environment = 'development' } = {}) {
         timing: mirageConfig.profileTeams.slow ? 3000 : 100
       })
 
-      this.get(fixUrl(urls.profileInventory(':address')), (schema, request) => {
+      this.get(fixUrl(urls.profileInventory()), (schema, request) => {
         if (mirageConfig.profileInventory.error) {
           return errorResponse()
         }
-        const address = request.params.address
+        const address = checkCredentials(request)
+        if (!address) { return unauthorizedErrorResponse() }
+
         const inventoryCounts = (profileInventoryByAddress[address.toLowerCase()] || {});
         return Object.entries(inventoryCounts).map(([itemId, count]) => ({
           ...INVENTORY_ITEMS_BY_ID[itemId],
@@ -802,12 +806,17 @@ export function makeServer({ environment = 'development' } = {}) {
         }
       }
 
-      this.get(fixUrl(urls.profileInventoryItemCount({ address: ':address', itemId: ':itemId' })), (schema, request) => {
+      this.get(fixUrl(urls.profileInventoryItemCount(':itemId')), (schema, request) => {
         if (mirageConfig.profileInventoryItemCount.error) {
           return errorResponse()
         }
+        const address = checkCredentials(request)
+        if (!address) { return unauthorizedErrorResponse() }
+
         processPendingStoreBuys()
-        const { address, itemId } = request.params
+
+        const { itemId } = request.params
+
         const inventory = (profileInventoryByAddress[address.toLowerCase()] || {});
         let count = 0
         if (inventory && inventory[`${itemId}`]) {

@@ -11,18 +11,18 @@ export default {
       throw new Error(e.json?.error || 'Error fetching profile')
     }
   },
-  async fetchProfileTeams (address) {
+  async fetchProfileTeams () {
     try {
-      const teams = await api.get(urls.profileTeams(address))
+      const teams = await apiWithCredentials.get(urls.profileTeams())
       return teams
     } catch (e) {
       console.error('fetchProfileTeams error', e)
       throw new Error(e.json?.error || 'Error fetching profile teams')
     }
   },
-  async fetchProfileInventory (address) {
+  async fetchProfileInventory () {
     try {
-      const inventory = await api.get(urls.profileInventory(address))
+      const inventory = await apiWithCredentials.get(urls.profileInventory())
       return inventory.map(item => ({
         ...item,
         nameSortable: item.nameSortable || item.name
@@ -32,9 +32,9 @@ export default {
       throw new Error(e.json?.error || 'Error fetching profile inventory')
     }
   },
-  async fetchProfileInventoryItemCount({ address, itemId }) {
+  async fetchProfileInventoryItemCount(itemId) {
     try {
-      const result = await api.get(urls.profileInventoryItemCount({ address, itemId }))
+      const result = await apiWithCredentials.get(urls.profileInventoryItemCount(itemId))
       return result
     } catch (e) {
       console.error('fetchProfileInventoryItemCount error', e)

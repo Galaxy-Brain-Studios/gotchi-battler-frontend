@@ -12,7 +12,7 @@
     }
   })
 
-  const { fetchProfile, profile, fetchProfileStatus, setProfile } = useProfile(props.address)
+  const { isConnectedProfile, fetchProfile, profile, fetchProfileStatus, setProfile } = useProfile(props.address)
   fetchProfile()
 
   const setSavedProfile = function (newProfile) {
@@ -60,24 +60,33 @@
         </div>
       </div>
       <div class="profile-main__nav">
-        <SiteButtonLink
-          :to="{ name: 'profile-teams', params: { address } }"
-          grouped="vertical-start"
-        >
-          Favorite Teams
-        </SiteButtonLink>
-        <SiteButtonLink
-          :to="{ name: 'profile-inventory', params: { address } }"
-          grouped="vertical-middle"
-        >
-          Item Inventory
-        </SiteButtonLink>
-        <SiteButtonLink
-          :to="{ name: 'profile-badges', params: { address } }"
-          grouped="vertical-end"
-        >
-          Badges / Achievements
-        </SiteButtonLink>
+        <template v-if="isConnectedProfile">
+          <SiteButtonLink
+            :to="{ name: 'profile-badges', params: { address } }"
+            grouped="vertical-start"
+          >
+            Badges / Achievements
+          </SiteButtonLink>
+          <SiteButtonLink
+            :to="{ name: 'profile-teams', params: { address } }"
+            grouped="vertical-middle"
+          >
+            Favorite Teams
+          </SiteButtonLink>
+          <SiteButtonLink
+            :to="{ name: 'profile-inventory', params: { address } }"
+            grouped="vertical-end"
+          >
+            Item Inventory
+          </SiteButtonLink>
+        </template>
+        <template v-else>
+          <SiteButtonLink
+            :to="{ name: 'profile-badges', params: { address } }"
+          >
+            Badges / Achievements
+          </SiteButtonLink>
+        </template>
       </div>
       <div class="profile-main__content">
         <router-view />

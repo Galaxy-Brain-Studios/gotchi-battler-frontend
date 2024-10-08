@@ -17,7 +17,7 @@ export default function useInventoryItemCount () {
     await nextTick() // changing fetchedAddress/fetchedItemId will reset status objects
     const [isStale, setLoaded, setError] = setCountLoading()
     try {
-      const result = await profileService.fetchProfileInventoryItemCount({ address, itemId })
+      const result = await profileService.fetchProfileInventoryItemCount(itemId)
       if (isStale()) { return; }
       inventoryItemCount.value = result.count
       fetchedBlock.value = result.blockNumber
@@ -33,7 +33,6 @@ export default function useInventoryItemCount () {
     if (!fetchedAddress.value || !fetchedItemId.value) { return }
     if (fetchedBlock.value >= blockNumber) { return }
 
-    const address = fetchedAddress.value
     const itemId = fetchedItemId.value
     const [isStale, setLoaded, setError] = setRefreshing()
     const maxAttempts = 10
@@ -42,7 +41,7 @@ export default function useInventoryItemCount () {
     while (fetchedBlock.value && (fetchedBlock.value < blockNumber) && attempt < maxAttempts) {
       try {
         attempt++
-        const result = await profileService.fetchProfileInventoryItemCount({ address, itemId })
+        const result = await profileService.fetchProfileInventoryItemCount(itemId)
         if (isStale()) { return }
         inventoryItemCount.value = result.count
         fetchedBlock.value = result.blockNumber

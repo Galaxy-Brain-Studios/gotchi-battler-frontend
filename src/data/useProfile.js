@@ -1,8 +1,16 @@
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useAccountStore } from './accountStore'
 import useStatus from '../utils/useStatus'
 import profileService from './profileService'
 
+const accountStore = useAccountStore()
+const { isConnected, address: connectedAddress, signedSession } = storeToRefs(accountStore)
+
 export default function useProfile (address) {
+  const isConnectedProfile = computed(() => address && isConnected.value && connectedAddress.value && connectedAddress.value.toLowerCase() === address.toLowerCase())
+  const isConnectedSignedInProfile = computed(() => isConnectedProfile.value && signedSession.value)
+
   const profile = ref(null)
   const { status: fetchProfileStatus, setLoading } = useStatus()
 
@@ -30,7 +38,7 @@ export default function useProfile (address) {
     teams.value = null
     const [isStale, setLoaded, setError] = setTeamsLoading()
     try {
-      const result = await profileService.fetchProfileTeams(address)
+      const result = await profileService.fetchProfileTeams()
       if (isStale()) { return; }
       teams.value = result
       setLoaded()
@@ -46,7 +54,7 @@ export default function useProfile (address) {
     inventory.value = null
     const [isStale, setLoaded, setError] = setInventoryLoading()
     try {
-      const result = await profileService.fetchProfileInventory(address)
+      const result = await profileService.fetchProfileInventory()
       if (isStale()) { return; }
       inventory.value = result
       setLoaded()
@@ -57,6 +65,8 @@ export default function useProfile (address) {
   }
 
   return {
+    isConnectedProfile,
+    isConnectedSignedInProfile,
     profile,
     fetchProfile,
     fetchProfileStatus,

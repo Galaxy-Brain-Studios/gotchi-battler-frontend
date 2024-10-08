@@ -77,27 +77,32 @@ export const useAccountStore = defineStore('account', () => {
     return message.prepareMessage();
   }
 
-  const { setLoading: setSigningIn, reset: resetSigningIn } = useStatus()
+  const { status: signingInStatus, setLoading: setSigningIn, reset: resetSigningIn } = useStatus()
   async function signIntoSession () {
     if (!isConnected.value) {
       throw new Error('Wallet is not connected')
     }
 
-    const [isStale, setLoaded] = setSigningIn()
-    // Fetch session nonce
-    const nonce = await sessionService.fetchSessionNonce()
-    if (isStale()) { throw new Error('Login cancelled') }
-    // Ask user to sign message
-    const addressChecksummed = getAddress(address.value)
-    const message = createSiweMessage(addressChecksummed, nonce, 'Sign in with Ethereum to the app.')
-    const signature = await signMessage({ message })
-    if (isStale()) { throw new Error('Login cancelled') }
-    // Submit signed message to server to initialize session
-    await sessionService.login({ message, signature })
-    if (isStale()) { throw new Error('Login cancelled') }
-    // Server session is set up, we're signed in
-    signedSession.value = nonce
-    setLoaded()
+    const [isStale, setLoaded, setError] = setSigningIn()
+    try {
+      // Fetch session nonce
+      const nonce = await sessionService.fetchSessionNonce()
+      if (isStale()) { throw new Error('Login cancelled') }
+      // Ask user to sign message
+      const addressChecksummed = getAddress(address.value)
+      const message = createSiweMessage(addressChecksummed, nonce, 'Sign in with Ethereum to the app.')
+      const signature = await signMessage({ message })
+      if (isStale()) { throw new Error('Login cancelled') }
+      // Submit signed message to server to initialize session
+      await sessionService.login({ message, signature })
+      if (isStale()) { throw new Error('Login cancelled') }
+      // Server session is set up, we're signed in
+      signedSession.value = nonce
+      setLoaded()
+    } catch (e) {
+      setError(e.message)
+      throw e
+    }
   }
 
   function clearData () {
@@ -110,10 +115,10 @@ export const useAccountStore = defineStore('account', () => {
 
   async function disconnect () {
     resetSigningIn() // if a sign-in was in progress, abort it
+    // clear server-side session: no need to wait for the request to complete
+    // always do this, just to be sure, even if we might not know there was a session (e.g. cookies hanging around)
+    sessionService.logout()
     await disconnectWallet()
-    if (signedSession.value) {
-      sessionService.logout() // clear server-side session: no need to wait for the request to complete
-    }
     clearData()
   }
 
@@ -157,7 +162,8 @@ export const useAccountStore = defineStore('account', () => {
     fetchMyGotchis,
     myGotchisFetchStatus,
     signedSession,
-    signIntoSession
+    signIntoSession,
+    signingInStatus
   }
 })
 

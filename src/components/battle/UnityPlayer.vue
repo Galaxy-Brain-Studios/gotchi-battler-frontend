@@ -35,7 +35,6 @@
     }
   })
   const { musicVolume, sfxVolume } = useSettings()
-  console.log('TODO use volume settings', musicVolume.value - 0, sfxVolume.value - 0)
 
   // Unity player requires the canvas element to have an HTML ID
   const canvasId = ref(uniqueId('unity-player-canvas'))
@@ -86,9 +85,14 @@
         setLoaded()
         myUnityInstance.value = unityInstance
 
-        console.log("TODO send volume settings to unity instance", musicVolume.value - 0, sfxVolume.value - 0)
-        // unityInstance.SendMessage('BattleReplayer', 'SetMusicVolume', musicVolume.value - 0)
-        // unityInstance.SendMessage('BattleReplayer', 'SetSfxVolume', sfxVolume.value - 0)
+        const audioSettings = {
+          Audio: {
+            MusicVolume: musicVolume.value - 0,
+            SfxVolume: sfxVolume.value - 0
+          }
+        }
+        // console.log("Sending settings to unity instance", audioSettings)
+        unityInstance.SendMessage('BattleReplayer', 'LoadSettings', audioSettings)
 
         const battleLogAsText = JSON.stringify(props.logs)
         // console.log('show logs', { logs: props.logs, battleLogAsText })

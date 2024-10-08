@@ -106,6 +106,9 @@ export const useAccountStore = defineStore('account', () => {
   }
 
   function clearData () {
+    // clear server-side session: no need to wait for the request to complete
+    // always do this, just to be sure, even if we might not know there was a session (e.g. cookies hanging around)
+    sessionService.logout()
     resetConnected()
     address.value = null
     myGotchis.value = []
@@ -115,9 +118,6 @@ export const useAccountStore = defineStore('account', () => {
 
   async function disconnect () {
     resetSigningIn() // if a sign-in was in progress, abort it
-    // clear server-side session: no need to wait for the request to complete
-    // always do this, just to be sure, even if we might not know there was a session (e.g. cookies hanging around)
-    sessionService.logout()
     await disconnectWallet()
     clearData()
   }

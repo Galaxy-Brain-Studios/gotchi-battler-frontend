@@ -1,5 +1,6 @@
 import { api, apiWithCredentials, apiTextWithCredentials, urls } from './api'
 import { requireLoginSession } from './accountStore'
+import { notifyUpdate } from './useProfileUpdateNotifications'
 
 export default {
   async fetchProfile (address) {
@@ -44,8 +45,9 @@ export default {
 
   saveName: requireLoginSession(async function (name) {
     try {
-      const result = await apiWithCredentials.url(urls.updateProfile()).post({ name })
-      return result;
+      const profile = await apiWithCredentials.url(urls.updateProfile()).post({ name })
+      notifyUpdate(profile)
+      return profile;
     } catch (e) {
       console.error('saveName error', e)
       throw new Error(e.json?.error || 'Error saving name')
@@ -64,6 +66,7 @@ export default {
   deleteImage: requireLoginSession(async function () {
     try {
       const profile = await apiWithCredentials.url(urls.deleteProfileImage()).delete()
+      notifyUpdate(profile)
       return profile;
     } catch (e) {
       console.error('deleteImage error', e)
@@ -82,6 +85,7 @@ export default {
   finishImageUpload: requireLoginSession(async function (filename) {
     try {
       const profile = await apiWithCredentials.url(urls.finishProfileImageUpload()).post({ filename })
+      notifyUpdate(profile)
       return profile;
     } catch (e) {
       console.error('finishImageUpload error', e)

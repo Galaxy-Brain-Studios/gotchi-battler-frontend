@@ -7,6 +7,7 @@
   import SiteIcon from '../common/SiteIcon.vue'
   import SitePopupDropdown from '../common/SitePopupDropdown.vue'
   import SiteLinksMenuWhite from '../common/SiteLinksMenuWhite.vue'
+  import SiteConnectWalletAvatar from './SiteConnectWalletAvatar.vue'
 
   const store = useAccountStore()
   const { isConnected, address, connectStatus } = storeToRefs(store)
@@ -31,6 +32,13 @@
         icon="wallet"
         active
       >
+        <template #icon>
+          <SiteConnectWalletAvatar
+            :key="address"
+            class="connect-wallet__icon"
+            :address="address"
+          />
+        </template>
         <SiteEthAddress
           class="connect-wallet__address"
           :address="address"
@@ -77,5 +85,8 @@
   </template>
 </template>
 
-<style>
+<style scoped>
+  .connect-wallet__icon {
+    flex: none;
+  }
 </style>

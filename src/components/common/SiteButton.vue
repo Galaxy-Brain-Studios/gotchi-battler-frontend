@@ -44,12 +44,13 @@
       }"
       :type="type"
     >
-      <SiteIcon
-        v-if="icon"
-        :name="icon"
-        :size="1.5"
-        class="site-button__icon"
-      />
+      <slot name="icon">
+        <SiteIcon
+          v-if="icon"
+          :name="icon"
+          class="site-button__icon"
+        />
+      </slot>
       <slot />
     </button>
   </div>

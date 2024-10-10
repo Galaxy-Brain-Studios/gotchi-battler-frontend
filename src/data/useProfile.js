@@ -4,10 +4,10 @@ import { useAccountStore } from './accountStore'
 import useStatus from '../utils/useStatus'
 import profileService from './profileService'
 
-const accountStore = useAccountStore()
-const { isConnected, address: connectedAddress, signedSession } = storeToRefs(accountStore)
-
 export default function useProfile (address) {
+  const accountStore = useAccountStore()
+  const { isConnected, address: connectedAddress, signedSession } = storeToRefs(accountStore)
+
   const isConnectedProfile = computed(() => address && isConnected.value && connectedAddress.value && connectedAddress.value.toLowerCase() === address.toLowerCase())
   const isConnectedSignedInProfile = computed(() => isConnectedProfile.value && signedSession.value)
 

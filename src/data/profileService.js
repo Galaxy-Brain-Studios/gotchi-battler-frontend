@@ -44,7 +44,7 @@ export default {
 
   saveName: requireLoginSession(async function (name) {
     try {
-      const result = await apiWithCredentials.url(urls.saveProfileName()).post({ name })
+      const result = await apiWithCredentials.url(urls.updateProfile()).post({ name })
       return result;
     } catch (e) {
       console.error('saveName error', e)

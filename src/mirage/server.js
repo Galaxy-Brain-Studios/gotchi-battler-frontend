@@ -198,7 +198,7 @@ const mirageConfig = window.mirageConfig = {
     error: false,
     slow: false
   },
-  saveProfileName: {
+  updateProfile: {
     error: false,
     slow: false
   },
@@ -832,8 +832,8 @@ export function makeServer({ environment = 'development' } = {}) {
         timing: mirageConfig.profileInventoryItemCount.slow ? 3000 : 100
       })
 
-      this.post(fixUrl(urls.saveProfileName()), async (schema, request) => {
-        if (mirageConfig.saveProfileName.error) {
+      this.post(fixUrl(urls.updateProfile()), async (schema, request) => {
+        if (mirageConfig.updateProfile.error) {
           return errorResponse()
         }
         const address = checkCredentials(request)
@@ -847,7 +847,7 @@ export function makeServer({ environment = 'development' } = {}) {
         profile.name = name
         return profile
       }, {
-        timing: mirageConfig.saveProfileName.slow ? 3000 : 1000
+        timing: mirageConfig.updateProfile.slow ? 3000 : 1000
       })
 
       this.post(fixUrl(urls.finishProfileImageUpload()), async (schema, request) => {

@@ -70,20 +70,28 @@ export default {
       throw new Error(e.json?.error || 'Error deleting image')
     }
   }),
-  fetchImageUploadUrl: requireLoginSession(async function (fileName) {
+  fetchImageUploadUrl: requireLoginSession(async function (filename) {
     try {
-      const result = await apiWithCredentials.url(urls.generateImageUploadUrl()).post({ fileName })
-      return result?.url;
+      const result = await apiWithCredentials.url(urls.generateImageUploadUrl()).post({ filename })
+      return result; // { url, mimeType }
     } catch (e) {
       console.error('fetchImageUploadUrl error', e)
       throw new Error(e.json?.error || 'Error initializing image upload')
     }
   }),
-  async uploadImage ({ uploadUrl, file }) {
+  finishImageUpload: requireLoginSession(async function (filename) {
     try {
-      // TODO what does the cloud upload URL expect?
+      const profile = await apiWithCredentials.url(urls.finishProfileImageUpload()).post({ filename })
+      return profile;
+    } catch (e) {
+      console.error('finishImageUpload error', e)
+      throw new Error(e.json?.error || 'Error finishing image upload')
+    }
+  }),
+  async uploadImage ({ uploadUrl, mimeType, file }) {
+    try {
       const headers = {
-        'Content-Type': 'application/octet-stream'
+        'Content-Type': mimeType
       }
       const result = await api.url(uploadUrl).headers(headers).put(file)
       return result;

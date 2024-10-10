@@ -202,6 +202,10 @@ const mirageConfig = window.mirageConfig = {
     error: false,
     slow: false
   },
+  finishProfileImageUpload: {
+    error: false,
+    slow: false
+  },
   deleteProfileTeam: {
     error: false,
     slow: false
@@ -846,6 +850,28 @@ export function makeServer({ environment = 'development' } = {}) {
         timing: mirageConfig.saveProfileName.slow ? 3000 : 1000
       })
 
+      this.post(fixUrl(urls.finishProfileImageUpload()), async (schema, request) => {
+        if (mirageConfig.finishProfileImageUpload.error) {
+          return errorResponse()
+        }
+        const address = checkCredentials(request)
+        if (!address) { return unauthorizedErrorResponse() }
+
+        const { filename } = JSON.parse(request.requestBody)
+        if (!filename) {
+          return errorResponse('filename missing')
+        }
+        // save it to the profile (create one if necessary)
+        const addressLc = address.toLowerCase()
+        initProfileForAddress(addressLc)
+        const profile = profilesByAddress[addressLc]
+        profile.avatar = '/dev/gotchi_g1_front.svg'
+        console.log('Mirage server finishing profile image upload for ', filename, addressLc)
+        return profile
+      }, {
+        timing: mirageConfig.finishProfileImageUpload.slow ? 3000 : 1000
+      })
+
       this.delete(fixUrl(urls.deleteProfileTeam({ teamId: ':teamId' })), async (schema, request) => {
         if (mirageConfig.deleteProfileTeam.error) {
           return errorResponse()
@@ -874,13 +900,14 @@ export function makeServer({ environment = 'development' } = {}) {
         // delete image from profile
         const addressLc = address.toLowerCase()
         initProfileForAddress(addressLc)
-        profilesByAddress[addressLc].imageUrl = null
+        profilesByAddress[addressLc].avatar = null
         return profilesByAddress[addressLc]
       }, {
         timing: mirageConfig.deleteProfileImage.slow ? 3000 : 1000
       })
 
       const mockCloudUploadUrl = ({ address, code, fileName }) => `/mockCloud/${encodeURIComponent(address)}/${code}/uploadImage/${fileName}`
+      const MOCK_IMAGE_MIME_TYPE = 'image/fromserver'
 
       this.post(fixUrl(urls.generateImageUploadUrl()), async (schema, request) => {
         if (mirageConfig.generateImageUploadUrl.error) {
@@ -889,17 +916,21 @@ export function makeServer({ environment = 'development' } = {}) {
         const address = checkCredentials(request)
         if (!address) { return unauthorizedErrorResponse() }
 
-        const { fileName } = JSON.parse(request.requestBody)
+        const { filename } = JSON.parse(request.requestBody)
         return {
-          url: mockCloudUploadUrl({ address, code: Date.now(), fileName })
+          url: mockCloudUploadUrl({ address, code: Date.now(), filename }),
+          mimeType: MOCK_IMAGE_MIME_TYPE
         }
       }, {
         timing: mirageConfig.generateImageUploadUrl.slow ? 3000 : 1000
       })
 
-      this.put(fixUrl(mockCloudUploadUrl({ address: ':address', code: ':code', fileName: ':fileName' })), async () => {
+      this.put(fixUrl(mockCloudUploadUrl({ address: ':address', code: ':code', fileName: ':fileName' })), async (schema, request) => {
         if (mirageConfig.mockCloudUploadUrl.error) {
           return errorResponse()
+        }
+        if (request.requestHeaders['Content-Type'] !== MOCK_IMAGE_MIME_TYPE) {
+          return errorResponse({ message: 'Wrong Content-Type sent' })
         }
         return true
       }, {

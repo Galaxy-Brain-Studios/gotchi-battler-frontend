@@ -35,12 +35,9 @@
   }
 
   // TODO:
-  // * confirm what the image file types and size limit are server-side and match those
-  // * confirm method of fetching upload URL from server
-  // * confirm method of uploading image to cloud storage
-  // * find out how to get the updated profile imageUrl after uploading file
+  // * confirm what the image size limit is server-side and match it
 
-  const ACCEPTED_FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png', 'webp']
+  const ACCEPTED_FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png', 'webp', 'svg']
   const MAX_FILE_SIZE_MB = 5
   const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
 
@@ -70,19 +67,19 @@
     if (submitStatus.loading || !selectedFile.value) { return }
     const [isStale, setLoaded, setError] = setLoading()
     try {
-      const uploadUrl = await profileService.fetchImageUploadUrl(selectedFile.value.name)
+      const filename = selectedFile.value.name
+      const { url: uploadUrl, mimeType } = await profileService.fetchImageUploadUrl(filename)
       if (isStale()) { return; }
-      await profileService.uploadImage({ uploadUrl, file: selectedFile.value })
+      await profileService.uploadImage({ uploadUrl, mimeType, file: selectedFile.value })
       if (isStale()) { return; }
+      const profile = await profileService.finishImageUpload(filename)
       setLoaded()
       // Clear the file input
       if (fileInputRef.value) {
         fileInputRef.value.value = null
         onFileInputChange()
       }
-      // TODO get updated profile?
-      const newProfile = {}
-      emit("saved", newProfile)
+      emit("saved", profile)
       emit("update:isOpen", false)
     } catch (e) {
       setError(e.message)
@@ -101,7 +98,7 @@
         v-if="imageUrl"
         class="profile-image-edit__delete"
       >
-        You already have an image set.
+        You already have an avatar image set.
         <SiteButtonWhite
           small
           active
@@ -155,7 +152,7 @@
         v-if="submitStatus.loading"
         class="profile-image-edit__loading"
       >
-        Submitting...
+        Submitting... please wait
       </div>
       <div
         v-if="submitStatus.error"

@@ -47,7 +47,7 @@
         <ProfileImage
           class="profile-main__image"
           :address="profile.address"
-          :imageUrl="profile.imageUrl"
+          :imageUrl="profile.avatar"
           @saved="setSavedProfile"
         />
         <ProfileName

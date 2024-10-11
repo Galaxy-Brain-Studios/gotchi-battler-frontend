@@ -154,7 +154,7 @@
                   v-if="showCount"
                   class="items-list__item__count"
                 >
-                  OWNED: <b>{{ item.count }}x</b>
+                  YOU OWN: <b>{{ item.count }}x</b>
                 </div>
               </div>
             </div>

@@ -202,15 +202,11 @@ const mirageConfig = window.mirageConfig = {
     error: false,
     slow: false
   },
-  finishProfileImageUpload: {
+  updateProfileImage: {
     error: false,
     slow: false
   },
   deleteProfileTeam: {
-    error: false,
-    slow: false
-  },
-  deleteProfileImage: {
     error: false,
     slow: false
   },
@@ -850,26 +846,29 @@ export function makeServer({ environment = 'development' } = {}) {
         timing: mirageConfig.updateProfile.slow ? 3000 : 1000
       })
 
-      this.post(fixUrl(urls.finishProfileImageUpload()), async (schema, request) => {
-        if (mirageConfig.finishProfileImageUpload.error) {
+      this.post(fixUrl(urls.updateProfileImage()), async (schema, request) => {
+        if (mirageConfig.updateProfileImage.error) {
           return errorResponse()
         }
         const address = checkCredentials(request)
         if (!address) { return unauthorizedErrorResponse() }
 
         const { filename } = JSON.parse(request.requestBody)
-        if (!filename) {
-          return errorResponse('filename missing')
-        }
         // save it to the profile (create one if necessary)
         const addressLc = address.toLowerCase()
         initProfileForAddress(addressLc)
         const profile = profilesByAddress[addressLc]
-        profile.avatar = '/dev/gotchi_g1_front.svg'
-        console.log('Mirage server finishing profile image upload for ', filename, addressLc)
+        if (filename) {
+          // this is an update request after uploading a new image
+          profile.avatar = '/dev/gotchi_g1_front.svg'
+        } else {
+          // this is a delete request
+          profile.avatar = null
+        }
+        console.log('Mirage server finishing profile image update for ', filename, addressLc)
         return profile
       }, {
-        timing: mirageConfig.finishProfileImageUpload.slow ? 3000 : 1000
+        timing: mirageConfig.updateProfileImage.slow ? 3000 : 1000
       })
 
       this.delete(fixUrl(urls.deleteProfileTeam({ teamId: ':teamId' })), async (schema, request) => {
@@ -888,22 +887,6 @@ export function makeServer({ environment = 'development' } = {}) {
         return ""
       }, {
         timing: mirageConfig.deleteProfileTeam.slow ? 3000 : 1000
-      })
-
-      this.delete(fixUrl(urls.deleteProfileImage()), async (schema, request) => {
-        if (mirageConfig.deleteProfileImage.error) {
-          return errorResponse()
-        }
-        const address = checkCredentials(request)
-        if (!address) { return unauthorizedErrorResponse() }
-
-        // delete image from profile
-        const addressLc = address.toLowerCase()
-        initProfileForAddress(addressLc)
-        profilesByAddress[addressLc].avatar = null
-        return profilesByAddress[addressLc]
-      }, {
-        timing: mirageConfig.deleteProfileImage.slow ? 3000 : 1000
       })
 
       const mockCloudUploadUrl = ({ address, code, fileName }) => `/mockCloud/${encodeURIComponent(address)}/${code}/uploadImage/${fileName}`
@@ -966,9 +949,11 @@ export function makeServer({ environment = 'development' } = {}) {
           return errorResponse()
         }
         const address = checkCredentials(request)
-        if (!address) { return unauthorizedErrorResponse() }
-
-        console.log(`Mirage server simulating sign out with cookie:`, address)
+        if (!address) {
+          console.log('Mirage server simulating sign out, but no session present')
+        } else {
+          console.log(`Mirage server simulating sign out with cookie:`, address)
+        }
         clearSessionAddressCookie()
         return
       }, {

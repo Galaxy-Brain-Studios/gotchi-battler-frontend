@@ -65,7 +65,7 @@ export default {
 
   deleteImage: requireLoginSession(async function () {
     try {
-      const profile = await apiWithCredentials.url(urls.deleteProfileImage()).delete()
+      const profile = await apiWithCredentials.url(urls.updateProfileImage()).post({ filename: null })
       notifyUpdate(profile)
       return profile;
     } catch (e) {
@@ -84,7 +84,7 @@ export default {
   }),
   finishImageUpload: requireLoginSession(async function (filename) {
     try {
-      const profile = await apiWithCredentials.url(urls.finishProfileImageUpload()).post({ filename })
+      const profile = await apiWithCredentials.url(urls.updateProfileImage()).post({ filename })
       notifyUpdate(profile)
       return profile;
     } catch (e) {

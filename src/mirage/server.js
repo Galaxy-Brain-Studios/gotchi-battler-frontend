@@ -900,9 +900,11 @@ export function makeServer({ environment = 'development' } = {}) {
         if (!address) { return unauthorizedErrorResponse() }
 
         const { filename } = JSON.parse(request.requestBody)
+        const newFilename = `${address}_${Date.now()}_${filename}`
         return {
           url: mockCloudUploadUrl({ address, code: Date.now(), filename }),
-          mimeType: MOCK_IMAGE_MIME_TYPE
+          mimeType: MOCK_IMAGE_MIME_TYPE,
+          filename: newFilename
         }
       }, {
         timing: mirageConfig.generateImageUploadUrl.slow ? 3000 : 1000

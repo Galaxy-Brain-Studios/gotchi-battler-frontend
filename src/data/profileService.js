@@ -76,7 +76,7 @@ export default {
   fetchImageUploadUrl: requireLoginSession(async function (filename) {
     try {
       const result = await apiWithCredentials.url(urls.generateImageUploadUrl()).post({ filename })
-      return result; // { url, mimeType }
+      return result; // { url, mimeType, filename }
     } catch (e) {
       console.error('fetchImageUploadUrl error', e)
       throw new Error(e.json?.error || 'Error initializing image upload')

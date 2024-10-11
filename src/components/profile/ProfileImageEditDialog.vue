@@ -68,11 +68,11 @@
     const [isStale, setLoaded, setError] = setLoading()
     try {
       const filename = selectedFile.value.name
-      const { url: uploadUrl, mimeType } = await profileService.fetchImageUploadUrl(filename)
+      const { url: uploadUrl, mimeType, filename: cloudFilename } = await profileService.fetchImageUploadUrl(filename)
       if (isStale()) { return; }
       await profileService.uploadImage({ uploadUrl, mimeType, file: selectedFile.value })
       if (isStale()) { return; }
-      const profile = await profileService.finishImageUpload(filename)
+      const profile = await profileService.finishImageUpload(cloudFilename)
       setLoaded()
       // Clear the file input
       if (fileInputRef.value) {

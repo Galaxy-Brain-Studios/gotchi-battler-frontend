@@ -941,7 +941,7 @@ export function makeServer({ environment = 'development' } = {}) {
         const address = message.match(/Ethereum account:\s*(\w+)/)?.[1]
         console.log(`Mirage server simulating sign in with cookie for:`, address)
         setSessionAddressCookie(address)
-        return
+        return 'OK'
       }, {
         timing: mirageConfig.sessionLogin.slow ? 3000 : 1000
       })

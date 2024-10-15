@@ -1,4 +1,4 @@
-import { apiWithCredentials, urls } from './api'
+import { apiWithCredentials, apiTextWithCredentials, urls } from './api'
 
 export default {
   async fetchSessionNonce () {
@@ -13,7 +13,7 @@ export default {
 
   async login ({ message, signature }) {
     try {
-      await apiWithCredentials.url(urls.sessionLogin()).post({ message, signature })
+      await apiTextWithCredentials.url(urls.sessionLogin()).post({ message, signature })
       return true
     } catch (e) {
       console.error('login error', e)

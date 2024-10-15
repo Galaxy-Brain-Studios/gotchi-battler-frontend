@@ -45,7 +45,7 @@ export default {
 
   saveName: requireLoginSession(async function (name) {
     try {
-      const profile = await apiWithCredentials.url(urls.updateProfile()).post({ name })
+      const profile = await apiWithCredentials.url(urls.updateProfile()).put({ name })
       notifyUpdate(profile)
       return profile;
     } catch (e) {

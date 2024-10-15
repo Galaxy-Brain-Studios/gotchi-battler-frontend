@@ -1,5 +1,5 @@
 <script setup>
-  import { useAccountStore } from '../../data/accountStore'
+  import { useAccountStore, requireLoginSession } from '../../data/accountStore'
   import { setBaseUrl } from '../../data/api'
   import { storeToRefs } from 'pinia'
 
@@ -42,12 +42,26 @@
         >
           Set API to localhost:8888
         </button>
+        <button
+          type="button"
+          @click="setBaseUrl('https://127.0.0.1:10889')"
+        >
+          Set API to https://127.0.0.1:10889
+        </button>
         <br>
         <button
           type="button"
           @click="setBaseUrl('https://gotchi-battler-backend-76ns3tfg6q-ew.a.run.app')"
         >
           Set API to https://gotchi-battler-backend-76ns3tfg6q-ew.a.run.app
+        </button>
+      </div>
+      <div>
+        <button
+          type="button"
+          @click="requireLoginSession(() => console.log('signed in'))()"
+        >
+          Request signed session
         </button>
       </div>
       <div>

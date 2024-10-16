@@ -1,4 +1,4 @@
-import { api, apiWithCredentials, apiTextWithCredentials, urls } from './api'
+import { api, apiText, apiWithCredentials, apiTextWithCredentials, urls } from './api'
 import { requireLoginSession } from './accountStore'
 import { notifyUpdate } from './useProfileUpdateNotifications'
 
@@ -97,7 +97,7 @@ export default {
       const headers = {
         'Content-Type': mimeType
       }
-      const result = await api.url(uploadUrl).headers(headers).put(file)
+      const result = await apiText.url(uploadUrl).headers(headers).put(file)
       return result;
     } catch (e) {
       console.error('uploadImage error', e)

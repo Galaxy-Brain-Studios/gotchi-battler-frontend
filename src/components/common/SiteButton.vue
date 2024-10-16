@@ -65,7 +65,7 @@
   --button-color-text: var(--c-white);
   --button-color-background: #004E79;
   --button-background--active:
-    linear-gradient(180deg, rgba(5, 174, 187, 0.42) 0%, #01A5B1 100%)
+    var(--site-gradient-blue)
     var(--color-background);
   --button-clip-path--full: polygon(
     0 var(--button-corner-size),

@@ -1,27 +1,23 @@
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import useStatus from '../utils/useStatus'
 import battlesService from './battlesService';
 import { generateTeamForBattle, findHighestTrainingPowerLevel } from './teamUtils'
 
 export const useTrainingBattlesStore = defineStore('trainingBattles', () => {
-  const battlesByAddress = ref({});
+  const battleIds = ref([]);
 
-  function addBattle (address, battleId) {
-    if (!battlesByAddress.value[address]) {
-      battlesByAddress.value[address] = []
-    }
-    battlesByAddress.value[address].push(battleId)
+  function addBattle (battleId) {
+    battleIds.value.push(battleId)
   }
 
-  function getBattles (address) {
-    const battleIds = battlesByAddress.value[address]
-    if (!battleIds) { return [] }
-    return battleIds.map(id => useBattleStore(id)().battle)
-  }
+  const trainingBattles = computed(() => {
+    if (!battleIds.value) { return [] }
+    return battleIds.value.map(id => useBattleStore(id)().battle)
+  })
 
   return {
-    getBattles,
+    trainingBattles,
     addBattle
   }
 })
@@ -92,7 +88,7 @@ export const useBattleAnalyserStore = function (id) {
 
 // Run a single training battle which can be displayed,
 // and also another 200 battles to get a win rate
-export const runTrainingBattle = function ({ team1, team2, address }) {
+export const runTrainingBattle = function ({ team1, team2 }) {
   const team1ForBattle = generateTeamForBattle(team1)
   const team2ForBattle = generateTeamForBattle(team2)
   const result = battlesService.runTrainingBattle({
@@ -120,7 +116,7 @@ export const runTrainingBattle = function ({ team1, team2, address }) {
   }
   useBattleStore(result.id, battle)()
   console.log('Stored battle', battle)
-  useTrainingBattlesStore().addBattle(address, result.id)
+  useTrainingBattlesStore().addBattle(result.id)
 
   return result.id
 }

@@ -135,7 +135,7 @@ export const generateTeamForBattle = function (team) {
     formation,
     leader: team.leader,
     name: team.name,
-    owner: team.owner
+    owner: team.owner || '0x0000000000000000000000000000000000000000'
   }
   // console.log('generated team', teamForBattle)
   return teamForBattle

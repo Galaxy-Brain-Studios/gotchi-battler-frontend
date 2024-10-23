@@ -11,6 +11,7 @@
   import SiteButtonPrimary from '../common/SiteButtonPrimary.vue'
   import SiteButton from '../common/SiteButton.vue'
   import SiteButtonGroup from '../common/SiteButtonGroup.vue'
+  import SiteConnectWallet from '../site/SiteConnectWallet.vue'
   import SiteIcon from '../common/SiteIcon.vue'
   import SitePopupHoverMenu from '../common/SitePopupHoverMenu.vue'
   import SiteSelect from '../common/SiteSelect.vue'
@@ -34,7 +35,6 @@
     CREATE: 'create',
     CREATE_TRAINING: 'create_training',
     EDIT_TRAINING: 'edit_training',
-    REPLACE: 'replace', // Not actually in use right now as server doesn't support it
     EDIT: 'edit'
   }
   const props = defineProps({
@@ -78,18 +78,10 @@
   const isEditMode = computed(() => props.mode === EDIT_MODES.EDIT)
   const myGotchisAllowed = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.CREATE_TRAINING].includes(props.mode))
   const trainingGotchisAllowed = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING].includes(props.mode))
-
-  const showGotchisSource = ref('my') // 'my', 'training', 'team'
-  watch(
-    () => [myGotchisAllowed.value, trainingGotchisAllowed.value],
-    () => {
-      showGotchisSource.value = myGotchisAllowed.value ? 'my' : trainingGotchisAllowed.value ? 'training' : 'team'
-    },
-    { immediate: true }
-  )
+  const anyGotchiAllowed = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING].includes(props.mode))
 
   const canChangeName = computed(() => !isEditMode.value)
-  const withSubstitutes = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.EDIT, EDIT_MODES.REPLACE].includes(props.mode))
+  const withSubstitutes = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.EDIT].includes(props.mode))
 
   // Fetch existing teams in tournament
   const { fetchTeams, teams } = useTournamentTeams()
@@ -157,24 +149,64 @@
     { immediate: true }
   )
 
+  const showGotchisSource = ref('my') // 'my', 'training', 'team'
+  watch(
+    () => [myGotchisAllowed.value, address.value, trainingGotchisAllowed.value],
+    () => {
+      showGotchisSource.value = myGotchisAllowed.value && address.value ? 'my' : trainingGotchisAllowed.value ? 'training' : 'team'
+    },
+    { immediate: true }
+  )
+
+  const availableGotchisStatus = computed(() => {
+    if (myGotchisAllowed.value && address.value && trainingGotchisAllowed.value) {
+      return {
+        loaded: myGotchisFetchStatus.value.loaded && trainingGotchisFetchStatus.value.loaded,
+        loading: myGotchisFetchStatus.value.loading || trainingGotchisFetchStatus.value.loading,
+        error: myGotchisFetchStatus.error || trainingGotchisFetchStatus.error,
+        errorMessage: myGotchisFetchStatus.errorMessage || trainingGotchisFetchStatus.errorMessage
+      }
+    }
+    if (myGotchisAllowed.value && address.value) {
+      return myGotchisFetchStatus.value
+    }
+    if (trainingGotchisAllowed.value) {
+      return trainingGotchisFetchStatus.value
+    }
+    return { loaded: true }
+  })
+
+  const teamGotchis = computed(() => props.team?.gotchis || null)
+
   const availableGotchis = computed(() => {
     if (isEditMode.value) {
       // editing an existing team: use the gotchis from the team
-      if (!props.team?.gotchis) { return null }
-      return props.team.gotchis
+      return teamGotchis.value
     }
     // Either or both of My/Training gotchis should be available
-    // If both are allowed, wait till both have been fetched
     let gotchis = []
-    if (myGotchisAllowed.value) {
+    if (myGotchisAllowed.value && address.value) {
       // include the list of gotchis available to this address
-      if (!myGotchisFetchStatus.value.loaded){ return null }
-      gotchis = gotchis.concat(myGotchis.value)
+      if (myGotchisFetchStatus.value.loaded) {
+        gotchis = gotchis.concat(myGotchis.value)
+      }
     }
     if (trainingGotchisAllowed.value) {
       // include the list of training gotchis
-      if (!trainingGotchisFetchStatus.value.loaded) { return null }
-      gotchis = gotchis.concat(trainingGotchis.value)
+      if (trainingGotchisFetchStatus.value.loaded) {
+        gotchis = gotchis.concat(trainingGotchis.value)
+      }
+    }
+    // If any gotchi is allowed, they may have been added to the team by id,
+    // so ensure that team gotchis are present in this list if they
+    // haven't already been added above
+    if (anyGotchiAllowed.value && teamGotchis.value?.length) {
+      const existingGotchiIds = gotchis.map(g => g.id)
+      for (const teamGotchi of teamGotchis.value) {
+        if (!existingGotchiIds.includes(teamGotchi.id)) {
+          gotchis.push(teamGotchi)
+        }
+      }
     }
     return gotchis;
   })
@@ -186,15 +218,15 @@
 
   const availableGotchisFromSource = computed(() => {
     if (!availableGotchis.value) { return null }
-    if (myGotchisAllowed.value && trainingGotchisAllowed.value) {
-      // two sources are allowed, so only display the currently selected source
-      if (showGotchisSource.value === 'my') {
-        return myGotchis.value
-      } else {
-        return trainingGotchis.value
-      }
+    // only display gotchis from the currently selected source
+    if (showGotchisSource.value === 'my' && address.value) {
+      return myGotchis.value
+    } else if (showGotchisSource.value === 'training') {
+      return trainingGotchis.value
+    } else if (showGotchisSource.value === 'team') {
+      return teamGotchis.value
     }
-    return availableGotchis.value
+    return null
   })
 
   // List of available gotchis
@@ -254,6 +286,7 @@
     if (!availableGotchisFromSource.value) { return null }
     return availableGotchisFromSource.value.map(g => ({
       ...g,
+      onchainIdString: `${g.onchainId}`,
       nameLowercase: g.name?.toLowerCase() || ''
     }))
   })
@@ -263,7 +296,7 @@
     if (query.value) {
       const q = query.value.toLowerCase()
       filtered = filtered.filter(gotchi => {
-        if (gotchi.onchainId === q) { return true }
+        if (gotchi.onchainIdString === q) { return true }
         if (gotchi.nameLowercase.includes(q)) { return true }
         return false
       })
@@ -293,10 +326,13 @@
     specialByGotchiId.value = {}
   }
 
-  // If the available gotchis changes, remove any invalid ones from the team
+  // In tournaments, if the available gotchis changes, remove any invalid ones from the team
+  // TODO simplify, this only needs to validate against 'my gotchis'
   watch(
-    () => availableGotchis.value,
+    () => [availableGotchisStatus.value, availableGotchis.value],
     () => {
+      if (anyGotchiAllowed.value) { return }
+      if (!availableGotchisStatus.value.loaded) { return }
       if (!availableGotchis.value) {
         clearTeamGotchis()
         return
@@ -464,7 +500,7 @@
   )
 
   const gotchisInTeam = computed(() => {
-    if (!filteredAvailableGotchis.value) { return null }
+    if (!availableGotchis.value) { return null }
     const gotchiIds = [
       ...teamFormation.value.front,
       ...teamFormation.value.back,
@@ -770,7 +806,10 @@
               Training Gotchis
             </SiteButton>
           </SiteButtonGroup>
-          <div class="create-team__gotchis-search">
+          <div
+            v-if="availableGotchisFromSource?.length"
+            class="create-team__gotchis-search"
+          >
             <SiteTextField
               v-model="query"
               placeholder="Search gotchis"
@@ -778,7 +817,10 @@
               subtle
             />
           </div>
-          <div class="create-team__gotchis-sort">
+          <div
+            v-if="availableGotchisFromSource?.length"
+            class="create-team__gotchis-sort"
+          >
             Sort by:
             <SiteSelect v-model="resultSort">
               <option
@@ -790,19 +832,27 @@
               </option>
             </SiteSelect>
           </div>
-          <div class="create-team__gotchis-available word-break">
+          <div
+            v-if="showGotchisSource === 'my' && !address"
+            class="create-team__gotchis-connect-wallet"
+          >
+            <SiteConnectWallet />
+          </div>
+          <div
+            v-else
+            class="create-team__gotchis-available word-break"
+          >
             <div
-              v-if="myGotchisFetchStatus.loading || trainingGotchisFetchStatus.loading"
+              v-if="availableGotchisStatus.loading"
               class="create-team__gotchis-loading"
             >
               Loading...
             </div>
             <div
-              v-if="myGotchisFetchStatus.error || trainingGotchisFetchStatus.error"
+              v-if="availableGotchisStatus.error"
               class="create-team__gotchis-error"
             >
-              {{ myGotchisFetchStatus.errorMessage }}
-              {{ trainingGotchisFetchStatus.errorMessage }}
+              {{ availableGotchisStatus.errorMessage }}
             </div>
             <template v-else-if="availableGotchisFromSource">
               <div
@@ -1343,6 +1393,11 @@
   }
   .create-team__gotchis-search {
     max-width: 200px;
+  }
+  .create-team__gotchis-connect-wallet {
+    padding-top: 1rem;
+    display: grid;
+    place-items: center;
   }
   .create-team__gotchis-available {
     align-self: stretch;

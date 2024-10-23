@@ -2,6 +2,7 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import useStatus from '../utils/useStatus'
 import battlesService from './battlesService';
+import { generateTeamForBattle, findHighestTrainingPowerLevel } from './teamUtils'
 
 export const useTrainingBattlesStore = defineStore('trainingBattles', () => {
   const battlesByAddress = ref({});
@@ -89,18 +90,37 @@ export const useBattleAnalyserStore = function (id) {
   })
 }
 
-export const submitTrainingBattle = async function ({ team, trainingTeam, address }) {
-  const result = await battlesService.submitTrainingBattle({
-    team,
-    trainingTeam
+// Run a single training battle which can be displayed,
+// and also another 200 battles to get a win rate
+export const runTrainingBattle = function ({ team1, team2, address }) {
+  const team1ForBattle = generateTeamForBattle(team1)
+  const team2ForBattle = generateTeamForBattle(team2)
+  const result = battlesService.runTrainingBattle({
+    team1: team1ForBattle,
+    team2: team2ForBattle
   })
   if (!result.id) {
     throw new Error('Expected battle id after submitting training battle')
   }
-  if (result.teams) {
-    // battle object returned: store it
-    useBattleStore(result.id, result)()
-    useTrainingBattlesStore().addBattle(address, result.id)
+  const batchResult = battlesService.runTrainingBattles({
+    team1: team1ForBattle,
+    team2: team2ForBattle
+  }, 200)
+
+  // battle object returned: store it, with teams in the originally provided format
+  // Generate training team difficulty based on the gotchis present in the team
+  const team2Extended = {
+    ...team2,
+    difficulty: findHighestTrainingPowerLevel(team2.gotchis)
   }
+  const battle = {
+    ...result,
+    ...batchResult,
+    teams: [team1, team2Extended]
+  }
+  useBattleStore(result.id, battle)()
+  console.log('Stored battle', battle)
+  useTrainingBattlesStore().addBattle(address, result.id)
+
   return result.id
 }

@@ -11,7 +11,7 @@
   import SiteTable from '../common/SiteTable.vue'
   import SavedTeamFormation from '../team/SavedTeamFormation.vue'
   import 'url' // url package needed for game logic validation to work in browser https://github.com/tdegrunt/jsonschema/issues/399 https://github.com/tdegrunt/jsonschema/issues/18
-  import game from 'gotchi-battler-game-logic'
+  import battlesService from '@/data/battlesService'
   import testTeam1 from './team1.json'
   import testTeam2 from './team2.json'
 
@@ -37,7 +37,7 @@
     if (match.runStatus) {
       match.runStatus.reset()
     }
-    match.simulations = []
+    match.numRuns = 0
     match.team1Results = {
       wins: 0,
       winRate: 0,
@@ -55,21 +55,6 @@
 
   const delay = millis => new Promise(resolve => setTimeout(resolve, millis));
 
-  const runSimulation = function (match) {
-    const seed = "" + Math.random()
-    const result = game(copyTeam(match.team1), copyTeam(match.team2), seed)
-    // console.log({ result })
-    match.simulations.push({
-      seed,
-      winner: result.result.winner
-    })
-    match[`team${result.result.winner}Results`].wins += 1
-    match.team1Results.winRate = Math.floor(100 * match.team1Results.wins / match.simulations.length)
-    match.team2Results.winRate = Math.floor(100 * match.team2Results.wins / match.simulations.length)
-    match.team1Results.overallWinner = match.team1Results.wins > match.team2Results.wins
-    match.team2Results.overallWinner = match.team2Results.wins > match.team1Results.wins
-  }
-
   const runSimulations = async function (match) {
     resetMatchSimulations(match)
     const [isStale, setLoaded] = match.runStatus.setLoading()
@@ -78,17 +63,37 @@
     if (isNaN(numToRun) || numToRun <= 0) {
       numToRun = 1
     }
-    for (let i = 0; i < numToRun; i++) {
-      runSimulation(match)
+    let runSoFar = 0
+    let team1Wins = 0
+    let team2Wins = 0
+
+    const updateMatchStats = () => {
+      match.numRuns = runSoFar
+      match.team1Results.wins = team1Wins
+      match.team2Results.wins = team2Wins
+      match.team1Results.winRate = Math.floor(100 * match.team1Results.wins / match.numRuns)
+      match.team2Results.winRate = Math.floor(100 * match.team2Results.wins / match.numRuns)
+      match.team1Results.overallWinner = match.team1Results.wins > match.team2Results.wins
+      match.team2Results.overallWinner = match.team2Results.wins > match.team1Results.wins
+    }
+
+    // TODO change to use in-browser team JSON format, and generateTeamForBattle before passing into battleService
+    while (runSoFar < numToRun) {
+      const numLeftToRun = numToRun - runSoFar
+      const numInBatch = numLeftToRun < PAUSE_EVERY ? numLeftToRun : PAUSE_EVERY
+      const batchResult = battlesService.runTrainingBattles(match, numInBatch)
+      team1Wins += batchResult.team1Wins
+      team2Wins += batchResult.team2Wins
+      runSoFar += numInBatch
       // Pause to allow UI to refresh
-      if ( (i + 1) % PAUSE_EVERY === 0) {
-        await delay(10)
-      }
+      updateMatchStats()
+      await delay(10)
       if (isStale()) {
-        // console.log('stale after '+i+', aborting')
+        // console.log('stale after '+runSoFar+', aborting')
         return;
       }
     }
+    updateMatchStats()
     setLoaded()
   }
 
@@ -154,11 +159,11 @@
             <td
               class="match__team-wins"
               :class="{
-                'match__team-wins--has-results': match.simulations.length,
+                'match__team-wins--has-results': match.numRuns,
                 'match__team-wins--overall-winner': match.team1Results.overallWinner
               }"
             >
-              <template v-if="match.simulations.length">
+              <template v-if="match.numRuns">
                 {{ match.team1Results.winRate }}%
               </template>
               <div
@@ -171,11 +176,11 @@
             <td
               class="match__team-wins"
               :class="{
-                'match__team-wins--has-results': match.simulations.length,
+                'match__team-wins--has-results': match.numRuns,
                 'match__team-wins--overall-winner': match.team2Results.overallWinner
               }"
             >
-              <template v-if="match.simulations.length">
+              <template v-if="match.numRuns">
                 {{ match.team2Results.winRate }}%
               </template>
               <div
@@ -186,8 +191,8 @@
               </div>
             </td>
             <td class="match__num-runs">
-              <template v-if="match.simulations.length">
-                {{ match.simulations.length }}
+              <template v-if="match.numRuns">
+                {{ match.numRuns }}
               </template>
             </td>
             <td class="match__actions">

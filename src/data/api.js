@@ -34,7 +34,6 @@ const urls = {
   battle: (id) => `${BASE_URL}/api/v1/battles/${encodeURIComponent(id)}`,
   battleAnalyser: (id) => `${BASE_URL}/api/v1/battles/${encodeURIComponent(id)}/analyse`,
   battleLogs: (url) => url,
-  trainingBattle: () => `${BASE_URL}/api/v1/me/training`,
   trainingGotchis: () =>  `${BASE_URL}/api/v1/training/gotchis`,
   gotchis: ({ address }) =>  `${BASE_URL}/api/v1/gotchis/${encodeURIComponent(address)}`,
   availableLendings: (tournamentId) => `${BASE_URL}/api/v1/tournaments/${encodeURIComponent(tournamentId)}/lendings`,

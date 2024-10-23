@@ -3,21 +3,19 @@
   import { storeToRefs } from 'pinia'
   import { formatDateTime } from '../../utils/date'
   import { useAccountStore } from '../../data/accountStore'
-  import { useBattleStore, submitTrainingBattle, useTrainingBattlesStore } from '../../data/battleStore'
+  import { useBattleStore, runTrainingBattle, useTrainingBattlesStore } from '../../data/battleStore'
   import SiteButton from '../common/SiteButton.vue' 
   import SiteError from '../common/SiteError.vue'
   import SiteConnectWallet from '../site/SiteConnectWallet.vue'
   import SiteButtonPrimary from '../common/SiteButtonPrimary.vue'
   import SiteButtonSmall from '../common/SiteButtonSmall.vue'
   import SiteButtonIcon from '../common/SiteButtonIcon.vue'
-  import SiteIcon from '../common/SiteIcon.vue'
   import SitePopupHoverMenu from '../common/SitePopupHoverMenu.vue'
   import BattleField from '../battle/BattleField.vue'
   import BattleVs from '../battle/BattleVs.vue'
   import CreateTeamDialog from '../team/CreateTeamDialog.vue'
   import TrainingTeamsDialog from './TrainingTeamsDialog.vue'
   import useStatus from '../../utils/useStatus'
-  import { generateTeamToSubmit } from '../../data/teamUtils'
 
   const store = useAccountStore()
   const { isConnected, address } = storeToRefs(store)
@@ -68,21 +66,21 @@
   const teamToSubmit = computed(() => {
     if (!team1.value) { return null }
     return {
-      ...generateTeamToSubmit(team1.value),
+      ...team1.value,
       owner: address.value,
     }
   })
   const trainingTeamToSubmit = computed(() => {
     if (!team2.value) { return null }
     return {
-      ...generateTeamToSubmit(team2.value),
+      ...team2.value,
       owner: address.value,
     }
   })
 
   const battleToSubmit = computed(() =>({
-    team: teamToSubmit.value,
-    trainingTeam: trainingTeamToSubmit.value
+    team1: teamToSubmit.value,
+    team2: trainingTeamToSubmit.value
   }))
 
   // if any of the data for submitting a battle changes while submitting,
@@ -99,12 +97,10 @@
     if (!canStartMatch.value) { return }
     const [isStale, setLoaded, setError] = setLoading()
     try {
-      if (isStale()) { return }
-      const battleId = await submitTrainingBattle({
-        ...battleToSubmit.value,
+      const battleId = runTrainingBattle({
+         ...battleToSubmit.value,
         address: address.value
       })
-      if (isStale()) { return }
       if (battleId) {
         completedBattleId.value = battleId
         showCompletedBattleWinner.value = false
@@ -260,7 +256,6 @@
             </th>
             <th>Result</th>
             <th>Replay</th>
-            <th>Share</th>
           </tr>
         </thead>
         <tbody>
@@ -286,17 +281,17 @@
             <td
               class="training-battle__history-table-result"
               :class="{
-                'training-battle__history-table-result--winner': battle.winnerId === battle.teams[0]?.id
+                'training-battle__history-table-result--winner': battle.winner === 1
               }"
             >
-              <template v-if="battle.winnerId">
+              <template v-if="battle.winner">
                 <template v-if="battle.id === completedBattleId && !showCompletedBattleWinner">
                   <SiteButtonSmall @click="showCompletedBattleWinner = true">
                     Reveal
                   </SiteButtonSmall>
                 </template>
                 <template v-else>
-                  {{ battle.winnerId === battle.teams[0]?.id ? 'Winner' : 'Loser' }}
+                  {{ battle.winner === 1 ? 'Winner' : 'Loser' }}
                 </template>
               </template>
             </td>
@@ -304,15 +299,6 @@
               <SiteButtonSmall @click="loadTrainingBattle(battle)">
                 Load
               </SiteButtonSmall>
-            </td>
-            <td>
-              <RouterLink 
-                class="training-battle__analytics-link"
-                :to="{ name: 'analyser', params: { id: battle.id } }"
-                target="_blank">
-                <span class="training-battle__analytics-link-text">Analytics</span>
-                <SiteIcon name="new-window" :width="0.95"/>
-              </RouterLink>
             </td>
           </tr>
         </tbody>
@@ -398,19 +384,8 @@
   .training-battle__history-table-result--winner {
     color: var(--c-light-yellow);
   }
-  .training-battle__history-table td.training-battle__history-table-select {
+  .training-battle__history-table td:has(button) {
     padding-top: 0;
     padding-bottom: 0.5rem;
-  }
-  .training-battle__analytics-link {
-    color: white;
-    display: flex;
-    text-decoration: none;
-  }
-  .training-battle__analytics-link:hover {
-    text-decoration: underline;
-  }
-  .training-battle__analytics-link-text {
-    margin-right: 0.5rem;
   }
 </style>

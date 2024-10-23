@@ -65,12 +65,13 @@ export default {
     const result = game(prepareTeamForGameLogic(match.team1), prepareTeamForGameLogic(match.team2), seed)
     // console.log('runBattle result', result, { match })
 
-    // Match the format returned by the battle endpoint
+    // Similar to the format returned by the battle endpoint
     return {
       id,
       createdAt,
       status: 'completed',
-      logs: 'TODO', // also want to make optional for batch mode if any processing is required to generate logs
+      // battle endpoint returns 'logs' which is an URL, but here we store the full logs directly
+      logsData: result,
       // battle endpoint returns winnerId, but in-browser team might not have an ID
       winner: result.result.winner // team index, 1 or 2
     }

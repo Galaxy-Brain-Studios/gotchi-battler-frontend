@@ -1,7 +1,7 @@
 import uniqueId from 'lodash.uniqueid'
 import { api, urls } from './api'
 import { processTeamModel } from './teamUtils'
-import game from 'gotchi-battler-game-logic'
+import { battle as runBattle } from 'gotchi-battler-game-logic'
 
 const prepareTeamForGameLogic = function (team) {
   const newTeam = JSON.parse(JSON.stringify(team))
@@ -62,7 +62,7 @@ export default {
     const seed = '' + Math.random()
     const createdAt = new Date()
     const id = uniqueId('tbatt_')
-    const result = game(prepareTeamForGameLogic(match.team1), prepareTeamForGameLogic(match.team2), seed)
+    const result = runBattle(prepareTeamForGameLogic(match.team1), prepareTeamForGameLogic(match.team2), seed)
     // console.log('runBattle result', result, { match })
 
     // Similar to the format returned by the battle endpoint

@@ -3,11 +3,6 @@ import { api, urls } from './api'
 import { processTeamModel } from './teamUtils'
 import { battle as runBattle } from 'gotchi-battler-game-logic'
 
-const prepareTeamForGameLogic = function (team) {
-  const newTeam = JSON.parse(JSON.stringify(team))
-  return newTeam
-}
-
 const processBattleModel = function (jsonData) {
   const teams = [jsonData.team1 || null, jsonData.team2 || null]
   return {
@@ -62,7 +57,7 @@ export default {
     const seed = '' + Math.random()
     const createdAt = new Date()
     const id = uniqueId('tbatt_')
-    const result = runBattle(prepareTeamForGameLogic(match.team1), prepareTeamForGameLogic(match.team2), seed)
+    const result = runBattle(match.team1, match.team2, seed)
     // console.log('runBattle result', result, { match })
 
     // Similar to the format returned by the battle endpoint

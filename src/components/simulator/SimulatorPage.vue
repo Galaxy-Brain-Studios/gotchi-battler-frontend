@@ -10,7 +10,6 @@
   import SiteTextField from '../common/SiteTextField.vue'
   import SiteTable from '../common/SiteTable.vue'
   import SavedTeamFormation from '../team/SavedTeamFormation.vue'
-  import 'url' // url package needed for game logic validation to work in browser https://github.com/tdegrunt/jsonschema/issues/399 https://github.com/tdegrunt/jsonschema/issues/18
   import battlesService from '@/data/battlesService'
   import testTeam1 from './team1.json'
   import testTeam2 from './team2.json'

@@ -143,6 +143,7 @@ export const generateTeamForBattle = function (team) {
 
 
 /**
+ * // TODO replace this with a different measure that doesn't rely on training gotchis, e.g. total BRS of team
  * Copied from gotchi-battler-backend
  *
  * Finds the highest training power level in a team of gotchis.

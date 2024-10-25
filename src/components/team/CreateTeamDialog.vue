@@ -1,20 +1,16 @@
 <script setup>
   import { DEV_MODE } from '../../appEnv'
-  import orderBy from 'lodash.orderby'
   import { ref, computed, watch } from 'vue'
   import { storeToRefs } from 'pinia'
   import { useAccountStore } from '../../data/accountStore'
-  import useTrainingGotchis from '../../data/useTrainingGotchis'
   import useTournamentTeams from '../../data/useTournamentTeams'
   import VueDraggable from 'vuedraggable'
   import SiteDialog from '../common/SiteDialog.vue'
   import SiteButtonPrimary from '../common/SiteButtonPrimary.vue'
   import SiteButton from '../common/SiteButton.vue'
   import SiteButtonGroup from '../common/SiteButtonGroup.vue'
-  import SiteConnectWallet from '../site/SiteConnectWallet.vue'
   import SiteIcon from '../common/SiteIcon.vue'
   import SitePopupHoverMenu from '../common/SitePopupHoverMenu.vue'
-  import SiteSelect from '../common/SiteSelect.vue'
   import SiteTextField from '../common/SiteTextField.vue'
   import SiteError from '../common/SiteError.vue'
   import FormationPatternSelect from './FormationPatternSelect.vue'
@@ -27,6 +23,9 @@
   import GotchiDetailsDialog from './GotchiDetailsDialog.vue'
   import GotchiStats from './GotchiStats.vue'
   import LeaderSlotSelect from './LeaderSlotSelect.vue'
+  import SourceGotchisMy from './SourceGotchisMy.vue'
+  import SourceGotchisTraining from './SourceGotchisTraining.vue'
+  import SourceGotchisTeam from './SourceGotchisTeam.vue'
 
   const ROW_NAMES = ['front', 'back']
   const ALL_ROW_NAMES = [...ROW_NAMES, 'substitutes']
@@ -69,6 +68,8 @@
   })
   const emit = defineEmits(['update:isOpen', 'update:team'])
 
+  const incomingTeamGotchis = computed(() => props.team?.gotchis || null)
+
   const modeLabel = computed(() => {
     if (props.mode === EDIT_MODES.CREATE_TRAINING) { return 'Create'; }
     if (props.mode === EDIT_MODES.EDIT_TRAINING) { return 'Customize'; }
@@ -78,7 +79,8 @@
   const isEditMode = computed(() => props.mode === EDIT_MODES.EDIT)
   const myGotchisAllowed = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.CREATE_TRAINING].includes(props.mode))
   const trainingGotchisAllowed = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING].includes(props.mode))
-  const anyGotchiAllowed = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING].includes(props.mode))
+  const onlyMyGotchisAllowed = computed(() => [EDIT_MODES.CREATE].includes(props.mode))
+  const onlyTeamGotchisAllowed = computed(() => [EDIT_MODES.EDIT].includes(props.mode))
 
   const canChangeName = computed(() => !isEditMode.value)
   const withSubstitutes = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.EDIT].includes(props.mode))
@@ -137,174 +139,90 @@
     { immediate: true }
   )
 
-  // Fetch training gotchis - if these are allowed as selections
-  const { fetchGotchis: fetchTrainingGotchis, gotchis: trainingGotchis, fetchGotchisStatus: trainingGotchisFetchStatus } = useTrainingGotchis()
-  watch(
-    () => trainingGotchisAllowed.value,
-    () => {
-      if (trainingGotchisAllowed.value && !trainingGotchis.value) {
-        fetchTrainingGotchis()
-      }
-    },
-    { immediate: true }
-  )
-
-  const showGotchisSource = ref('my') // 'my', 'training', 'team'
+  const selectedSource = ref('my') // 'my', 'training', 'team'
   watch(
     () => [myGotchisAllowed.value, address.value, trainingGotchisAllowed.value],
     () => {
-      showGotchisSource.value = myGotchisAllowed.value && address.value ? 'my' : trainingGotchisAllowed.value ? 'training' : 'team'
+      selectedSource.value = myGotchisAllowed.value && address.value ? 'my' : trainingGotchisAllowed.value ? 'training' : 'team'
     },
     { immediate: true }
   )
 
-  const availableGotchisStatus = computed(() => {
-    if (myGotchisAllowed.value && address.value && trainingGotchisAllowed.value) {
-      return {
-        loaded: myGotchisFetchStatus.value.loaded && trainingGotchisFetchStatus.value.loaded,
-        loading: myGotchisFetchStatus.value.loading || trainingGotchisFetchStatus.value.loading,
-        error: myGotchisFetchStatus.error || trainingGotchisFetchStatus.error,
-        errorMessage: myGotchisFetchStatus.errorMessage || trainingGotchisFetchStatus.errorMessage
-      }
-    }
-    if (myGotchisAllowed.value && address.value) {
-      return myGotchisFetchStatus.value
-    }
-    if (trainingGotchisAllowed.value) {
-      return trainingGotchisFetchStatus.value
-    }
-    return { loaded: true }
-  })
-
-  const teamGotchis = computed(() => props.team?.gotchis || null)
-
-  const availableGotchis = computed(() => {
-    if (isEditMode.value) {
-      // editing an existing team: use the gotchis from the team
-      return teamGotchis.value
-    }
-    // Either or both of My/Training gotchis should be available
-    let gotchis = []
-    if (myGotchisAllowed.value && address.value) {
-      // include the list of gotchis available to this address
-      if (myGotchisFetchStatus.value.loaded) {
-        gotchis = gotchis.concat(myGotchis.value)
-      }
-    }
-    if (trainingGotchisAllowed.value) {
-      // include the list of training gotchis
-      if (trainingGotchisFetchStatus.value.loaded) {
-        gotchis = gotchis.concat(trainingGotchis.value)
-      }
-    }
-    // If any gotchi is allowed, they may have been added to the team by id,
-    // so ensure that team gotchis are present in this list if they
-    // haven't already been added above
-    if (anyGotchiAllowed.value && teamGotchis.value?.length) {
-      const existingGotchiIds = gotchis.map(g => g.id)
-      for (const teamGotchi of teamGotchis.value) {
-        if (!existingGotchiIds.includes(teamGotchi.id)) {
-          gotchis.push(teamGotchi)
-        }
-      }
-    }
-    return gotchis;
-  })
-
-  const availableGotchisById = computed(() => {
-    if (!availableGotchis.value) { return {} }
-    return Object.fromEntries(availableGotchis.value.map(item => [item.id, item]))
-  })
-
-  const availableGotchisFromSource = computed(() => {
-    if (!availableGotchis.value) { return null }
-    // only display gotchis from the currently selected source
-    if (showGotchisSource.value === 'my' && address.value) {
-      return myGotchis.value
-    } else if (showGotchisSource.value === 'training') {
-      return trainingGotchis.value
-    } else if (showGotchisSource.value === 'team') {
-      return teamGotchis.value
-    }
-    return null
-  })
-
-  // List of available gotchis
-  const query = ref('')
-  const sortOptions = [
+  const SOURCES = [
     {
-      id: 'brs_desc',
-      label: 'Rarity Score'
+      id: 'my',
+      label: 'My Gotchis',
+      component: SourceGotchisMy
     },
     {
-      id: 'id_asc',
-      label: 'Token ID'
+      id: 'training',
+      label: 'Training Gotchis',
+      component: SourceGotchisTraining
     },
     {
-      id: 'xp_desc',
-      label: 'XP'
-    },
-    {
-      id: 'speed_desc',
-      label: 'Speed'
-    },
-    {
-      id: 'health_desc',
-      label: 'Health'
-    },
-    {
-      id: 'accuracy_desc',
-      label: 'Accuracy'
-    },
-    {
-      id: 'evade_desc',
-      label: 'Evasiveness'
-    },
-    {
-      id: 'physical_desc',
-      label: 'Physical Power'
-    },
-    {
-      id: 'magic_desc',
-      label: 'Magic Power'
-    },
-    {
-      id: 'armor_desc',
-      label: 'Armor'
-    },
-    {
-      id: 'resist_desc',
-      label: 'Resistance'
-    },
-    {
-      id: 'crit_desc',
-      label: 'Critical Hit'
+      id: 'team',
+      label: 'Team Gotchis',
+      component: SourceGotchisTeam,
+      props: { incomingTeamGotchis: true }
     }
   ]
-  const resultSort = ref(sortOptions[0].id)
-  const availableGotchisFromSourceAnnotated = computed(() => {
-    if (!availableGotchisFromSource.value) { return null }
-    return availableGotchisFromSource.value.map(g => ({
-      ...g,
-      onchainIdString: `${g.onchainId}`,
-      nameLowercase: g.name?.toLowerCase() || ''
-    }))
+  const SOURCES_BY_ID = Object.fromEntries(SOURCES.map(s => [s.id, s]))
+
+  const sourceComponent = computed(() => {
+    return SOURCES_BY_ID[selectedSource.value]?.component || 'div'
   })
-  const filteredAvailableGotchis = computed(() => {
-    if (!availableGotchisFromSourceAnnotated.value) { return null }
-    let filtered = availableGotchisFromSourceAnnotated.value
-    if (query.value) {
-      const q = query.value.toLowerCase()
-      filtered = filtered.filter(gotchi => {
-        if (gotchi.onchainIdString === q) { return true }
-        if (gotchi.nameLowercase.includes(q)) { return true }
-        return false
-      })
+
+  const sourceComponentProps = computed(() => {
+    const propsRequested = SOURCES_BY_ID[selectedSource.value]?.props
+    const propsToProvide = {}
+    if (propsRequested) {
+      if (propsRequested.incomingTeamGotchis) {
+        propsToProvide.incomingTeamGotchis = incomingTeamGotchis.value
+      }
     }
-    let [sortAttribute, sortDirection] = resultSort.value.split('_')
-    const sorted = orderBy(filtered, [g => g[sortAttribute]], [sortDirection])
-    return sorted
+    return propsToProvide
   })
+
+  const availableSources = computed(() => {
+    const sources = []
+    if (myGotchisAllowed.value) {
+      sources.push(SOURCES_BY_ID['my'])
+    }
+    if (trainingGotchisAllowed.value) {
+      sources.push(SOURCES_BY_ID['training'])
+    }
+    if (onlyTeamGotchisAllowed.value) {
+      sources.push(SOURCES_BY_ID['team'])
+    }
+    return sources
+  })
+  const availableSourceTabs = computed(() => availableSources.value.map((source, i, sources) => ({
+    ...source,
+    grouped: sources.length > 0 ? ( i === 0 ? 'start' : i === sources.length - 1 ? 'end' : 'middle') : false
+  })))
+
+
+  const teamGotchis = ref([])
+  watch(
+    () => incomingTeamGotchis.value,
+    () => {
+      if (incomingTeamGotchis.value) {
+        teamGotchis.value = [].concat(incomingTeamGotchis.value)
+      } else {
+        teamGotchis.value = []
+      }
+    },
+    { immediate: true }
+  )
+  const teamGotchisById = computed(() => {
+    if (!teamGotchis.value) { return {} }
+    return Object.fromEntries(teamGotchis.value.map(g => [g.id, g]))
+  })
+  const addGotchiObjectToTeam = function (gotchi) {
+    if (!teamGotchisById.value[gotchi.id]) {
+      teamGotchis.value.push(gotchi)
+    }
+  }
 
   // Form data storage
   const teamName = ref('')
@@ -326,22 +244,23 @@
     specialByGotchiId.value = {}
   }
 
-  // In tournaments, if the available gotchis changes, remove any invalid ones from the team
-  // TODO simplify, this only needs to validate against 'my gotchis'
+  // In tournaments, can only use a restricted list of gotchis, so if this changes, remove any invalid ones from the team.
   watch(
-    () => [availableGotchisStatus.value, availableGotchis.value],
+    () => [onlyMyGotchisAllowed.value, onlyTeamGotchisAllowed.value, myGotchis.value, incomingTeamGotchis.value],
     () => {
-      if (anyGotchiAllowed.value) { return }
-      if (!availableGotchisStatus.value.loaded) { return }
-      if (!availableGotchis.value) {
+      if (!(onlyMyGotchisAllowed.value || onlyTeamGotchisAllowed.value)) { return }
+      if (onlyMyGotchisAllowed.value && !myGotchisFetchStatus.value.loaded) { return }
+      const allowedGotchis = onlyMyGotchisAllowed.value ? myGotchis.value : incomingTeamGotchis.value
+      if (!allowedGotchis) {
         clearTeamGotchis()
         return
       }
+      const allowedGotchiIds = allowedGotchis.map(g => g.id)
       for (const key of ALL_ROW_NAMES) {
         const row = teamFormation.value[key]
         for (let i = 0; i < row.length; i++) {
           const gotchiId = row[i]
-          if (gotchiId !== null && !availableGotchisById.value[gotchiId]) {
+          if (gotchiId !== null && !allowedGotchiIds.includes(gotchiId)) {
             row[i] = null
           }
         }
@@ -480,7 +399,7 @@
   )
 
   watch(
-    () => availableGotchisById.value,
+    () => teamGotchisById.value,
     (newGotchisById) => {
       if (newGotchisById) {
         // add entries for specials for each gotchi.
@@ -500,13 +419,13 @@
   )
 
   const gotchisInTeam = computed(() => {
-    if (!availableGotchis.value) { return null }
+    if (!teamGotchisById.value) { return null }
     const gotchiIds = [
       ...teamFormation.value.front,
       ...teamFormation.value.back,
       ...(teamFormation.value.substitutes || [])
     ].flat().filter(id => !!id)
-    return gotchiIds.map(id => availableGotchisById.value[id])
+    return gotchiIds.map(id => teamGotchisById.value[id])
   })
 
   const leaderGotchiId = computed(() => selectedLeaderSlot.value ? gotchiIdBySlotNumber.value[selectedLeaderSlot.value] || null : null)
@@ -629,12 +548,13 @@
     }
   }
 
-  function addGotchiToFormation ({ gotchiId, row, positionIndex }) {
+  function addGotchiToFormation ({ gotchi, row, positionIndex}) {
     const existingGotchiId = teamFormation.value[row][positionIndex]
-    if (existingGotchiId && existingGotchiId !== gotchiId) {
+    if (existingGotchiId && existingGotchiId !== gotchi.id) {
       removeGotchiFromFormation(existingGotchiId)
     }
-    teamFormation.value[row][positionIndex] = gotchiId
+    teamFormation.value[row][positionIndex] = gotchi.id
+    addGotchiObjectToTeam(gotchi)
   }
 
   for (let rowKey of ALL_ROW_NAMES) {
@@ -646,7 +566,7 @@
           if (newTargetArray.length) {
             // dropped a gotchi into this position
             removeGotchiFromFormation(newTargetArray[0].id)
-            addGotchiToFormation({ gotchiId: newTargetArray[0].id, row: rowKey, positionIndex })
+            addGotchiToFormation({ gotchi: newTargetArray[0], row: rowKey, positionIndex })
             // now clear this target array
             row[positionIndex] = []
           }
@@ -655,22 +575,24 @@
     }
   }
 
-  function addGotchiToSlot ({ gotchiId, slotNumber }) {
-    removeGotchiFromFormation(gotchiId)
+  function addGotchiToSlot ({ gotchi, slotNumber }) {
+    removeGotchiFromFormation(gotchi.id)
     for (const key of ROW_NAMES) {
       const row = selectedFormationPattern.value[key]
       for (let i = 0; i < row.length; i++) {
         if (row[i] === slotNumber) {
-          teamFormation.value[key][i] = gotchiId
+          teamFormation.value[key][i] = gotchi.id
+          addGotchiObjectToTeam(gotchi)
           return
         }
       }
     }
   }
 
-  function addGotchiAsSubstitute ({ gotchiId, position }) {
-    removeGotchiFromFormation(gotchiId)
-    teamFormation.value.substitutes[position - 1] = gotchiId
+  function addGotchiAsSubstitute ({ gotchi, position }) {
+    removeGotchiFromFormation(gotchi.id)
+    teamFormation.value.substitutes[position - 1] = gotchi.id
+    addGotchiObjectToTeam(gotchi)
   }
 
   function onMoveFromAvailable (event) {
@@ -681,14 +603,14 @@
   }
 
   // Store ID of gotchi to display in a details dialog.
-  // The gotchi must be present in the list of gotchis.
+  // The gotchi must be present in the list of team gotchis.
   // When it's set and we have gotchi details, open the dialog.
   // When the details dialog is closed, clear the stored gotchi ID.
   const displayGotchiId = ref(null)
   const displayGotchi = computed(() => {
-    if (!displayGotchiId.value || !availableGotchisById.value) { return null }
+    if (!displayGotchiId.value || !teamGotchisById.value) { return null }
     return {
-      ...availableGotchisById.value[displayGotchiId.value],
+      ...teamGotchisById.value[displayGotchiId.value],
       specialId: specialByGotchiId.value[displayGotchiId.value]
     }
   })
@@ -709,26 +631,27 @@
     }
   )
 
-  function autofill () {
-    teamName.value = 'Auto-filled Team'
-    removeAllGotchisFromFormation()
-    let added = 0
-    for (let i = 0; i < availableGotchis.value.length; i++) {
-      const gotchi = availableGotchis.value?.[i]
-      if (gotchi && !differentTeamForGotchi.value[gotchi.id]) {
-        addGotchiToSlot({
-          gotchiId: gotchi.id,
-          slotNumber: ++added
-        })
-        if (gotchi.availableSpecials.length > 1 && !specialByGotchiId.value[gotchi.id]) {
-          specialByGotchiId.value[gotchi.id] = gotchi.availableSpecials[0]
-        }
-        if (added === 5) {
-          return
-        }
-      }
-    }
-  }
+  // TODO reimplement
+  // function autofill () {
+  //   teamName.value = 'Auto-filled Team'
+  //   removeAllGotchisFromFormation()
+  //   let added = 0
+  //   for (let i = 0; i < availableGotchis.value.length; i++) {
+  //     const gotchi = availableGotchis.value?.[i]
+  //     if (gotchi && !differentTeamForGotchi.value[gotchi.id]) {
+  //       addGotchiToSlot({
+  //         gotchiId: gotchi.id,
+  //         slotNumber: ++added
+  //       })
+  //       if (gotchi.availableSpecials.length > 1 && !specialByGotchiId.value[gotchi.id]) {
+  //         specialByGotchiId.value[gotchi.id] = gotchi.availableSpecials[0]
+  //       }
+  //       if (added === 5) {
+  //         return
+  //       }
+  //     }
+  //   }
+  // }
 </script>
 
 <template>
@@ -787,82 +710,28 @@
         </div>
         <section class="create-team__gotchis">
           <SiteButtonGroup
-            v-if="myGotchisAllowed && trainingGotchisAllowed"
-            :numButtons="2"
+            v-if="availableSourceTabs.length > 1"
+            :numButtons="availableSourceTabs.length"
             class="create-team__gotchis-source"
           >
             <SiteButton
-              grouped="start"
-              :active="showGotchisSource === 'my'"
-              @click="showGotchisSource = 'my'"
+              v-for="tab in availableSourceTabs"
+              :key="tab.id"
+              :grouped="tab.grouped"
+              :active="selectedSource === tab.id"
+              @click="selectedSource = tab.id"
             >
-              My Gotchis
-            </SiteButton>
-            <SiteButton
-              grouped="end"
-              :active="showGotchisSource === 'training'"
-              @click="showGotchisSource = 'training'"
-            >
-              Training Gotchis
+              {{ tab.label }}
             </SiteButton>
           </SiteButtonGroup>
-          <div
-            v-if="availableGotchisFromSource?.length"
-            class="create-team__gotchis-search"
+          <component
+            v-if="sourceComponent"
+            :is="sourceComponent"
+            v-bind="sourceComponentProps"
           >
-            <SiteTextField
-              v-model="query"
-              placeholder="Search gotchis"
-              search
-              subtle
-            />
-          </div>
-          <div
-            v-if="availableGotchisFromSource?.length"
-            class="create-team__gotchis-sort"
-          >
-            Sort by:
-            <SiteSelect v-model="resultSort">
-              <option
-                v-for="option in sortOptions"
-                :key="option.id"
-                :value="option.id"
-              >
-                {{ option.label }}
-              </option>
-            </SiteSelect>
-          </div>
-          <div
-            v-if="showGotchisSource === 'my' && !address"
-            class="create-team__gotchis-connect-wallet"
-          >
-            <SiteConnectWallet />
-          </div>
-          <div
-            v-else
-            class="create-team__gotchis-available word-break"
-          >
-            <div
-              v-if="availableGotchisStatus.loading"
-              class="create-team__gotchis-loading"
-            >
-              Loading...
-            </div>
-            <div
-              v-if="availableGotchisStatus.error"
-              class="create-team__gotchis-error"
-            >
-              {{ availableGotchisStatus.errorMessage }}
-            </div>
-            <template v-else-if="availableGotchisFromSource">
-              <div
-                v-if="!filteredAvailableGotchis?.length"
-                class="create-team__gotchis-empty"
-              >
-                No gotchis found.
-              </div>
+            <template #gotchis="{ gotchisToDisplay }">
               <VueDraggable
-                v-model="filteredAvailableGotchis"
+                :list="gotchisToDisplay"
                 item-key="id"
                 :group="{ name: 'available', pull: 'clone', put: false }"
                 tag="ol"
@@ -945,7 +814,7 @@
                                 :class="{
                                   'create-team__gotchis-result-popup-slot-button--selected': gotchiIdBySlotNumber[i] === element.id
                                 }"
-                                @click="addGotchiToSlot({ gotchiId: element.id, slotNumber: i })"
+                                @click="addGotchiToSlot({ gotchi: element, slotNumber: i })"
                               >
                                 {{ i }}
                               </button>
@@ -963,7 +832,7 @@
                                 :class="{
                                   'create-team__gotchis-result-popup-slot-button--selected': teamFormation.substitutes[i - 1] === element.id
                                 }"
-                                @click="addGotchiAsSubstitute({ gotchiId: element.id, position: i })"
+                                @click="addGotchiAsSubstitute({ gotchi: element, position: i })"
                               >
                                 S{{ i }}
                               </button>
@@ -976,7 +845,7 @@
                 </template>
               </VueDraggable>
             </template>
-          </div>
+          </component>
         </section>
       </div>
       <div class="create-team__container create-team__container-2">
@@ -1391,15 +1260,15 @@
   .create-team__gotchis .create-team__section-label {
     margin-bottom: 0;
   }
-  .create-team__gotchis-search {
+  :deep(.create-team__gotchis-search) {
     max-width: 200px;
   }
-  .create-team__gotchis-connect-wallet {
+  :deep(.create-team__gotchis-connect-wallet) {
     padding-top: 1rem;
     display: grid;
     place-items: center;
   }
-  .create-team__gotchis-available {
+  :deep(.create-team__gotchis-available) {
     align-self: stretch;
     padding: 1rem;
     grid-column: 1 / 4;

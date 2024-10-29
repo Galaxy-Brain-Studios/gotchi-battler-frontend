@@ -1159,8 +1159,8 @@ function generateTrainingTeams () {
               ...DEFAULT_TRAINING_GOTCHI,
               name: `${difficultyTitle} Training Gotchi`,
               speed: DEFAULT_TRAINING_GOTCHI.speed + teams.length, // Change a value, so we can test sorting
-              magic: Math.round(DEFAULT_TRAINING_GOTCHI.magic * d/DIFFICULTIES.length), // Change values, so we can test battles with training difficulties
-              physical: Math.round(DEFAULT_TRAINING_GOTCHI.physical * d/DIFFICULTIES.length), // Change values, so we can test battles with training difficulties
+              magic: 1 + Math.round(DEFAULT_TRAINING_GOTCHI.magic * d/DIFFICULTIES.length), // Change values, so we can test battles with training difficulties
+              physical: 1 + Math.round(DEFAULT_TRAINING_GOTCHI.physical * d/DIFFICULTIES.length), // Change values, so we can test battles with training difficulties
               id: lastTrainingGotchiId,
               onchainId: lastTrainingGotchiId + ONCHAIN_ID_OFFSET,
               specialId,

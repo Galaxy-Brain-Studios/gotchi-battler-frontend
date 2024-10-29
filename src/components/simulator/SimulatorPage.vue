@@ -2,6 +2,7 @@
   import { ref } from 'vue'
   import uniqueId from 'lodash.uniqueid'
   import useStatus from '../../utils/useStatus'
+  import { generateTeamForBattle } from '../../data/teamUtils'
   import SiteHeading from '../common/SiteHeading.vue'
   import SiteButton from '../common/SiteButton.vue'
   import SiteButtonPrimary from '../common/SiteButtonPrimary.vue'
@@ -10,9 +11,8 @@
   import SiteTextField from '../common/SiteTextField.vue'
   import SiteTable from '../common/SiteTable.vue'
   import SavedTeamFormation from '../team/SavedTeamFormation.vue'
+  import CreateTeamDialog from '../team/CreateTeamDialog.vue'
   import battlesService from '@/data/battlesService'
-  import testTeam1 from './team1.json'
-  import testTeam2 from './team2.json'
 
   const matches = ref([])
 
@@ -21,8 +21,8 @@
   }
 
   const addMatch = function (originalMatch) {
-    const team1 = originalMatch ? originalMatch.team1 : testTeam1
-    const team2 = originalMatch ? originalMatch.team2 : testTeam2
+    const team1 = originalMatch?.team1 || null
+    const team2 = originalMatch?.team2 || null
     const match = {
       id: uniqueId('sim'),
       team1: copyTeam(team1),
@@ -30,6 +30,16 @@
     }
     resetMatchSimulations(match)
     matches.value.push(match)
+  }
+
+  const createTeamDialogIsOpen = ref(false)
+  const editMatchIndex = ref(null)
+  const editMatchTeamKey = ref(null)
+
+  const openEditTeam = function (matchIndex, teamKey) {
+    editMatchIndex.value = matchIndex
+    editMatchTeamKey.value = teamKey
+    createTeamDialogIsOpen.value = true
   }
 
   const resetMatchSimulations = function (match) {
@@ -55,6 +65,10 @@
   const delay = millis => new Promise(resolve => setTimeout(resolve, millis));
 
   const runSimulations = async function (match) {
+    if (!match.team1 || !match.team2) {
+      return
+    }
+
     resetMatchSimulations(match)
     const [isStale, setLoaded] = match.runStatus.setLoading()
     const PAUSE_EVERY = 100
@@ -76,11 +90,16 @@
       match.team2Results.overallWinner = match.team2Results.wins > match.team1Results.wins
     }
 
-    // TODO change to use in-browser team JSON format, and generateTeamForBattle before passing into battleService
+    const team1ForBattle = generateTeamForBattle(match.team1)
+    const team2ForBattle = generateTeamForBattle(match.team2)
+    const matchForBattle = {
+      team1: team1ForBattle,
+      team2: team2ForBattle
+    }
     while (runSoFar < numToRun) {
       const numLeftToRun = numToRun - runSoFar
       const numInBatch = numLeftToRun < PAUSE_EVERY ? numLeftToRun : PAUSE_EVERY
-      const batchResult = battlesService.runTrainingBattles(match, numInBatch)
+      const batchResult = battlesService.runTrainingBattles(matchForBattle, numInBatch)
       team1Wins += batchResult.team1Wins
       team2Wins += batchResult.team2Wins
       runSoFar += numInBatch
@@ -127,31 +146,65 @@
         </thead>
         <tbody>
           <tr
-            v-for="match in matches"
+            v-for="(match, matchIndex) in matches"
             :key="match.id"
             class="match__row"
           >
-            <td class="match__team">
+            <td
+              class="match__team"
+              :class="{
+                'match__team--empty': !match.team1
+              }"
+            >
               <div>
                 <SavedTeamFormation
+                  v-if="match.team1"
                   :team="match.team1"
                   class="match__team-formation"
                 />
                 <div class="match__team-actions">
-                  <div class="match__team-name word-break">{{ match.team1.name }}</div>
-                  <SiteButtonWhite small active>Edit</SiteButtonWhite>
+                  <div
+                    v-if="match.team1"
+                    class="match__team-name word-break"
+                  >
+                    {{ match.team1.name }}
+                  </div>
+                  <SiteButtonWhite
+                    small
+                    active
+                    @click="openEditTeam(matchIndex, 'team1')"
+                  >
+                    {{ match.team1 ? 'Edit' : 'Add Team' }}
+                  </SiteButtonWhite>
                 </div>
               </div>
             </td>
-            <td class="match__team">
+            <td
+              class="match__team"
+              :class="{
+                'match__team--empty': !match.team2
+              }"
+            >
               <div>
                 <SavedTeamFormation
+                  v-if="match.team2"
                   :team="match.team2"
                   class="match__team-formation"
                 />
                 <div class="match__team-actions">
-                  <div class="match__team-name word-break">{{ match.team2.name }}</div>
-                  <SiteButtonWhite small active>Edit</SiteButtonWhite>
+                  <div
+                    v-if="match.team2"
+                    class="match__team-name word-break"
+                  >
+                    {{ match.team2.name }}
+                  </div>
+                  <SiteButtonWhite
+                    small
+                    active
+                    @click="openEditTeam(matchIndex, 'team2')"
+                  >
+                    {{ match.team2 ? 'Edit' : 'Add Team' }}
+                  </SiteButtonWhite>
                 </div>
               </div>
             </td>
@@ -197,11 +250,13 @@
             <td class="match__actions">
               <div>
                 <SiteButtonSmall
+                  v-if="match.team1 || match.team2"
                   @click="addMatch(match)"
                 >
                   Duplicate
                 </SiteButtonSmall>
                 <SiteButtonSmall
+                  v-if="match.team1 && match.team2"
                   :disabled="match.runStatus.status.loading"
                   @click="runSimulations(match)"
                 >
@@ -247,6 +302,13 @@
         </SiteButtonPrimary>
       </div>
     </div>
+    <CreateTeamDialog
+      v-if="createTeamDialogIsOpen && matches[editMatchIndex]"
+      v-model:isOpen="createTeamDialogIsOpen"
+      v-model:team="matches[editMatchIndex][editMatchTeamKey]"
+      mode="create_training"
+      closeOnSave
+    />
   </div>
 </template>
 
@@ -288,6 +350,9 @@
     display: grid;
     place-items: center;
     gap: 0.5rem;
+  }
+  .match__team--empty .match__team-actions {
+    min-height: calc(6rem - 2 * var(--site-table-card-padding-size));
   }
 
   td.match__team-wins,

@@ -15,7 +15,7 @@ export default {
   async fetchTrainingTeams () {
     try {
       const teams = await api.get(urls.trainingTeams())
-      return teams.map(team => processTeamModel(team))
+      return teams.map(processTeamModel)
     } catch (e) {
       console.error('fetchTrainingTeams error', { ...e })
       throw new Error(e.json?.error || 'Error fetching training teams')

@@ -44,20 +44,15 @@
   const teamStore = useTeamStore({ teamId: props.id })()
   const { team, fetchStatus } = storeToRefs(teamStore)
 
-  const gotchisById = computed(() => {
-    if (!team.value?.gotchis) { return {} }
-    return Object.fromEntries(team.value.gotchis.map(gotchi => [gotchi.id, gotchi]))
-  })
-
-  const displayGotchiId = ref(null)
+  const displayGotchi = ref(null)
 
   const { status: deleteStatus, setLoading: setDeleteLoading, reset: resetDeleteStatus } = useStatus()
 
   watch(
     () => team.value,
     (newTeam) => {
-      if (newTeam && newTeam.leader) {
-        displayGotchiId.value = newTeam.leader
+      if (newTeam && newTeam.leader && newTeam.formation) {
+        displayGotchi.value = [...newTeam.formation.front, ...newTeam.formation.back].find(g => g?.id === newTeam.leader) || null
       }
       resetDeleteStatus()
     },
@@ -127,7 +122,7 @@
       <div class="team__formation">
         <TeamFormation
           :team="team"
-          :selectedGotchiId="displayGotchiId"
+          :selectedGotchiId="displayGotchi?.id"
           horizontal
           reverseRows
           withRowLabels
@@ -147,13 +142,13 @@
               isSelectable
               withSpecialInfoBadge
               variant="small"
-              @select="displayGotchiId = gotchi.id"
+              @select="displayGotchi = gotchi"
             />
           </template>
         </TeamFormation>
         <TeamSubstitutes
           :team="team"
-          :selectedGotchiId="displayGotchiId"
+          :selectedGotchiId="displayGotchi?.id"
           class="team__formation-substitutes"
         >
           <template #position>
@@ -169,7 +164,7 @@
               isSelectable
               withSpecialInfoBadge
               variant="small"
-              @select="displayGotchiId = gotchi.id"
+              @select="displayGotchi = gotchi"
             />
           </template>
         </TeamSubstitutes>
@@ -217,9 +212,9 @@
         </template>
       </div>
       <GotchiDetails
-        v-if="gotchisById[displayGotchiId]"
-        :gotchi="gotchisById[displayGotchiId]"
-        :isLeader="displayGotchiId === team.leader"
+        v-if="displayGotchi"
+        :gotchi="displayGotchi"
+        :isLeader="displayGotchi?.id === team.leader"
         :teamId="id"
         class="team__gotchi-details"
       />

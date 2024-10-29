@@ -88,6 +88,7 @@ export const useBattleAnalyserStore = function (id) {
 
 // Run a single training battle which can be displayed,
 // and also another 200 battles to get a win rate
+// Expect teams with formation of embedded gotchis.
 export const runTrainingBattle = function ({ team1, team2 }) {
   const team1ForBattle = generateTeamForBattle(team1)
   const team2ForBattle = generateTeamForBattle(team2)
@@ -107,7 +108,7 @@ export const runTrainingBattle = function ({ team1, team2 }) {
   // Generate training team difficulty based on the gotchis present in the team
   const team2Extended = {
     ...team2,
-    difficulty: findHighestTrainingPowerLevel(team2.gotchis)
+    difficulty: findHighestTrainingPowerLevel(team2)
   }
   const battle = {
     ...result,

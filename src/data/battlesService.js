@@ -4,11 +4,12 @@ import { processTeamModel } from './teamUtils'
 import { battle as runBattle } from 'gotchi-battler-game-logic'
 
 const processBattleModel = function (jsonData) {
-  const teams = [jsonData.team1 || null, jsonData.team2 || null]
+  const { team1, team2, ...restData } = jsonData
+  const teams = [team1 || null, team2 || null]
   return {
-    ...jsonData,
+    ...restData,
     teams: teams.map(team => processTeamModel(team)),
-    createdDate: jsonData.createdAt ? new Date(jsonData.createdAt) : null
+    createdDate: restData.createdAt ? new Date(restData.createdAt) : null
   }
 }
 

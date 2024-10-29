@@ -19,9 +19,10 @@
 
   const gotchisInSubstitutes = computed(() => {
     if (!props.team?.formation) { return null }
-    return (props.team.formation.substitutes || []).map((gotchiId, index) => ({
+    return (props.team.formation.substitutes || []).map((gotchiEntry, index) => ({
       position: index + 1,
-      gotchi: gotchisById.value[gotchiId]
+      // TODO this is a workaround to support both full objects and gotchi ids in substitutes array, but should migrate to using just full objects
+      gotchi: (gotchiEntry?.onchainId && gotchiEntry) || gotchisById.value[gotchiEntry]
     })).filter(entry => !!entry.gotchi)
   })
 
@@ -64,7 +65,7 @@
     >
       <slot
         name="gotchi"
-        :gotchi="gotchisById[entry.gotchi.id]"
+        :gotchi="entry.gotchi"
         :position="entry.position"
       />
     </div>

@@ -5,7 +5,7 @@
   import SiteButtonPrimary from '../common/SiteButtonPrimary.vue'
   import CreateTeamDialog from '../team/CreateTeamDialog.vue'
   import useStatus from '../../utils/useStatus'
-  import { generateTeamToSubmit } from '../../data/teamUtils'
+  import { generateTournamentTeamToSubmit } from '../../data/teamUtils'
   import tournamentsService from '../../data/tournamentsService'
 
   const props = defineProps({
@@ -48,7 +48,7 @@
     try {
       await tournamentsService.createTeam({
         tournamentId: props.tournamentId,
-        team: generateTeamToSubmit(team)
+        team: generateTournamentTeamToSubmit(team)
       })
       if (isStale()) { return }
       setLoaded()

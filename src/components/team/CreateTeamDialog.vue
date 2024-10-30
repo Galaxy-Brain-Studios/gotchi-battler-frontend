@@ -114,6 +114,7 @@
 
   const canChangeName = computed(() => !isEditMode.value)
   const withSubstitutes = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.EDIT].includes(props.mode))
+  const enableDuplicates = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING].includes(props.mode))
 
   // Fetch existing teams in tournament
   const { fetchTeams, teams } = useTournamentTeams()
@@ -277,6 +278,17 @@
   const selectedLeaderSlot = ref('1')
   const leaderGotchiId = computed(() => selectedLeaderSlot.value ? teamSlots.value.main[selectedLeaderSlot.value - 1]?.gotchiId || null : null)
 
+  let lastGeneratedGotchiId = 2000000
+  const generateUniqueGotchiId = function () {
+    const existingIds = teamSlotsGotchiIds.value
+    let newId = lastGeneratedGotchiId + 1
+    while (existingIds.includes(newId)) {
+      newId++
+    }
+    lastGeneratedGotchiId = newId
+    return newId
+  }
+
   function removeGotchiFromSlotsById (gotchiId) {
     let foundGotchiSlot = null
     for (const key in teamSlots.value) {
@@ -296,13 +308,25 @@
     teamSlots.value[type][slotNumber - 1] = null
   }
 
-  function addGotchiToSlot ({ gotchi, type, slotNumber }) {
-    console.log('addGotchiToSlot', { type, slotNumber, gotchi })
-    // TODO only remove gotchi if duplicates are not allowed
+  function addGotchiToSlot ({ gotchi, type, slotNumber, restoring }) {
+    const duplicatesEnabled = enableDuplicates.value
+    console.log('addGotchiToSlot', { type, slotNumber, gotchi, duplicatesEnabled, restoring })
+
+    // remove existing matching gotchi
+    // (can do even if duplicates are enabled, as duplicates should still have unique ids in this team)
     const removedSlot = removeGotchiFromSlotsById(gotchi.id)
 
     // Provided gotchi object might include embedded special
-    const { specialId: embeddedSpecialId, gotchi: gotchiObject} = deconstructEmbeddedGotchiFromSlot(gotchi)
+    const { specialId: embeddedSpecialId, gotchi: gotchiObject } = deconstructEmbeddedGotchiFromSlot(gotchi)
+
+    // if duplicates are allowed, generate a new id for this gotchi, which will only be used on the frontend
+    // (server will assign its own gotchi ids upon saving)
+    // But if we're restoring a saved team, don't generate new IDs:
+    // we can assume they will already be unique, and
+    // we need to preserve the saved ids so the leader ID can be matched up.
+    if (duplicatesEnabled && !restoring ) {
+      gotchiObject.id = generateUniqueGotchiId()
+    }
 
     // Selected special:
     // - if only one is available to this gotchi, that takes priority
@@ -320,7 +344,7 @@
       }
     }
     teamSlots.value[type][slotNumber - 1] = {
-      gotchiId: gotchi.id,
+      gotchiId: gotchiObject.id,
       specialId
     }
     addGotchiObjectToTeam(gotchiObject)
@@ -373,7 +397,7 @@
           if (slotNumber) {
             const gotchi = newTeam.formation[row][i]
             if (gotchi) {
-              addGotchiToSlot({ gotchi, type: 'main', slotNumber })
+              addGotchiToSlot({ gotchi, type: 'main', slotNumber, restoring: true })
             }
           }
         }
@@ -383,13 +407,12 @@
           const slotNumber = i + 1
           const gotchi = newTeam.formation.substitutes[i]
           if (gotchi) {
-            addGotchiToSlot({ gotchi, type: 'substitutes', slotNumber })
+            addGotchiToSlot({ gotchi, type: 'substitutes', slotNumber, restoring: true })
           }
         }
       }
       console.log('synced gotchis into slots', teamSlots.value, teamGotchis.value)
 
-      // TODO if incoming team 'leader' is the gotchi ID, what happens when duplicates are allowed?
       let leaderSlotNumber = 1
       if (newTeam.leader) {
         const leaderSlotIndex = teamSlots.value.main.findIndex(slot => slot?.gotchiId === newTeam.leader)
@@ -577,8 +600,7 @@
             const gotchi = newTargetArray[0]
             console.log('handle dropped gotchi', { gotchi, rowKey, positionIndex })
             // TODO Extra features:
-            // a) duplicate gotchis enabled/disabled (handle this within addGotchiToSlot)
-            // b) dragging within the formation to move a gotchi between slots (not duplicate)
+            // a) dragging within the formation to move a gotchi between slots
 
             // Determine the target slot corresponding to the row/position
             let targetSlotType = 'main'

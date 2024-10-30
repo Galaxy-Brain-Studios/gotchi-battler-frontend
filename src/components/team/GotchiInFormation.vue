@@ -140,7 +140,7 @@
       <template #popper>
         <div class="gotchi-in-formation__stats-popup">
           <div class="gotchi-in-formation__stats-popup-header">
-            {{ gotchi.name }} #{{ gotchi.id }}
+            {{ gotchi.name }} #{{ gotchi.onchainId || gotchi.id }}
           </div>
           <GotchiStats
             :gotchi="gotchi"

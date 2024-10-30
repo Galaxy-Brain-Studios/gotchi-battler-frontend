@@ -1,6 +1,7 @@
 import { api, apiText, apiWithCredentials, apiTextWithCredentials, urls } from './api'
 import { requireLoginSession } from './accountStore'
 import { notifyUpdate } from './useProfileUpdateNotifications'
+import { processTeamModel, generateTeamForBattle } from './teamUtils'
 
 export default {
   async fetchProfile (address) {
@@ -15,7 +16,7 @@ export default {
   async fetchProfileTeams () {
     try {
       const teams = await apiWithCredentials.get(urls.profileTeams())
-      return teams
+      return teams.map(processTeamModel)
     } catch (e) {
       console.error('fetchProfileTeams error', e)
       throw new Error(e.json?.error || 'Error fetching profile teams')
@@ -51,6 +52,26 @@ export default {
     } catch (e) {
       console.error('saveName error', e)
       throw new Error(e.json?.error || 'Error saving name')
+    }
+  }),
+
+  createTeam: requireLoginSession(async function (team) {
+    try {
+      const savedTeam = await apiWithCredentials.url(urls.createProfileTeam()).post(generateTeamForBattle(team))
+      return processTeamModel(savedTeam);
+    } catch (e) {
+      console.error('createTeam error', e)
+      throw new Error(e.json?.error || 'Error creating team')
+    }
+  }),
+
+  updateTeam: requireLoginSession(async function (team) {
+    try {
+      const savedTeam = await apiWithCredentials.url(urls.updateProfileTeam(team.id)).put(generateTeamForBattle(team))
+      return processTeamModel(savedTeam);
+    } catch (e) {
+      console.error('updateTeam error', e)
+      throw new Error(e.json?.error || 'Error updating team')
     }
   }),
 

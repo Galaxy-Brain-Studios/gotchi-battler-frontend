@@ -42,14 +42,16 @@ export const processTeamModel = function(team) {
   const back = teamBackPositionGotchiPropertyNames.map(propertyName => processGotchiModel(team[propertyName]))
   const front = teamFrontPositionGotchiPropertyNames.map(propertyName => processGotchiModel(team[propertyName]))
   const substitutes = teamSubstitutePositionGotchiPropertyNames.map(propertyName => processGotchiModel(team[propertyName]))
+  const formation = { back, front, substitutes }
 
   return {
     id: team.id,
     name: team.name,
     owner: team.owner?.toLowerCase(),
     difficulty,
-    formation: { back, front, substitutes },
-    leader: team.leader
+    formation,
+    leader: team.leader,
+    totalBrs: getTotalBrsFromFormation(formation)
   }
 }
 
@@ -88,10 +90,13 @@ export const generateTournamentTeamToSubmit = function (team) {
   }
 }
 
-
-const specialsStore = useSpecialsStore()
+// init this later, when pinia is init'ed
+let specialsStore = null
 
 const getSpecialForBattle = function (specialId) {
+  if (!specialsStore) {
+    specialsStore = useSpecialsStore()
+  }
   const special = specialsStore.specialsById[specialId]
   if (!special) { return null }
   // Only include the required properties from the game logic schema, because it will complain if there are unexpected properties
@@ -126,9 +131,20 @@ export const generateTeamForBattle = function (team) {
   const getGotchiForBattle = function (gotchi) {
     if (!gotchi) { return null }
     return {
-      // Only include the required properties from the game logic schema, because it will complain if there are unexpected properties
+      // Only include properties from the game logic schema, because it will complain if there are unexpected properties
       id: gotchi.id,
+      snapshotBlock: gotchi.snapshotBlock,
+      onchainId: gotchi.onchainId,
       name: gotchi.name,
+      brs: gotchi.brs,
+      nrg: gotchi.nrg,
+      agg: gotchi.agg,
+      spk: gotchi.spk,
+      brn: gotchi.brn,
+      eyc: gotchi.eyc,
+      eys: gotchi.eys,
+      kinship: gotchi.kinship,
+      xp: gotchi.xp,
       speed: gotchi.speed,
       health: gotchi.health,
       crit: gotchi.crit,
@@ -138,6 +154,8 @@ export const generateTeamForBattle = function (team) {
       magic: gotchi.magic,
       physical: gotchi.physical,
       accuracy: gotchi.accuracy,
+      attack: gotchi.attack,
+      actionDelay: gotchi.actionDelay,
       svgFront: gotchi.svgFront,
       svgBack: gotchi.svgBack,
       svgLeft: gotchi.svgLeft,
@@ -186,4 +204,15 @@ export const findHighestTrainingPowerLevel = (team) => {
   }
 
   return highestLevel
+}
+
+const getTotalBrsFromFormation = function(formation) {
+  const gotchis = getEmbeddedGotchisFromFormation(formation)
+  let total = 0
+  for (const gotchi of gotchis) {
+    if (gotchi.brs) {
+      total += gotchi.brs
+    }
+  }
+  return total
 }

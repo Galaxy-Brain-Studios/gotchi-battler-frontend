@@ -1,4 +1,5 @@
 import { createServer, Response } from 'miragejs'
+import uniqueId from 'lodash.uniqueid'
 
 import { urls } from '../data/api.js'
 import profiles from './profiles.json'
@@ -56,19 +57,40 @@ const profileTeamsByAddress = Object.fromEntries(Object.entries( profileTeamsFor
 const profileInventoryByAddress = Object.fromEntries(Object.entries( profileInventoryForAddress).map( ([address, inventory]) => [address.toLowerCase(), inventory] ) )
 const INVENTORY_ITEMS_BY_ID = Object.fromEntries(SHOP_ITEMS.map(item => [`${item.id}`, item]))
 
-const getTeamTotalBrs = function(team) {
-  // The totalBrs might be calculated differently in the real server, this is just to get an approx mock value.
-  const gotchis = [
-    team.back1Gotchi, team.back2Gotchi, team.back3Gotchi, team.back4Gotchi, team.back5Gotchi,
-    team.front1Gotchi, team.front2Gotchi, team.front3Gotchi, team.front4Gotchi, team.front5Gotchi
-  ].filter(g => g)
-  let total = 0
-  for (const gotchi of gotchis) {
-    if (gotchi.brs) {
-      total += gotchi.brs
-    }
+const getTeamModelFromFormationTeam = function (team) {
+  const [back1Gotchi, back2Gotchi, back3Gotchi, back4Gotchi, back5Gotchi] = team.formation.back
+  const [front1Gotchi, front2Gotchi, front3Gotchi, front4Gotchi, front5Gotchi] = team.formation.front
+  const [sub1Gotchi, sub2Gotchi] = team.formation.substitutes || [null, null]
+  return {
+    id: team.id,
+    name: team.name,
+    owner: team.owner,
+    leader: team.leader,
+    back1: back1Gotchi?.id,
+    back1Gotchi,
+    back2: back2Gotchi?.id,
+    back2Gotchi,
+    back3: back3Gotchi?.id,
+    back3Gotchi,
+    back4: back4Gotchi?.id,
+    back4Gotchi,
+    back5: back5Gotchi?.id,
+    back5Gotchi,
+    front1: front1Gotchi?.id,
+    front1Gotchi,
+    front2: front2Gotchi?.id,
+    front2Gotchi,
+    front3: front3Gotchi?.id,
+    front3Gotchi,
+    front4: front4Gotchi?.id,
+    front4Gotchi,
+    front5: front5Gotchi?.id,
+    front5Gotchi,
+    sub1: sub1Gotchi?.id,
+    sub1Gotchi,
+    sub2: sub2Gotchi?.id,
+    sub2Gotchi
   }
-  return total
 }
 
 const tournamentsById = Object.fromEntries(tournaments.map(t => [t.id, t]))
@@ -231,6 +253,14 @@ const mirageConfig = window.mirageConfig = {
   deleteProfileTeam: {
     error: false,
     slow: false
+  },
+  createProfileTeam: {
+    error: false,
+    slow: false
+  },
+  updateProfileTeam: {
+    error: true,
+    slow: true
   },
   generateImageUploadUrl: {
     error: false,
@@ -696,7 +726,7 @@ export function makeServer({ environment = 'development' } = {}) {
         const teams = (profileTeamsByAddress[address.toLowerCase()] || []).map(team => ({
           id: team.id,
           name: team.name,
-          totalBrs: getTeamTotalBrs(team),
+          owner: team.owner,
           leader: team.leader,
           ...Object.fromEntries(
             ['back1Gotchi', 'back2Gotchi', 'back3Gotchi', 'back4Gotchi', 'back5Gotchi',
@@ -705,13 +735,7 @@ export function makeServer({ environment = 'development' } = {}) {
               [
                 key,
                 (
-                  team[key] ?
-                  {
-                    id: team[key].id,
-                    svgFront: team[key].svgFront,
-                    specialId: team[key].specialId
-                  }
-                  : null
+                  team[key] || null
                 )
               ]
             )
@@ -822,6 +846,52 @@ export function makeServer({ environment = 'development' } = {}) {
         return profile
       }, {
         timing: mirageConfig.updateProfileImage.slow ? 3000 : 1000
+      })
+
+      this.post(fixUrl(urls.createProfileTeam()), async (schema, request) => {
+        if (mirageConfig.createProfileTeam.error) {
+          return errorResponse()
+        }
+        const address = checkCredentials(request)
+        if (!address) { return unauthorizedErrorResponse() }
+        const addressLc = address.toLowerCase()
+
+        const team = JSON.parse(request.requestBody)
+        // save it to the profile teams
+        if (!profileTeamsByAddress[addressLc]) {
+          profileTeamsByAddress[addressLc] = []
+        }
+        const teamModel = getTeamModelFromFormationTeam(team)
+        teamModel.owner = address
+        teamModel.id = uniqueId('team')
+        profileTeamsByAddress[addressLc].push(teamModel)
+        return teamModel
+      }, {
+        timing: mirageConfig.createProfileTeam.slow ? 3000 : 1000
+      })
+
+      this.post(fixUrl(urls.updateProfileTeam(':teamId')), async (schema, request) => {
+        if (mirageConfig.updateProfileTeam.error) {
+          return errorResponse()
+        }
+        const address = checkCredentials(request)
+        if (!address) { return unauthorizedErrorResponse() }
+        const addressLc = address.toLowerCase()
+
+        const { teamId } = request.params
+
+        const team = JSON.parse(request.requestBody)
+        // save it to the profile teams
+        if (!profileTeamsByAddress[addressLc]) {
+          profileTeamsByAddress[addressLc] = []
+        }
+        const teamModel = getTeamModelFromFormationTeam(team)
+        const newTeams = profileTeamsByAddress[addressLc].filter(t => `${t.id}` !== `${teamId}`)
+        newTeams.push(teamModel)
+        profileTeamsByAddress[addressLc] = newTeams
+        return teamModel
+      }, {
+        timing: mirageConfig.updateProfileTeam.slow ? 3000 : 1000
       })
 
       this.delete(fixUrl(urls.deleteProfileTeam({ teamId: ':teamId' })), async (schema, request) => {

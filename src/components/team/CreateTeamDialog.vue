@@ -5,6 +5,8 @@
   import { useAccountStore } from '../../data/accountStore'
   import useTournamentTeams from '../../data/useTournamentTeams'
   import { getEmbeddedGotchisFromFormation } from '../../data/teamUtils'
+  import profileService from '../../data/profileService'
+  import useStatus from '../../utils/useStatus'
   import VueDraggable from 'vuedraggable'
   import SiteDialog from '../common/SiteDialog.vue'
   import SiteButtonPrimary from '../common/SiteButtonPrimary.vue'
@@ -492,11 +494,13 @@
   })
   const showError = ref(false)
   const showValidationError = ref(false)
+  const showProfileTeamError = ref(false)
   watch(
     () => teamToSave.value,
     () => {
       showError.value = false
       showValidationError.value = false
+      showProfileTeamError.value = false
     }
   )
 
@@ -505,6 +509,8 @@
       showError.value = false
     } else if (showValidationError.value) {
       showValidationError.value = false
+    } else if (showProfileTeamError.value) {
+      showProfileTeamError.value = false
     }
   }
 
@@ -522,6 +528,33 @@
     }
   }
 
+
+  const canSaveProfileTeam = computed(() => !!address.value)
+  const { status: submitProfileTeamStatus, setLoading: setProfileTeamLoading } = useStatus()
+
+  async function saveProfileTeam () {
+    if (validationError.value) {
+      showValidationError.value = true
+      return
+    }
+
+    showProfileTeamError.value = true
+    const teamData = teamToSave.value
+
+    const [isStale, setLoaded, setError] = setProfileTeamLoading()
+    try {
+      const savedTeam = await profileService.createTeam({
+        owner: address.value,
+        ...teamData
+      })
+      if (isStale()) { return; }
+      setLoaded()
+      const savedTeamId = savedTeam?.id
+      console.log('savedProfileTeam TODO: refetch saved teams, set active saved team id', savedTeamId)
+    } catch (e) {
+      setError(e.message)
+    }
+  }
 
   // Moving gotchis from available list to the formation
 
@@ -637,7 +670,7 @@
     @update:isOpen="$emit('update:isOpen', $event)"
   >
     <div
-      v-if="(showError && errorMessage) || (showValidationError && validationError)"
+      v-if="(showError && errorMessage) || (showValidationError && validationError) || (showProfileTeamError && submitProfileTeamStatus.errorMessage)"
       class="create-team-error"
     >
       <SiteError>
@@ -645,8 +678,11 @@
           <template v-if="(showError && errorMessage)">
             {{ errorMessage }}
           </template>
-          <template v-else>
+          <template v-else-if="(showValidationError && validationError)">
             {{ validationError }}
+          </template>
+          <template v-else>
+            {{ submitProfileTeamStatus.errorMessage }}
           </template>
           <button
             type="button"
@@ -1014,18 +1050,37 @@
           </div>
         </div>
         <div class="create-team__submit">
-          <SiteButtonPrimary
-            v-if="isSaving"
-            disabled
+          <div
+            v-if="canSaveProfileTeam"
+            class="create-team__submit--profile"
           >
-            Saving...
-          </SiteButtonPrimary>
-          <SiteButtonPrimary
-            v-else
-            @click="saveTeam"
-          >
-            Save Team
-          </SiteButtonPrimary>
+            <SiteButton
+              v-if="submitProfileTeamStatus.loading"
+              disabled
+            >
+              Saving...
+            </SiteButton>
+            <SiteButton
+              v-else
+              @click="saveProfileTeam"
+            >
+              Add to Saved Teams
+            </SiteButton>
+          </div>
+          <div class="create-team__submit--main">
+            <SiteButtonPrimary
+              v-if="isSaving"
+              disabled
+            >
+              Saving...
+            </SiteButtonPrimary>
+            <SiteButtonPrimary
+              v-else
+              @click="saveTeam"
+            >
+              Save Team
+            </SiteButtonPrimary>
+          </div>
         </div>
       </div>
     </div>
@@ -1192,7 +1247,11 @@
 
   .create-team__submit {
     grid-column: 1 / span 2;
-    display: grid;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: center;
   }
 
   .create-team__section-label {

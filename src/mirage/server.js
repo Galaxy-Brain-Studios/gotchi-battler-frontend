@@ -230,6 +230,10 @@ const mirageConfig = window.mirageConfig = {
     error: false,
     slow: false
   },
+  profileFull: {
+    error: false,
+    slow: false
+  },
   profileTeams: {
     error: false,
     slow: false
@@ -716,14 +720,9 @@ export function makeServer({ environment = 'development' } = {}) {
         timing: mirageConfig.profile.slow ? 5000 : 100
       })
 
-      this.get(fixUrl(urls.profileTeams()), (schema, request) => {
-        if (mirageConfig.profileTeams.error) {
-          return errorResponse()
-        }
-        const address = checkCredentials(request)
-        if (!address) { return unauthorizedErrorResponse() }
 
-        const teams = (profileTeamsByAddress[address.toLowerCase()] || []).map(team => ({
+      const getProfileTeamsResponse = function (address) {
+        return (profileTeamsByAddress[address.toLowerCase()] || []).map(team => ({
           id: team.id,
           name: team.name,
           owner: team.owner,
@@ -740,8 +739,46 @@ export function makeServer({ environment = 'development' } = {}) {
               ]
             )
           )
-        }));
-        return teams
+        }))
+      }
+
+      const getProfileInventoryResponse = function (address) {
+        const inventoryCounts = (profileInventoryByAddress[address.toLowerCase()] || {});
+        return Object.entries(inventoryCounts).map(([itemId, count]) => ({
+          ...INVENTORY_ITEMS_BY_ID[itemId],
+          count
+        }))
+      }
+
+      this.get(fixUrl(urls.profileFull()), (schema, request) => {
+        if (mirageConfig.profileFull.error) {
+          return errorResponse()
+        }
+        const address = checkCredentials(request)
+        if (!address) { return unauthorizedErrorResponse() }
+        const addressLc = address.toLowerCase()
+
+        const profile = profilesByAddress[addressLc] || {
+          ...profilesByAddress['DEFAULT'.toLowerCase()],
+          address
+        };
+        return {
+          ...profile,
+          teams: getProfileTeamsResponse(address),
+          items: getProfileInventoryResponse(address)
+        }
+      }, {
+        timing: mirageConfig.profile.slow ? 5000 : 100
+      })
+
+      this.get(fixUrl(urls.profileTeams()), (schema, request) => {
+        if (mirageConfig.profileTeams.error) {
+          return errorResponse()
+        }
+        const address = checkCredentials(request)
+        if (!address) { return unauthorizedErrorResponse() }
+
+        return getProfileTeamsResponse(address)
       }, {
         timing: mirageConfig.profileTeams.slow ? 3000 : 100
       })
@@ -753,11 +790,7 @@ export function makeServer({ environment = 'development' } = {}) {
         const address = checkCredentials(request)
         if (!address) { return unauthorizedErrorResponse() }
 
-        const inventoryCounts = (profileInventoryByAddress[address.toLowerCase()] || {});
-        return Object.entries(inventoryCounts).map(([itemId, count]) => ({
-          ...INVENTORY_ITEMS_BY_ID[itemId],
-          count
-        }))
+        return getProfileInventoryResponse(address)
       }, {
         timing: mirageConfig.profileInventory.slow ? 3000 : 100
       })

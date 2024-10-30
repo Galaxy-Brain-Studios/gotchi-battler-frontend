@@ -32,6 +32,32 @@ export default function useProfile (address) {
     }
   }
 
+  // Batch fetch full profile teams and inventory for the currently-signed-in user
+  const fetchMyFullProfile = async function () {
+    const [isTeamsStale, setTeamsLoaded, setTeamsError] = setTeamsLoading()
+    const [isInventoryStale , setInventoryLoaded, setInventoryError] = setInventoryLoading()
+    const isStale = () => isTeamsStale() || isInventoryStale()
+    const setLoaded = () => {
+      setTeamsLoaded()
+      setInventoryLoaded()
+    }
+    const setError = message => {
+      setTeamsError(message)
+      setInventoryError(message)
+    }
+    try {
+      const result = await profileService.fetchMyFullProfile()
+      if (isStale()) { return; }
+      profile.value = result.profile
+      teams.value = result.teams
+      inventory.value = result.items
+      setLoaded()
+    } catch (e) {
+      console.error('Error fetching my full profile', e)
+      setError(e.message)
+    }
+  }
+
   const teams = ref(null)
   const { status: fetchTeamsStatus, setLoading: setTeamsLoading } = useStatus()
   const fetchTeams = async function () {
@@ -71,6 +97,7 @@ export default function useProfile (address) {
     fetchProfile,
     fetchProfileStatus,
     setProfile,
+    fetchMyFullProfile,
     teams,
     fetchTeams,
     fetchTeamsStatus,

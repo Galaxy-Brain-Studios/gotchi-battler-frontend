@@ -180,15 +180,6 @@
     { immediate: true }
   )
 
-  const selectedSource = ref('my') // 'my', 'training', 'team'
-  watch(
-    () => [myGotchisAllowed.value, address.value, trainingGotchisAllowed.value],
-    () => {
-      selectedSource.value = myGotchisAllowed.value && address.value ? 'my' : trainingGotchisAllowed.value ? 'training' : 'team'
-    },
-    { immediate: true }
-  )
-
   const SOURCE_TYPE = {
     GOTCHI: 'gotchi',
     TEAM: 'team'
@@ -222,25 +213,6 @@
   ]
   const SOURCES_BY_ID = Object.fromEntries(SOURCES.map(s => [s.id, s]))
 
-  const sourceComponent = computed(() => {
-    return SOURCES_BY_ID[selectedSource.value]?.component || 'div'
-  })
-
-  const sourceComponentType = computed(() => {
-    return SOURCES_BY_ID[selectedSource.value]?.type
-  })
-
-  const sourceComponentProps = computed(() => {
-    const propsRequested = SOURCES_BY_ID[selectedSource.value]?.props
-    const propsToProvide = {}
-    if (propsRequested) {
-      if (propsRequested.incomingTeamGotchis) {
-        propsToProvide.incomingTeamGotchis = incomingTeamGotchis.value
-      }
-    }
-    return propsToProvide
-  })
-
   const availableSources = computed(() => {
     const sources = []
     if (myGotchisAllowed.value) {
@@ -261,6 +233,37 @@
     ...source,
     grouped: sources.length > 0 ? ( i === 0 ? 'start' : i === sources.length - 1 ? 'end' : 'middle') : false
   })))
+
+
+  const selectedSource = ref(null)
+  watch(
+    () => [myGotchisAllowed.value, address.value, trainingGotchisAllowed.value],
+    () => {
+      if (!selectedSource.value || !availableSources.value.map(s => s.id).includes(selectedSource.value)) {
+        selectedSource.value = availableSources.value[0].id
+      }
+    },
+    { immediate: true }
+  )
+
+  const sourceComponent = computed(() => {
+    return SOURCES_BY_ID[selectedSource.value]?.component || 'div'
+  })
+
+  const sourceComponentType = computed(() => {
+    return SOURCES_BY_ID[selectedSource.value]?.type
+  })
+
+  const sourceComponentProps = computed(() => {
+    const propsRequested = SOURCES_BY_ID[selectedSource.value]?.props
+    const propsToProvide = {}
+    if (propsRequested) {
+      if (propsRequested.incomingTeamGotchis) {
+        propsToProvide.incomingTeamGotchis = incomingTeamGotchis.value
+      }
+    }
+    return propsToProvide
+  })
 
 
   // Form data storage

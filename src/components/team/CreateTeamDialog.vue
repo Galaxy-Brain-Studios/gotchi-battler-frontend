@@ -119,6 +119,13 @@
   const withSubstitutes = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.EDIT].includes(props.mode))
   const enableDuplicates = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING].includes(props.mode))
 
+  const primarySaveLabel = computed(() => {
+    if ([EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING].includes(props.mode)) {
+      return 'Use Team'
+    }
+    return 'Save Team'
+  })
+
   // Fetch existing teams in tournament
   const { fetchTeams, teams } = useTournamentTeams()
   watch(
@@ -1146,7 +1153,7 @@
               v-else
               @click="saveTeam"
             >
-              Save Team
+              {{ primarySaveLabel }}
             </SiteButtonPrimary>
           </div>
         </div>

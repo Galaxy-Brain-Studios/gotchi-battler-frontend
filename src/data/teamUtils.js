@@ -109,6 +109,40 @@ const getSpecialForBattle = function (specialId) {
 }
 
 
+const GOTCHI_PROPS_REQUIRED = [
+  "id",
+  "name",
+  "speed",
+  "health",
+  "crit",
+  "armor",
+  "evade",
+  "resist",
+  "magic",
+  "physical",
+  "accuracy",
+  "svgFront",
+  "svgBack",
+  "svgLeft",
+  "svgRight",
+  "specialId",
+  "special"
+]
+const GOTCHI_PROPS_OPTIONAL = [
+  "snapshotBlock",
+  "onchainId",
+  "brs",
+  "nrg",
+  "agg",
+  "spk",
+  "brn",
+  "eyc",
+  "eys",
+  "kinship",
+  "xp",
+  "attack",
+  "actionDelay"
+]
 // Convert formation with embedded gotchis ({ formation: { front, back, substitutes } })
 // to essentially the same but stricter version for passing to game logic
 export const generateTeamForBattle = function (team) {
@@ -130,39 +164,19 @@ export const generateTeamForBattle = function (team) {
 
   const getGotchiForBattle = function (gotchi) {
     if (!gotchi) { return null }
-    return {
-      // Only include properties from the game logic schema, because it will complain if there are unexpected properties
-      id: gotchi.id,
-      snapshotBlock: gotchi.snapshotBlock,
-      onchainId: gotchi.onchainId,
-      name: gotchi.name,
-      brs: gotchi.brs,
-      nrg: gotchi.nrg,
-      agg: gotchi.agg,
-      spk: gotchi.spk,
-      brn: gotchi.brn,
-      eyc: gotchi.eyc,
-      eys: gotchi.eys,
-      kinship: gotchi.kinship,
-      xp: gotchi.xp,
-      speed: gotchi.speed,
-      health: gotchi.health,
-      crit: gotchi.crit,
-      armor: gotchi.armor,
-      evade: gotchi.evade,
-      resist: gotchi.resist,
-      magic: gotchi.magic,
-      physical: gotchi.physical,
-      accuracy: gotchi.accuracy,
-      attack: gotchi.attack,
-      actionDelay: gotchi.actionDelay,
-      svgFront: gotchi.svgFront,
-      svgBack: gotchi.svgBack,
-      svgLeft: gotchi.svgLeft,
-      svgRight: gotchi.svgRight,
-      specialId: gotchi.specialId,
-      special: getSpecialForBattle(gotchi.specialId)
+    const result = {}
+    // Only include properties from the game logic schema, because it will complain if there are unexpected properties
+    for (const prop of GOTCHI_PROPS_REQUIRED) {
+      result[prop] = gotchi[prop]
     }
+    result.special = getSpecialForBattle(gotchi.specialId)
+    // Don't include properties with undefined values, as that will also complain
+    for (const prop of GOTCHI_PROPS_OPTIONAL) {
+      if (typeof gotchi[prop] !== 'undefined') {
+        result[prop] = gotchi[prop]
+      }
+    }
+    return result
   }
   const teamForBattle = {
     formation: {

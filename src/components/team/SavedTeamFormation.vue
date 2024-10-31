@@ -10,18 +10,9 @@
   })  
 
   const rows = computed(() => {
-    // TODO be consistent about what format team is in? This formation is used by SimulatorPage, perhaps temporarily
-    if (props.team?.formation) {
-      return ['front', 'back'].map(row => {
-        return [1, 2, 3, 4, 5].map(position => {
-          const gotchi = props.team.formation[row][position - 1]
-          return gotchi || null
-        })
-      })
-    }
     return ['front', 'back'].map(row => {
       return [1, 2, 3, 4, 5].map(position => {
-        const gotchi = props.team?.[`${row}${position}Gotchi`]
+        const gotchi = props.team.formation[row][position - 1]
         return gotchi || null
       })
     })

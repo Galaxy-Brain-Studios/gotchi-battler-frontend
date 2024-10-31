@@ -9,7 +9,7 @@
 </script>
 
 <template>
-  <div class="profile-sign-in">
+  <div class="site-sign-in">
     <SiteButtonPrimary
       :disabled="signingInStatus.loading"
       @click="accountStore.signIntoSession"
@@ -24,7 +24,7 @@
 </template>
 
 <style scoped>
-  .profile-sign-in {
+  .site-sign-in {
     display: grid;
     place-items: center;
     gap: 1rem;

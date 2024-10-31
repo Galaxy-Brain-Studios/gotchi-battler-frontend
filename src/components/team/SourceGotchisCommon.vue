@@ -96,7 +96,7 @@
 <template>
   <div
     v-if="gotchis?.length"
-    class="create-team__gotchis-search"
+    class="create-team-source__search"
   >
     <SiteTextField
       v-model="query"
@@ -105,10 +105,7 @@
       subtle
     />
   </div>
-  <div
-    v-if="gotchis?.length"
-    class="create-team__gotchis-sort"
-  >
+  <div v-if="gotchis?.length">
     Sort by:
     <SiteSelect v-model="resultSort">
       <option
@@ -120,24 +117,15 @@
       </option>
     </SiteSelect>
   </div>
-  <div class="create-team__gotchis-available word-break">
-    <div
-      v-if="fetchStatus.loading"
-      class="create-team__gotchis-loading"
-    >
+  <div class="create-team-source__items-available word-break">
+    <div v-if="fetchStatus.loading">
       Loading...
     </div>
-    <div
-      v-else-if="fetchStatus.error"
-      class="create-team__gotchis-error"
-    >
+    <div v-else-if="fetchStatus.error">
       {{ fetchStatus.errorMessage }}
     </div>
     <template v-else-if="fetchStatus.loaded">
-      <div
-        v-if="!gotchisToDisplay?.length"
-        class="create-team__gotchis-empty"
-      >
+      <div v-if="!gotchisToDisplay?.length">
         No gotchis found.
       </div>
       <slot

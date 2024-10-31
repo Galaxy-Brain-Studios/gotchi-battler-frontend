@@ -29,6 +29,7 @@
   import SourceGotchisMy from './SourceGotchisMy.vue'
   import SourceGotchisTraining from './SourceGotchisTraining.vue'
   import SourceGotchisTeam from './SourceGotchisTeam.vue'
+  import SourceSavedTeams from './SourceSavedTeams.vue'
 
   const ROW_NAMES = ['front', 'back']
   const ALL_ROW_NAMES = [...ROW_NAMES, 'substitutes']
@@ -112,6 +113,8 @@
   const onlyMyGotchisAllowed = computed(() => [EDIT_MODES.CREATE].includes(props.mode))
   const onlyTeamGotchisAllowed = computed(() => [EDIT_MODES.EDIT].includes(props.mode))
 
+  const savedTeamsAvailable = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING].includes(props.mode))
+
   const canChangeName = computed(() => !isEditMode.value)
   const withSubstitutes = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.EDIT].includes(props.mode))
   const enableDuplicates = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING].includes(props.mode))
@@ -179,28 +182,45 @@
     { immediate: true }
   )
 
+  const SOURCE_TYPE = {
+    GOTCHI: 'gotchi',
+    TEAM: 'team'
+  }
   const SOURCES = [
     {
       id: 'my',
       label: 'My Gotchis',
-      component: SourceGotchisMy
+      component: SourceGotchisMy,
+      type: SOURCE_TYPE.GOTCHI
     },
     {
       id: 'training',
       label: 'Training Gotchis',
-      component: SourceGotchisTraining
+      component: SourceGotchisTraining,
+      type: SOURCE_TYPE.GOTCHI
     },
     {
       id: 'team',
       label: 'Team Gotchis',
       component: SourceGotchisTeam,
-      props: { incomingTeamGotchis: true }
+      props: { incomingTeamGotchis: true },
+      type: SOURCE_TYPE.GOTCHI
+    },
+    {
+      id: 'savedteams',
+      label: 'Saved Teams',
+      component: SourceSavedTeams,
+      type: SOURCE_TYPE.TEAM
     }
   ]
   const SOURCES_BY_ID = Object.fromEntries(SOURCES.map(s => [s.id, s]))
 
   const sourceComponent = computed(() => {
     return SOURCES_BY_ID[selectedSource.value]?.component || 'div'
+  })
+
+  const sourceComponentType = computed(() => {
+    return SOURCES_BY_ID[selectedSource.value]?.type
   })
 
   const sourceComponentProps = computed(() => {
@@ -224,6 +244,9 @@
     }
     if (onlyTeamGotchisAllowed.value) {
       sources.push(SOURCES_BY_ID['team'])
+    }
+    if (savedTeamsAvailable.value) {
+      sources.push(SOURCES_BY_ID['savedteams'])
     }
     return sources
   })
@@ -376,52 +399,56 @@
   )
 
   // Sync incoming team data
+  function loadTeam (newTeam) {
+    if (!newTeam) { return }
+    const pattern = findMatchingFormationPattern(newTeam.formation)
+    if (!pattern) {
+      // if we don't recognise the formation pattern, don't load the team
+      return
+    }
+    teamName.value = newTeam.name || ''
+    selectedFormationPatternId.value = pattern.id
+    console.log('Sync incoming team data', { newTeam, pattern })
+    // translate incoming formation (front, back, substitutes) into slots (main, substitutes) and teamGotchis (objects)
+    clearTeamSlots()
+    for (const row of ROW_NAMES) {
+      const formationRow = pattern[row]
+      for (let i = 0; i < formationRow.length; i++) {
+        const slotNumber = formationRow[i]
+        if (slotNumber) {
+          const gotchi = newTeam.formation[row][i]
+          if (gotchi) {
+            addGotchiToSlot({ gotchi, type: 'main', slotNumber, restoring: true })
+          }
+        }
+      }
+    }
+    if (newTeam.formation.substitutes) {
+      for (let i = 0; i < newTeam.formation.substitutes.length; i++) {
+        const slotNumber = i + 1
+        const gotchi = newTeam.formation.substitutes[i]
+        if (gotchi) {
+          addGotchiToSlot({ gotchi, type: 'substitutes', slotNumber, restoring: true })
+        }
+      }
+    }
+    console.log('synced gotchis into slots', teamSlots.value, teamGotchis.value)
+
+    let leaderSlotNumber = 1
+    if (newTeam.leader) {
+      const leaderSlotIndex = teamSlots.value.main.findIndex(slot => slot?.gotchiId === newTeam.leader)
+      if (leaderSlotIndex !== -1) {
+        leaderSlotNumber = leaderSlotIndex + 1
+      }
+    }
+    selectedLeaderSlot.value = `${leaderSlotNumber}`
+    console.log('synced leader', { leaderId: newTeam.leader, leaderSlot: selectedLeaderSlot.value })
+  }
+
   watch(
     () => props.team,
     (newTeam) => {
-      if (!newTeam) { return }
-      const pattern = findMatchingFormationPattern(newTeam.formation)
-      if (!pattern) {
-        // if we don't recognise the formation pattern, don't load the team
-        return
-      }
-      teamName.value = newTeam.name || ''
-      selectedFormationPatternId.value = pattern.id
-      console.log('Sync incoming team data', { newTeam, pattern })
-      // translate incoming formation (front, back, substitutes) into slots (main, substitutes) and teamGotchis (objects)
-      clearTeamSlots()
-      for (const row of ROW_NAMES) {
-        const formationRow = pattern[row]
-        for (let i = 0; i < formationRow.length; i++) {
-          const slotNumber = formationRow[i]
-          if (slotNumber) {
-            const gotchi = newTeam.formation[row][i]
-            if (gotchi) {
-              addGotchiToSlot({ gotchi, type: 'main', slotNumber, restoring: true })
-            }
-          }
-        }
-      }
-      if (newTeam.formation.substitutes) {
-        for (let i = 0; i < newTeam.formation.substitutes.length; i++) {
-          const slotNumber = i + 1
-          const gotchi = newTeam.formation.substitutes[i]
-          if (gotchi) {
-            addGotchiToSlot({ gotchi, type: 'substitutes', slotNumber, restoring: true })
-          }
-        }
-      }
-      console.log('synced gotchis into slots', teamSlots.value, teamGotchis.value)
-
-      let leaderSlotNumber = 1
-      if (newTeam.leader) {
-        const leaderSlotIndex = teamSlots.value.main.findIndex(slot => slot?.gotchiId === newTeam.leader)
-        if (leaderSlotIndex !== -1) {
-          leaderSlotNumber = leaderSlotIndex + 1
-        }
-      }
-      selectedLeaderSlot.value = `${leaderSlotNumber}`
-      console.log('synced leader', { leaderId: newTeam.leader, leaderSlot: selectedLeaderSlot.value })
+      loadTeam(newTeam)
     },
     { immediate: true }
   )
@@ -577,6 +604,11 @@
     } catch (e) {
       setError(e.message)
     }
+  }
+
+  function loadSavedTeam (team) {
+    console.log('load saved team: TODO set active saved id', team)
+    loadTeam(team)
   }
 
   // Moving gotchis from available list to the formation
@@ -758,7 +790,7 @@
             </SiteButton>
           </SiteButtonGroup>
           <component
-            v-if="sourceComponent"
+            v-if="sourceComponent && sourceComponentType === SOURCE_TYPE.GOTCHI"
             :is="sourceComponent"
             v-bind="sourceComponentProps"
           >
@@ -877,6 +909,20 @@
                   </li>
                 </template>
               </VueDraggable>
+            </template>
+          </component>
+          <component
+            v-else-if="sourceComponent && sourceComponentType === SOURCE_TYPE.TEAM"
+            :is="sourceComponent"
+            v-bind="sourceComponentProps"
+          >
+            <template #actions="{ team }">
+              <SiteButton
+                small
+                @click="loadSavedTeam(team)"
+              >
+                Apply
+              </SiteButton>
             </template>
           </component>
         </section>
@@ -1316,15 +1362,15 @@
   .create-team__gotchis .create-team__section-label {
     margin-bottom: 0;
   }
-  :deep(.create-team__gotchis-search) {
+  :deep(.create-team-source__search) {
     max-width: 200px;
   }
-  :deep(.create-team__gotchis-connect-wallet) {
+  :deep(.create-team-source__connect-wallet) {
     padding-top: 1rem;
     display: grid;
     place-items: center;
   }
-  :deep(.create-team__gotchis-available) {
+  :deep(.create-team-source__items-available) {
     align-self: stretch;
     padding: 1rem;
     grid-column: 1 / 4;

@@ -2,10 +2,10 @@
   import { storeToRefs } from 'pinia'
   import { useAccountStore } from '../../data/accountStore'
   import SiteConnectWallet from '../site/SiteConnectWallet.vue'
-  import SourceGotchisCommon from './SourceGotchisCommon.vue'
+  import CommonSavedTeams from '../profile/CommonSavedTeams.vue'
 
   const store = useAccountStore()
-  const { address, myGotchis, myGotchisFetchStatus } = storeToRefs(store)
+  const { address } = storeToRefs(store)
 </script>
 
 <template>
@@ -15,16 +15,15 @@
   >
     <SiteConnectWallet />
   </div>
-  <SourceGotchisCommon
+  <CommonSavedTeams
     v-else
-    :gotchis="myGotchis"
-    :fetchStatus="myGotchisFetchStatus"
+    :address="address"
   >
-    <template #gotchis="slotProps">
+    <template #actions="slotProps">
       <slot
-        name="gotchis"
+        name="actions"
         v-bind="slotProps"
       />
     </template>
-  </SourceGotchisCommon>
+  </CommonSavedTeams>
 </template>

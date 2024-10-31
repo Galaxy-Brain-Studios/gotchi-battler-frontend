@@ -4,8 +4,16 @@
   import SiteConnectWallet from '../site/SiteConnectWallet.vue'
   import CommonSavedTeams from '../profile/CommonSavedTeams.vue'
 
+  defineProps({
+    onlyMyGotchisAllowed: {
+      type: Boolean,
+      default: false
+    }
+  })
+
   const store = useAccountStore()
   const { address } = storeToRefs(store)
+
 </script>
 
 <template>
@@ -18,6 +26,7 @@
   <CommonSavedTeams
     v-else
     :address="address"
+    :onlyMyGotchisAllowed="onlyMyGotchisAllowed"
   >
     <template #actions="slotProps">
       <slot

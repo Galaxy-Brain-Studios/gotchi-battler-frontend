@@ -208,6 +208,7 @@
       id: 'savedteams',
       label: 'Saved Teams',
       component: SourceSavedTeams,
+      props: { onlyMyGotchisAllowed: true },
       type: SOURCE_TYPE.TEAM
     }
   ]
@@ -260,6 +261,9 @@
     if (propsRequested) {
       if (propsRequested.incomingTeamGotchis) {
         propsToProvide.incomingTeamGotchis = incomingTeamGotchis.value
+      }
+      if (propsRequested.onlyMyGotchisAllowed) {
+        propsToProvide.onlyMyGotchisAllowed = onlyMyGotchisAllowed.value
       }
     }
     return propsToProvide

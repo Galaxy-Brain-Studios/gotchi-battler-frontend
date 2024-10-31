@@ -1,5 +1,7 @@
 <script setup>
   import { ref, computed, watch } from 'vue'
+  import { storeToRefs } from 'pinia'
+  import { useAccountStore } from '../../data/accountStore'
   import useProfile from '@/data/useProfile'
   import SiteRequireSignIn from '../site/SiteRequireSignIn.vue'
   import SiteTextField from '../common/SiteTextField.vue'
@@ -9,26 +11,96 @@
     address: {
       type: String,
       required: true
+    },
+    onlyMyGotchisAllowed: {
+      type: Boolean,
+      default: false
     }
   })  
 
   const { isConnectedSignedInProfile, fetchTeams, teams, fetchTeamsStatus } = useProfile(props.address)
 
+  const store = useAccountStore()
+  const { myGotchis, myGotchisFetchStatus } = storeToRefs(store)
+
   watch(
     () => isConnectedSignedInProfile.value,
     () => {
-      if (isConnectedSignedInProfile.value && !fetchTeamsStatus.loaded && !fetchTeamsStatus.loading) {
+      if (isConnectedSignedInProfile.value && !fetchTeamsStatus.value.loaded && !fetchTeamsStatus.value.loading) {
         fetchTeams()
       }
     },
     { immediate: true }
   )
 
+
+  watch(
+    () => [isConnectedSignedInProfile.value, props.onlyMyGotchisAllowed],
+    () => {
+      if (props.onlyMyGotchisAllowed && isConnectedSignedInProfile.value  && !myGotchisFetchStatus.loaded && !myGotchisFetchStatus.loading) {
+        store.fetchMyGotchis()
+      }
+    },
+    { immediate: true }
+  )
+
+  const availableTeams = computed(() => {
+    if (!props.onlyMyGotchisAllowed) {
+      return teams.value
+    }
+    // With onlyMyGotchisAllowed, pre-filter the saved teams to only include those with my gotchis,
+    // and also replace the gotchi objects in the team with the latest versions from myGotchis (find by onchainId)
+    // Validate the saved gotchi special against the latest version of the gotchi.
+    // Also assume that in this mode, duplicates will not be allowed (they mess up the leader ID): exclude teams with duplicates here.
+    if (!fetchTeamsStatus.value.loaded || !myGotchisFetchStatus.value.loaded || !teams.value.length || !myGotchis.value?.length) {
+      return null
+    }
+    const myGotchisByOnchainId = Object.fromEntries(myGotchis.value.map(g => [`${g.onchainId}`, g]))
+    const myGotchisOnchainIds = Object.keys(myGotchisByOnchainId)
+    const newTeams = []
+    for (const team of teams.value) {
+      const teamGotchis = Object.values(team.formation).flat().filter(g => !!g)
+      const teamGotchiOnchainIds = teamGotchis.map(g => g.onchainId)
+      const teamGotchiOnchainIdsUniq = [...new Set(teamGotchiOnchainIds)]
+      if (teamGotchiOnchainIds.length && // team has gotchis
+        teamGotchiOnchainIds.length === teamGotchiOnchainIdsUniq.length && // team doesn't have duplicate gotchis
+        teamGotchiOnchainIds.every(onchainId => myGotchisOnchainIds.includes(`${onchainId}`)) // team only contains myGotchis
+      ) {
+        const leaderGotchi = teamGotchis.find(g => `${g.id}` === `${team.leader}`)
+        const leaderGotchiOnchainId = leaderGotchi ? leaderGotchi.onchainId : teamGotchis[0]?.onchainId
+        const newTeam = {
+          ...team,
+          formation: Object.fromEntries(
+            Object.entries(team.formation).map(([key, row]) => {
+              return [
+                key,
+                row.map(teamGotchi => {
+                  if (!teamGotchi) { return null }
+                  const latestGotchi = myGotchisByOnchainId[`${teamGotchi.onchainId}`]
+                  // ensure the selected special is still valid
+                  const specialId = teamGotchi.specialId && latestGotchi.availableSpecials?.includes(teamGotchi.specialId) ? teamGotchi.specialId : null
+                  return {
+                    ...latestGotchi,
+                    specialId
+                  }
+                })
+              ]
+            })
+          ),
+          leader: leaderGotchiOnchainId
+        }
+        newTeams.push(newTeam)
+      }
+    }
+    return newTeams
+  })
+
+
   const query = ref('')
 
   const filteredTeams = computed(() => {
-    if (!teams.value?.length) { return [] }
-    let result = teams.value
+    if (!availableTeams.value?.length) { return [] }
+    let result = availableTeams.value
     if (query.value) {
       const queryLc = query.value.toLowerCase()
       result = result.filter(team => team.name?.toLowerCase().includes(queryLc))

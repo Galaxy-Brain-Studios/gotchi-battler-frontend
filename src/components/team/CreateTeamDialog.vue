@@ -710,28 +710,28 @@
     }
   )
 
-  // TODO reimplement, we need to see some available gotchis
-  // function autofill () {
-  //   teamName.value = 'Auto-filled Team'
-  //   clearTeamSlots()
-  //   let added = 0
-  //   for (let i = 0; i < availableGotchis.value.length; i++) {
-  //     const gotchi = availableGotchis.value?.[i]
-  //     if (gotchi && !differentTeamForGotchi.value[gotchi.id]) {
-  //       addGotchiToSlot({
-  //         gotchiId: gotchi.id,
-  //         type: 'main',
-  //         slotNumber: ++added
-  //       })
-  //       if (gotchi.availableSpecials.length > 1 && !specialByGotchiId.value[gotchi.id]) {
-  //         specialByGotchiId.value[gotchi.id] = gotchi.availableSpecials[0]
-  //       }
-  //       if (added === 5) {
-  //         return
-  //       }
-  //     }
-  //   }
-  // }
+  function autofill () {
+    teamName.value = 'Auto-filled Team'
+    clearTeamSlots()
+    const availableGotchis = myGotchis.value || []
+    let added = 0
+    for (let i = 0; i < availableGotchis.length; i++) {
+      const gotchi = availableGotchis[i]
+      if (gotchi && !differentTeamForGotchi.value[gotchi.id]) {
+        addGotchiToSlot({
+          gotchi: {
+            ...gotchi,
+            specialId: gotchi.availableSpecials[0]
+          },
+          type: 'main',
+          slotNumber: ++added
+        })
+        if (added === 5) {
+          return
+        }
+      }
+    }
+  }
 </script>
 
 <template>

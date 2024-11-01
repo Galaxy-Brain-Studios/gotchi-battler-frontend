@@ -44,6 +44,18 @@
     { immediate: true }
   )
 
+  const fetchStatus = computed(() => {
+    if (!props.onlyMyGotchisAllowed) {
+      return fetchTeamsStatus.value
+    }
+    return {
+      loading: myGotchisFetchStatus.value.loading || fetchTeamsStatus.value.loading,
+      error: myGotchisFetchStatus.value.error || fetchTeamsStatus.value.error,
+      errorMessage: myGotchisFetchStatus.value.errorMessage || fetchTeamsStatus.value.errorMessage,
+      loaded: myGotchisFetchStatus.value.loaded && fetchTeamsStatus.value.loaded
+    }
+  })
+
   const availableTeams = computed(() => {
     if (!props.onlyMyGotchisAllowed) {
       return teams.value
@@ -119,61 +131,69 @@
       to view your saved teams
     </template>
 
-    <div class="common-saved-teams__header">
-      <div class="common-saved-teams__count">
-        {{ teamsToDisplay.length }}
-        team{{ teamsToDisplay.length === 1 ? '' : 's' }}
-      </div>
-      <div class="common-saved-teams__search">
-        <SiteTextField
-          v-model="query"
-          search
-          subtle
-          placeholder="Search team"
-          class="common-saved-teams__search-field"
-        />
-      </div>
+    <div v-if="fetchStatus.loading">
+      Loading...
     </div>
-    <div
-      v-if="!teamsToDisplay.length"
-      class="common-saved-teams__empty"
-    >
-      No teams found.
+    <div v-if="fetchStatus.error">
+      {{ fetchStatus.errorMessage }}
     </div>
-    <ol
-      v-else
-      class="list-reset common-saved-teams__list"
-    >
-      <li
-        v-for="team in teamsToDisplay"
-        :key="team.id"
-        class="common-saved-teams__team"
-      >
-        <div class="common-saved-teams__team__details">
-          <div class="common-saved-teams__team__name word-break">
-            {{ team.name }}
-          </div>
-          <div class="common-saved-teams__team__brs">
-            Total: {{ team.totalBrs }} BRS
-          </div>
+    <template v-else-if="fetchStatus.loaded">
+      <div class="common-saved-teams__header">
+        <div class="common-saved-teams__count">
+          {{ teamsToDisplay.length }}
+          team{{ teamsToDisplay.length === 1 ? '' : 's' }}
         </div>
-        <div class="common-saved-teams__team__formation">
-          <SavedTeamFormation
-            :team="team"
+        <div class="common-saved-teams__search">
+          <SiteTextField
+            v-model="query"
+            search
+            subtle
+            placeholder="Search team"
+            class="common-saved-teams__search-field"
           />
         </div>
-        <div
-          v-if="$slots['actions']"
-          class="common-saved-teams__team__manage"
+      </div>
+      <div
+        v-if="!teamsToDisplay.length"
+        class="common-saved-teams__empty"
+      >
+        No teams found.
+      </div>
+      <ol
+        v-else
+        class="list-reset common-saved-teams__list"
+      >
+        <li
+          v-for="team in teamsToDisplay"
+          :key="team.id"
+          class="common-saved-teams__team"
         >
-          <slot
-            name="actions"
-            :team="team"
-            :fetchTeams="fetchTeams"
-          ></slot>
-        </div>
-      </li>
-    </ol>
+          <div class="common-saved-teams__team__details">
+            <div class="common-saved-teams__team__name word-break">
+              {{ team.name }}
+            </div>
+            <div class="common-saved-teams__team__brs">
+              Total: {{ team.totalBrs }} BRS
+            </div>
+          </div>
+          <div class="common-saved-teams__team__formation">
+            <SavedTeamFormation
+              :team="team"
+            />
+          </div>
+          <div
+            v-if="$slots['actions']"
+            class="common-saved-teams__team__manage"
+          >
+            <slot
+              name="actions"
+              :team="team"
+              :fetchTeams="fetchTeams"
+            ></slot>
+          </div>
+        </li>
+      </ol>
+    </template>
   </SiteRequireSignIn>
 </template>
 

@@ -165,7 +165,7 @@
       </div>
       <ol
         v-else
-        class="list-reset common-saved-teams__list"
+        class="list-reset common-saved-teams__list create-team-source__items-available"
       >
         <li
           v-for="team in teamsToDisplay"

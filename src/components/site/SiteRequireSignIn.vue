@@ -11,11 +11,9 @@
   <SiteSignIn v-if="!signedSession">
     <slot name="signin-message"></slot>
   </SiteSignIn>
-  <div v-else>
-    <slot>
-      Signed-in content here
-    </slot>
-  </div>
+  <slot v-else>
+    Signed-in content here
+  </slot>
 </template>
 
 <style scoped>

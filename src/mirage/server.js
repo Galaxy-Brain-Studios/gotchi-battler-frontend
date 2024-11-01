@@ -898,6 +898,7 @@ export function makeServer({ environment = 'development' } = {}) {
         teamModel.owner = address
         teamModel.id = uniqueId('team')
         profileTeamsByAddress[addressLc].push(teamModel)
+        console.log('Mirage server: added saved team', teamModel)
         return teamModel
       }, {
         timing: mirageConfig.createProfileTeam.slow ? 3000 : 1000

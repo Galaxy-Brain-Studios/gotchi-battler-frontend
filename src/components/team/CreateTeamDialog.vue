@@ -287,6 +287,10 @@
       main: [null, null, null, null, null],
       substitutes: [null, null]
     }
+    // also clear teamGotchis objects:
+    // this is important when loading teams with generated gotchi IDs that might be the same as the previous gotchis
+    // and needs to be done synchronously as the cleanTeamGotchis watcher won't trigger in time
+    teamGotchis.value = []
   }
 
   // teamGotchis has full gotchi objects, used to look up gotchi details based on a gotchi id

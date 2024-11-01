@@ -12,6 +12,10 @@
     unavailableGotchiIds: {
       type: Array,
       default: null
+    },
+    savedTeamsLastChanged: {
+      type: Number,
+      default: null
     }
   })
 
@@ -32,6 +36,7 @@
     :address="address"
     :onlyMyGotchisAllowed="onlyMyGotchisAllowed"
     :unavailableGotchiIds="unavailableGotchiIds"
+    :savedTeamsLastChanged="savedTeamsLastChanged"
   >
     <template #actions="slotProps">
       <slot

@@ -19,6 +19,11 @@
     unavailableGotchiIds: {
       type: Array,
       default: null
+    },
+    // Use to trigger refetch of teams
+    savedTeamsLastChanged: {
+      type: Number,
+      default: null
     }
   })  
 
@@ -35,6 +40,14 @@
       }
     },
     { immediate: true }
+  )
+  watch(
+    () => props.savedTeamsLastChanged,
+    () => {
+      if (isConnectedSignedInProfile.value) {
+        fetchTeams()
+      }
+    }
   )
 
 

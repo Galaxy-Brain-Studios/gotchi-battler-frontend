@@ -209,7 +209,7 @@
       id: 'savedteams',
       label: 'Saved Teams',
       component: SourceSavedTeams,
-      props: { onlyMyGotchisAllowed: true, unavailableGotchiIds: true },
+      props: { onlyMyGotchisAllowed: true, unavailableGotchiIds: true, savedTeamsLastChanged: true },
       type: SOURCE_TYPE.TEAM
     }
   ]
@@ -268,6 +268,9 @@
       }
       if (propsRequested.unavailableGotchiIds) {
         propsToProvide.unavailableGotchiIds = gotchiIdsInDifferentTeams.value
+      }
+      if (propsRequested.savedTeamsLastChanged) {
+        propsToProvide.savedTeamsLastChanged = savedTeamsLastChanged.value
       }
     }
     return propsToProvide
@@ -567,12 +570,14 @@
   const showError = ref(false)
   const showValidationError = ref(false)
   const showProfileTeamError = ref(false)
+  const showSaveProfileTeamSuccess = ref(false)
   watch(
     () => teamToSave.value,
     () => {
       showError.value = false
       showValidationError.value = false
       showProfileTeamError.value = false
+      showSaveProfileTeamSuccess.value = false
     }
   )
 
@@ -604,6 +609,8 @@
   const canSaveProfileTeam = computed(() => !!address.value)
   const { status: submitProfileTeamStatus, setLoading: setProfileTeamLoading } = useStatus()
 
+  const savedTeamsLastChanged = ref(Date.now())
+
   async function saveProfileTeam () {
     if (validationError.value) {
       showValidationError.value = true
@@ -615,14 +622,15 @@
 
     const [isStale, setLoaded, setError] = setProfileTeamLoading()
     try {
-      const savedTeam = await profileService.createTeam({
+      await profileService.createTeam({
         owner: address.value,
         ...teamData
       })
       if (isStale()) { return; }
       setLoaded()
-      const savedTeamId = savedTeam?.id
-      console.log('savedProfileTeam TODO: refetch saved teams, set active saved team id', savedTeamId)
+      showSaveProfileTeamSuccess.value = true
+      setTimeout(() => showSaveProfileTeamSuccess.value = false, 5000)
+      savedTeamsLastChanged.value = Date.now()
     } catch (e) {
       setError(e.message)
     }
@@ -1144,14 +1152,22 @@
             v-if="canSaveProfileTeam"
             class="create-team__submit--profile"
           >
+            <div
+              v-if="showSaveProfileTeamSuccess"
+              class="create-team__submit-saved-team"
+            >
+              <SiteIcon name="check" />
+              <span>Saved Team</span>
+            </div>
             <SiteButton
-              v-if="submitProfileTeamStatus.loading"
+              v-else-if="submitProfileTeamStatus.loading"
               disabled
             >
               Saving...
             </SiteButton>
             <SiteButton
               v-else
+              icon="favorite"
               @click="saveProfileTeam"
             >
               Add to Saved Teams
@@ -1341,7 +1357,18 @@
     flex-wrap: wrap;
     gap: 1.5rem;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+  }
+
+  .create-team__submit-saved-team {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    font-weight: bold;
+    color: var(--c-white);
+    text-transform: uppercase;
   }
 
   .create-team__section-label {

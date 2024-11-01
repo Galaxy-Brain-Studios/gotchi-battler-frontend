@@ -263,8 +263,8 @@ const mirageConfig = window.mirageConfig = {
     slow: false
   },
   updateProfileTeam: {
-    error: true,
-    slow: true
+    error: false,
+    slow: false
   },
   generateImageUploadUrl: {
     error: false,
@@ -904,7 +904,7 @@ export function makeServer({ environment = 'development' } = {}) {
         timing: mirageConfig.createProfileTeam.slow ? 3000 : 1000
       })
 
-      this.post(fixUrl(urls.updateProfileTeam(':teamId')), async (schema, request) => {
+      this.put(fixUrl(urls.updateProfileTeam(':teamId')), async (schema, request) => {
         if (mirageConfig.updateProfileTeam.error) {
           return errorResponse()
         }
@@ -928,7 +928,7 @@ export function makeServer({ environment = 'development' } = {}) {
         timing: mirageConfig.updateProfileTeam.slow ? 3000 : 1000
       })
 
-      this.delete(fixUrl(urls.deleteProfileTeam({ teamId: ':teamId' })), async (schema, request) => {
+      this.delete(fixUrl(urls.deleteProfileTeam(':teamId')), async (schema, request) => {
         if (mirageConfig.deleteProfileTeam.error) {
           return errorResponse()
         }

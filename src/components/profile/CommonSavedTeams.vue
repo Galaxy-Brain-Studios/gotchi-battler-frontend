@@ -206,7 +206,6 @@
             <slot
               name="actions"
               :team="team"
-              :fetchTeams="fetchTeams"
             ></slot>
           </div>
         </li>
@@ -268,7 +267,12 @@
 
   .common-saved-teams__team__manage {
     align-self: stretch;
-    padding: 0.75rem 1rem;
+    padding: 0.2rem 1rem;
     background: var(--c-black);
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    justify-content: center;
   }
 </style>

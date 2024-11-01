@@ -38,7 +38,8 @@
     CREATE: 'create',
     CREATE_TRAINING: 'create_training',
     EDIT_TRAINING: 'edit_training',
-    EDIT: 'edit'
+    EDIT: 'edit',
+    EDIT_PROFILE_SAVED: 'edit_profile_saved'
   }
   const props = defineProps({
     isOpen: {
@@ -70,7 +71,7 @@
       default: null
     }
   })
-  const emit = defineEmits(['update:isOpen', 'update:team'])
+  const emit = defineEmits(['update:isOpen', 'update:team', 'savedProfileTeam'])
 
   const deconstructEmbeddedGotchiFromSlot = function (gotchiEmbedded) {
     if (!gotchiEmbedded) { return null }
@@ -104,24 +105,28 @@
   const modeLabel = computed(() => {
     if (props.mode === EDIT_MODES.CREATE_TRAINING) { return 'Create'; }
     if (props.mode === EDIT_MODES.EDIT_TRAINING) { return 'Customize'; }
+    if (props.mode === EDIT_MODES.EDIT_PROFILE_SAVED) { return 'Edit Saved'; }
     return props.mode
   })
 
   const isEditMode = computed(() => props.mode === EDIT_MODES.EDIT)
-  const myGotchisAllowed = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.CREATE_TRAINING].includes(props.mode))
-  const trainingGotchisAllowed = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING].includes(props.mode))
+  const myGotchisAllowed = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
+  const trainingGotchisAllowed = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
   const onlyMyGotchisAllowed = computed(() => [EDIT_MODES.CREATE].includes(props.mode))
   const onlyTeamGotchisAllowed = computed(() => [EDIT_MODES.EDIT].includes(props.mode))
 
-  const savedTeamsAvailable = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING].includes(props.mode))
+  const savedTeamsAvailable = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
 
   const canChangeName = computed(() => !isEditMode.value)
   const withSubstitutes = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.EDIT].includes(props.mode))
-  const enableDuplicates = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING].includes(props.mode))
+  const enableDuplicates = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
 
   const primarySaveLabel = computed(() => {
     if ([EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING].includes(props.mode)) {
       return 'Use Team'
+    }
+    if ([EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode)) {
+      return 'Update'
     }
     return 'Save Team'
   })
@@ -358,7 +363,7 @@
 
   function addGotchiToSlot ({ gotchi, type, slotNumber, restoring }) {
     const duplicatesEnabled = enableDuplicates.value
-    console.log('addGotchiToSlot', { type, slotNumber, gotchi, duplicatesEnabled, restoring })
+    // console.log('addGotchiToSlot', { type, slotNumber, gotchi, duplicatesEnabled, restoring })
 
     // remove existing matching gotchi
     // (can do even if duplicates are enabled, as duplicates should still have unique ids in this team)
@@ -606,7 +611,10 @@
   }
 
 
-  const canSaveProfileTeam = computed(() => !!address.value)
+  const canSaveProfileTeam = computed(() =>
+    !!address.value &&
+    [EDIT_MODES.CREATE, EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode)
+  )
   const { status: submitProfileTeamStatus, setLoading: setProfileTeamLoading } = useStatus()
 
   const savedTeamsLastChanged = ref(Date.now())
@@ -631,13 +639,13 @@
       showSaveProfileTeamSuccess.value = true
       setTimeout(() => showSaveProfileTeamSuccess.value = false, 5000)
       savedTeamsLastChanged.value = Date.now()
+      emit('savedProfileTeam')
     } catch (e) {
       setError(e.message)
     }
   }
 
   function loadSavedTeam (team) {
-    console.log('load saved team: TODO set active saved id', team)
     loadTeam(team)
   }
 

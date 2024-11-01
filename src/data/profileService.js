@@ -81,7 +81,10 @@ export default {
 
   updateTeam: requireLoginSession(async function (team) {
     try {
-      const savedTeam = await apiWithCredentials.url(urls.updateProfileTeam(team.id)).put(generateTeamForBattle(team))
+      const savedTeam = await apiWithCredentials.url(urls.updateProfileTeam(team.id)).put({
+        ...generateTeamForBattle(team),
+        id: team.id
+      })
       return processTeamModel(savedTeam);
     } catch (e) {
       console.error('updateTeam error', e)
@@ -91,7 +94,7 @@ export default {
 
   deleteTeam: requireLoginSession(async function (teamId) {
     try {
-      await apiTextWithCredentials.url(urls.deleteProfileTeam({ teamId })).delete()
+      await apiTextWithCredentials.url(urls.deleteProfileTeam(teamId)).delete()
     } catch (e) {
       console.error('deleteTeam error', e)
       throw new Error(e.json?.error || 'Error deleting team')

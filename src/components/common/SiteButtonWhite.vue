@@ -91,6 +91,7 @@
 
 .site-button-white__button {
   display: block;
+  width: 100%;
   outline-color: transparent;
   border: var(--button-border-width) solid var(--button-color-border);
   padding: calc(0.75rem - var(--button-border-width)) 2.5rem;

@@ -8,6 +8,10 @@
     onlyMyGotchisAllowed: {
       type: Boolean,
       default: false
+    },
+    unavailableGotchiIds: {
+      type: Array,
+      default: null
     }
   })
 
@@ -27,6 +31,7 @@
     v-else
     :address="address"
     :onlyMyGotchisAllowed="onlyMyGotchisAllowed"
+    :unavailableGotchiIds="unavailableGotchiIds"
   >
     <template #actions="slotProps">
       <slot

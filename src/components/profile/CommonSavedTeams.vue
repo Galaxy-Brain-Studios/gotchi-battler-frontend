@@ -15,6 +15,10 @@
     onlyMyGotchisAllowed: {
       type: Boolean,
       default: false
+    },
+    unavailableGotchiIds: {
+      type: Array,
+      default: null
     }
   })  
 
@@ -179,6 +183,7 @@
           <div class="common-saved-teams__team__formation">
             <SavedTeamFormation
               :team="team"
+              :unavailableGotchiIds="unavailableGotchiIds"
             />
           </div>
           <div

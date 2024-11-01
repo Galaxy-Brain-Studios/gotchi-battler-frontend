@@ -6,6 +6,10 @@
     team: {
       type: Object,
       required: true
+    },
+    unavailableGotchiIds: {
+      type: Array,
+      default: null
     }
   })  
 
@@ -33,7 +37,8 @@
         :key="positionIndex"
         class="saved-team-formation__position"
         :class="{
-          'saved-team-formation__position--occupied': !!gotchi
+          'saved-team-formation__position--occupied': !!gotchi,
+          'saved-team-formation__position--gotchi-unavailable': gotchi && unavailableGotchiIds?.includes('' + gotchi.id)
         }"
       >
         <template v-if="gotchi">
@@ -79,6 +84,10 @@
   .saved-team-formation__position--occupied {
     --position-border-color: var(--c-black);
     background: linear-gradient(180deg, var(--c-dark-purple) 0%, var(--c-black) 100%);
+  }
+  .saved-team-formation__position--gotchi-unavailable {
+    opacity: 0.3;
+    filter: grayscale(100%);
   }
   .saved-team-formation__position-image {
     height: 2rem;

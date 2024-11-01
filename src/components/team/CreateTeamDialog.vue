@@ -155,6 +155,7 @@
     }
     return teamByGotchiId
   })
+  const gotchiIdsInDifferentTeams = computed(() => Object.keys(differentTeamForGotchi.value))
 
   // Fetch available gotchis for the connected account
   const store = useAccountStore()
@@ -208,7 +209,7 @@
       id: 'savedteams',
       label: 'Saved Teams',
       component: SourceSavedTeams,
-      props: { onlyMyGotchisAllowed: true },
+      props: { onlyMyGotchisAllowed: true, unavailableGotchiIds: true },
       type: SOURCE_TYPE.TEAM
     }
   ]
@@ -264,6 +265,9 @@
       }
       if (propsRequested.onlyMyGotchisAllowed) {
         propsToProvide.onlyMyGotchisAllowed = onlyMyGotchisAllowed.value
+      }
+      if (propsRequested.unavailableGotchiIds) {
+        propsToProvide.unavailableGotchiIds = gotchiIdsInDifferentTeams.value
       }
     }
     return propsToProvide
@@ -435,7 +439,7 @@
         const slotNumber = formationRow[i]
         if (slotNumber) {
           const gotchi = newTeam.formation[row][i]
-          if (gotchi) {
+          if (gotchi && !differentTeamForGotchi.value[gotchi.id]) {
             addGotchiToSlot({ gotchi, type: 'main', slotNumber, restoring: true })
           }
         }
@@ -445,7 +449,7 @@
       for (let i = 0; i < newTeam.formation.substitutes.length; i++) {
         const slotNumber = i + 1
         const gotchi = newTeam.formation.substitutes[i]
-        if (gotchi) {
+        if (gotchi && !differentTeamForGotchi.value[gotchi.id]) {
           addGotchiToSlot({ gotchi, type: 'substitutes', slotNumber, restoring: true })
         }
       }

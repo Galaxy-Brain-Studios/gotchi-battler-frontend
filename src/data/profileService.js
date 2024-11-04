@@ -39,10 +39,7 @@ export default {
   async fetchProfileInventory () {
     try {
       const inventory = await apiWithCredentials.get(urls.profileInventory())
-      return inventory.map(item => ({
-        ...item,
-        nameSortable: item.nameSortable || item.name
-      }))
+      return inventory
     } catch (e) {
       console.error('fetchProfileInventory error', e)
       throw new Error(e.json?.error || 'Error fetching profile inventory')

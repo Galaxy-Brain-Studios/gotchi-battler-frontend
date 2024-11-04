@@ -39,15 +39,6 @@ const types = [
   }
 ]
 
-const padNumber = function (n) {
-  if (n < 10) {
-    return `00${n}`
-  }
-  if (n < 100) {
-    return `0${n}`
-  }
-  return `${n}`
-}
 const RARITIES = ['common', 'uncommon', 'rare']
 const IMAGE_URLS = ['/media/10k.png', '/media/30k.png', '/media/60k.png']
 const COST_MULTIPLIER = [0.25, 0.5, 1]
@@ -59,12 +50,13 @@ for (const { name, boosts } of types) {
     lastId++
     items.push({
       id: lastId,
-      rarity: RARITIES[i],
       name: `${name} +${boost}`,
-      nameSortable: `${name} +${padNumber(boost)}`,
-      description: `This item will add +${boost} ${name.toLowerCase()} to your enchanted Gotchi.`,
-      imageUrl: IMAGE_URLS[i],
-      costGhst: boost * COST_MULTIPLIER[i]
+      description: `Increase ${name.toLowerCase()} by +${boost}`,
+      image: IMAGE_URLS[i],
+      rarity: RARITIES[i],
+      cost: boost * COST_MULTIPLIER[i],
+      stat: name.toLowerCase(),
+      statValue: boost
     })
   }
 }

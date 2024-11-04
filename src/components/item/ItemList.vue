@@ -31,15 +31,11 @@
       label: 'Rarity'
     },
     {
-      id: 'nameSortable_asc',
-      label: 'Name'
-    },
-    {
-      id: 'costGhst_asc',
+      id: 'cost_asc',
       label: 'Price (lowest)'
     },
     {
-      id: 'costGhst_desc',
+      id: 'cost_desc',
       label: 'Price (highest)'
     }
   ]
@@ -114,7 +110,7 @@
           <div
             class="items-list__item__image"
             :style="{
-             '--image-url': `url(${escapeUrl(item.imageUrl || '')})`
+             '--image-url': `url(${escapeUrl(item.image || '')})`
             }"
           />
           <div class="items-list__item__details">
@@ -148,7 +144,7 @@
               />
               <div>
                 <div class="items-list__item__cost">
-                  {{ item.costGhst }} GHST
+                  {{ item.cost }} GHST
                 </div>
                 <div
                   v-if="showCount"

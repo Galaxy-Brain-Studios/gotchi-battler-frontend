@@ -52,7 +52,7 @@ const urls = {
   sessionNonce: () => `${BASE_URL}/api/v1/auth/nonce`,
   sessionLogin: () => `${BASE_URL}/api/v1/auth/login`,
   sessionLogout: () => `${BASE_URL}/api/v1/auth/logout`,
-  shopItems: () => `${BASE_URL}/api/v1/shop/items`
+  shopItems: () => `${BASE_URL}/api/v1/items`
 }
 
 export { api, apiText, apiWithCredentials, apiTextWithCredentials, urls, setBaseUrl }

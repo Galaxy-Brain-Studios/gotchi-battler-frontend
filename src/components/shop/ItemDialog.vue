@@ -43,12 +43,12 @@
   const canBuy = computed(() => {
     if (!isConnected.value) { return false }
     if (!props.item?.id) { return false }
-    if (!props.item?.costGhst > 0) { return false }
+    if (!props.item?.cost > 0) { return false }
     return true
   })
   const buyNumber = ref(1)
   const buyInteger = computed(() => Math.floor(buyNumber.value))
-  const totalBuyCost = computed(() => props.item.costGhst * buyInteger.value)
+  const totalBuyCost = computed(() => props.item.cost * buyInteger.value)
 
   const canStartBuy = computed(() => {
     if (!canBuy.value) { return false }
@@ -118,7 +118,7 @@
       <div
         class="item-dialog__image"
         :style="{
-         '--image-url': `url(${escapeUrl(item.imageUrl || '')})`
+         '--image-url': `url(${escapeUrl(item.image || '')})`
         }"
       />
       <div class="item-dialog__details">
@@ -148,7 +148,7 @@
               :width="2"
               :height="2"
             />
-            <span>{{ item.costGhst }} GHST</span>
+            <span>{{ item.cost }} GHST</span>
           </div>
         </div>
         <div

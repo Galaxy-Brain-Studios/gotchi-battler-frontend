@@ -14,6 +14,7 @@
   import CreateTeamDialog from '../team/CreateTeamDialog.vue'
   import TrainingTeamsDialog from './TrainingTeamsDialog.vue'
   import useStatus from '../../utils/useStatus'
+  import { getTotalBrsFromFormation } from '../../data/teamUtils'
 
   const team1 = ref(null)
   const team2 = ref(null)
@@ -97,6 +98,11 @@
       const [isStale, setLoaded, setError] = setLoading()
       setLoaded()
     })
+  }
+
+  function getTotalBrs (team) {
+    if (!team?.formation) { return '' }
+    return getTotalBrsFromFormation(team.formation)
   }
 </script>
 
@@ -183,7 +189,7 @@
             <th>Date</th>
             <th>Team</th>
             <th>Opponent</th>
-            <th>Power level</th>
+            <th>Total BRS</th>
             <th>
               <div class="training-battle__win-rate-title">
                 <div>Win rate</div>
@@ -216,8 +222,8 @@
             <td>
               {{ battle.teams[1]?.name }}
             </td>
-            <td class="training-battle__history-table-difficulty">
-              {{ battle.teams[1]?.difficulty }}
+            <td>
+              {{ getTotalBrs(battle.teams[1]) }}
             </td>
             <td class="training-battle__history-table-win-rate">
               {{ battle.team1WinRate }} %
@@ -314,9 +320,6 @@
   }
   .training-battle__history-table td:not(:last-child) {
     padding-right: 1rem;
-  }
-  .training-battle__history-table-difficulty {
-    text-transform: capitalize;
   }
   .training-battle__history-table-win-rate {
     font-weight: bold;

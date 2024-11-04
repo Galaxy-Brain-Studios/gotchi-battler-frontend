@@ -220,7 +220,7 @@ export const findHighestTrainingPowerLevel = (team) => {
   return highestLevel
 }
 
-const getTotalBrsFromFormation = function(formation) {
+export const getTotalBrsFromFormation = function(formation) {
   const gotchis = getEmbeddedGotchisFromFormation(formation)
   let total = 0
   for (const gotchi of gotchis) {

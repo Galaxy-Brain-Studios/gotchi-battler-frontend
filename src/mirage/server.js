@@ -195,6 +195,10 @@ const mirageConfig = window.mirageConfig = {
     slow: false,
     empty: false
   },
+  searchGotchis: {
+    error: false,
+    slow: false
+  },
   createTournamentTeam: {
     error: false,
     slow: false
@@ -432,15 +436,26 @@ export function makeServer({ environment = 'development' } = {}) {
       })
 
       this.get(urls.trainingGotchis(), () => {
-        if (mirageConfig.traininggotchis.empty) {
-          return []
-        }
         if (mirageConfig.traininggotchis.error) {
           return errorResponse()
+        }
+        if (mirageConfig.traininggotchis.empty) {
+          return []
         }
         return trainingGotchis
       }, {
         timing: mirageConfig.traininggotchis.slow ? 5000 : 1000
+      })
+
+      this.post(urls.searchGotchis(), (schema, request) => {
+        if (mirageConfig.searchGotchis.error) {
+          return errorResponse()
+        }
+        const { query } = JSON.parse(request.requestBody)
+        const queryLc = query?.toLowerCase() || ''
+        return gotchis.filter(g => g.name.toLowerCase().includes(queryLc))
+      }, {
+        timing: mirageConfig.searchGotchis.slow ? 5000 : 1000
       })
 
       this.get(fixUrl(urls.team(':teamId')), (schema, request) => {

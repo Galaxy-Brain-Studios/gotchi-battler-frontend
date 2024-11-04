@@ -27,4 +27,14 @@ export default {
       throw new Error(e.json?.error || 'Error fetching training gotchis')
     }
   },
+
+  async searchGotchis (query) {
+    try {
+      const gotchis = await api.url(urls.searchGotchis()).post({ query })
+      return gotchis.map(processGotchiModel)
+    } catch (e) {
+      console.error('searchGotchis error', { ...e })
+      throw new Error(e.json?.error || 'Error searching for gotchis')
+    }
+  },
 }

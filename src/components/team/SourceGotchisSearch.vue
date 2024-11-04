@@ -1,16 +1,23 @@
 <script setup>
-  import useTrainingGotchis from '../../data/useTrainingGotchis'
+  import useSearchGotchis from '../../data/useSearchGotchis'
+  import SiteTextField from '../common/SiteTextField.vue'
   import SourceGotchisCommon from './SourceGotchisCommon.vue'
 
-  const { fetchGotchis, gotchis, fetchGotchisStatus } = useTrainingGotchis()
-  fetchGotchis()
+  const { gotchis, fetchGotchisStatus, query } = useSearchGotchis()
 </script>
 
 <template>
+  <div>
+    <SiteTextField
+      v-model="query"
+      placeholder="Search by Gotchi name, ID or Address"
+      search
+      subtle
+    />
+  </div>
   <SourceGotchisCommon
     :gotchis="gotchis"
     :fetchStatus="fetchGotchisStatus"
-    enableSearch
   >
     <template #gotchis="slotProps">
       <slot

@@ -36,6 +36,7 @@ const urls = {
   battleLogs: (url) => url,
   trainingGotchis: () =>  `${BASE_URL}/api/v1/training/gotchis`,
   gotchis: ({ address }) =>  `${BASE_URL}/api/v1/gotchis/${encodeURIComponent(address)}`,
+  searchGotchis: () =>  `${BASE_URL}/api/v1/search-gotchis`,
   availableLendings: (tournamentId) => `${BASE_URL}/api/v1/tournaments/${encodeURIComponent(tournamentId)}/lendings`,
   profile: (address) => `${BASE_URL}/api/v1/profiles/${encodeURIComponent(address)}`,
   profileFull: () => `${BASE_URL}/api/v1/me`,

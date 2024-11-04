@@ -14,6 +14,7 @@
     v-if="incomingTeamGotchis"
     :gotchis="incomingTeamGotchis"
     :fetchStatus="{ loaded: true }"
+    enableSearch
   >
     <template #gotchis="slotProps">
       <slot

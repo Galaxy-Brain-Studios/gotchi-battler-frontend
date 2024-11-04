@@ -12,6 +12,10 @@
     fetchStatus: {
       type: Object,
       required: true
+    },
+    enableSearch: {
+      type: Boolean,
+      default: false
     }
   })
 
@@ -95,7 +99,7 @@
 
 <template>
   <div
-    v-if="gotchis?.length"
+    v-if="gotchis?.length && enableSearch"
     class="create-team-source__search"
   >
     <SiteTextField
@@ -117,7 +121,10 @@
       </option>
     </SiteSelect>
   </div>
-  <div class="create-team-source__items-available word-break">
+  <div
+    v-if="fetchStatus.loading || fetchStatus.error || fetchStatus.loaded"
+    class="create-team-source__items-available word-break"
+  >
     <div v-if="fetchStatus.loading">
       Loading...
     </div>

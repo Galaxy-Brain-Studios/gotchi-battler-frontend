@@ -19,6 +19,7 @@
     v-else
     :gotchis="myGotchis"
     :fetchStatus="myGotchisFetchStatus"
+    enableSearch
   >
     <template #gotchis="slotProps">
       <slot

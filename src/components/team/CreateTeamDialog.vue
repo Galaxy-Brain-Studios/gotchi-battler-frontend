@@ -30,6 +30,7 @@
   import SourceGotchisTraining from './SourceGotchisTraining.vue'
   import SourceGotchisTeam from './SourceGotchisTeam.vue'
   import SourceSavedTeams from './SourceSavedTeams.vue'
+  import SourceGotchisSearch from './SourceGotchisSearch.vue'
 
   const ROW_NAMES = ['front', 'back']
   const ALL_ROW_NAMES = [...ROW_NAMES, 'substitutes']
@@ -112,6 +113,7 @@
   const isEditMode = computed(() => props.mode === EDIT_MODES.EDIT)
   const myGotchisAllowed = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
   const trainingGotchisAllowed = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
+  const searchGotchisAllowed = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
   const onlyMyGotchisAllowed = computed(() => [EDIT_MODES.CREATE].includes(props.mode))
   const onlyTeamGotchisAllowed = computed(() => [EDIT_MODES.EDIT].includes(props.mode))
 
@@ -216,6 +218,12 @@
       component: SourceSavedTeams,
       props: { onlyMyGotchisAllowed: true, unavailableGotchiIds: true, savedTeamsLastChanged: true },
       type: SOURCE_TYPE.TEAM
+    },
+    {
+      id: 'searchgotchis',
+      label: 'Find Gotchi',
+      component: SourceGotchisSearch,
+      type: SOURCE_TYPE.GOTCHI
     }
   ]
   const SOURCES_BY_ID = Object.fromEntries(SOURCES.map(s => [s.id, s]))
@@ -233,6 +241,9 @@
     }
     if (savedTeamsAvailable.value) {
       sources.push(SOURCES_BY_ID['savedteams'])
+    }
+    if (searchGotchisAllowed.value) {
+      sources.push(SOURCES_BY_ID['searchgotchis'])
     }
     return sources
   })

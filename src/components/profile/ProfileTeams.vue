@@ -82,6 +82,7 @@
     v-if="isConnectedProfile"
     :address="address"
     :savedTeamsLastChanged="savedTeamsLastChanged"
+    showTeamCount
   >
     <template #actions="{ team }">
       <SiteButtonWhite

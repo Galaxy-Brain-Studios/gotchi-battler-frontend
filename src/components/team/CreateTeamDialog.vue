@@ -15,6 +15,7 @@
   import SiteIcon from '../common/SiteIcon.vue'
   import SitePopupHoverMenu from '../common/SitePopupHoverMenu.vue'
   import SiteTextField from '../common/SiteTextField.vue'
+  import SiteSelect from '../common/SiteSelect.vue'
   import SiteError from '../common/SiteError.vue'
   import FormationPatternSelect from './FormationPatternSelect.vue'
   import FORMATION_PATTERNS from './formationPatterns.json'
@@ -192,88 +193,124 @@
     GOTCHI: 'gotchi',
     TEAM: 'team'
   }
-  const SOURCES = [
-    {
-      id: 'my',
-      label: 'My Gotchis',
-      component: SourceGotchisMy,
-      type: SOURCE_TYPE.GOTCHI
-    },
-    {
-      id: 'training',
-      label: 'Training Gotchis',
-      component: SourceGotchisTraining,
-      type: SOURCE_TYPE.GOTCHI
-    },
-    {
-      id: 'team',
-      label: 'Team Gotchis',
-      component: SourceGotchisTeam,
-      props: { incomingTeamGotchis: true },
-      type: SOURCE_TYPE.GOTCHI
-    },
-    {
-      id: 'savedteams',
-      label: 'Saved Teams',
-      component: SourceSavedTeams,
-      props: { onlyMyGotchisAllowed: true, unavailableGotchiIds: true, savedTeamsLastChanged: true },
-      type: SOURCE_TYPE.TEAM
-    },
-    {
-      id: 'searchgotchis',
-      label: 'Find Gotchi',
-      component: SourceGotchisSearch,
-      type: SOURCE_TYPE.GOTCHI
-    }
-  ]
-  const SOURCES_BY_ID = Object.fromEntries(SOURCES.map(s => [s.id, s]))
+  const SOURCE_TYPE_LABELS = {
+    [SOURCE_TYPE.GOTCHI]: 'Gotchis',
+    [SOURCE_TYPE.TEAM]: 'Saved Teams'
+  }
+  const SOURCES_BY_TYPE = {
+    [SOURCE_TYPE.GOTCHI]: [
+      {
+        id: 'my',
+        label: 'My Gotchis',
+        component: SourceGotchisMy,
+        type: SOURCE_TYPE.GOTCHI
+      },
+      {
+        id: 'training',
+        label: 'Training Gotchis',
+        component: SourceGotchisTraining,
+        type: SOURCE_TYPE.GOTCHI
+      },
+      {
+        id: 'team',
+        label: 'Team Gotchis',
+        component: SourceGotchisTeam,
+        props: { incomingTeamGotchis: true },
+        type: SOURCE_TYPE.GOTCHI
+      },
+      {
+        id: 'searchgotchis',
+        label: 'Find Gotchi',
+        component: SourceGotchisSearch,
+        type: SOURCE_TYPE.GOTCHI
+      }
+    ],
+    [SOURCE_TYPE.TEAM]: [
+      {
+        id: 'savedteams',
+        label: 'Saved Teams',
+        component: SourceSavedTeams,
+        props: { onlyMyGotchisAllowed: true, unavailableGotchiIds: true, savedTeamsLastChanged: true },
+        type: SOURCE_TYPE.TEAM
+      }
+    ]
+  }
+  const SOURCES_BY_ID = Object.fromEntries(Object.values(SOURCES_BY_TYPE).flat().map(s => [s.id, s]))
 
   const availableSources = computed(() => {
     const sources = []
+    const addSource = function (sourceId) {
+      sources.push(SOURCES_BY_ID[sourceId])
+    }
     if (myGotchisAllowed.value) {
-      sources.push(SOURCES_BY_ID['my'])
+      addSource('my')
     }
     if (trainingGotchisAllowed.value) {
-      sources.push(SOURCES_BY_ID['training'])
+      addSource('training')
     }
     if (onlyTeamGotchisAllowed.value) {
-      sources.push(SOURCES_BY_ID['team'])
+      addSource('team')
     }
     if (savedTeamsAvailable.value) {
-      sources.push(SOURCES_BY_ID['savedteams'])
+      addSource('savedteams')
     }
     if (searchGotchisAllowed.value) {
-      sources.push(SOURCES_BY_ID['searchgotchis'])
+      addSource('searchgotchis')
     }
     return sources
   })
-  const availableSourceTabs = computed(() => availableSources.value.map((source, i, sources) => ({
-    ...source,
-    grouped: sources.length > 0 ? ( i === 0 ? 'start' : i === sources.length - 1 ? 'end' : 'middle') : false
-  })))
+  const availableSourcesIds = computed(() => availableSources.value.map(s => s.id))
 
+  const availableSourcesByType = computed(() => {
+    const sourcesByType = Object.fromEntries(Object.values(SOURCE_TYPE).map(type => [type, []]))
+    for (const source of availableSources.value) {
+      sourcesByType[source.type].push(source)
+    }
+    return sourcesByType
+  })
 
-  const selectedSource = ref(null)
+  const availableSourceTypeTabs = computed(() => {
+    const typeTabs = []
+    const typeEntries = Object.entries(availableSourcesByType.value)
+    for (let i = 0; i < typeEntries.length; i++) {
+      const [type, sources] = typeEntries[i]
+      if (sources.length) {
+        typeTabs.push({
+          id: type,
+          label: SOURCE_TYPE_LABELS[type],
+          grouped: typeEntries.length > 1 ?
+            ( i === 0 ? 'start' : i === typeEntries.length - 1 ? 'end' : 'middle')
+            : false,
+          sources
+        })
+      }
+    }
+    return typeTabs
+  })
+
+  const selectedSourceId = ref(null)
   watch(
     () => [myGotchisAllowed.value, address.value, trainingGotchisAllowed.value],
     () => {
-      if (!selectedSource.value || !availableSources.value.map(s => s.id).includes(selectedSource.value)) {
-        selectedSource.value = availableSources.value[0].id
+      if (!selectedSourceId.value || !availableSourcesIds.value.includes(selectedSourceId.value)) {
+        selectedSourceId.value = availableSources.value[0].id
       }
     },
     { immediate: true }
   )
 
+  const activeSourceTypeTab = computed(() => availableSourceTypeTabs.value.find(tab => tab.id === sourceComponentType.value))
+
   const sourceComponent = computed(() => {
-    return SOURCES_BY_ID[selectedSource.value]?.component || 'div'
+    return SOURCES_BY_ID[selectedSourceId.value]?.component || 'div'
   })
 
   const sourceComponentType = computed(() => {
-    return SOURCES_BY_ID[selectedSource.value]?.type
+    return SOURCES_BY_ID[selectedSourceId.value]?.type
   })
 
   const sourceComponentProps = computed(() => {
-    const propsRequested = SOURCES_BY_ID[selectedSource.value]?.props
+    const propsRequested = SOURCES_BY_ID[selectedSourceId.value]?.props
     const propsToProvide = {}
     if (propsRequested) {
       if (propsRequested.incomingTeamGotchis) {
@@ -824,20 +861,34 @@
         </div>
         <section class="create-team__gotchis">
           <SiteButtonGroup
-            v-if="availableSourceTabs.length > 1"
-            :numButtons="availableSourceTabs.length"
-            class="create-team__gotchis-source"
+            v-if="availableSourceTypeTabs.length > 1"
+            :numButtons="availableSourceTypeTabs.length"
+            class="create-team__select-source-type"
           >
             <SiteButton
-              v-for="tab in availableSourceTabs"
+              v-for="tab in availableSourceTypeTabs"
               :key="tab.id"
               :grouped="tab.grouped"
-              :active="selectedSource === tab.id"
-              @click="selectedSource = tab.id"
+              :active="sourceComponentType === tab.id"
+              @click="selectedSourceId = tab.sources[0].id"
             >
               {{ tab.label }}
             </SiteButton>
           </SiteButtonGroup>
+          <div
+            v-if="activeSourceTypeTab.sources.length > 1"
+            class="create-team__select-source"
+          >
+            <SiteSelect v-model="selectedSourceId">
+              <option
+                v-for="source in activeSourceTypeTab.sources"
+                :key="source.id"
+                :value="source.id"
+              >
+                {{ source.label }}
+              </option>
+            </SiteSelect>
+          </div>
           <component
             v-if="sourceComponent && sourceComponentType === SOURCE_TYPE.GOTCHI"
             :is="sourceComponent"
@@ -1412,7 +1463,7 @@
 
   .create-team__gotchis {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-columns: auto minmax(0, 1fr) auto;
     grid-template-rows: auto auto minmax(0, 1fr);
     column-gap: 1rem;
     row-gap: 0.5rem;
@@ -1423,7 +1474,7 @@
       max-height: 24rem;
     }
   }
-  .create-team__gotchis-source {
+  .create-team__select-source-type {
     grid-column: 1 / 4;
     margin: 0 4px 1rem;
   }
@@ -1434,7 +1485,9 @@
     max-width: 200px;
   }
   :deep(.create-team-source__connect-wallet) {
+    grid-column: 1 / 4;
     padding-top: 1rem;
+    align-self: flex-start;
     display: grid;
     place-items: center;
   }
@@ -1445,6 +1498,9 @@
     border: 2px solid var(--c-black);
     overflow-y: auto;
     background: rgba(var(--c-black-rgb), 0.25);
+  }
+  :deep(.site-sign-in) {
+    grid-column: 1 / 4;
   }
   .create-team__gotchis-results {
     display: grid;

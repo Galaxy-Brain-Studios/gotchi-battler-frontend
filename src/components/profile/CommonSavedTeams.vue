@@ -24,6 +24,10 @@
     savedTeamsLastChanged: {
       type: Number,
       default: null
+    },
+    showTeamCount: {
+      type: Boolean,
+      default: false
     }
   })  
 
@@ -156,7 +160,10 @@
     </div>
     <template v-else-if="fetchStatus.loaded">
       <div class="common-saved-teams__header">
-        <div class="common-saved-teams__count">
+        <div
+          v-if="showTeamCount"
+          class="common-saved-teams__count"
+        >
           {{ teamsToDisplay.length }}
           team{{ teamsToDisplay.length === 1 ? '' : 's' }}
         </div>

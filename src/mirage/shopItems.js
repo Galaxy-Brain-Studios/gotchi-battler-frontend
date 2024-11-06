@@ -48,9 +48,13 @@ for (const { name, boosts } of types) {
   for (let i = 0; i < boosts.length ; i++) {
     const boost = boosts[i]
     lastId++
+    let itemName = `${name} `
+    for (let b = 0; b <= i; b++) {
+      itemName += '+'
+    }
     items.push({
       id: lastId,
-      name: `${name} +${boost}`,
+      name: itemName,
       description: `Increase ${name.toLowerCase()} by +${boost}`,
       image: IMAGE_URLS[i],
       rarity: RARITIES[i],

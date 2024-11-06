@@ -32,6 +32,7 @@
   import SourceGotchisTeam from './SourceGotchisTeam.vue'
   import SourceSavedTeams from './SourceSavedTeams.vue'
   import SourceGotchisSearch from './SourceGotchisSearch.vue'
+  import SourceItemsUnlimited from './SourceItemsUnlimited.vue'
 
   const ROW_NAMES = ['front', 'back']
   const ALL_ROW_NAMES = [...ROW_NAMES, 'substitutes']
@@ -120,6 +121,9 @@
 
   const savedTeamsAvailable = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
 
+  const unlimitedItemsAvailable = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
+  // const myItemsAvailable = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.EDIT].includes(props.mode))
+
   const canChangeName = computed(() => !isEditMode.value)
   const withSubstitutes = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.EDIT].includes(props.mode))
   const enableDuplicates = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
@@ -191,11 +195,13 @@
 
   const SOURCE_TYPE = {
     GOTCHI: 'gotchi',
-    TEAM: 'team'
+    TEAM: 'team',
+    ITEM: 'item'
   }
   const SOURCE_TYPE_LABELS = {
     [SOURCE_TYPE.GOTCHI]: 'Gotchis',
-    [SOURCE_TYPE.TEAM]: 'Saved Teams'
+    [SOURCE_TYPE.TEAM]: 'Saved Teams',
+    [SOURCE_TYPE.ITEM]: 'Items'
   }
   const SOURCES_BY_TYPE = {
     [SOURCE_TYPE.GOTCHI]: [
@@ -233,6 +239,14 @@
         props: { onlyMyGotchisAllowed: true, unavailableGotchiIds: true, savedTeamsLastChanged: true },
         type: SOURCE_TYPE.TEAM
       }
+    ],
+    [SOURCE_TYPE.ITEM]: [
+      {
+        id: 'unlimiteditems',
+        label: 'Items',
+        component: SourceItemsUnlimited,
+        type: SOURCE_TYPE.ITEM
+      }
     ]
   }
   const SOURCES_BY_ID = Object.fromEntries(Object.values(SOURCES_BY_TYPE).flat().map(s => [s.id, s]))
@@ -256,6 +270,9 @@
     }
     if (searchGotchisAllowed.value) {
       addSource('searchgotchis')
+    }
+    if (unlimitedItemsAvailable.value) {
+      addSource('unlimiteditems')
     }
     return sources
   })
@@ -475,6 +492,10 @@
       }
     }
   )
+
+  function addItemToSlot ({ item, type, slotNumber, restoring }) {
+    console.log('addItemToSlot', { type, slotNumber, item, restoring })
+  }
 
   // Sync incoming team data
   function loadTeam (newTeam) {
@@ -699,7 +720,22 @@
 
   // Moving gotchis from available list to the formation
 
-  const isDragging = ref(false)
+  const findDroppedTargetSlot = function (rowKey, positionIndex) {
+    let targetSlotType = 'main'
+    let targetSlotNumber = null
+    if (rowKey === 'substitutes') {
+      targetSlotType = 'substitutes'
+      targetSlotNumber = positionIndex + 1
+    } else {
+      targetSlotNumber = selectedFormationPattern.value[rowKey]?.[positionIndex]
+    }
+    return {
+      targetSlotType,
+      targetSlotNumber
+    }
+  }
+
+  const isDraggingGotchi = ref(false)
 
   const draggableTargets = ref({
     front: [[], [], [], [], []],
@@ -716,20 +752,12 @@
           if (newTargetArray.length) {
             // dropped a gotchi into this position
             const gotchi = newTargetArray[0]
-            console.log('handle dropped gotchi', { gotchi, rowKey, positionIndex })
+            // console.log('handle dropped gotchi', { gotchi, rowKey, positionIndex })
             // TODO Extra features:
             // a) dragging within the formation to move a gotchi between slots
 
             // Determine the target slot corresponding to the row/position
-            let targetSlotType = 'main'
-            let targetSlotNumber = null
-            if (rowKey === 'substitutes') {
-              targetSlotType = 'substitutes'
-              targetSlotNumber = positionIndex +1
-            } else {
-              targetSlotNumber = selectedFormationPattern.value[rowKey]?.[positionIndex]
-            }
-            console.log({ targetSlotType, targetSlotNumber })
+            const { targetSlotType, targetSlotNumber } = findDroppedTargetSlot(rowKey, positionIndex)
             if (!targetSlotNumber) {
               console.error('Dropped gotchi but unable to find target slot')
               return
@@ -744,12 +772,69 @@
     }
   }
 
-  function onMoveFromAvailable (event) {
+  function onMoveGotchiFromAvailable (event) {
     // prevent dragging/moving within the available gotchis list
     if (event.to.classList.contains('create-team__gotchis-results')){
       return false
     }
   }
+
+
+  // Moving items from available list to gotchis in the formation
+
+  const occupiedMainSlotNumbers = computed(() => {
+    const result = []
+    const mainSlots = teamSlots.value.main
+    for (let i = 0; i < mainSlots.length; i++) {
+      if (mainSlots[i]) {
+        result.push(i + 1)
+      }
+    }
+    return result
+  })
+
+  const isDraggingItem = ref(false)
+  const draggableItemTargets = ref({
+    front: [[], [], [], [], []],
+    back: [[], [], [], [], []],
+    substitutes: [[], []]
+  })
+
+    for (let rowKey of ALL_ROW_NAMES) {
+    const row = draggableItemTargets.value[rowKey]
+    for (let positionIndex = 0; positionIndex < row.length; positionIndex++) {
+      watch(
+        () => draggableItemTargets.value[rowKey][positionIndex],
+        (newTargetArray) => {
+          if (newTargetArray.length) {
+            // dropped an item into this position
+            const item = newTargetArray[0]
+            // console.log('handle dropped item', { item, rowKey, positionIndex })
+
+            // Determine the target slot corresponding to the row/position
+            const { targetSlotType, targetSlotNumber } = findDroppedTargetSlot(rowKey, positionIndex)
+            if (!targetSlotNumber) {
+              console.error('Dropped item but unable to find target slot')
+              return
+            }
+            // add the dropped item to the target slot
+            addItemToSlot({ item, type: targetSlotType, slotNumber: targetSlotNumber })
+            // now clear this target array
+            row[positionIndex] = []
+          }
+        }
+      )
+    }
+  }
+
+
+  function onMoveItemFromAvailable (event) {
+    // prevent dragging/moving within the available items list
+    if (event.to.classList.contains('create-team__items-results')){
+      return false
+    }
+  }
+
 
   // Store slot of gotchi to display in a details dialog.
   // When it's set and we have gotchi details, open the dialog.
@@ -843,7 +928,8 @@
     <div
       class="create-team"
       :class="{
-        'create-team--is-dragging': isDragging
+        'create-team--is-dragging-gotchi': isDraggingGotchi,
+        'create-team--is-dragging-item': isDraggingItem
       }"
     >
       <div class="create-team__container create-team__container-1">
@@ -898,16 +984,16 @@
               <VueDraggable
                 :list="gotchisToDisplay"
                 item-key="id"
-                :group="{ name: 'available', pull: 'clone', put: false }"
+                :group="{ name: 'gotchis', pull: 'clone', put: false }"
                 tag="ol"
                 class="list-reset create-team__gotchis-results"
                 ghost-class="create-team__gotchis-draggable--ghost"
                 chosen-class="create-team__gotchis-draggable--chosen"
                 drag-class="create-team__gotchis-draggable--drag"
                 filter=".create-team__gotchis-result--not-draggable"
-                :move="onMoveFromAvailable"
-                @start="isDragging = true"
-                @end="isDragging = false"
+                :move="onMoveGotchiFromAvailable"
+                @start="isDraggingGotchi = true"
+                @end="isDraggingGotchi = false"
               >
                 <template #item="{ element }">
                   <li
@@ -951,8 +1037,8 @@
                       </button>
 
                       <template #popper>
-                        <div class="create-team__gotchis-result-popup">
-                          <div class="create-team__gotchis-result-popup-header">
+                        <div class="create-team__source-result-popup">
+                          <div class="create-team__source-result-popup-header">
                             {{ element.name }} #{{ element.id }}
                           </div>
                           <div
@@ -969,38 +1055,40 @@
                               variant="small"
                               class="create-team__gotchis-result-popup-stats"
                             />
-                            <div>
-                              Add to:
-                              <button
-                                v-for="i in 5"
-                                :key="i"
-                                type="button"
-                                class="button-reset create-team__gotchis-result-popup-slot-button"
-                                :class="{
-                                  'create-team__gotchis-result-popup-slot-button--selected': teamSlots.main[i -1]?.gotchiId === element.id
-                                }"
-                                @click="addGotchiToSlot({ gotchi: element, type: 'main', slotNumber: i })"
+                            <div class="create-team__source-result-popup-footer">
+                              <div>
+                                Add to slot:
+                                <button
+                                  v-for="i in 5"
+                                  :key="i"
+                                  type="button"
+                                  class="button-reset create-team__source-result-popup-slot-button"
+                                  :class="{
+                                    'create-team__source-result-popup-slot-button--selected': teamSlots.main[i -1]?.gotchiId === element.id
+                                  }"
+                                  @click="addGotchiToSlot({ gotchi: element, type: 'main', slotNumber: i })"
+                                >
+                                  {{ i }}
+                                </button>
+                              </div>
+                              <div
+                                v-if="withSubstitutes"
+                                style="margin-top: 0.7rem"
                               >
-                                {{ i }}
-                              </button>
-                            </div>
-                            <div
-                              v-if="withSubstitutes"
-                              style="margin-top: 0.7rem"
-                            >
-                              Add as substitute:
-                              <button
-                                v-for="i in 2"
-                                :key="i"
-                                type="button"
-                                class="button-reset create-team__gotchis-result-popup-slot-button"
-                                :class="{
-                                  'create-team__gotchis-result-popup-slot-button--selected': teamSlots.substitutes[i - 1]?.gotchiId === element.id
-                                }"
-                                @click="addGotchiToSlot({ gotchi: element, type: 'substitutes', slotNumber: i })"
-                              >
-                                S{{ i }}
-                              </button>
+                                Add as substitute:
+                                <button
+                                  v-for="i in 2"
+                                  :key="i"
+                                  type="button"
+                                  class="button-reset create-team__source-result-popup-slot-button"
+                                  :class="{
+                                    'create-team__source-result-popup-slot-button--selected': teamSlots.substitutes[i - 1]?.gotchiId === element.id
+                                  }"
+                                  @click="addGotchiToSlot({ gotchi: element, type: 'substitutes', slotNumber: i })"
+                                >
+                                  S{{ i }}
+                                </button>
+                              </div>
                             </div>
                           </template>
                         </div>
@@ -1023,6 +1111,87 @@
               >
                 Apply
               </SiteButton>
+            </template>
+          </component>
+          <component
+            v-else-if="sourceComponent && sourceComponentType === SOURCE_TYPE.ITEM"
+            :is="sourceComponent"
+            v-bind="sourceComponentProps"
+          >
+            <template #items="{ itemsToDisplay }">
+              <VueDraggable
+                :list="itemsToDisplay"
+                item-key="id"
+                :group="{ name: 'items', pull: 'clone', put: false }"
+                tag="ol"
+                class="list-reset create-team__items-results"
+                ghost-class="create-team__items-draggable--ghost"
+                chosen-class="create-team__items-draggable--chosen"
+                drag-class="create-team__items-draggable--drag"
+                filter=".create-team__items-result--not-draggable"
+                :move="onMoveItemFromAvailable"
+                @start="isDraggingItem = true"
+                @end="isDraggingItem = false"
+              >
+                <template #item="{ element }">
+                  <li
+                    class="create-team__items-result"
+                  >
+                    <SitePopupHoverMenu>
+                      <button
+                        type="button"
+                        class="button-reset create-team__items-result-button"
+                      >
+                        <img
+                          :src="element.image"
+                          alt=""
+                          class="create-team__items-result-image"
+                          loading="lazy"
+                        />
+                        <div class="create-team__items-result-label">
+                          <div class="create-team__items-result-name">
+                            {{ element.name }}
+                          </div>
+                          <div class="create-team__items-result-quantity">
+                            Quantity: {{ element.quantity }}
+                          </div>
+                        </div>
+                      </button>
+
+                      <template #popper>
+                        <div class="create-team__source-result-popup">
+                          <div class="create-team__source-result-popup-header">
+                            {{ element.name }}
+                          </div>
+                          <div class="create-team__items-result-popup-description">
+                            {{ element.description }}
+                          </div>
+                          <div class="create-team__source-result-popup-footer">
+                            <template v-if="!occupiedMainSlotNumbers.length">
+                              You can assign items after adding gotchis to the team.
+                            </template>
+                            <template v-else>
+                              Add to slot:
+                              <button
+                                v-for="i in occupiedMainSlotNumbers"
+                                :key="i"
+                                type="button"
+                                class="button-reset create-team__source-result-popup-slot-button"
+                                :class="{
+                                  'create-team__items-common-popup-slot-button--selected': teamSlots.main[i -1]?.gotchiId === element.id
+                                }"
+                                @click="addItemToSlot({ item: element, type: 'main', slotNumber: i })"
+                              >
+                                {{ i }}
+                              </button>
+                            </template>
+                          </div>
+                        </div>
+                      </template>
+                    </SitePopupHoverMenu>
+                  </li>
+                </template>
+              </VueDraggable>
             </template>
           </component>
         </section>
@@ -1098,9 +1267,9 @@
                     <VueDraggable
                       v-model="draggableTargets[row][position - 1]"
                       item-key="id"
-                      :group="{ name: `target_${row}_${position - 1}`, pull: false, put: true }"
+                      :group="{ name: `target_${row}_${position - 1}`, pull: false, put: ['gotchis'] }"
                       tag="ol"
-                      class="list-reset create-team__formation-position-target"
+                      class="list-reset create-team__formation-position-gotchi-target"
                     >
                       <template #item><!-- not needed as we remove gotchis from this list after dropping --></template>
                     </VueDraggable>
@@ -1136,6 +1305,15 @@
                     />
                   </template>
                 </GotchiInFormation>
+                <VueDraggable
+                  v-model="draggableItemTargets[row][position - 1]"
+                  item-key="id"
+                  :group="{ name: `targetItem_${row}_${position - 1}`, pull: false, put: ['items'] }"
+                  tag="ol"
+                  class="list-reset create-team__formation-position-item-target"
+                >
+                  <template #item><!-- not needed as we remove items from this list after dropping --></template>
+                </VueDraggable>
               </template>
             </TeamFormation>
           </div>
@@ -1160,9 +1338,9 @@
                   <VueDraggable
                     v-model="draggableTargets.substitutes[position - 1]"
                     item-key="id"
-                    :group="{ name: `target_substitutes_${position - 1}`, pull: false, put: true }"
+                    :group="{ name: `target_substitutes_${position - 1}`, pull: false, put: ['gotchis'] }"
                     tag="ol"
-                    class="list-reset create-team__formation-position-target"
+                    class="list-reset create-team__formation-position-gotchi-target"
                   >
                     <template #item><!-- not needed as we remove gotchis from this list after dropping --></template>
                   </VueDraggable>
@@ -1503,16 +1681,21 @@
     grid-column: 1 / 4;
   }
   .create-team__gotchis-results {
+    --source-result-border-width: 2px;
+    --source-result-border-color: var(--c-black);
     display: grid;
     grid-template-columns: repeat(auto-fill, 6rem);
     column-gap: 1.5rem;
     row-gap: 1.5rem;
     user-select: none;
   }
+  .create-team__gotchis-results .v-popper--shown {
+    --source-result-border-color: var(--c-white);
+  }
   .create-team__gotchis-result-button {
     display: block;
     max-width: 100%;
-    border: 1px solid var(--c-black);
+    border: var(--source-result-border-width) solid var(--source-result-border-color);
     background: linear-gradient(180deg, var(--c-dark-purple) 0%, var(--c-black) 100%);
   }
   .create-team__gotchis-result--not-draggable {
@@ -1536,44 +1719,58 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(1.5rem, 1fr));
   }
-  .create-team__gotchis-result-popup {
+
+  .create-team__source-result-popup {
     display: grid;
     font-size: 0.875rem;
     line-height: 1.5rem;
     letter-spacing: 0.02625rem;
   }
-  .create-team__gotchis-result-popup-header {
+  .create-team__source-result-popup-header {
     margin-bottom: 0.5rem;
     font-size: 1rem;
     letter-spacing: 0.03rem;
     font-weight: bold;
   }
-  .create-team__gotchis-result-popup-stats {
-    margin-bottom: 0.75rem;
-  }
-  .create-team__gotchis-result-popup-slot-button {
-    margin-right: 0.7rem;
-    width: 1.75rem;
-    border: 2px solid white;
-    padding: 0.25rem;
-    background: transparent;
-    color: white;
-  }
-  .create-team__gotchis-result-popup-slot-button--selected,
-  .create-team__gotchis-result-popup-slot-button:hover {
-    background: white;
+  .create-team__source-result-popup-footer {
+    --cancel-popup-padding: calc(-1 * var(--site-popup-hover-menu-padding));
+    margin: 1rem var(--cancel-popup-padding) var(--cancel-popup-padding) var(--cancel-popup-padding);
+    padding: 0.5rem var(--site-popup-hover-menu-padding);
+    background: var(--c-white);
     color: var(--c-black);
   }
+  .create-team__source-result-popup-slot-button {
+    margin-right: 0.7rem;
+    width: 2.5rem;
+    border: 2px solid var(--c-black);
+    padding: 0.5rem;
+    background: transparent;
+    color: var(--c-black);
+    font-size: 1.125rem;
+    line-height: 1.5rem;
+  }
+  .create-team__source-result-popup-slot-button--selected,
+  .create-team__source-result-popup-slot-button:hover {
+    background: var(--c-black);
+    color: var(--c-white);
+  }
 
 
-  /* drag-and-drop styles */
+  /* drag-and-drop styles (gotchi) */
+
+  .create-team__formation-display {
+    /* some magic numbers needed so we can size the dragged item to fit inside the target formation position containers */
+    /* TODO should these be defined in TeamFormation? */
+    --formation-position-height: 7.5rem;
+    --formation-position-width: 6.125rem;
+  }
 
   /* drop target in formation */
-  .create-team__formation-position-target {
+  .create-team__formation-position-gotchi-target {
     width: 100%;
     height: 100%;
   }
-  .create-team--is-dragging .create-team__formation-position-target {
+  .create-team--is-dragging-gotchi .create-team__formation-position-gotchi-target {
     position: relative; /* bring above an existing gotchi */
     z-index: 1; /* bring above an existing gotchi */
     background: rgba(var(--c-light-yellow-rgb), 0.3);
@@ -1591,7 +1788,7 @@
   .create-team__gotchis-draggable--drag {
   }
   /* the item being dragged, preview in the target list before dropping */
-  .create-team__formation-position-target .create-team__gotchis-draggable--chosen {
+  .create-team__formation-position-gotchi-target .create-team__gotchis-draggable--chosen {
     height: 100%;
     display: grid;
     place-content: center;
@@ -1599,14 +1796,97 @@
   :deep(.team-formation__position):has(.create-team__gotchis-draggable--chosen) {
     z-index: 2; /* bring position container - which contains the preview item - above an existing gotchi */
   }
-  .create-team__formation-position-target .create-team__gotchis-draggable--chosen button {
-    width: 6.125rem;
-    height: 7.5rem;
+  .create-team__formation-position-gotchi-target .create-team__gotchis-draggable--chosen button {
+    width: var(--formation-position-width);
+    height: var(--formation-position-height);
     border: none;
   }
-  .create-team__formation-position-target .create-team__gotchis-draggable--chosen .create-team__gotchis-result-name,
-  .create-team__formation-position-target .create-team__gotchis-draggable--chosen .create-team__gotchis-result-special,
-  .create-team__formation-position-target .create-team__gotchis-draggable--chosen .create-team__gotchis-result-available-specials {
+  .create-team__formation-position-gotchi-target .create-team__gotchis-draggable--chosen .create-team__gotchis-result-name,
+  .create-team__formation-position-gotchi-target .create-team__gotchis-draggable--chosen .create-team__gotchis-result-special,
+  .create-team__formation-position-gotchi-target .create-team__gotchis-draggable--chosen .create-team__gotchis-result-available-specials {
+    display: none;
+  }
+
+
+  .create-team__items-results {
+    --source-result-border-width: 2px;
+    --source-result-border-color: var(--c-black);
+    display: grid;
+    grid-template-columns: repeat(auto-fill, calc(8rem + 2 * var(--source-result-border-width)));
+    column-gap: 1.5rem;
+    row-gap: 1.5rem;
+    user-select: none;
+  }
+  .create-team__items-results .v-popper--shown {
+    --source-result-border-color: var(--c-white);
+  }
+  .create-team__items-result-button {
+    display: block;
+    max-width: 100%;
+    border: var(--source-result-border-width) solid var(--source-result-border-color);
+  }
+  .create-team__items-result--not-draggable {
+    opacity: 0.3;
+    filter: grayscale(100%);
+  }
+  .create-team__items-result-image {
+    display: block;
+    width: 8rem;
+    height: 8rem ;
+  }
+  .create-team__items-result-label {
+    padding: 0.5rem 0.25rem;
+    background: var(--c-white);
+    color: var(--c-black);
+    font-size: 0.75rem;
+    line-height: 1rem;
+    text-transform: uppercase;
+  }
+  .create-team__items-result-name {
+    font-weight: bold;
+  }
+  .create-team__items-result-quantity {
+    opacity: 0.5;
+  }
+  .create-team__items-result-popup-description {
+   font-size: 0.875rem;
+   font-weight: normal;
+   line-height: 1.25rem;
+  }
+
+  /* drag-and-drop styles (item) */
+
+  /* drop target in formation */
+  .create-team--is-dragging-item .create-team__formation-position-item-target {
+    position: absolute; /* bring above an existing gotchi */
+    width: calc(100% - 2px); /* inset to avoid covering the position borders */
+    height: calc(100% - 2px);
+    left: 1px;
+    top: 1px;
+    z-index: 2; /* bring above an existing gotchi */
+    background: rgba(var(--c-light-yellow-rgb), 0.3);
+  }
+
+  /* the item being dragged, in its original list */
+  .create-team__items-draggable--ghost {
+    opacity: 0.5;
+  }
+
+  /* the item being dragged, preview in the target list before dropping */
+  .create-team__formation-position-item-target .create-team__items-draggable--chosen {
+    height: var(--formation-position-height);
+    width: var(--formation-position-width);
+    border: none;
+  }
+  .create-team__formation-position-item-target .create-team__items-draggable--chosen .create-team__items-result-image {
+    width: var(--formation-position-width);
+    height: var(--formation-position-width);
+    opacity: 0.5;
+  }
+  .create-team__formation-position-item-target .create-team__items-draggable--chosen .create-team__items-result-label {
+    padding: 0.2rem;
+  }
+  .create-team__formation-position-item-target .create-team__items-draggable--chosen .create-team__items-result-quantity {
     display: none;
   }
 </style>

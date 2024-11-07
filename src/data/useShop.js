@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { DEV_MODE } from '../appEnv'
 import useStatus from '../utils/useStatus'
 import shopService from './shopService'
@@ -47,6 +47,37 @@ const fetchItems = async function () {
   }
 }
 
+// A helper which can be used like "await fetchedItems()"
+const fetchedItems = async function () {
+  const status = fetchItemsStatus.value
+  if (status.loaded) { return items.value }
+  if (status.error) { throw new Error(status.errorMessage)}
+  if (!status.loading) {
+    fetchItems()
+  }
+  if (status.loading) {
+    return new Promise((resolve, reject) => {
+      const unwatch = watch(
+        () => ({
+          loaded: fetchItemsStatus.value.loaded,
+          error: fetchItemsStatus.value.error
+        }),
+        () => {
+          if (fetchItemsStatus.value.loaded) {
+            unwatch()
+            resolve(items.value)
+          }
+          if (fetchItemsStatus.value.error) {
+            unwatch()
+            reject(fetchItemsStatus.value.errorMessage)
+          }
+        }
+      )
+    })
+  }
+  throw new Error('unexpected state in fetchedItems')
+}
+
 // returns bigint
 const getGhstAllowance = async function (ownerAddress) {
   return getErc20Contract().getTokenAllowance({
@@ -85,3 +116,6 @@ export default function useShop () {
     buyItem
   }
 }
+
+// for usage 'await fetchedItems()'
+export { fetchedItems }

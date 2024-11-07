@@ -89,9 +89,9 @@ export const useBattleAnalyserStore = function (id) {
 // Run a single training battle which can be displayed,
 // and also another 200 battles to get a win rate
 // Expect teams with formation of embedded gotchis.
-export const runTrainingBattle = function ({ team1, team2 }) {
-  const team1ForBattle = generateTeamForBattle(team1)
-  const team2ForBattle = generateTeamForBattle(team2)
+export const runTrainingBattle = async function ({ team1, team2 }) {
+  const team1ForBattle = await generateTeamForBattle(team1)
+  const team2ForBattle = await generateTeamForBattle(team2)
   const result = battlesService.runTrainingBattle({
     team1: team1ForBattle,
     team2: team2ForBattle

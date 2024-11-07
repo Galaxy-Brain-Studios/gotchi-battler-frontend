@@ -65,7 +65,7 @@
     if (!canStartMatch.value) { return }
     const [isStale, setLoaded, setError] = setLoading()
     try {
-      const battleId = runTrainingBattle(battleToSubmit.value)
+      const battleId = await runTrainingBattle(battleToSubmit.value)
       if (battleId) {
         completedBattleId.value = battleId
         showCompletedBattleWinner.value = false

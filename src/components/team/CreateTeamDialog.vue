@@ -481,7 +481,7 @@
       itemId
     }
     addGotchiObjectToTeam(gotchiObject)
-    console.log({ teamSlots: teamSlots.value })
+    // console.log({ teamSlots: teamSlots.value })
   }
 
 

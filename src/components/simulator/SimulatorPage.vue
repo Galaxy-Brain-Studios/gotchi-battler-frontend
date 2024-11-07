@@ -90,8 +90,8 @@
       match.team2Results.overallWinner = match.team2Results.wins > match.team1Results.wins
     }
 
-    const team1ForBattle = generateTeamForBattle(match.team1)
-    const team2ForBattle = generateTeamForBattle(match.team2)
+    const team1ForBattle = await generateTeamForBattle(match.team1)
+    const team2ForBattle = await generateTeamForBattle(match.team2)
     const matchForBattle = {
       team1: team1ForBattle,
       team2: team2ForBattle

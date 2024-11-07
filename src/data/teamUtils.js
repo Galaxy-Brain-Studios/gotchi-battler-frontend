@@ -1,6 +1,7 @@
 import { processGotchiModel } from './gotchiUtils'
 import { useAccountStore } from './accountStore'
 import { useSpecialsStore } from './specialsStore'
+import { fetchedItems } from './useShop'
 import DIFFICULTIES from './trainingTeamDifficulties.json'
 
 const teamBackPositionPropertyNames = ['back1', 'back2', 'back3', 'back4', 'back5']
@@ -108,6 +109,20 @@ const getSpecialForBattle = function (specialId) {
   }
 }
 
+const getItemForBattle = function (item) {
+  // Only include the required properties from the game logic schema, because it will complain if there are unexpected properties
+  return {
+    id: item.id,
+    name: item.name,
+    description: item.description,
+    image: item.image,
+    rarity: item.rarity,
+    cost: item.cost,
+    stat: item.stat,
+    statValue: item.statValue
+  }
+}
+
 
 const GOTCHI_PROPS_REQUIRED = [
   "id",
@@ -141,11 +156,12 @@ const GOTCHI_PROPS_OPTIONAL = [
   "kinship",
   "xp",
   "attack",
-  "actionDelay"
+  "actionDelay",
+  "itemId"
 ]
 // Convert formation with embedded gotchis ({ formation: { front, back, substitutes } })
 // to essentially the same but stricter version for passing to game logic
-export const generateTeamForBattle = function (team) {
+export const generateTeamForBattle = async function (team) {
   if (!team) { return null }
   // console.log('generateTeamForBattle', team)
   // expect incoming team to have
@@ -162,6 +178,9 @@ export const generateTeamForBattle = function (team) {
   //   name: 'string'
   // }
 
+  const items = await fetchedItems()
+  const itemsById = Object.fromEntries(items.map(item => [item.id, item]))
+
   const getGotchiForBattle = function (gotchi) {
     if (!gotchi) { return null }
     const result = {}
@@ -174,6 +193,16 @@ export const generateTeamForBattle = function (team) {
     for (const prop of GOTCHI_PROPS_OPTIONAL) {
       if (typeof gotchi[prop] !== 'undefined') {
         result[prop] = gotchi[prop]
+      }
+    }
+    // Look up an item (optional); only include it if we have the item details (don't trust the provided item object)
+    if (gotchi.itemId) {
+      const item = itemsById[gotchi.itemId]
+      if (!item) {
+        console.error("Could not find item", gotchi.itemId)
+        delete result.itemId
+      } else {
+        result.item = getItemForBattle(item)
       }
     }
     return result

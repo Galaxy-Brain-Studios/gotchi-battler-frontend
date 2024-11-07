@@ -68,7 +68,8 @@ export default {
 
   createTeam: requireLoginSession(async function (team) {
     try {
-      const savedTeam = await apiWithCredentials.url(urls.createProfileTeam()).post(generateTeamForBattle(team))
+      const teamForBattle = await generateTeamForBattle(team)
+      const savedTeam = await apiWithCredentials.url(urls.createProfileTeam()).post(teamForBattle)
       return processTeamModel(savedTeam);
     } catch (e) {
       console.error('createTeam error', e)
@@ -78,8 +79,9 @@ export default {
 
   updateTeam: requireLoginSession(async function (team) {
     try {
+      const teamForBattle = await generateTeamForBattle(team)
       const savedTeam = await apiWithCredentials.url(urls.updateProfileTeam(team.id)).put({
-        ...generateTeamForBattle(team),
+        ...teamForBattle,
         id: team.id
       })
       return processTeamModel(savedTeam);

@@ -132,6 +132,7 @@
             <GotchiInFormation
               emptyMode="disabled"
               variant="small"
+              withSpecialInfoBadge
             />
           </template>
           <template #gotchi="{ gotchi }">
@@ -155,6 +156,7 @@
             <GotchiInFormation
               emptyMode="disabled"
               variant="small"
+              withSpecialInfoBadge
             />
           </template>
           <template #gotchi="{ gotchi }">

@@ -37,6 +37,7 @@
                 }
             ],
             "specialId": 1,
+            "itemId": null,
             "speed": 146,
             "health": 228,
             "accuracy": 71,
@@ -76,6 +77,7 @@
                 }
             ],
             "specialId": 7,
+            "itemId": null,
             "speed": 10,
             "health": 20,
             "accuracy": 30,
@@ -115,6 +117,7 @@
                 }
             ],
             "specialId": 6,
+            "itemId": null,
             "speed": 50,
             "health": 50,
             "accuracy": 50,
@@ -175,6 +178,7 @@
                 }
             ],
             "specialId": 8,
+            "itemId": null,
             "speed": 0,
             "health": 0,
             "accuracy": 0,
@@ -217,6 +221,7 @@
                 }
             ],
             "specialId": 5,
+            "itemId": null,
             "speed": 146,
             "health": 228,
             "accuracy": 71,
@@ -262,6 +267,7 @@
                 }
             ],
             "specialId": 4,
+            "itemId": null,
             "speed": 146,
             "health": 228,
             "accuracy": 71,
@@ -310,6 +316,7 @@
                 }
             ],
             "specialId": 3,
+            "itemId": null,
             "speed": 50,
             "health": 50,
             "accuracy": 50,
@@ -347,6 +354,7 @@
                 }
             ],
             "specialId": 2,
+            "itemId": null,
             "speed": 50,
             "health": 50,
             "accuracy": 50,
@@ -384,6 +392,7 @@
                 }
             ],
             "specialId": 7,
+            "itemId": null,
             "speed": 50,
             "health": 50,
             "accuracy": 50,
@@ -424,6 +433,7 @@
                 }
             ],
             "specialId": 4,
+            "itemId": null,
             "speed": 50,
             "health": 50,
             "accuracy": 50,
@@ -461,6 +471,7 @@
                 }
             ],
             "specialId": 8,
+            "itemId": null,
             "speed": 50,
             "health": 50,
             "accuracy": 50,
@@ -610,6 +621,7 @@
                 }
             ],
             "specialId": 8,
+            "itemId": null,
             "speed": 0,
             "health": 0,
             "accuracy": 0,
@@ -653,6 +665,7 @@
                 }
             ],
             "specialId": 1,
+            "itemId": null,
             "speed": 146,
             "health": 228,
             "accuracy": 71,
@@ -692,6 +705,7 @@
                 }
             ],
             "specialId": 6,
+            "itemId": null,
             "speed": 50,
             "health": 50,
             "accuracy": 50,
@@ -729,6 +743,7 @@
                 }
             ],
             "specialId": 7,
+            "itemId": null,
             "speed": 10,
             "health": 20,
             "accuracy": 30,
@@ -773,6 +788,7 @@
                 }
             ],
             "specialId": 5,
+            "itemId": null,
             "speed": 146,
             "health": 228,
             "accuracy": 71,
@@ -836,6 +852,7 @@
                 }
             ],
             "specialId": 1,
+            "itemId": null,
             "speed": 146,
             "health": 228,
             "accuracy": 71,
@@ -894,6 +911,7 @@
                 }
             ],
             "specialId": 8,
+            "itemId": null,
             "speed": 0,
             "health": 0,
             "accuracy": 0,
@@ -931,6 +949,7 @@
                 }
             ],
             "specialId": 7,
+            "itemId": null,
             "speed": 10,
             "health": 20,
             "accuracy": 30,
@@ -971,6 +990,7 @@
                 }
             ],
             "specialId": 5,
+            "itemId": null,
             "speed": 146,
             "health": 228,
             "accuracy": 71,
@@ -1008,6 +1028,7 @@
                 }
             ],
             "specialId": 6,
+            "itemId": null,
             "speed": 50,
             "health": 50,
             "accuracy": 50,

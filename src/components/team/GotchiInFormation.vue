@@ -48,6 +48,10 @@
       type: Boolean,
       default: false
     },
+    withItemBadge: {
+      type: Boolean,
+      default: false
+    },
     withSpecialBadge: {
       type: Boolean,
       default: false
@@ -71,7 +75,9 @@
     :class="{
       'gotchi-in-formation-placeholder--variant-large': variant === 'large',
       'gotchi-in-formation-placeholder--variant-small': variant === 'small',
-      [`gotchi-in-formation-placeholder--mode-${emptyMode}`]: emptyMode
+      [`gotchi-in-formation-placeholder--mode-${emptyMode}`]: emptyMode,
+      'gotchi-in-formation-placeholder--with-item-badge': withItemBadge,
+      'gotchi-in-formation-placeholder--with-special-badge': withSpecialBadge || withSpecialInfoBadge
     }"
   >
     <img
@@ -109,7 +115,9 @@
     :class="{
       'gotchi-in-formation--variant-large': variant === 'large',
       'gotchi-in-formation--variant-small': variant === 'small',
-      'gotchi-in-formation--with-warning': warning
+      'gotchi-in-formation--with-warning': warning,
+      'gotchi-in-formation-placeholder--with-item-badge': withItemBadge,
+      'gotchi-in-formation-placeholder--with-special-badge': withSpecialBadge || withSpecialInfoBadge
     }"
   >
     <button
@@ -198,19 +206,32 @@
       class="gotchi-in-formation__warning-icon"
     />
     <div
-      v-if="withSpecialBadge || withSpecialInfoBadge"
-      class="gotchi-in-formation__special-badge-container"
+      v-if="withItemBadge || withSpecialBadge || withSpecialInfoBadge"
+      class="gotchi-in-formation__badges-container"
     >
-      <slot name="special">
-        <component
-          v-if="gotchi.specialId"
-          :is="withSpecialBadge ? GotchiSpecial : GotchiSpecialWithInfo"
-          :id="gotchi.specialId"
-          :forSpecialShowClass="true"
-          variant="small"
-          fullWidth
-        />
-      </slot>
+      <div
+        v-if="withItemBadge"
+        class="gotchi-in-formation__item-badge-container"
+      >
+        <slot name="item">
+          {{ gotchi.itemId }}
+        </slot>
+      </div>
+      <div
+        v-if="withSpecialBadge || withSpecialInfoBadge"
+        class="gotchi-in-formation__special-badge-container"
+      >
+        <slot name="special">
+          <component
+            v-if="gotchi.specialId"
+            :is="withSpecialBadge ? GotchiSpecial : GotchiSpecialWithInfo"
+            :id="gotchi.specialId"
+            :forSpecialShowClass="true"
+            variant="small"
+            fullWidth
+          />
+        </slot>
+      </div>
     </div>
     <div
       class="gotchi-in-formation__name"
@@ -229,7 +250,9 @@
   .gotchi-in-formation-placeholder {
     --gotchi-in-formation-small-width: calc(6.25rem - 2px);
     --gotchi-in-formation-small-height: calc(6.25rem - 2px - 0.5rem);
+    --gotchi-in-formation__item-badge-height: 1.5rem;
     --gotchi-in-formation__special-badge-height: 1.25rem;
+    --gotchi-in-formation__badges-height: 0px; /* need size unit for calc to work */
     --gotchi-in-formation__name-height: 0.625rem;
     position: relative;
     padding: 0 0.5rem;
@@ -237,6 +260,19 @@
     display: grid;
     grid-template-rows: minmax(0, 1fr);
   }
+  .gotchi-in-formation--with-item-badge,
+  .gotchi-in-formation-placeholder--with-item-badge {
+    --gotchi-in-formation__badges-height: var(--gotchi-in-formation__item-badge-height);
+  }
+  .gotchi-in-formation--with-special-badge,
+  .gotchi-in-formation-placeholder--with-special-badge {
+    --gotchi-in-formation__badges-height: var(--gotchi-in-formation__special-badge-height);
+  }
+  .gotchi-in-formation--with-special-badge.gotchi-in-formation--with-item-badge,
+  .gotchi-in-formation-placeholder--with-special-badge.gotchi-in-formation-placeholder--with-item-badge {
+    --gotchi-in-formation__badges-height: calc(var(--gotchi-in-formation__special-badge-height) + var(--gotchi-in-formation__item-badge-height));
+  }
+
   .gotchi-in-formation--variant-large,
   .gotchi-in-formation-placeholder--variant-large {
     width: 15rem;
@@ -245,7 +281,7 @@
   .gotchi-in-formation--variant-small,
   .gotchi-in-formation-placeholder--variant-small {
     width: var(--gotchi-in-formation-small-width);
-    min-height: calc(var(--gotchi-in-formation-small-height) + var(--gotchi-in-formation__name-height) + var(--gotchi-in-formation__special-badge-height));
+    min-height: calc(var(--gotchi-in-formation-small-height) + var(--gotchi-in-formation__name-height) + var(--gotchi-in-formation__badges-height));
   }
   .gotchi-in-formation-placeholder {
     place-items: center;
@@ -343,7 +379,7 @@
     top: 1.2rem;
   }
 
-  .gotchi-in-formation__special-badge-container {
+  .gotchi-in-formation__badges-container {
     position: absolute;
     left: 0;
     right: 0;
@@ -376,8 +412,8 @@
     font-size: 0.75rem;
     line-height: var(--gotchi-in-formation__name-height);
   }
-  .gotchi-in-formation--variant-small .gotchi-in-formation__special-badge-container + .gotchi-in-formation__name {
-    padding-bottom: var(--gotchi-in-formation__special-badge-height);
+  .gotchi-in-formation--variant-small .gotchi-in-formation__badges-container + .gotchi-in-formation__name {
+    padding-bottom: var(--gotchi-in-formation__badges-height);
   }
 
   .gotchi-in-formation__stats-popup {

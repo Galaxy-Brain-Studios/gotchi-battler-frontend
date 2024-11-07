@@ -114,7 +114,8 @@
                   const specialId = teamGotchi.specialId && latestGotchi.availableSpecials?.includes(teamGotchi.specialId) ? teamGotchi.specialId : null
                   return {
                     ...latestGotchi,
-                    specialId
+                    specialId,
+                    itemId: teamGotchi.itemId || null
                   }
                 })
               ]

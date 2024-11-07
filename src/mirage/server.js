@@ -126,17 +126,20 @@ battlesById.DEFAULT = battles[0]
 }
 
 
+const gotchiWithoutSpecialAndItem = function (gotchi) {
+  // remove specialId and itemId as that only exists within a team
+  const newGotchi = { ...gotchi }
+  delete newGotchi.specialId
+  delete newGotchi.itemId
+  return newGotchi
+}
+
 const gotchis = teams.map(
   team => [
     team.back1Gotchi, team.back2Gotchi, team.back3Gotchi, team.back4Gotchi, team.back5Gotchi,
     team.front1Gotchi, team.front2Gotchi, team.front3Gotchi, team.front4Gotchi, team.front5Gotchi
   ]
-).flat().filter(g => !!g).map(gotchi => {
-  // remove 'specialId' from the response because that's only configured per-gotchi within a team
-  // eslint-disable-next-line no-unused-vars
-  const { specialId, ...gotchiWithoutSpecial } = gotchi
-  return gotchiWithoutSpecial
-})
+).flat().filter(g => !!g).map(gotchiWithoutSpecialAndItem)
 
 const trainingTeams = generateTrainingTeams()
 const trainingGotchis = trainingTeams.map(
@@ -144,12 +147,7 @@ const trainingGotchis = trainingTeams.map(
     team.back1Gotchi, team.back2Gotchi, team.back3Gotchi, team.back4Gotchi, team.back5Gotchi,
     team.front1Gotchi, team.front2Gotchi, team.front3Gotchi, team.front4Gotchi, team.front5Gotchi
   ].filter(g => g)
-).flat().map(gotchi => {
-  // remove specialId as that only exists within a team
-  const newGotchi = { ...gotchi }
-  delete newGotchi.specialId
-  return newGotchi
-})
+).flat().map(gotchiWithoutSpecialAndItem)
 
 const mirageConfig = window.mirageConfig = {
   stats: {
@@ -1249,6 +1247,7 @@ function generateTrainingTeams () {
     eys: 3,
     eyc: 11,
     specialId: 'TODO',
+    itemId: null,
     speed: 146,
     health: 228,
     accuracy: 71,

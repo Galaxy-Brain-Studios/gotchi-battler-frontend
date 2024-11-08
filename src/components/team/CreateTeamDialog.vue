@@ -34,6 +34,7 @@
   import SourceSavedTeams from './SourceSavedTeams.vue'
   import SourceGotchisSearch from './SourceGotchisSearch.vue'
   import SourceItemsUnlimited from './SourceItemsUnlimited.vue'
+  import SourceItemsMy from './SourceItemsMy.vue'
 
   const ROW_NAMES = ['front', 'back']
   const ALL_ROW_NAMES = [...ROW_NAMES, 'substitutes']
@@ -125,7 +126,7 @@
   const savedTeamsAvailable = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
 
   const unlimitedItemsAvailable = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
-  // const myItemsAvailable = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.EDIT].includes(props.mode))
+  const myItemsAvailable = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.EDIT].includes(props.mode))
 
   const canChangeName = computed(() => !isEditMode.value)
   const withSubstitutes = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.EDIT].includes(props.mode))
@@ -250,6 +251,13 @@
         component: SourceItemsUnlimited,
         props: { itemIdsInTeam: true },
         type: SOURCE_TYPE.ITEM
+      },
+      {
+        id: 'myitems',
+        label: 'Items',
+        component: SourceItemsMy,
+        props: { itemIdsInTeam: true },
+        type: SOURCE_TYPE.ITEM
       }
     ]
   }
@@ -277,6 +285,9 @@
     }
     if (unlimitedItemsAvailable.value) {
       addSource('unlimiteditems')
+    }
+    if (myItemsAvailable.value) {
+      addSource('myitems')
     }
     return sources
   })
@@ -560,7 +571,7 @@
   const teamSlotsItemIds = computed(() => Object.values(teamSlots.value).flat().map(slot => slot?.itemId).filter(id => !!id))
 
   // Identify if there are assigned items that don't have enough available to the user.
-  // This will also include unrecognised items, as they won't have an available quantity.
+  // This will also include unrecognised items, as they won't have an available count.
   const overBudgetItemIds = computed(() => {
     // itemQuantitiesById may not have been initialized yet
     if (!itemQuantitiesById.value) { return null }
@@ -1228,7 +1239,7 @@
                   <li
                     class="create-team__items-result"
                     :class="{
-                      'create-team__items-result--not-draggable': !(element.availableQuantity > 0)
+                      'create-team__items-result--not-draggable': !(element.availableCount > 0)
                     }"
                   >
                     <SitePopupHoverMenu>
@@ -1246,12 +1257,12 @@
                           <div class="create-team__items-result-name">
                             {{ element.name }}
                           </div>
-                          <div class="create-team__items-result-quantity">
-                            <template v-if="element.availableQuantity < element.quantity">
-                              Available: {{ element.availableQuantity }} / {{ element.quantity }}
+                          <div class="create-team__items-result-count">
+                            <template v-if="element.availableCount < element.count">
+                              Available: {{ element.availableCount }} / {{ element.count }}
                             </template>
                             <template v-else>
-                              Available: {{ element.quantity }}
+                              Available: {{ element.count }}
                             </template>
                           </div>
                         </div>
@@ -1270,9 +1281,9 @@
                               You can assign items after adding gotchis to the team.
                             </template>
                             <template v-else>
-                              <template v-if="!(element.availableQuantity > 0)">
+                              <template v-if="!(element.availableCount > 0)">
                                 You don't have enough of this item available.
-                                <template v-if="element.quantity">
+                                <template v-if="element.count">
                                   <br>You can unequip items from the gotchis in the formation if you want to reassign them, or replace them with a different item.
                                 </template>
                               </template>
@@ -1302,13 +1313,18 @@
             </template>
           </component>
 
-          <component
+          <div
             v-if="renderItemSourceInBackground"
-            :is="renderItemSourceInBackground.component"
-            v-bind="renderItemSourceInBackground.componentProps"
-            @update:itemQuantitiesById="itemQuantitiesById = $event"
             class="create-team__hidden-item-source"
-          ><template #items></template></component>
+          >
+            <component
+              v-if="renderItemSourceInBackground"
+              :is="renderItemSourceInBackground.component"
+              v-bind="renderItemSourceInBackground.componentProps"
+              @update:itemQuantitiesById="itemQuantitiesById = $event"
+
+            ><template #items></template></component>
+          </div>
         </section>
       </div>
       <div class="create-team__container create-team__container-2">
@@ -1991,7 +2007,7 @@
   .create-team__items-result-name {
     font-weight: bold;
   }
-  .create-team__items-result-quantity {
+  .create-team__items-result-count {
     opacity: 0.5;
   }
   .create-team__items-result-popup-description {
@@ -2032,7 +2048,7 @@
   .create-team__formation-position-item-target .create-team__items-draggable--chosen .create-team__items-result-label {
     padding: 0.25rem;
   }
-  .create-team__formation-position-item-target .create-team__items-draggable--chosen .create-team__items-result-quantity {
+  .create-team__formation-position-item-target .create-team__items-draggable--chosen .create-team__items-result-count {
     display: none;
   }
 

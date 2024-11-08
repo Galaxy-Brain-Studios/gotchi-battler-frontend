@@ -67,7 +67,7 @@ export const getEmbeddedGotchisFromFormation = function (formation) {
 
 // Convert formation with embedded gotchis ({ formation: { front, back, substitutes } })
 // to server-side contract-style format (gotchiFormation: [b,b,b,b,b,f,f,f,f,f] ids)
-// TODO server likely to expect new format
+// TODO server likely to expect new format, which must also include items
 export const generateTournamentTeamToSubmit = function (team) {
   if (!team) { return null }
   const store = useAccountStore()

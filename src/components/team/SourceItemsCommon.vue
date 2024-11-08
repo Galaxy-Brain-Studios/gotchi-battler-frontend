@@ -28,7 +28,7 @@
         if (!result[item.id]) {
           result[item.id] = 0
         }
-        result[item.id] += (item.quantity || 0)
+        result[item.id] += (item.count || 0)
       }
     }
     return result
@@ -59,7 +59,7 @@
     if (!props.items) { return null }
     return props.items.map(item => ({
       ...item,
-      availableQuantity: (item.quantity || 0) - (itemCountsInTeamById.value[item.id] || 0)
+      availableCount: (item.count || 0) - (itemCountsInTeamById.value[item.id] || 0)
     }))
   })
 </script>

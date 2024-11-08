@@ -12,20 +12,20 @@
 
   const { items, fetchItemsStatus } = useShop()
 
-  const ITEM_QUANTITY = 10
+  const ITEM_COUNT = 10
 
-  const itemsWithQuantity = computed(() => {
+  const itemsWithCount = computed(() => {
     if (!items.value) { return null }
     return items.value.map(item => ({
       ...item,
-      quantity: ITEM_QUANTITY
+      count: ITEM_COUNT
     }))
   })
 </script>
 
 <template>
   <SourceItemsCommon
-    :items="itemsWithQuantity"
+    :items="itemsWithCount"
     :fetchStatus="fetchItemsStatus"
     :itemIdsInTeam="itemIdsInTeam"
     @update:itemQuantitiesById="$emit('update:itemQuantitiesById', $event)"

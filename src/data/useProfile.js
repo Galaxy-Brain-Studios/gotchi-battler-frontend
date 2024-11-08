@@ -77,6 +77,7 @@ export default function useProfile (address) {
   const inventory = ref(null)
   const { status: fetchInventoryStatus, setLoading: setInventoryLoading } = useStatus()
   const fetchInventory = async function () {
+    console.error('TODO fetchInventory not yet implemented! use fetchMyFullProfile instead')
     inventory.value = null
     const [isStale, setLoaded, setError] = setInventoryLoading()
     try {

@@ -248,6 +248,7 @@
         id: 'unlimiteditems',
         label: 'Items',
         component: SourceItemsUnlimited,
+        props: { itemIdsInTeam: true },
         type: SOURCE_TYPE.ITEM
       }
     ]
@@ -331,8 +332,7 @@
     return SOURCES_BY_ID[selectedSourceId.value]?.type
   })
 
-  const sourceComponentProps = computed(() => {
-    const propsRequested = SOURCES_BY_ID[selectedSourceId.value]?.props
+  const getRequestedSourceComponentProps = function (propsRequested) {
     const propsToProvide = {}
     if (propsRequested) {
       if (propsRequested.incomingTeamGotchis) {
@@ -347,10 +347,44 @@
       if (propsRequested.savedTeamsLastChanged) {
         propsToProvide.savedTeamsLastChanged = savedTeamsLastChanged.value
       }
+      if (propsRequested.itemIdsInTeam) {
+        propsToProvide.itemIdsInTeam = teamSlotsItemIds.value
+      }
     }
     return propsToProvide
-  })
+  }
 
+  const sourceComponentProps = computed(() => getRequestedSourceComponentProps(SOURCES_BY_ID[selectedSourceId.value]?.props))
+
+  // Item sources can provide data about item quantities that we need to check if assigned items are valid.
+  // - it will be null if not yet initialized
+  // - currently assumes there will be 0 or 1 Item sources present
+  // - this is used to validate both item existence and available quantities, so it's useful even in the unlimited-items use case
+  const itemQuantitiesById = ref(null)
+
+  // We must ensure that we render the item source component once, even if it's hidden initially, to force the fetch.
+  const renderItemSourceInBackground = computed(() => {
+    // Only do this if there are item sources available
+    const itemSources = availableSourcesByType.value[SOURCE_TYPE.ITEM]
+    if (!itemSources?.length) {
+      return false
+    }
+    // If we have the item quantities, we're already ok
+    if (itemQuantitiesById.value) {
+      return false
+    }
+    // We want to render the first item source
+    const itemSource = itemSources[0]
+    // If this source is already active, we don't need to display it again
+    if (selectedSourceId.value === itemSource.id) {
+      return
+    }
+    const result = {
+      component: itemSource.component,
+      componentProps: getRequestedSourceComponentProps(itemSource.props)
+    }
+    return result
+  })
 
   // Form data storage
   const teamName = ref('')
@@ -471,7 +505,7 @@
     // - if the provided gotchi has a itemId embedded that is valid, use that
     let itemId = null
     if (embeddedItemId) {
-      // TODO check if this item is available to use
+      // Let validity of this item be checked later, on display/save
       itemId = embeddedItemId
     }
 
@@ -522,6 +556,23 @@
     const slot = teamSlots.value[type][slotNumber - 1]
     slot.itemId = null
   }
+
+  const teamSlotsItemIds = computed(() => Object.values(teamSlots.value).flat().map(slot => slot?.itemId).filter(id => !!id))
+
+  // Identify if there are assigned items that don't have enough available to the user.
+  // This will also include unrecognised items, as they won't have an available quantity.
+  const overBudgetItemIds = computed(() => {
+    // itemQuantitiesById may not have been initialized yet
+    if (!itemQuantitiesById.value) { return null }
+    const usedItemsById = {}
+    for (const itemId of teamSlotsItemIds.value) {
+      if (!usedItemsById[itemId]) {
+        usedItemsById[itemId] = 0
+      }
+      usedItemsById[itemId]++
+    }
+    return teamSlotsItemIds.value.filter(itemId => usedItemsById[itemId] > (itemQuantitiesById.value[itemId] || 0))
+  })
 
 
   // Sync incoming team data
@@ -666,6 +717,16 @@
         return 'Please keep all gotchis in your team (or substitutes).'
       }
     }
+    // Check we aren't using too many items.
+    // This is not a completely guaranteed check, because it's possible that the items haven't loaded,
+    // but then the server's validation should catch it and return an error. (If it was in-browser for
+    // training, then it doesn't matter as we allow unlimited items.)
+    if (!overBudgetItemIds.value) {
+      console.log('overBudgetItemIds not initialized, so not checking')
+    }
+    if (overBudgetItemIds.value?.length) {
+      return 'Please only use available items in your team.'
+    }
     return false
   })
   const showError = ref(false)
@@ -782,6 +843,7 @@
             // console.log('handle dropped gotchi', { gotchi, rowKey, positionIndex })
             // TODO Extra features:
             // a) dragging within the formation to move a gotchi between slots
+            // b) dropping outside the formation should cancel the drop (onSpill behavior)
 
             // Determine the target slot corresponding to the row/position
             const { targetSlotType, targetSlotNumber } = findDroppedTargetSlot(rowKey, positionIndex)
@@ -1145,6 +1207,7 @@
             v-else-if="sourceComponent && sourceComponentType === SOURCE_TYPE.ITEM"
             :is="sourceComponent"
             v-bind="sourceComponentProps"
+            @update:itemQuantitiesById="itemQuantitiesById = $event"
           >
             <template #items="{ itemsToDisplay }">
               <VueDraggable
@@ -1164,6 +1227,9 @@
                 <template #item="{ element }">
                   <li
                     class="create-team__items-result"
+                    :class="{
+                      'create-team__items-result--not-draggable': !(element.availableQuantity > 0)
+                    }"
                   >
                     <SitePopupHoverMenu>
                       <button
@@ -1181,7 +1247,12 @@
                             {{ element.name }}
                           </div>
                           <div class="create-team__items-result-quantity">
-                            Quantity: {{ element.quantity }}
+                            <template v-if="element.availableQuantity < element.quantity">
+                              Available: {{ element.availableQuantity }} / {{ element.quantity }}
+                            </template>
+                            <template v-else>
+                              Available: {{ element.quantity }}
+                            </template>
                           </div>
                         </div>
                       </button>
@@ -1199,19 +1270,27 @@
                               You can assign items after adding gotchis to the team.
                             </template>
                             <template v-else>
-                              Add to slot:
-                              <button
-                                v-for="i in occupiedMainSlotNumbers"
-                                :key="i"
-                                type="button"
-                                class="button-reset create-team__source-result-popup-slot-button"
-                                :class="{
-                                  'create-team__items-common-popup-slot-button--selected': teamSlots.main[i -1]?.gotchiId === element.id
-                                }"
-                                @click="addItemToSlot({ item: element, type: 'main', slotNumber: i })"
-                              >
-                                {{ i }}
-                              </button>
+                              <template v-if="!(element.availableQuantity > 0)">
+                                You don't have enough of this item available.
+                                <template v-if="element.quantity">
+                                  <br>You can unequip items from the gotchis in the formation if you want to reassign them, or replace them with a different item.
+                                </template>
+                              </template>
+                              <template v-else>
+                                Add to slot:
+                                <button
+                                  v-for="i in occupiedMainSlotNumbers"
+                                  :key="i"
+                                  type="button"
+                                  class="button-reset create-team__source-result-popup-slot-button"
+                                  :class="{
+                                    'create-team__items-common-popup-slot-button--selected': teamSlots.main[i -1]?.gotchiId === element.id
+                                  }"
+                                  @click="addItemToSlot({ item: element, type: 'main', slotNumber: i })"
+                                >
+                                  {{ i }}
+                                </button>
+                              </template>
                             </template>
                           </div>
                         </div>
@@ -1222,6 +1301,14 @@
               </VueDraggable>
             </template>
           </component>
+
+          <component
+            v-if="renderItemSourceInBackground"
+            :is="renderItemSourceInBackground.component"
+            v-bind="renderItemSourceInBackground.componentProps"
+            @update:itemQuantitiesById="itemQuantitiesById = $event"
+            class="create-team__hidden-item-source"
+          ><template #items></template></component>
         </section>
       </div>
       <div class="create-team__container create-team__container-2">
@@ -1330,6 +1417,7 @@
                   <template #item>
                     <GotchiItemSlot
                       :itemId="gotchi.itemId"
+                      :isOverBudget="overBudgetItemIds?.includes(gotchi.itemId)"
                       @remove="removeItemFromSlot({ type: 'main', slotNumber: selectedFormationPattern[row][position - 1] })"
                     />
                   </template>
@@ -1403,6 +1491,7 @@
                   <template #item>
                     <GotchiItemSlot
                       :itemId="gotchi.itemId"
+                      :isOverBudget="overBudgetItemIds?.includes(gotchi.itemId)"
                       @remove="removeItemFromSlot({ type: 'substitutes', slotNumber: position })"
                     />
                   </template>
@@ -1944,6 +2033,10 @@
     padding: 0.25rem;
   }
   .create-team__formation-position-item-target .create-team__items-draggable--chosen .create-team__items-result-quantity {
+    display: none;
+  }
+
+  .create-team__hidden-item-source {
     display: none;
   }
 </style>

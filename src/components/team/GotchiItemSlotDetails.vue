@@ -1,6 +1,8 @@
 <script setup>
   import { computed } from 'vue'
   import useShop from '@/data/useShop'
+  import SiteError from '../common/SiteError.vue'
+
   const { items, fetchItemsStatus } = useShop()
 
   const props = defineProps({
@@ -33,6 +35,12 @@
       {{ item.description }}
     </div>
   </div>
+  <SiteError
+    v-else
+    small
+  >
+    Unable to find details of this item.
+  </SiteError>
 </template>
 
 <style scoped>

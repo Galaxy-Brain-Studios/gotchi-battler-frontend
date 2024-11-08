@@ -1,6 +1,7 @@
 <script setup>
   import SitePopupDropdown from '../common/SitePopupDropdown.vue'
   import SiteButtonSmall from '../common/SiteButtonSmall.vue'
+  import SiteError from '../common/SiteError.vue'
   import GotchiItemSlotItem from './GotchiItemSlotItem.vue'
   import GotchiItemSlotDetails from './GotchiItemSlotDetails.vue'
 
@@ -10,6 +11,10 @@
     itemId: {
       type: Number,
       default: null
+    },
+    isOverBudget: {
+      type: Boolean,
+      default: false
     }
   })
 
@@ -30,12 +35,22 @@
         type="button"
         class="button-reset gotchi-item-popup__popup-trigger"
       >
-        <GotchiItemSlotItem :id="itemId" />
+        <GotchiItemSlotItem
+          :id="itemId"
+          :isOverBudget="isOverBudget"
+        />
       </button>
 
       <template #popper="{ hide }">
         <div class="gotchi-item-popup__popup-contents">
           <GotchiItemSlotDetails :id="itemId" />
+          <SiteError
+            v-if="isOverBudget"
+            small
+            class="gotchi-item-popup__error"
+          >
+            You don't have enough of this item.
+          </SiteError>
           <SiteButtonSmall
             @click="requestRemoveItem(hide)"
           >
@@ -83,5 +98,9 @@
   }
   .gotchi-item-popup__popup-contents {
     padding: 0.5rem;
+  }
+
+  .gotchi-item-popup__error {
+    margin: 0.5rem 0 1rem 0;
   }
 </style>

@@ -1,12 +1,18 @@
 <script setup>
   import { computed } from 'vue'
   import useShop from '@/data/useShop'
+  import SiteIcon from '../common/SiteIcon.vue'
+
   const { items, fetchItemsStatus } = useShop()
 
   const props = defineProps({
     id: {
       type: Number,
       required: true
+    },
+    isOverBudget: {
+      type: Boolean,
+      default: false
     }
   })
 
@@ -29,6 +35,13 @@
     </div>
     <template v-else-if="fetchItemsStatus.loaded && items">
       <template v-if="item">
+        <SiteIcon
+          v-if="isOverBudget"
+          name="warning"
+          :width="1"
+          :height="1"
+          class="gotchi-item__error-icon"
+        />
         <img
           class="gotchi-item__image"
           :src="item.image"
@@ -42,7 +55,14 @@
         v-else
         class="gotchi-item__error"
       >
-        Unknown item!
+        <SiteIcon
+          name="error"
+          :width="1"
+          :height="1"
+        />
+        <div>
+          Unknown!
+        </div>
       </div>
     </template>
   </div>
@@ -60,6 +80,9 @@
     background: #41A6BD;
     color: var(--c-white);
   }
+  .gotchi-item__error-icon {
+    flex: none;
+  }
   .gotchi-item__image {
     flex: none;
     width: 1rem;
@@ -74,6 +97,10 @@
   }
 
   .gotchi-item__error {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+
     font-size: 0.7rem;
     line-height: 0.625rem;
     letter-spacing: 0.01875rem;

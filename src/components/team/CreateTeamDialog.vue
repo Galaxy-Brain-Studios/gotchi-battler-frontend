@@ -907,26 +907,14 @@
         () => draggableItemTargets.value[rowKey][positionIndex],
         (newTargetArray) => {
           if (newTargetArray.length) {
-            // dropped an item into this position
-            const item = newTargetArray[0]
-            // console.log('handle dropped item', { item, rowKey, positionIndex })
-
-            // Determine the target slot corresponding to the row/position
-            const { targetSlotType, targetSlotNumber } = findDroppedTargetSlot(rowKey, positionIndex)
-            if (!targetSlotNumber) {
-              console.error('Dropped item but unable to find target slot')
-              return
-            }
-            // add the dropped item to the target slot
-            addItemToSlot({ item, type: targetSlotType, slotNumber: targetSlotNumber })
-            // now clear this target array
+            // we have already handled any drop in onItemAdd
+            // just clear this target array
             row[positionIndex] = []
           }
         }
       )
     }
   }
-
 
   function onMoveItemFromAvailable (event) {
     // prevent dragging/moving within the available items list
@@ -935,6 +923,27 @@
     }
   }
 
+  function onItemAdd (event) {
+    // We do this here instead of relying on the dropped-array model changes,
+    // because we want to enforce dropping on the actual targets, and if
+    // the mouse is outside the target we should ignore the drop.
+    // Otherwise, it is easy to hover over a gotchi then move the mouse away
+    // but the item is 'stuck' to that gotchi.
+    const mouseX = event.originalEvent.x
+    const mouseY = event.originalEvent.y
+    const targetRect = event.to.getBoundingClientRect();
+    const xIsInside = mouseX >= targetRect.left && mouseX <= targetRect.right
+    const yIsInside = mouseY >= targetRect.top && mouseY <= targetRect.bottom
+    const mouseIsInside = xIsInside && yIsInside
+    // console.log('onItemAdd', event, { mouseX, mouseY, targetRect, xIsInside, yIsInside, mouseIsInside })
+    if (mouseIsInside) {
+      const item = event.item?.__draggable_context?.element
+      const slotType =  event.to.dataset.slotType
+      const slotNumber =  event.to.dataset.slotNumber - 0
+      // console.log('ok to add item', { item, slotType, slotNumber })
+      addItemToSlot({ item, type: slotType, slotNumber: slotNumber })
+    }
+  }
 
   // Store slot of gotchi to display in a details dialog.
   // When it's set and we have gotchi details, open the dialog.
@@ -1454,6 +1463,9 @@
                   :group="{ name: `targetItem_${row}_${position - 1}`, pull: false, put: ['items'] }"
                   tag="ol"
                   class="list-reset create-team__formation-position-item-target"
+                  data-slot-type="main"
+                  :data-slot-number="selectedFormationPattern[row][position - 1]"
+                  @add="onItemAdd"
                 >
                   <template #item><!-- not needed as we remove items from this list after dropping --></template>
                 </VueDraggable>
@@ -1528,6 +1540,9 @@
                   :group="{ name: `targetItem_substitutes_${position - 1}`, pull: false, put: ['items'] }"
                   tag="ol"
                   class="list-reset create-team__formation-position-item-target"
+                  data-slot-type="substitutes"
+                  :data-slot-number="position"
+                  @add="onItemAdd"
                 >
                   <template #item><!-- not needed as we remove items from this list after dropping --></template>
                 </VueDraggable>

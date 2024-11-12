@@ -2,7 +2,8 @@
   import SitePopupDropdown from '../common/SitePopupDropdown.vue'
   import SiteButtonSmall from '../common/SiteButtonSmall.vue'
   import SiteError from '../common/SiteError.vue'
-  import GotchiItemSlotItem from './GotchiItemSlotItem.vue'
+  import GotchiItemBadge from './GotchiItemBadge.vue'
+  import GotchiItemBadgeEmpty from './GotchiItemBadgeEmpty.vue'
   import GotchiItemSlotDetails from './GotchiItemSlotDetails.vue'
 
   const emit = defineEmits(['remove'])
@@ -35,7 +36,7 @@
         type="button"
         class="button-reset gotchi-item-popup__popup-trigger"
       >
-        <GotchiItemSlotItem
+        <GotchiItemBadge
           :id="itemId"
           :isOverBudget="isOverBudget"
         />
@@ -59,12 +60,7 @@
         </div>
       </template>
     </SitePopupDropdown>
-    <div
-      v-else
-      class="gotchi-item-slot__no-item"
-    >
-      No Item
-    </div>
+    <GotchiItemBadgeEmpty v-else />
   </div>
 </template>
 
@@ -78,17 +74,6 @@
   }
   .gotchi-item-slot > * {
     flex: 1 1 auto;
-  }
-  .gotchi-item-slot__no-item {
-    display: grid;
-    place-items: center;
-
-    opacity: 0.25;
-    background: var(--c-black);
-    color: var(--c-white);
-    font-size: 0.625rem;
-    line-height: 0.75rem;
-    text-transform: uppercase;
   }
 
   .gotchi-item-popup__popup-trigger {

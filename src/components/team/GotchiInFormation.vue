@@ -1,4 +1,5 @@
 <script setup>
+  import GotchiItemBadgeSimple from '../team/GotchiItemBadgeSimple.vue'
   import GotchiSpecial from '../team/GotchiSpecial.vue'
   import GotchiSpecialWithInfo from '../team/GotchiSpecialWithInfo.vue'
   import GotchiStats from './GotchiStats.vue'
@@ -214,7 +215,7 @@
         class="gotchi-in-formation__item-badge-container"
       >
         <slot name="item">
-          {{ gotchi.itemId }}
+          <GotchiItemBadgeSimple :itemId="gotchi.itemId" />
         </slot>
       </div>
       <div

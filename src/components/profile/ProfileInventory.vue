@@ -14,7 +14,7 @@
 
   const router = useRouter()
 
-  const { isConnectedProfile, isConnectedSignedInProfile, fetchMyFullProfile, inventory, fetchInventoryStatus } = useProfile(props.address)
+  const { isConnectedProfile, isConnectedSignedInProfile, fetchInventory, inventory, fetchInventoryStatus } = useProfile(props.address)
 
   watch(
     () => isConnectedProfile.value,
@@ -31,7 +31,7 @@
     () => isConnectedSignedInProfile.value,
     () => {
       if (isConnectedSignedInProfile.value && !fetchInventoryStatus.loaded && !fetchInventoryStatus.loading) {
-        fetchMyFullProfile()
+        fetchInventory()
       }
     },
     { immediate: true }

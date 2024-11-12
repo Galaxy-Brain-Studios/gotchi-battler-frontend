@@ -15,13 +15,13 @@
     }
   })
 
-  const { isConnectedSignedInProfile, fetchMyFullProfile, inventory, fetchInventoryStatus } = useProfile(props.address)
+  const { isConnectedSignedInProfile, fetchInventory, inventory, fetchInventoryStatus } = useProfile(props.address)
 
   watch(
     () => isConnectedSignedInProfile.value,
     () => {
       if (isConnectedSignedInProfile.value && !fetchInventoryStatus.value.loaded && !fetchInventoryStatus.value.loading) {
-        fetchMyFullProfile()
+        fetchInventory()
       }
     },
     { immediate: true }

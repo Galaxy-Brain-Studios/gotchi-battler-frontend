@@ -554,7 +554,7 @@
   )
 
   function addItemToSlot ({ item, type, slotNumber, restoring }) {
-    console.log('addItemToSlot', { type, slotNumber, item, restoring })
+    // console.log('addItemToSlot', { type, slotNumber, item, restoring })
     const slot = teamSlots.value[type][slotNumber - 1]
     if (!slot?.gotchiId) {
       console.error('cannot add item to empty slot', { type, slotNumber })
@@ -596,7 +596,7 @@
     }
     teamName.value = newTeam.name || ''
     selectedFormationPatternId.value = pattern.id
-    console.log('Sync incoming team data', { newTeam, pattern })
+    // console.log('Sync incoming team data', { newTeam, pattern })
     // translate incoming formation (front, back, substitutes) into slots (main, substitutes) and teamGotchis (objects)
     clearTeamSlots()
     for (const row of ROW_NAMES) {
@@ -620,7 +620,7 @@
         }
       }
     }
-    console.log('synced gotchis into slots', teamSlots.value, teamGotchis.value)
+    // console.log('synced gotchis into slots', teamSlots.value, teamGotchis.value)
 
     let leaderSlotNumber = 1
     if (newTeam.leader) {
@@ -630,7 +630,7 @@
       }
     }
     selectedLeaderSlot.value = `${leaderSlotNumber}`
-    console.log('synced leader', { leaderId: newTeam.leader, leaderSlot: selectedLeaderSlot.value })
+    // console.log('synced leader', { leaderId: newTeam.leader, leaderSlot: selectedLeaderSlot.value })
   }
 
   watch(

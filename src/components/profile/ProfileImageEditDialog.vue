@@ -34,11 +34,8 @@
     }
   }
 
-  // TODO:
-  // * confirm what the image size limit is server-side and match it
-
   const ACCEPTED_FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png', 'webp', 'svg']
-  const MAX_FILE_SIZE_MB = 5
+  const MAX_FILE_SIZE_MB = 1
   const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
 
   const fileInputRef = useTemplateRef('file-input')
@@ -135,7 +132,7 @@
         </label>
         <div class="profile-image-edit__upload-help">
           Accepted file types: {{ ACCEPTED_FILE_TYPES.join(', ') }}
-          <br>Maximum file size {{ MAX_FILE_SIZE_MB }}MB.
+          <br>Maximum file size {{ MAX_FILE_SIZE_MB }} MB.
         </div>
         <SiteButtonWhite
           v-if="selectedValidImage"

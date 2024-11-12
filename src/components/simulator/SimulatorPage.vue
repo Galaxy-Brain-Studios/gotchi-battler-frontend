@@ -35,11 +35,23 @@
   const createTeamDialogIsOpen = ref(false)
   const editMatchIndex = ref(null)
   const editMatchTeamKey = ref(null)
+  const editMatchOriginalTeam = ref(null)
 
   const openEditTeam = function (matchIndex, teamKey) {
     editMatchIndex.value = matchIndex
     editMatchTeamKey.value = teamKey
+    editMatchOriginalTeam.value = JSON.stringify(matches.value[editMatchIndex.value]?.[editMatchTeamKey.value])
     createTeamDialogIsOpen.value = true
+  }
+
+  const onTeamEdited = function (newTeam) {
+    if (editMatchOriginalTeam.value !== JSON.stringify(newTeam)) {
+      // Team changed, clear any old simulations
+      const match = matches.value[editMatchIndex.value]
+      if (match) {
+        resetMatchSimulations(match)
+      }
+    }
   }
 
   const resetMatchSimulations = function (match) {
@@ -307,6 +319,7 @@
       v-model:isOpen="createTeamDialogIsOpen"
       v-model:team="matches[editMatchIndex][editMatchTeamKey]"
       mode="create_training"
+      @update:team="onTeamEdited"
       closeOnSave
     />
   </div>

@@ -132,6 +132,7 @@
             <GotchiInFormation
               emptyMode="disabled"
               variant="small"
+              withItemBadge
               withSpecialInfoBadge
             />
           </template>
@@ -141,6 +142,7 @@
               :isLeader="gotchi.id === team.leader"
               :teamId="id"
               isSelectable
+              withItemBadge
               withSpecialInfoBadge
               variant="small"
               @select="displayGotchi = gotchi"
@@ -156,6 +158,7 @@
             <GotchiInFormation
               emptyMode="disabled"
               variant="small"
+              withItemBadge
               withSpecialInfoBadge
             />
           </template>
@@ -164,6 +167,7 @@
               :gotchi="gotchi"
               :teamId="id"
               isSelectable
+              withItemBadge
               withSpecialInfoBadge
               variant="small"
               @select="displayGotchi = gotchi"

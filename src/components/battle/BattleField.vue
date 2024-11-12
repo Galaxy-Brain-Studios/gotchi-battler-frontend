@@ -118,6 +118,7 @@
             <GotchiInFormation
               emptyMode="blank"
               variant="small"
+              withItemBadge
               withSpecialInfoBadge
             />
           </template>
@@ -127,6 +128,7 @@
               :isLeader="gotchi.id === team1.leader"
               :teamId="team1.id"
               variant="small"
+              withItemBadge
               withStatsPopup
               withSpecialInfoBadge
             />
@@ -165,6 +167,7 @@
             <GotchiInFormation
               emptyMode="blank"
               variant="small"
+              withItemBadge
               withSpecialInfoBadge
             />
           </template>
@@ -174,6 +177,7 @@
               :isLeader="gotchi.id === team2.leader"
               :teamId="team2.id"
               variant="small"
+              withItemBadge
               withStatsPopup
               withSpecialInfoBadge
             />

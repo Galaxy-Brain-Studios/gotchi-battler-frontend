@@ -81,11 +81,13 @@
           </SiteButtonLink>
         </template>
         <template v-else>
+          <!--
           <SiteButtonLink
             :to="{ name: 'profile-badges', params: { address } }"
           >
             Badges / Achievements
           </SiteButtonLink>
+          -->
         </template>
       </div>
       <div class="profile-main__content">

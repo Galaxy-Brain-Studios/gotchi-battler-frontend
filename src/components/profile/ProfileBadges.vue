@@ -9,7 +9,7 @@
 
 <template>
   <div>
-    Badges content {{ address }}
+    Badges/achievements coming soon!
   </div>
 </template>
 

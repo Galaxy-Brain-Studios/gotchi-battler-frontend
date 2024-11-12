@@ -13,19 +13,6 @@ export default {
       throw new Error(e.json?.error || 'Error fetching profile')
     }
   },
-  async fetchMyFullProfile () {
-    try {
-      const profile = await apiWithCredentials.get(urls.profileFull())
-      return {
-        ...profile,
-        teams: (profile.teams || []).map(processTeamModel),
-        items: (profile.items || []) // TODO process inventory items?
-      }
-    } catch (e) {
-      console.error('fetchMyFullProfile error', e)
-      throw new Error(e.json?.error || 'Error fetching my full profile')
-    }
-  },
   async fetchProfileTeams () {
     try {
       const teams = await apiWithCredentials.get(urls.profileTeams())

@@ -39,7 +39,6 @@ const urls = {
   searchGotchis: () =>  `${BASE_URL}/api/v1/search-gotchis`,
   availableLendings: (tournamentId) => `${BASE_URL}/api/v1/tournaments/${encodeURIComponent(tournamentId)}/lendings`,
   profile: (address) => `${BASE_URL}/api/v1/profiles/${encodeURIComponent(address)}`,
-  profileFull: () => `${BASE_URL}/api/v1/me`,
   profileTeams: () => `${BASE_URL}/api/v1/me/teams`,
   profileInventory: () => `${BASE_URL}/api/v1/me/inventory`,
   profileInventoryItemCount: (itemId) => `${BASE_URL}/api/v1/me/inventory/item/${encodeURIComponent(itemId)}/count`,

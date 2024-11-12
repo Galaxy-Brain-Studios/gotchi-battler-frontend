@@ -232,10 +232,6 @@ const mirageConfig = window.mirageConfig = {
     error: false,
     slow: false
   },
-  profileFull: {
-    error: false,
-    slow: false
-  },
   profileTeams: {
     error: false,
     slow: false
@@ -762,27 +758,6 @@ export function makeServer({ environment = 'development' } = {}) {
           count
         }))
       }
-
-      this.get(fixUrl(urls.profileFull()), (schema, request) => {
-        if (mirageConfig.profileFull.error) {
-          return errorResponse()
-        }
-        const address = checkCredentials(request)
-        if (!address) { return unauthorizedErrorResponse() }
-        const addressLc = address.toLowerCase()
-
-        const profile = profilesByAddress[addressLc] || {
-          ...profilesByAddress['DEFAULT'.toLowerCase()],
-          address
-        };
-        return {
-          ...profile,
-          teams: getProfileTeamsResponse(address),
-          items: getProfileInventoryResponse(address)
-        }
-      }, {
-        timing: mirageConfig.profile.slow ? 5000 : 100
-      })
 
       this.get(fixUrl(urls.profileTeams()), (schema, request) => {
         if (mirageConfig.profileTeams.error) {

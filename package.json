@@ -19,7 +19,7 @@
     "d3-hierarchy": "^3.1.2",
     "date-fns": "^4.1.0",
     "floating-vue": "^5.2.2",
-    "gotchi-battler-game-logic": "^2.0.2",
+    "gotchi-battler-game-logic": "^2.0.6",
     "lodash.debounce": "^4.0.8",
     "lodash.orderby": "^4.6.0",
     "lodash.uniqueid": "^4.0.1",

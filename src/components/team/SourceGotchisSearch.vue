@@ -10,7 +10,7 @@
   <div>
     <SiteTextField
       v-model="query"
-      placeholder="Search by Gotchi name, ID or Address"
+      placeholder="Search by Gotchi name or ID"
       search
       subtle
     />

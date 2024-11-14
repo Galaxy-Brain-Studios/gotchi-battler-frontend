@@ -28,7 +28,7 @@
         if (!result[item.id]) {
           result[item.id] = 0
         }
-        result[item.id] += (item.count || 0)
+        result[item.id] += (item.quantity || 0)
       }
     }
     return result
@@ -42,7 +42,7 @@
     { immediate: true }
   )
 
-  const itemCountsInTeamById = computed(() => {
+  const itemQuantitiesInTeamById = computed(() => {
     const result = {}
     if (props.itemIdsInTeam?.length) {
       for (const itemId of props.itemIdsInTeam) {
@@ -59,7 +59,7 @@
     if (!props.items) { return null }
     return props.items.map(item => ({
       ...item,
-      availableCount: (item.count || 0) - (itemCountsInTeamById.value[item.id] || 0)
+      availableQuantity: (item.quantity || 0) - (itemQuantitiesInTeamById.value[item.id] || 0)
     }))
   })
 </script>

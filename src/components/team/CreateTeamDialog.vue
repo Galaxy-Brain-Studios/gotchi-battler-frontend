@@ -571,7 +571,7 @@
   const teamSlotsItemIds = computed(() => Object.values(teamSlots.value).flat().map(slot => slot?.itemId).filter(id => !!id))
 
   // Identify if there are assigned items that don't have enough available to the user.
-  // This will also include unrecognised items, as they won't have an available count.
+  // This will also include unrecognised items, as they won't have an available quantity.
   const overBudgetItemIds = computed(() => {
     // itemQuantitiesById may not have been initialized yet
     if (!itemQuantitiesById.value) { return null }
@@ -1248,7 +1248,7 @@
                   <li
                     class="create-team__items-result"
                     :class="{
-                      'create-team__items-result--not-draggable': !(element.availableCount > 0)
+                      'create-team__items-result--not-draggable': !(element.availableQuantity > 0)
                     }"
                   >
                     <SitePopupHoverMenu>
@@ -1266,12 +1266,12 @@
                           <div class="create-team__items-result-name">
                             {{ element.name }}
                           </div>
-                          <div class="create-team__items-result-count">
-                            <template v-if="element.availableCount < element.count">
-                              Available: {{ element.availableCount }} / {{ element.count }}
+                          <div class="create-team__items-result-quantity">
+                            <template v-if="element.availableQuantity < element.quantity">
+                              Available: {{ element.availableQuantity }} / {{ element.quantity }}
                             </template>
                             <template v-else>
-                              Available: {{ element.count }}
+                              Available: {{ element.quantity }}
                             </template>
                           </div>
                         </div>
@@ -1290,9 +1290,9 @@
                               You can assign items after adding gotchis to the team.
                             </template>
                             <template v-else>
-                              <template v-if="!(element.availableCount > 0)">
+                              <template v-if="!(element.availableQuantity > 0)">
                                 You don't have enough of this item available.
-                                <template v-if="element.count">
+                                <template v-if="element.quantity">
                                   <br>You can unequip items from the gotchis in the formation if you want to reassign them, or replace them with a different item.
                                 </template>
                               </template>
@@ -2022,7 +2022,7 @@
   .create-team__items-result-name {
     font-weight: bold;
   }
-  .create-team__items-result-count {
+  .create-team__items-result-quantity {
     opacity: 0.5;
   }
   .create-team__items-result-popup-description {
@@ -2063,7 +2063,7 @@
   .create-team__formation-position-item-target .create-team__items-draggable--chosen .create-team__items-result-label {
     padding: 0.25rem;
   }
-  .create-team__formation-position-item-target .create-team__items-draggable--chosen .create-team__items-result-count {
+  .create-team__formation-position-item-target .create-team__items-draggable--chosen .create-team__items-result-quantity {
     display: none;
   }
 

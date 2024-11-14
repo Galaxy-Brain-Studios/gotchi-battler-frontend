@@ -721,10 +721,11 @@ export function makeServer({ environment = 'development' } = {}) {
           return errorResponse()
         }
         const address = request.params.address
-        return profilesByAddress[address.toLowerCase()] || {
-          ...profilesByAddress['DEFAULT'.toLowerCase()],
-          address
-        };
+        const profile = profilesByAddress[address.toLowerCase()]
+        if (!profile) {
+          return errorResponse({ statusCode: 404, message: 'User not found' })
+        }
+        return profile
       }, {
         timing: mirageConfig.profile.slow ? 5000 : 100
       })
@@ -752,10 +753,10 @@ export function makeServer({ environment = 'development' } = {}) {
       }
 
       const getProfileInventoryResponse = function (address) {
-        const inventoryCounts = (profileInventoryByAddress[address.toLowerCase()] || {});
-        return Object.entries(inventoryCounts).map(([itemId, count]) => ({
+        const inventoryQuantities = (profileInventoryByAddress[address.toLowerCase()] || {});
+        return Object.entries(inventoryQuantities).map(([itemId, quantity]) => ({
           ...INVENTORY_ITEMS_BY_ID[itemId],
-          count
+          quantity
         }))
       }
 
@@ -908,6 +909,7 @@ export function makeServer({ environment = 'development' } = {}) {
           profileTeamsByAddress[addressLc] = []
         }
         const teamModel = getTeamModelFromFormationTeam(team)
+        teamModel.id = teamId
         const newTeams = profileTeamsByAddress[addressLc].filter(t => `${t.id}` !== `${teamId}`)
         newTeams.push(teamModel)
         profileTeamsByAddress[addressLc] = newTeams

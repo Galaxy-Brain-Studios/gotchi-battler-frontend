@@ -148,9 +148,9 @@
                 </div>
                 <div
                   v-if="showCount"
-                  class="items-list__item__count"
+                  class="items-list__item__quantity"
                 >
-                  YOU OWN: <b>{{ item.count }}x</b>
+                  YOU OWN: <b>{{ item.quantity }}x</b>
                 </div>
               </div>
             </div>
@@ -221,7 +221,7 @@
     letter-spacing: 0.02625rem;
     font-weight: bold;
   }
-  .items-list__item__count {
+  .items-list__item__quantity {
     font-size: 0.75rem;
     line-height: 1rem;
     letter-spacing: 0.0225rem;

@@ -3,13 +3,25 @@ import { requireLoginSession } from './accountStore'
 import { notifyUpdate } from './useProfileUpdateNotifications'
 import { processTeamModel, generateTeamForBattle } from './teamUtils'
 
+const newDefaultProfile = function (address) {
+  return {
+    address,
+    name: null,
+    avatar: null
+  }
+}
 export default {
   async fetchProfile (address) {
     try {
       const profile = await api.get(urls.profile(address))
       return profile
     } catch (e) {
-      console.error('fetchProfile error', e)
+      if (e.message.includes('User not found')) {
+        // user doesn't exist on server, that's ok
+        // console.log('Detected User not found', { e })
+        return newDefaultProfile(address)
+      }
+      console.error('fetchProfile error', {e})
       throw new Error(e.json?.error || 'Error fetching profile')
     }
   },
@@ -66,10 +78,8 @@ export default {
   updateTeam: requireLoginSession(async function (team) {
     try {
       const teamForBattle = await generateTeamForBattle(team)
-      const savedTeam = await apiWithCredentials.url(urls.updateProfileTeam(team.id)).put({
-        ...teamForBattle,
-        id: team.id
-      })
+      // Do not include the team id in the body
+      const savedTeam = await apiWithCredentials.url(urls.updateProfileTeam(team.id)).put(teamForBattle)
       return processTeamModel(savedTeam);
     } catch (e) {
       console.error('updateTeam error', e)

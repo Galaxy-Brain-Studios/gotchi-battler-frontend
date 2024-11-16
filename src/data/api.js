@@ -54,4 +54,8 @@ const urls = {
   shopItems: () => `${BASE_URL}/api/v1/items`
 }
 
-export { api, apiText, apiWithCredentials, apiTextWithCredentials, urls, setBaseUrl }
+function getResponseErrorMessage (e) {
+  return e.json?.error || e.json?.message || null
+}
+
+export { api, apiText, apiWithCredentials, apiTextWithCredentials, urls, setBaseUrl, getResponseErrorMessage }

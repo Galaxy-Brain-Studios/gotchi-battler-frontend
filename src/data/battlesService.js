@@ -1,5 +1,5 @@
 import uniqueId from 'lodash.uniqueid'
-import { api, urls } from './api'
+import { api, urls, getResponseErrorMessage } from './api'
 import { processTeamModel } from './teamUtils'
 import { battle as runBattle } from 'gotchi-battler-game-logic'
 
@@ -25,7 +25,7 @@ export default {
       return processBattleModel(battle)
     } catch (e) {
       console.error('fetchBattle error', { ...e })
-      throw new Error(e.json?.error || 'Error fetching battle')
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching battle')
     }
   },
 
@@ -40,7 +40,7 @@ export default {
       return processBattleModel(battle)
     } catch (e) {
       console.error('fetchBattleAnalyser error', { ...e })
-      throw new Error(e.json?.error || 'Error fetching battle analysis')
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching battle analysis')
     }
   },
 
@@ -50,7 +50,7 @@ export default {
       return logs
     } catch (e) {
       console.error('fetchBattleLogs error', { ...e })
-      throw new Error(e.json?.error || 'Error fetching battle logs')
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching battle logs')
     }
   },
 

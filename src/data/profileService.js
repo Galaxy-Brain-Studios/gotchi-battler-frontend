@@ -1,4 +1,4 @@
-import { api, apiText, apiWithCredentials, apiTextWithCredentials, urls } from './api'
+import { api, apiText, apiWithCredentials, apiTextWithCredentials, urls, getResponseErrorMessage } from './api'
 import { requireLoginSession } from './accountStore'
 import { notifyUpdate } from './useProfileUpdateNotifications'
 import { processTeamModel, generateTeamForBattle } from './teamUtils'
@@ -16,13 +16,14 @@ export default {
       const profile = await api.get(urls.profile(address))
       return profile
     } catch (e) {
-      if (e.message.includes('User not found')) {
+      const message = getResponseErrorMessage(e)
+      if (message?.includes('User not found')) {
         // user doesn't exist on server, that's ok
         // console.log('Detected User not found', { e })
         return newDefaultProfile(address)
       }
       console.error('fetchProfile error', {e})
-      throw new Error(e.json?.error || 'Error fetching profile')
+      throw new Error(message || 'Error fetching profile')
     }
   },
   async fetchProfileTeams () {
@@ -31,7 +32,7 @@ export default {
       return teams.map(processTeamModel)
     } catch (e) {
       console.error('fetchProfileTeams error', e)
-      throw new Error(e.json?.error || 'Error fetching profile teams')
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching profile teams')
     }
   },
   async fetchProfileInventory () {
@@ -40,7 +41,7 @@ export default {
       return inventory
     } catch (e) {
       console.error('fetchProfileInventory error', e)
-      throw new Error(e.json?.error || 'Error fetching profile inventory')
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching profile inventory')
     }
   },
   async fetchProfileInventoryItemCount(itemId) {
@@ -49,7 +50,7 @@ export default {
       return result
     } catch (e) {
       console.error('fetchProfileInventoryItemCount error', e)
-      throw new Error(e.json?.error || 'Error fetching profile inventory item count')
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching profile inventory item count')
     }
   },
 
@@ -60,7 +61,7 @@ export default {
       return profile;
     } catch (e) {
       console.error('saveName error', e)
-      throw new Error(e.json?.error || 'Error saving name')
+      throw new Error(getResponseErrorMessage(e) || 'Error saving name')
     }
   }),
 
@@ -71,7 +72,7 @@ export default {
       return processTeamModel(savedTeam);
     } catch (e) {
       console.error('createTeam error', e)
-      throw new Error(e.json?.error || 'Error creating team')
+      throw new Error(getResponseErrorMessage(e) || 'Error creating team')
     }
   }),
 
@@ -83,7 +84,7 @@ export default {
       return processTeamModel(savedTeam);
     } catch (e) {
       console.error('updateTeam error', e)
-      throw new Error(e.json?.error || 'Error updating team')
+      throw new Error(getResponseErrorMessage(e) || 'Error updating team')
     }
   }),
 
@@ -92,7 +93,7 @@ export default {
       await apiTextWithCredentials.url(urls.deleteProfileTeam(teamId)).delete()
     } catch (e) {
       console.error('deleteTeam error', e)
-      throw new Error(e.json?.error || 'Error deleting team')
+      throw new Error(getResponseErrorMessage(e) || 'Error deleting team')
     }
   }),
 
@@ -103,7 +104,7 @@ export default {
       return profile;
     } catch (e) {
       console.error('deleteImage error', e)
-      throw new Error(e.json?.error || 'Error deleting image')
+      throw new Error(getResponseErrorMessage(e) || 'Error deleting image')
     }
   }),
   fetchImageUploadUrl: requireLoginSession(async function (filename) {
@@ -112,7 +113,7 @@ export default {
       return result; // { url, mimeType, filename }
     } catch (e) {
       console.error('fetchImageUploadUrl error', e)
-      throw new Error(e.json?.error || 'Error initializing image upload')
+      throw new Error(getResponseErrorMessage(e) || 'Error initializing image upload')
     }
   }),
   finishImageUpload: requireLoginSession(async function (filename) {
@@ -122,7 +123,7 @@ export default {
       return profile;
     } catch (e) {
       console.error('finishImageUpload error', e)
-      throw new Error(e.json?.error || 'Error finishing image upload')
+      throw new Error(getResponseErrorMessage(e) || 'Error finishing image upload')
     }
   }),
   async uploadImage ({ uploadUrl, mimeType, file }) {
@@ -134,7 +135,7 @@ export default {
       return result;
     } catch (e) {
       console.error('uploadImage error', e)
-      throw new Error(e.json?.error || 'Error uploading image')
+      throw new Error(getResponseErrorMessage(e) || 'Error uploading image')
     }
   },
 }

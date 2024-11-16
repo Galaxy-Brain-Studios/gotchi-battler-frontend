@@ -1,4 +1,4 @@
-import { api, urls } from './api'
+import { api, urls, getResponseErrorMessage } from './api'
 import { processGotchiModel } from './gotchiUtils'
 
 export default {
@@ -8,7 +8,7 @@ export default {
       return gotchis.map(processGotchiModel)
     } catch (e) {
       console.error('fetchMyGotchis error', { ...e })
-      throw new Error(e.json?.error || 'Error fetching gotchis')
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching gotchis')
     }
   },
 
@@ -24,7 +24,7 @@ export default {
       return gotchis.map(processGotchiModel)
     } catch (e) {
       console.error('fetchTrainingGotchis error', { ...e })
-      throw new Error(e.json?.error || 'Error fetching training gotchis')
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching training gotchis')
     }
   },
 
@@ -34,7 +34,7 @@ export default {
       return gotchis.map(processGotchiModel)
     } catch (e) {
       console.error('searchGotchis error', { ...e })
-      throw new Error(e.json?.error || 'Error searching for gotchis')
+      throw new Error(getResponseErrorMessage(e) || 'Error searching for gotchis')
     }
   },
 }

@@ -1,4 +1,4 @@
-import { api, apiWithCredentials, apiTextWithCredentials, urls } from './api'
+import { api, apiWithCredentials, apiTextWithCredentials, urls, getResponseErrorMessage } from './api'
 import { requireLoginSession } from './accountStore'
 import orderBy from 'lodash.orderby'
 
@@ -82,7 +82,7 @@ export default {
       return tournaments.map(tournament => processTournament(tournament))
     } catch (e) {
       console.error('fetchTournaments error', { ...e })
-      throw new Error(e.json?.error || e.json?.message || 'Error fetching tournaments')
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching tournaments')
     }
   },
 
@@ -95,7 +95,7 @@ export default {
       }
     } catch (e) {
       console.error('fetchTournament error', { ...e })
-      throw new Error(e.json?.error || e.json?.message || 'Error fetching tournament')
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching tournament')
     }
   },
 
@@ -105,7 +105,7 @@ export default {
       return processBrackets(brackets || [])
     } catch (e) {
       console.error('fetchTournamentBrackets error', { ...e })
-      throw new Error(e.json?.error || e.json?.message || 'Error fetching tournament brackets')
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching tournament brackets')
     }
   },
 
@@ -115,7 +115,7 @@ export default {
       return result;
     } catch (e) {
       console.error('createTeam error', { ...e })
-      throw new Error(e.json?.errors?.[0]?.message || e.json?.error || e.json?.message || e.message || 'Error submitting team')
+      throw new Error(e.json?.errors?.[0]?.message || getResponseErrorMessage(e) || e.message || 'Error submitting team')
     }
   }),
 
@@ -125,7 +125,7 @@ export default {
       return result;
     } catch (e) {
       console.error('deleteTeam error', e)
-      throw new Error(e.json?.error || e.json?.message || e.message || 'Error deleting team')
+      throw new Error(getResponseErrorMessage(e) || e.message || 'Error deleting team')
     }
   }),
 
@@ -140,7 +140,7 @@ export default {
       return result;
     } catch (e) {
       console.error('editTeam error', e)
-      throw new Error(e.json?.errors?.[0]?.message || e.json?.error || e.json?.message || e.message || 'Error updating team')
+      throw new Error(e.json?.errors?.[0]?.message || getResponseErrorMessage(e) || e.message || 'Error updating team')
     }
   }),
 
@@ -154,7 +154,7 @@ export default {
       }))
     } catch (e) {
       console.error('fetchTournamentTeams error', { ...e })
-      throw new Error(e.json?.error || e.json?.message || 'Error fetching tournament teams')
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching tournament teams')
     }
   },
 
@@ -164,7 +164,7 @@ export default {
       return teams || []
     } catch (e) {
       console.error('fetchTournamentTeamsReport error', { ...e })
-      throw new Error(e.json?.error || e.json?.message || 'Error fetching tournament teams report')
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching tournament teams report')
     }
   },
 
@@ -183,7 +183,7 @@ export default {
       }))
     } catch (e) {
       console.error('fetchTournamentGotchis error', { ...e })
-      throw new Error(e.json?.error || e.json?.message || 'Error fetching tournament gotchis')
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching tournament gotchis')
     }
   }
 }

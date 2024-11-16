@@ -1,4 +1,4 @@
-import { apiWithCredentials, apiTextWithCredentials, urls } from './api'
+import { apiWithCredentials, apiTextWithCredentials, urls, getResponseErrorMessage } from './api'
 
 export default {
   async fetchSessionNonce () {
@@ -7,7 +7,7 @@ export default {
       return result?.nonce
     } catch (e) {
       console.error('fetchNonce error', e)
-      throw new Error(e.json?.error || 'Error fetching session nonce')
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching session nonce')
     }
   },
 
@@ -17,7 +17,7 @@ export default {
       return true
     } catch (e) {
       console.error('login error', e)
-      throw new Error(e.json?.error || 'Error logging in')
+      throw new Error(getResponseErrorMessage(e) || 'Error logging in')
     }
   },
 
@@ -27,7 +27,7 @@ export default {
       return true
     } catch (e) {
       console.error('logout error', e)
-      throw new Error(e.json?.error || 'Error logging out')
+      throw new Error(getResponseErrorMessage(e) || 'Error logging out')
     }
   },
 }

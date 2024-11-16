@@ -1,4 +1,4 @@
-import { api, urls } from './api'
+import { api, urls, getResponseErrorMessage } from './api'
 
 export default {
   async fetchItems () {
@@ -7,7 +7,7 @@ export default {
       return items
     } catch (e) {
       console.error('fetchItems error', e)
-      throw new Error(e.json?.error || 'Error fetching shop items')
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching shop items')
     }
   }
 }

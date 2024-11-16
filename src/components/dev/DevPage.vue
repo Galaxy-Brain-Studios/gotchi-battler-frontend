@@ -1,5 +1,6 @@
 <script setup>
   import { useAccountStore, requireLoginSession } from '../../data/accountStore'
+  import sessionService from '../../data/sessionService'
   import { setBaseUrl } from '../../data/api'
   import { storeToRefs } from 'pinia'
 
@@ -18,6 +19,10 @@
   }
   function disableMockContract () {
     window.mockContractConfig.enable = false
+  }
+
+  function doLogout () {
+    sessionService.logout()
   }
 </script>
 
@@ -62,6 +67,14 @@
           @click="requireLoginSession(() => console.log('signed in'))()"
         >
           Request signed session
+        </button>
+      </div>
+      <div>
+        <button
+          type="button"
+          @click="doLogout"
+        >
+          Logout on server (test expired/invalid session)
         </button>
       </div>
       <div>

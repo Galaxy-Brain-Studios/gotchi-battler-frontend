@@ -137,7 +137,7 @@
         "details content"
         "nav content";
       grid-template-columns: 16.5rem minmax(0, 1fr);
-      grid-template-rows: minmax(0, max-content) minmax(0, max-content);
+      grid-template-rows: minmax(0, max-content) minmax(0, 1fr);
       row-gap: 0;
     }
   }

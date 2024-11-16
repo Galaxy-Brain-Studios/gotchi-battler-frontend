@@ -55,6 +55,12 @@ const urls = {
 }
 
 function getResponseErrorMessage (e) {
+  // console.log({ ... e})
+  // Special case for Unauthorized responses, which can have various error message causes
+  // but we want to be able to detect them easily so always use the 'Unauthorized' string
+  if (e.status === 401) {
+    return 'Unauthorized'
+  }
   return e.json?.error || e.json?.message || null
 }
 

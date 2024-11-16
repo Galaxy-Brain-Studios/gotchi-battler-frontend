@@ -291,10 +291,10 @@ const mirageConfig = window.mirageConfig = {
 };
 
 const errorResponse = ({ statusCode=400, message='Error from the server', response=null }={}) => new Response(
-  statusCode, {}, (response || { error: message })
+  statusCode, {}, (response || { message })
 )
 const unauthorizedErrorResponse = function () {
-  return errorResponse({ statusCode: 401, message: "Unauthorized", error: "Unauthorized" })
+  return errorResponse({ statusCode: 401, message: "There was an authorization error, which might have various messages" })
 }
 
 const requestIncludesCredentials = function (request) {
@@ -827,7 +827,7 @@ export function makeServer({ environment = 'development' } = {}) {
         timing: mirageConfig.profileInventoryItemCount.slow ? 3000 : 100
       })
 
-      this.post(fixUrl(urls.updateProfile()), async (schema, request) => {
+      this.put(fixUrl(urls.updateProfile()), async (schema, request) => {
         if (mirageConfig.updateProfile.error) {
           return errorResponse()
         }

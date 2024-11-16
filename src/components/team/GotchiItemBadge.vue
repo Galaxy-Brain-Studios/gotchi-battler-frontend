@@ -23,6 +23,9 @@
   <div
     v-if="id"
     class="gotchi-item"
+    :class="{
+      [`gotchi-item--${item?.rarity?.toLowerCase()}`]: !!item?.rarity
+    }"
   >
     <template v-if="fetchItemsStatus.loading">
       ...
@@ -70,6 +73,7 @@
 
 <style scoped>
   .gotchi-item {
+    --item-background: var(--c-black);
     height: 100%;
     display: flex;
     gap: 0.25rem;
@@ -77,9 +81,28 @@
     justify-content: center;
 
     padding: 0.25rem;
-    background: #41A6BD;
+    background: var(--item-background);
     color: var(--c-white);
   }
+  .gotchi-item--common {
+    --item-background: var(--gradient-rarity-common);
+  }
+  .gotchi-item--uncommon {
+    --item-background: var(--gradient-rarity-uncommon);
+  }
+  .gotchi-item--rare {
+    --item-background: var(--gradient-rarity-rare);
+  }
+  .gotchi-item--legendary {
+    --item-background: var(--gradient-rarity-legendary);
+  }
+  .gotchi-item--mythical {
+    --item-background: var(--gradient-rarity-mythical);
+  }
+  .gotchi-item--godlike {
+    --item-background: var(--gradient-rarity-godlike);
+  }
+
   .gotchi-item__error-icon {
     flex: none;
   }

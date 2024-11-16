@@ -3,6 +3,7 @@
   import orderBy from 'lodash.orderby'
   import SiteSelect from '../common/SiteSelect.vue'
   import SiteIcon from '../common/SiteIcon.vue'
+  import ItemImage from './ItemImage.vue'
 
   defineEmits(['click:item'])
 
@@ -68,7 +69,6 @@
     return result
   })
 
-  const escapeUrl = url => CSS.escape(url)
 </script>
 
 <template>
@@ -107,11 +107,10 @@
             'items-list__item--clickable': clickable
           }"
         >
-          <div
+          <ItemImage
             class="items-list__item__image"
-            :style="{
-             '--image-url': `url(${escapeUrl(item.image || '')})`
-            }"
+            :imageUrl="item.image"
+            :rarity="item.rarity"
           />
           <div class="items-list__item__details">
             <div>
@@ -176,14 +175,8 @@
   }
 
   .items-list__item__image {
-    height: 11.5rem;
     border-top-left-radius: var(--item-border-radius);
     border-top-right-radius: var(--item-border-radius);
-    background-color: var(--c-black);
-    background-image: var(--image-url);
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
   }
 
   .items-list__item__details {

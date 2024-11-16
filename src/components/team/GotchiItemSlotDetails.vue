@@ -2,6 +2,7 @@
   import { computed } from 'vue'
   import useShop from '@/data/useShop'
   import SiteError from '../common/SiteError.vue'
+  import ItemImage from '../item/ItemImage.vue'
 
   const { items, fetchItemsStatus } = useShop()
 
@@ -20,10 +21,10 @@
     v-if="item"
     class="slot-item-details"
   >
-    <img
+    <ItemImage
       class="slot-item-details__image"
-      :src="item.image"
-      alt=""
+      :imageUrl="item.image"
+      :rarity="item.rarity"
     />
     <div class="slot-item-details__label">
       {{ item.name }}

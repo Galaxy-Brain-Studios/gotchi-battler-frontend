@@ -10,6 +10,7 @@
   import SiteButtonPrimary from '../common/SiteButtonPrimary.vue'
   import SiteError from '../common/SiteError.vue'
   import SiteConnectWallet from '../site/SiteConnectWallet.vue'
+  import ItemImage from '../item/ItemImage.vue'
   import ItemCount from './ItemCount.vue'
 
   defineEmits(['update:isOpen'])
@@ -103,8 +104,6 @@
     }
   }
 
-
-  const escapeUrl = url => CSS.escape(url)
 </script>
 
 <template>
@@ -115,11 +114,10 @@
     @update:isOpen="$emit('update:isOpen', $event)"
   >
     <div class="item-dialog">
-      <div
+      <ItemImage
         class="item-dialog__image"
-        :style="{
-         '--image-url': `url(${escapeUrl(item.image || '')})`
-        }"
+        :imageUrl="item.image"
+        :rarity="item.rarity"
       />
       <div class="item-dialog__details">
         <div class="item-dialog__name">
@@ -200,7 +198,8 @@
   }
 
   .item-dialog {
-    --item-image-width: 15rem;
+    --item-dialog-image-width: 15rem;
+    --item-dialog-image-padding: 2rem;
     display: grid;
     grid-template-areas:
       "image"
@@ -228,7 +227,7 @@
         "image details"
         "buy-selection buy-actions";
       column-gap: 1.5rem;
-      grid-template-columns: var(--item-image-width) minmax(0, 1fr);
+      grid-template-columns: var(--item-dialog-image-width) minmax(0, 1fr);
     }
   }
 
@@ -237,23 +236,17 @@
       grid-template-areas:
         "image details details"
         "image buy-selection buy-actions";
-      grid-template-columns: var(--item-image-width) minmax(0, auto) minmax(0, 1fr);
+      grid-template-columns: var(--item-dialog-image-width) minmax(0, auto) minmax(0, 1fr);
     }
     .item-dialog__buy-actions {
       margin-left: 0.5rem;
     }
   }
 
-
   .item-dialog__image {
-    width: var(--item-image-width);
-    height: var(--item-image-width);
     border-radius: 1rem;
-    background-color: var(--c-black);
-    background-image: var(--image-url);
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
+    width: var(--item-dialog-image-width);
+    --item-padding: var(--item-dialog-image-padding); /* override ItemImage component's custom property */
   }
 
   .item-dialog__name {

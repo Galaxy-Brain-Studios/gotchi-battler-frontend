@@ -28,6 +28,7 @@
   import GotchiDetailsDialog from './GotchiDetailsDialog.vue'
   import GotchiStats from './GotchiStats.vue'
   import LeaderSlotSelect from './LeaderSlotSelect.vue'
+  import ItemImage from '../item/ItemImage.vue'
   import SourceGotchisMy from './SourceGotchisMy.vue'
   import SourceGotchisTraining from './SourceGotchisTraining.vue'
   import SourceGotchisTeam from './SourceGotchisTeam.vue'
@@ -1256,11 +1257,10 @@
                         type="button"
                         class="button-reset create-team__items-result-button"
                       >
-                        <img
-                          :src="element.image"
-                          alt=""
+                        <ItemImage
                           class="create-team__items-result-image"
-                          loading="lazy"
+                          :imageUrl="element.image"
+                          :rarity="element.rarity"
                         />
                         <div class="create-team__items-result-label">
                           <div class="create-team__items-result-name">
@@ -2007,7 +2007,6 @@
     filter: grayscale(100%);
   }
   .create-team__items-result-image {
-    display: block;
     width: 8rem;
     height: 8rem ;
   }

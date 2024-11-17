@@ -855,7 +855,6 @@
             // console.log('handle dropped gotchi', { gotchi, rowKey, positionIndex })
             // TODO Extra features:
             // a) dragging within the formation to move a gotchi between slots
-            // b) dropping outside the formation should cancel the drop (onSpill behavior)
 
             // Determine the target slot corresponding to the row/position
             const { targetSlotType, targetSlotNumber } = findDroppedTargetSlot(rowKey, positionIndex)

@@ -31,25 +31,18 @@
     }
   })
 
-  const gotchisById = computed(() => {
-    if (!props.team?.gotchis) { return {} }
-    return Object.fromEntries(props.team.gotchis.map(gotchi => [gotchi.id, gotchi]))
-  })
-
   const gotchisInFormation = computed(() => {
     if (!props.team?.formation) { return null }
     return [
       ...props.team.formation.back.map((gotchiEntry, index) => ({
         row: 'back',
         position: index + 1,
-        // TODO this is a workaround to support both full objects and gotchi ids in formation array, but should migrate to using just full objects
-        gotchi: (gotchiEntry?.onchainId && gotchiEntry) || gotchisById.value[gotchiEntry]
+        gotchi: gotchiEntry
       })),
       ...props.team.formation.front.map((gotchiEntry, index) => ({
         row: 'front',
         position: index + 1,
-        // TODO workaround as above
-        gotchi: (gotchiEntry?.onchainId && gotchiEntry) || gotchisById.value[gotchiEntry]
+        gotchi: gotchiEntry
       })),
     ].filter(entry => !!entry.gotchi)
   })

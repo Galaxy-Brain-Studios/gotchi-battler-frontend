@@ -92,7 +92,7 @@
           }
         }
         // console.log("Sending settings to unity instance", audioSettings)
-        unityInstance.SendMessage('BattleReplayer', 'LoadSettings', audioSettings)
+        unityInstance.SendMessage('BattleReplayer', 'LoadSettings', JSON.stringify(audioSettings))
 
         const battleLogAsText = JSON.stringify(props.logs)
         // console.log('show logs', { logs: props.logs, battleLogAsText })

@@ -23,13 +23,6 @@ const getShopContract = function () {
   }
 }
 
-// TODO test with a test-shop-contract plus a dummy token (fake GHST)
-// const SHOP_CONTRACT_ADDRESS = '0x86935F11C86623deC8a25696E1C19a8659CbF95d'
-// const SHOP_CONTRACT_ADDRESS = '0x385Eeac5cB85A38A9a07A70c73e0a3271CfB54A7' // 0 GHST
-// const SHOP_CONTRACT_ADDRESS = '0x11111112542D85B3EF69AE05771c2dCCff4fAa26' // 4 GHST
-const SHOP_CONTRACT_ADDRESS = '0x111111125421ca6dc452d289314280a0f8842a65' // 150 GHST  - recent
-// const SHOP_CONTRACT_ADDRESS = '0xD5543237C656f25EEA69f1E247b8Fa59ba353306' // unlimited GHST
-
 const items = ref(null)
 const { status: fetchItemsStatus, setLoading } = useStatus()
 
@@ -83,14 +76,14 @@ const getGhstAllowance = async function (ownerAddress) {
   return getErc20Contract().getTokenAllowance({
     tokenAddress: GHST_TOKEN_ADDRESS,
     ownerAddress,
-    allowedSpenderAddress: SHOP_CONTRACT_ADDRESS
+    allowedSpenderAddress: shopContract.getAddress()
   })
 }
 
 const approveGhst = async function (amountBigint) {
   return getErc20Contract().approveToken({
     tokenAddress: GHST_TOKEN_ADDRESS,
-    allowedSpenderAddress: SHOP_CONTRACT_ADDRESS,
+    allowedSpenderAddress: shopContract.getAddress(),
     amountBigint
   })
 }

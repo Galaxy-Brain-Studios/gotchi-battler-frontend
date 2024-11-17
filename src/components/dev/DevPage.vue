@@ -2,6 +2,7 @@
   import { useAccountStore, requireLoginSession } from '../../data/accountStore'
   import sessionService from '../../data/sessionService'
   import { setBaseUrl } from '../../data/api'
+  import shopContract from '../../data/shopContract'
   import { storeToRefs } from 'pinia'
 
   const accountStore = useAccountStore()
@@ -19,6 +20,16 @@
   }
   function disableMockContract () {
     window.mockContractConfig.enable = false
+  }
+
+  function setShopContractToTest () {
+    shopContract.setAddressInDevMode(shopContract.POLYGON_TEST_CONTRACT_ADDRESS)
+  }
+  function setShopContractToProd () {
+    shopContract.setAddressInDevMode(shopContract.POLYGON_PROD_CONTRACT_ADDRESS)
+  }
+  function logShopContractAddress () {
+    console.log('shop contract', shopContract.getAddress())
   }
 
   function doLogout () {
@@ -93,6 +104,28 @@
           Use real RPC contract calls
         </button>
       </div>
+      <div>
+        Shop contract:
+        <br><button
+          type="button"
+          @click="setShopContractToTest"
+        >
+          Use Polygon TEST contract address
+        </button> ({{ shopContract.POLYGON_TEST_CONTRACT_ADDRESS}})
+        <br><button
+          type="button"
+          @click="setShopContractToProd"
+        >
+          Use Polygon PROD contract address
+        </button> ({{ shopContract.POLYGON_PROD_CONTRACT_ADDRESS}})
+        <br><button
+          type="button"
+          @click="logShopContractAddress"
+        >
+          Log shop contract address to console
+        </button>
+      </div>
+
       <div>
         To test with a hardcoded address, click one below, and then Connect.
         <br>(Remember to also click 'Use API' if you want to use the real server)

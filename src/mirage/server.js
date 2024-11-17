@@ -1233,7 +1233,18 @@ function generateTrainingTeams () {
     magic: 380,
     armor: 1,
     resist: 0,
-    crit: 5
+    crit: 5,
+    hauntId: 2,
+    collateralType: 'Aave',
+    eyeShape: 'RareLow3',
+    eyeColor: 'Rare_High',
+    wearableBody: 0,
+    wearableFace: 0,
+    wearableEyes: 0,
+    wearableHead: 0,
+    wearableHandLeft: 0,
+    wearableHandRight: 0,
+    wearablePet: 0
   }
 
   const teams = []

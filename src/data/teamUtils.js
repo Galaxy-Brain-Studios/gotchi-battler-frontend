@@ -67,7 +67,6 @@ export const getEmbeddedGotchisFromFormation = function (formation) {
 
 // Convert formation with embedded gotchis ({ formation: { front, back, substitutes } })
 // to server-side contract-style format (gotchiFormation: [b,b,b,b,b,f,f,f,f,f] ids)
-// TODO server likely to expect new format, which must also include items
 export const generateTournamentTeamToSubmit = function (team) {
   if (!team) { return null }
   const store = useAccountStore()
@@ -159,7 +158,18 @@ const GOTCHI_PROPS_OPTIONAL = [
   "xp",
   "attack",
   "actionDelay",
-  "itemId"
+  "itemId",
+  "hauntId",
+  "collateralType",
+  "eyeShape",
+  "eyeColor",
+  "wearableBody",
+  "wearableFace",
+  "wearableEyes",
+  "wearableHead",
+  "wearableHandLeft",
+  "wearableHandRight",
+  "wearablePet"
 ]
 // Convert formation with embedded gotchis ({ formation: { front, back, substitutes } })
 // to essentially the same but stricter version for passing to game logic

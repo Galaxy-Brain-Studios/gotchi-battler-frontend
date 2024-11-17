@@ -8,15 +8,15 @@
   // If the user is not connected, there will be a Connect button elsewhere in the dialog
   // If the user is connected but not signed in, show a button for them to sign in
   // If the user is connected and signed in, we can fetch and display their item count
-  // Set the blockNumber to ensure we fetch a recent-enough item count (e.g. after a purchase)
+  // Set the purchaseTxId to ensure we fetch a recent-enough item count
 
   const props = defineProps({
     itemId: {
       type: [String, Number],
       required: true
     },
-    blockNumber: {
-      type: Number,
+    purchaseTxId: {
+      type: String,
       default: null
     }
   })
@@ -36,7 +36,7 @@
       v-if="canFetchItemCountForUser"
       :key="itemCountForUserKey"
       :itemId="itemId"
-      :blockNumber="blockNumber"
+      :purchaseTxId="purchaseTxId"
     />
     <ItemCountSignIn v-else-if="connectedAddress && !signedSession" />
   </div>

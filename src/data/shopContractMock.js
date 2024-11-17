@@ -7,8 +7,8 @@ config.buyItem = {
   pendingBuys: []
 }
 
-const buyItem = async function ({ itemId, amount }) {
-  console.log('Mock buyItem', { itemId, amount })
+const buyItem = async function ({ itemId, quantity }) {
+  console.log('Mock buyItem', { itemId, quantity })
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (config.buyItem.error) {
@@ -17,9 +17,11 @@ const buyItem = async function ({ itemId, amount }) {
       }
       // Store information about this buy so the mock server can detect it
       const store = useAccountStore()
-      config.buyItem.pendingBuys.push({ itemId, amount, address: store.address })
-      // Simulate a block number in the future
-      resolve({ blockNumber: Date.now() + 1000 * 5 })
+      // simulate a tx in the future
+      const txId = Math.random() + ''
+      const confirmDate = Date.now() + 1000 * 5
+      config.buyItem.pendingBuys.push({ itemId, quantity, address: store.address, txId, confirmDate })
+      resolve({ txId })
     }, config.buyItem.delayMs)
   })
 }

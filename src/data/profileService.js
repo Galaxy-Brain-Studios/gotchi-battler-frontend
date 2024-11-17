@@ -46,11 +46,30 @@ export default {
   },
   async fetchProfileInventoryItemCount(itemId) {
     try {
-      const result = await apiWithCredentials.get(urls.profileInventoryItemCount(itemId))
-      return result
+      // We don't have a single item count endpoint, so use the full inventory
+      const inventory = await apiWithCredentials.get(urls.profileInventory())
+      const item = inventory?.find(item => `${item.id}` === `${itemId}`)
+      return {
+        quantity: item?.quantity || 0
+      }
     } catch (e) {
       console.error('fetchProfileInventoryItemCount error', e)
       throw new Error(getResponseErrorMessage(e) || 'Error fetching profile inventory item count')
+    }
+  },
+  async fetchItemPurchase (txId) {
+    try {
+      const purchase = await apiWithCredentials.get(urls.itemPurchase(txId))
+      return purchase
+    } catch (e) {
+      const message = getResponseErrorMessage(e)
+      if (message?.includes('Item purchase not found')) {
+        // purchase doesn't exist on server, that's ok, just return null
+        // console.log('Detected Item Purchase not found', { e })
+        return null
+      }
+      console.error('fetchItemPurchase error', e)
+      throw new Error(message || 'Error fetching item purchase')
     }
   },
 

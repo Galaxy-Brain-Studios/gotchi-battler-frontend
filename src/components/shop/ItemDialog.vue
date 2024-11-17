@@ -30,14 +30,14 @@
   const { isConnected, address: connectedAddress } = storeToRefs(store)
 
   const { status: buyStatus, setLoading: setBuying, reset: resetBuying } = useStatus()
-  const boughtAtBlockNumber = ref(null)
+  const purchaseTxId = ref(null)
 
   // If address or item changes, abort any in-progress buy and remove old buy record
   watch(
     () => [connectedAddress.value, props.item?.id],
     () => {
       resetBuying()
-      boughtAtBlockNumber.value = null
+      purchaseTxId.value = null
     }
   )
 
@@ -89,15 +89,15 @@
           throw new Error('Not enough GHST allowance.')
         }
       }
-      let blockNumber = 0
+      let buyResult = null
       try {
-        const result = await buyItem({ itemId: props.item.id, amount: buyInteger.value })
-        blockNumber = result.blockNumber
+        buyResult = await buyItem({ itemId: props.item.id, quantity: buyInteger.value })
       } catch (e) {
         throw new Error('Error buying item: ' + e.message)
       }
       if (isStale()) { return }
-      boughtAtBlockNumber.value = blockNumber
+      purchaseTxId.value = buyResult.txId
+      console.log('Bought item', buyResult)
       setFinishedBuying()
     } catch (e) {
       setError(e.message || 'Error buying item')
@@ -131,7 +131,7 @@
         </div>
         <ItemCount
           :itemId="item.id"
-          :blockNumber="boughtAtBlockNumber"
+          :purchaseTxId="purchaseTxId"
           class="item-dialog__own-count"
         />
       </div>

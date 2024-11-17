@@ -240,10 +240,6 @@ const mirageConfig = window.mirageConfig = {
     error: false,
     slow: false
   },
-  profileInventoryItemCount: {
-    error: false,
-    slow: false
-  },
   updateProfile: {
     error: false,
     slow: false
@@ -285,6 +281,10 @@ const mirageConfig = window.mirageConfig = {
     slow: false
   },
   shopItems: {
+    error: false,
+    slow: false
+  },
+  itemPurchase: {
     error: false,
     slow: false
   }
@@ -784,29 +784,42 @@ export function makeServer({ environment = 'development' } = {}) {
         timing: mirageConfig.profileInventory.slow ? 3000 : 100
       })
 
+      const itemPurchasesByTxId = {}
       const processPendingStoreBuys = function () {
         // the shopContractMock stores the simulated contract buys in its config object
         // the real server would process these blockchain events and update its database
-        const pendingBuys = window.mockContractConfig?.buyItem?.pendingBuys
+        const pendingBuys = window.mockContractConfig.buyItem?.pendingBuys
+        const unprocessedBuys = []
         if (pendingBuys) {
-          for (let { address, itemId, amount } of pendingBuys) {
-            const addressLc = address.toLowerCase()
-            itemId = `${itemId}`
-            if (!profileInventoryByAddress[addressLc]) {
-              profileInventoryByAddress[address.toLowerCase()] = {}
+          for (let buy of pendingBuys) {
+            if (Date.now() > buy.confirmDate) {
+              const { address, quantity, txId } = buy
+              const itemId = `${buy.itemId}`
+              const addressLc = address.toLowerCase()
+              if (!profileInventoryByAddress[addressLc]) {
+                profileInventoryByAddress[address.toLowerCase()] = {}
+              }
+              const inventory = profileInventoryByAddress[addressLc]
+              if (!inventory[itemId]) {
+                inventory[itemId] = 0
+              }
+              inventory[itemId] += quantity
+              itemPurchasesByTxId[txId.toLowerCase()] = {
+                transactionHash: txId,
+                address,
+                itemId,
+                quantity
+              }
+            } else {
+              unprocessedBuys.push(buy)
             }
-            const inventory = profileInventoryByAddress[addressLc]
-            if (!inventory[itemId]) {
-              inventory[itemId] = 0
-            }
-            inventory[itemId] += amount
           }
-          window.mockContractConfig.buyItem.pendingBuys = []
+          window.mockContractConfig.buyItem.pendingBuys = unprocessedBuys
         }
       }
 
-      this.get(fixUrl(urls.profileInventoryItemCount(':itemId')), (schema, request) => {
-        if (mirageConfig.profileInventoryItemCount.error) {
+      this.get(fixUrl(urls.itemPurchase(':txId')), (schema, request) => {
+        if (mirageConfig.itemPurchase.error) {
           return errorResponse()
         }
         const address = checkCredentials(request)
@@ -814,17 +827,16 @@ export function makeServer({ environment = 'development' } = {}) {
 
         processPendingStoreBuys()
 
-        const { itemId } = request.params
+        const { txId } = request.params
 
-        const inventory = (profileInventoryByAddress[address.toLowerCase()] || {});
-        let count = 0
-        if (inventory && inventory[`${itemId}`]) {
-          count = inventory[`${itemId}`]
+        const purchase = itemPurchasesByTxId[txId.toLowerCase()]
+        if (!purchase) {
+          return errorResponse({ statusCode: 404, message: 'Item purchase not found' })
         }
-        const blockNumber = Date.now() // simulate last-synced blockNumber
-        return { count, blockNumber };
+
+        return purchase;
       }, {
-        timing: mirageConfig.profileInventoryItemCount.slow ? 3000 : 100
+        timing: mirageConfig.itemPurchase.slow ? 3000 : 100
       })
 
       this.put(fixUrl(urls.updateProfile()), async (schema, request) => {

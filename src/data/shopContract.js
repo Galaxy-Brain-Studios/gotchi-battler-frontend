@@ -1,8 +1,8 @@
-const buyItem = async function ({ itemId, amount }) {
-  console.log('TODO contract buyItem', { itemId, amount })
+const buyItem = async function ({ itemId, quantity }) {
+  console.log('TODO contract buyItem', { itemId, quantity })
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve({ blockNumber: 1000 })
+      resolve({ txId: Math.random() + '' })
     }, 1000)
   })
 }

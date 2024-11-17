@@ -4,27 +4,27 @@
   import SiteError from '../common/SiteError.vue'
 
   /* Assume that itemId and the connectedAddress will not change for the lifetime of this component. */
-  /* The blockNumber can change, which will trigger a refetch. */
+  /* The purchaseTxId can change, which will trigger a refetch. */
 
   const props = defineProps({
     itemId: {
       type: [String, Number],
       required: true
     },
-    blockNumber: {
-      type: Number,
+    purchaseTxId: {
+      type: String,
       default: null
     }
   })
 
-  const { inventoryItemCount, fetchInventoryItemCountStatus, setBlockNumber, resetCountLoading } = useInventoryItemCount({
+  const { inventoryItemCount, fetchInventoryItemCountStatus, setPurchaseTxId, resetCountLoading } = useInventoryItemCount({
     itemId: props.itemId,
-    blockNumber: props.blockNumber
+    purchaseTxId: props.purchaseTxId
   })
 
   watch(
-    () => props.blockNumber,
-    () => setBlockNumber(props.blockNumber)
+    () => props.purchaseTxId,
+    () => setPurchaseTxId(props.purchaseTxId)
   )
 
   onUnmounted(resetCountLoading)
@@ -38,7 +38,7 @@
     }"
   >
     <template v-if="fetchInventoryItemCountStatus.loading">
-      <i>Fetching count...</i>
+      <i>Fetching quantity...</i>
     </template>
     <SiteError
       v-if="fetchInventoryItemCountStatus.error"

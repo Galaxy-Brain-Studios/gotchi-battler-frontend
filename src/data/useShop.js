@@ -95,10 +95,10 @@ const approveGhst = async function (amountBigint) {
   })
 }
 
-const buyItem = async function ({ itemId, amount }) {
+const buyItem = async function ({ itemId, quantity }) {
   return getShopContract().buyItem({
     itemId,
-    amount
+    quantity
   })
 }
 

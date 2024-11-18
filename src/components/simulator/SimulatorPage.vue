@@ -108,6 +108,7 @@
       team1: team1ForBattle,
       team2: team2ForBattle
     }
+    console.log('Running simulations', matchForBattle)
     while (runSoFar < numToRun) {
       const numLeftToRun = numToRun - runSoFar
       const numInBatch = numLeftToRun < PAUSE_EVERY ? numLeftToRun : PAUSE_EVERY

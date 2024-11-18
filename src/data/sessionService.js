@@ -30,4 +30,21 @@ export default {
       throw new Error(getResponseErrorMessage(e) || 'Error logging out')
     }
   },
+
+  async fetchSessionUser () {
+    try {
+      const result = await apiWithCredentials.get(urls.sessionUser())
+      return {
+        address: result?.address?.toLowerCase()
+      }
+    } catch (e) {
+      const message = getResponseErrorMessage(e)
+      if (message === 'Unauthorized') {
+        // That's ok, we use this endpoint to find out if a session exists or not
+        return null
+      }
+      console.error('fetchSessionUser error', {e}, message)
+      throw new Error(message || 'Error fetching logged in user')
+    }
+  },
 }

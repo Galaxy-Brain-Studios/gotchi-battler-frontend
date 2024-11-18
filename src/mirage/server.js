@@ -272,6 +272,10 @@ const mirageConfig = window.mirageConfig = {
     error: false,
     slow: false
   },
+  sessionUser: {
+    error: false,
+    slow: false
+  },
   sessionLogin: {
     error: false,
     slow: false
@@ -995,6 +999,21 @@ export function makeServer({ environment = 'development' } = {}) {
         }
       }, {
         timing: mirageConfig.sessionNonce.slow ? 3000 : 1000
+      })
+
+      this.get(fixUrl(urls.sessionUser()), async (schema, request) => {
+        if (mirageConfig.sessionUser.error) {
+          return errorResponse()
+        }
+        const address = checkCredentials(request)
+        if (!address) {
+          return unauthorizedErrorResponse()
+        }
+        return {
+          address
+        }
+      }, {
+        timing: mirageConfig.sessionUser.slow ? 3000 : 1000
       })
 
       this.post(fixUrl(urls.sessionLogin()), async (schema, request) => {

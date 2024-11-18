@@ -657,7 +657,12 @@ export function makeServer({ environment = 'development' } = {}) {
             brs: 100 + i%10,
             teamId,
             teamName: `Team ${String.fromCharCode(64 + teamId % 26)}${teamId > 26 ? teamId : ''}`,
-            teamOwner: owners[i % owners.length]
+            teamOwner: owners[i % owners.length],
+            teamUser: i === 1 ? {
+              address: owners[i % owners.length],
+              name: 'Custom Name',
+              avatar: '/dev/gotchi_g1_front.svg'
+            } : null
           })
         }
         return gotchis

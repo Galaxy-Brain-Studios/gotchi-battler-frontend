@@ -179,7 +179,8 @@ export default {
         brs: gotchi.brs,
         teamId: gotchi.teamId,
         teamName: gotchi.teamName,
-        teamOwner: gotchi.teamOwner
+        teamOwner: gotchi.teamOwner,
+        teamUser: gotchi.teamUser
       }))
     } catch (e) {
       console.error('fetchTournamentGotchis error', { ...e })

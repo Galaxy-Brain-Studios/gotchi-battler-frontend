@@ -64,7 +64,12 @@
                 "ranking": null,
                 "ranking": 2,
                 "prize": 20,
-                "battlesWon": 12
+                "battlesWon": 12,
+                "user": {
+                    "address": "0x385Eeac5cB85A38A9a07A70c73e0a3271CfB54A7",
+                    "name": "Custom User Name with Avatar",
+                    "avatar": "/dev/gotchi_g1_front.svg"
+                }
             },
             {
                 "id": 2,
@@ -73,7 +78,12 @@
                 "ranking": null,
                 "ranking": 1,
                 "prize": 100,
-                "battlesWon": 110
+                "battlesWon": 110,
+                "user": {
+                    "address": "0x86935F11C86623deC8a25696E1C19a8659CbF95d",
+                    "name": "User Testing Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String",
+                    "avatar": ""
+                }
             },
             {
                 "id": 3,
@@ -82,20 +92,26 @@
                 "ranking": null,
                 "ranking": 3,
                 "prize": null,
-                "battlesWon": 10
+                "battlesWon": 10,
+                "user": {
+                    "address": "0x86935F11C86623deC8a25696E1C19a8659CbF95d",
+                    "name": "UserTestingLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWord",
+                    "avatar": null
+                }
             },
             {
                 "id": 4,
-                "name": "Team name 4 - Test my team",
+                "name": "Team name 4 - Test my team, null user",
                 "owner": "0xBfe09443556773958bae1699b786d8E9680B5571",
                 "ranking": null,
                 "ranking": null,
                 "prize": null,
-                "battlesWon": 9
+                "battlesWon": 9,
+                "user": null
             },
             {
                 "id": 5,
-                "name": "Team name 5 - another one with my address",
+                "name": "Team name 5 - another one with my address, undefined user",
                 "owner": "0xBfe09443556773958bae1699b786d8E9680B5571",
                 "ranking": null,
                 "ranking": null,
@@ -104,30 +120,45 @@
             },
             {
                 "id": 6,
-                "name": "Team name 6",
+                "name": "Team name 6 - test user with blank name",
                 "owner": "0x385Eeac5cB85A38A9a07A70c73e0a3271CfB54A7",
                 "ranking": null,
                 "ranking": null,
                 "prize": null,
-                "battlesWon": 7
+                "battlesWon": 7,
+                "user": {
+                    "address": "0x385Eeac5cB85A38A9a07A70c73e0a3271CfB54A7",
+                    "name": "",
+                    "avatar": null
+                }
             },
             {
                 "id": 7,
-                "name": "Team name 7",
+                "name": "Team name 7 - test user with a name that looks like an address",
                 "owner": "0x3F382DbD960E3a9bbCeaE22651E88158d2791550",
                 "ranking": null,
                 "ranking": null,
                 "prize": null,
-                "battlesWon": 6
+                "battlesWon": 6,
+                "user": {
+                    "address": "0x3F382DbD960E3a9bbCeaE22651E88158d2791550",
+                    "name": "0x0000000000000000000000000000000000000000",
+                    "avatar": null
+                }
             },
             {
                 "id": 8,
-                "name": "Team name 8",
+                "name": "Team name 8 - test user with a name that contains just spaces",
                 "owner": "0x385Eeac5cB85A38A9a07A70c73e0a3271CfB54A7",
                 "ranking": null,
                 "ranking": null,
                 "prize": null,
-                "battlesWon": 5
+                "battlesWon": 5,
+                "user": {
+                    "address": "0x385Eeac5cB85A38A9a07A70c73e0a3271CfB54A7",
+                    "name": "   ",
+                    "avatar": null
+                }
             },
             {
                 "id": 9,

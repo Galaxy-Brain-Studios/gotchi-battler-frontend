@@ -11,11 +11,11 @@
   import SiteButtonBox from '../common/SiteButtonBox.vue'
   import SiteSelect from '../common/SiteSelect.vue'
   import SiteTextField from '../common/SiteTextField.vue'
-  import SiteEthAddress from '../common/SiteEthAddress.vue'
   import SiteCheckbox from '../common/SiteCheckbox.vue'
   import SiteTable from '../common/SiteTable.vue'
   import TeamDialog from '../team/TeamDialog.vue'
   import EditTeamDialog from '../team/EditTeamDialog.vue'
+  import UserIdentity from '../profile/UserIdentity.vue'
 
   const router = useRouter()
 
@@ -371,8 +371,9 @@
               </RouterLink>
             </td>
             <td class="team__owner">
-              <SiteEthAddress
+              <UserIdentity
                 :address="team.owner"
+                :user="team.user"
               />
             </td>
             <td class="team__brs">{{ team.totalBrs }}</td>
@@ -476,7 +477,7 @@
   }
 
   .teams-list__table .team__owner {
-    opacity: 0.5;
+    max-width: 450px;
   }
 
   td.team__prize > div {

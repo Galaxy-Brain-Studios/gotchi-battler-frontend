@@ -68,7 +68,7 @@ data.aavegotchis.map(g => ({
 byAddress[testAddress] = [
     {
         "id": 162,
-        "onchainId": "162",
+        "onchainId": 162,
         "name": "Washington",
         "svgFront": "/dev/gotchi_g3_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -113,7 +113,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 163,
-        "onchainId": "163",
+        "onchainId": 163,
         "name": "Lana Rhoades",
         "svgFront": "/dev/gotchi_g4_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -158,7 +158,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 164,
-        "onchainId": "164",
+        "onchainId": 164,
         "name": "",
         "svgFront": "/dev/gotchi_g5_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -203,7 +203,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 166,
-        "onchainId": "166",
+        "onchainId": 166,
         "name": "el dollaro",
         "svgFront": "/dev/gotchi_g7_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -248,7 +248,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 167,
-        "onchainId": "167",
+        "onchainId": 167,
         "name": "low id, 1200 kin",
         "svgFront": "/dev/gotchi_g8_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -293,7 +293,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 168,
-        "onchainId": "168",
+        "onchainId": 168,
         "name": "vuk",
         "svgFront": "/dev/gotchi_g9_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -338,7 +338,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 169,
-        "onchainId": "169",
+        "onchainId": 169,
         "name": "S",
         "svgFront": "/dev/gotchi_g10_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -383,7 +383,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 171,
-        "onchainId": "171",
+        "onchainId": 171,
         "name": "kelly",
         "svgFront": "/dev/gotchi_g2_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -428,7 +428,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 172,
-        "onchainId": "172",
+        "onchainId": 172,
         "name": "QU33RGOTCHI",
         "svgFront": "/dev/gotchi_g3_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -473,7 +473,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 174,
-        "onchainId": "174",
+        "onchainId": 174,
         "name": "",
         "svgFront": "/dev/gotchi_g5_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -518,7 +518,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 181,
-        "onchainId": "181",
+        "onchainId": 181,
         "name": "Weeboo",
         "svgFront": "/dev/gotchi_g2_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -563,7 +563,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 183,
-        "onchainId": "183",
+        "onchainId": 183,
         "name": "Spyro",
         "svgFront": "/dev/gotchi_g4_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -608,7 +608,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 185,
-        "onchainId": "185",
+        "onchainId": 185,
         "name": "Crillon",
         "svgFront": "/dev/gotchi_g6_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -653,7 +653,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 186,
-        "onchainId": "186",
+        "onchainId": 186,
         "name": "Fiat126",
         "svgFront": "/dev/gotchi_g7_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -698,7 +698,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 187,
-        "onchainId": "187",
+        "onchainId": 187,
         "name": "eshaal",
         "svgFront": "/dev/gotchi_g8_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -743,7 +743,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 188,
-        "onchainId": "188",
+        "onchainId": 188,
         "name": "ALPHASAURUS REX",
         "svgFront": "/dev/gotchi_g9_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -788,7 +788,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 189,
-        "onchainId": "189",
+        "onchainId": 189,
         "name": "Bear Maarket",
         "svgFront": "/dev/gotchi_g10_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -833,7 +833,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 190,
-        "onchainId": "190",
+        "onchainId": 190,
         "name": "It's USDT",
         "svgFront": "/dev/gotchi_g1_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -878,7 +878,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 191,
-        "onchainId": "191",
+        "onchainId": 191,
         "name": "Tulsa",
         "svgFront": "/dev/gotchi_g2_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -923,7 +923,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 192,
-        "onchainId": "192",
+        "onchainId": 192,
         "name": "JUNKFOOD",
         "svgFront": "/dev/gotchi_g3_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -968,7 +968,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 194,
-        "onchainId": "194",
+        "onchainId": 194,
         "name": "",
         "svgFront": "/dev/gotchi_g5_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -1013,7 +1013,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 196,
-        "onchainId": "196",
+        "onchainId": 196,
         "name": "AXS",
         "svgFront": "/dev/gotchi_g7_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -1058,7 +1058,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 197,
-        "onchainId": "197",
+        "onchainId": 197,
         "name": "Peter Eggplant Schiff",
         "svgFront": "/dev/gotchi_g8_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -1103,7 +1103,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 198,
-        "onchainId": "198",
+        "onchainId": 198,
         "name": "100x Chad",
         "svgFront": "/dev/gotchi_g9_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -1148,7 +1148,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 199,
-        "onchainId": "199",
+        "onchainId": 199,
         "name": "Defiant",
         "svgFront": "/dev/gotchi_g10_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -1193,7 +1193,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 201,
-        "onchainId": "201",
+        "onchainId": 201,
         "name": "VIDRUT",
         "svgFront": "/dev/gotchi_g2_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -1238,7 +1238,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 202,
-        "onchainId": "202",
+        "onchainId": 202,
         "name": "orbit",
         "svgFront": "/dev/gotchi_g3_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -1283,7 +1283,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 203,
-        "onchainId": "203",
+        "onchainId": 203,
         "name": "",
         "svgFront": "/dev/gotchi_g4_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -1328,7 +1328,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 204,
-        "onchainId": "204",
+        "onchainId": 204,
         "name": "** MYTHICAL SPOOKINESS **",
         "svgFront": "/dev/gotchi_g5_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -1373,7 +1373,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 205,
-        "onchainId": "205",
+        "onchainId": 205,
         "name": "Jaason",
         "svgFront": "/dev/gotchi_g6_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -1418,7 +1418,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 206,
-        "onchainId": "206",
+        "onchainId": 206,
         "name": "DAIamond Hands",
         "svgFront": "/dev/gotchi_g7_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -1463,7 +1463,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 207,
-        "onchainId": "207",
+        "onchainId": 207,
         "name": "@cz",
         "svgFront": "/dev/gotchi_g8_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -1508,7 +1508,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 208,
-        "onchainId": "208",
+        "onchainId": 208,
         "name": "krum",
         "svgFront": "/dev/gotchi_g9_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -1553,7 +1553,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 210,
-        "onchainId": "210",
+        "onchainId": 210,
         "name": "gringotts",
         "svgFront": "/dev/gotchi_g1_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -1598,7 +1598,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 217,
-        "onchainId": "217",
+        "onchainId": 217,
         "name": "M",
         "svgFront": "/dev/gotchi_g8_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -1643,7 +1643,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 218,
-        "onchainId": "218",
+        "onchainId": 218,
         "name": "LOVE MYTH 218 ID",
         "svgFront": "/dev/gotchi_g9_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -1688,7 +1688,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 219,
-        "onchainId": "219",
+        "onchainId": 219,
         "name": "GFA - Gentleman Farmer",
         "svgFront": "/dev/gotchi_g10_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -1733,7 +1733,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 220,
-        "onchainId": "220",
+        "onchainId": 220,
         "name": "",
         "svgFront": "/dev/gotchi_g1_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -1778,7 +1778,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 221,
-        "onchainId": "221",
+        "onchainId": 221,
         "name": "Miss Saigon",
         "svgFront": "/dev/gotchi_g2_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -1823,7 +1823,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 224,
-        "onchainId": "224",
+        "onchainId": 224,
         "name": "white lady",
         "svgFront": "/dev/gotchi_g5_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -1868,7 +1868,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 225,
-        "onchainId": "225",
+        "onchainId": 225,
         "name": "Tutti Frutti",
         "svgFront": "/dev/gotchi_g6_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -1913,7 +1913,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 226,
-        "onchainId": "226",
+        "onchainId": 226,
         "name": "Momo #10",
         "svgFront": "/dev/gotchi_g7_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -1958,7 +1958,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 227,
-        "onchainId": "227",
+        "onchainId": 227,
         "name": "(T)_(T)",
         "svgFront": "/dev/gotchi_g8_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -2003,7 +2003,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 228,
-        "onchainId": "228",
+        "onchainId": 228,
         "name": "228",
         "svgFront": "/dev/gotchi_g9_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -2048,7 +2048,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 229,
-        "onchainId": "229",
+        "onchainId": 229,
         "name": "prime minister",
         "svgFront": "/dev/gotchi_g10_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -2093,7 +2093,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 230,
-        "onchainId": "230",
+        "onchainId": 230,
         "name": "",
         "svgFront": "/dev/gotchi_g1_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -2138,7 +2138,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 231,
-        "onchainId": "231",
+        "onchainId": 231,
         "name": "Lead",
         "svgFront": "/dev/gotchi_g2_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -2183,7 +2183,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 232,
-        "onchainId": "232",
+        "onchainId": 232,
         "name": "",
         "svgFront": "/dev/gotchi_g3_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -2228,7 +2228,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 233,
-        "onchainId": "233",
+        "onchainId": 233,
         "name": "Drop It Like It's Hot",
         "svgFront": "/dev/gotchi_g4_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -2273,7 +2273,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 234,
-        "onchainId": "234",
+        "onchainId": 234,
         "name": "I believe",
         "svgFront": "/dev/gotchi_g5_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -2318,7 +2318,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 235,
-        "onchainId": "235",
+        "onchainId": 235,
         "name": "Sunny",
         "svgFront": "/dev/gotchi_g6_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -2363,7 +2363,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 236,
-        "onchainId": "236",
+        "onchainId": 236,
         "name": "Terry",
         "svgFront": "/dev/gotchi_g7_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -2408,7 +2408,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 238,
-        "onchainId": "238",
+        "onchainId": 238,
         "name": "Barry Chuckle RIP",
         "svgFront": "/dev/gotchi_g9_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",
@@ -2453,7 +2453,7 @@ byAddress[testAddress] = [
     },
     {
         "id": 239,
-        "onchainId": "239",
+        "onchainId": 239,
         "name": "Summertime",
         "svgFront": "/dev/gotchi_g10_front.svg",
         "svgBack": "/dev/gotchi_g1_back.svg",

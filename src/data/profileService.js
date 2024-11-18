@@ -26,7 +26,7 @@ export default {
       throw new Error(message || 'Error fetching profile')
     }
   },
-  async fetchProfileTeams () {
+  fetchProfileTeams: requireLoginSession(async function () {
     try {
       const teams = await apiWithCredentials.get(urls.profileTeams())
       return teams.map(processTeamModel)
@@ -34,8 +34,8 @@ export default {
       console.error('fetchProfileTeams error', e)
       throw new Error(getResponseErrorMessage(e) || 'Error fetching profile teams')
     }
-  },
-  async fetchProfileInventory () {
+  }),
+  fetchProfileInventory: requireLoginSession(async function () {
     try {
       const inventory = await apiWithCredentials.get(urls.profileInventory())
       return inventory
@@ -43,8 +43,8 @@ export default {
       console.error('fetchProfileInventory error', e)
       throw new Error(getResponseErrorMessage(e) || 'Error fetching profile inventory')
     }
-  },
-  async fetchProfileInventoryItemCount(itemId) {
+  }),
+  fetchProfileInventoryItemCount: requireLoginSession(async function (itemId) {
     try {
       // We don't have a single item count endpoint, so use the full inventory
       const inventory = await apiWithCredentials.get(urls.profileInventory())
@@ -56,8 +56,8 @@ export default {
       console.error('fetchProfileInventoryItemCount error', e)
       throw new Error(getResponseErrorMessage(e) || 'Error fetching profile inventory item count')
     }
-  },
-  async fetchItemPurchase (txId) {
+  }),
+  fetchItemPurchase: requireLoginSession(async function (txId) {
     try {
       const purchase = await apiWithCredentials.get(urls.itemPurchase(txId))
       return purchase
@@ -71,7 +71,7 @@ export default {
       console.error('fetchItemPurchase error', e)
       throw new Error(message || 'Error fetching item purchase')
     }
-  },
+  }),
 
   saveName: requireLoginSession(async function (name) {
     try {

@@ -170,7 +170,7 @@
   .items-list__list {
     --item-border-radius: 1rem;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(11.5rem, 100%), 1fr));
+    grid-template-columns: repeat(auto-fill, 11.5rem);
     gap: 1.5rem;
   }
 

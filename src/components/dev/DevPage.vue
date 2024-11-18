@@ -137,7 +137,7 @@
         >
           Set address '0xBfe09443556773958bae1699b786d8E9680B5571'
         </button>
-        (3 gotchis)
+        (3 gotchis, many items)
       </div>
 
       <div>
@@ -147,7 +147,7 @@
         >
           Set address '0x05EBFf07711A5B6042c27FDaa683a5c6D55b6684'
         </button>
-         (6 gotchis)
+         (6 gotchis, few items)
       </div>
 
       <div>
@@ -157,7 +157,7 @@
         >
           Set address '0xf1d88980505e00db65609ec5420f40c3eb1b77fd'
         </button>
-         (31 gotchis)
+         (31 gotchis, 1 item)
       </div>
 
       <div>
@@ -167,7 +167,7 @@
         >
           Set address '0xaF4Fe811ffA1BF1f7de8FDAa9F706487C882aEd0'
         </button>
-         (0 gotchis)
+         (0 gotchis, 2 items)
       </div>
 
       <div>
@@ -177,7 +177,7 @@
         >
           Set address '0xd8D4BDb89D64B7A2971Dc987DD67F101fea6c7D8'
         </button>
-         (mumbai test with many gotchis)
+         (mumbai test with many gotchis, no items)
       </div>
     </div>
   </main>

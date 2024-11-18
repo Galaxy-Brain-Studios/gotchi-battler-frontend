@@ -8,9 +8,10 @@
   import SitePopupDropdown from '../common/SitePopupDropdown.vue'
   import SiteLinksMenuWhite from '../common/SiteLinksMenuWhite.vue'
   import SiteConnectWalletAvatar from './SiteConnectWalletAvatar.vue'
+  import SiteSignIn from './SiteSignIn.vue'
 
   const store = useAccountStore()
-  const { isConnected, address, connectStatus } = storeToRefs(store)
+  const { isConnected, address, connectStatus, signedSession } = storeToRefs(store)
 </script>
 <template>
   <SiteButton
@@ -39,10 +40,15 @@
             :address="address"
           />
         </template>
-        <SiteEthAddress
-          class="connect-wallet__address"
-          :address="address"
-        />
+        <div class="connect-wallet__labels">
+          <SiteEthAddress
+            class="connect-wallet__address"
+            :address="address"
+          />
+          <div class="connect-wallet__sign-in-status">
+            {{ signedSession ? 'Signed-in' : 'Not signed-in' }}
+          </div>
+        </div>
         <SiteIcon
           name="chevron-down"
           :width="0.625"
@@ -80,6 +86,17 @@
             </button>
           </li>
         </SiteLinksMenuWhite>
+        <div class="connect-wallet__status-info">
+          <template v-if="signedSession">
+            You're securely signed-in and can access private content for your account.
+          </template>
+          <template v-else>
+            You've connected your wallet, but are not securely signed-in.
+            <div style="margin-top: 0.7rem">
+              <SiteSignIn small />
+            </div>
+          </template>
+        </div>
       </template>
     </SitePopupDropdown>
   </template>
@@ -88,5 +105,27 @@
 <style scoped>
   .connect-wallet__icon {
     flex: none;
+  }
+  .connect-wallet__status-info {
+    max-width: 300px;
+    padding: 0.25rem 0.75rem 1rem 0.75rem;
+    background: var(--c-black);
+    color: var(--c-white);
+    font-size: 0.9rem;
+    line-height: 1.5rem;
+  }
+
+  .connect-wallet__labels {
+    /* avoid growing the button height */
+    margin-top: -0.75rem;
+    margin-bottom: -0.75rem;
+    margin-left: 0.1rem;
+    text-align: left;
+  }
+  .connect-wallet__sign-in-status {
+    font-size: 0.8rem;
+    line-height: 1.25rem;
+    opacity: 0.7;
+    text-transform: none;
   }
 </style>

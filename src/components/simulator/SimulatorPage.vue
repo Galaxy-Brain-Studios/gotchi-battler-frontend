@@ -32,6 +32,10 @@
     matches.value.push(match)
   }
 
+  const deleteMatch = function (matchIndex) {
+    matches.value.splice(matchIndex, 1)
+  }
+
   const createTeamDialogIsOpen = ref(false)
   const editMatchIndex = ref(null)
   const editMatchTeamKey = ref(null)
@@ -269,6 +273,11 @@
                   Duplicate
                 </SiteButtonSmall>
                 <SiteButtonSmall
+                  @click="deleteMatch(matchIndex)"
+                >
+                  Delete
+                </SiteButtonSmall>
+                <SiteButtonSmall
                   v-if="match.team1 && match.team2"
                   :disabled="match.runStatus.status.loading"
                   @click="runSimulations(match)"
@@ -441,6 +450,6 @@
     font-size: 0.875rem;
   }
   .simulator__num-sims-input {
-    width: 5rem;
+    width: 7rem;
   }
 </style>

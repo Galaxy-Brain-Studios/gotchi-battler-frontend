@@ -2,6 +2,8 @@
   import { RouterLink } from 'vue-router'
   import SiteIcon from './SiteIcon.vue';
 
+  defineEmits(['click'])
+
   defineProps({
     icon: {
       type: String,
@@ -32,6 +34,7 @@
       :href="href"
       :target="target"
       class="site-button__button site-button__button--link link-reset"
+      @click="$emit('click', $event)"
     >
       <slot />
     </a>
@@ -63,7 +66,7 @@
           'site-button--has-icon': icon
         }"
         :target="target"
-        @click="navigate"
+        @click="$emit('click', $event); navigate($event)"
       >
         <SiteIcon
           v-if="icon"

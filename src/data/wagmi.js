@@ -1,41 +1,84 @@
-import { configureChains, createConfig, connect, disconnect, watchAccount, signMessage } from '@wagmi/core'
+import { createConfig, reconnect, connect, disconnect, watchAccount, signMessage, readContract, simulateContract, writeContract, waitForTransactionReceipt } from '@wagmi/core'
+import { http } from 'viem'
 import { polygon } from '@wagmi/core/chains'
-import { publicProvider } from '@wagmi/core/providers/public'
-import { InjectedConnector } from '@wagmi/core/connectors/injected'
+import { injected } from '@wagmi/connectors'
 
 const chains = [polygon]
-const providers = [
-  // TODO recommended to provide alchemyProvider or infuraProvider as well as public https://wagmi.sh/core/providers/configuring-chains
-  publicProvider()
-]
-const { publicClient, webSocketPublicClient } = configureChains(
+const connectors = [injected()]
+
+const config = createConfig({
   chains,
-  providers,
-)
-
-// To make autoConnect work, need to provide connectors in createConfig https://github.com/wagmi-dev/wagmi/issues/2511#issuecomment-1594611243
-const connectors = [new InjectedConnector()] // TODO test other wallets
-
-createConfig({
-  autoConnect: true,
-  publicClient,
-  webSocketPublicClient,
-  connectors
+  connectors,
+  transports: {
+    [polygon.id]: http()
+  }
 })
 
+reconnect(config)
+
 const connectWallet = async function () {
-  const { account } = await connect({
-    connector: connectors[0]
-  })
-  return account
+  const { accounts } = await connect(config, { connector: connectors[0] })
+  return accounts[0]
 }
 
-const disconnectWallet = disconnect
-const watchWallet = watchAccount
+const disconnectWallet = async function () {
+  return await disconnect(config)
+}
+const watchWallet = function (onChange) {
+  return watchAccount(config, { onChange })
+}
+const wagmiSignMessage = async function ({ message }) {
+  return await signMessage(config, { message })
+}
+
+const getKnownErrorMessage = function (error) {
+  let messages = `${error.shortMessage} ${error.message}`
+  if (messages.includes('does not match the target chain') || messages.includes("does not match the connection's chain")) {
+    return new Error('Please connect to Polygon')
+  }
+  if (messages.includes('User rejected the request')) {
+    return new Error('Request rejected by user')
+  }
+  if (messages.includes('reverted with the following reason') && messages.includes('Contract Call')) {
+    const detail = messages.match(/reverted with the following reason:\s*(.*)\s*Contract Call/)[1]
+    if (detail) {
+      return new Error(detail)
+    }
+  }
+  console.error('Error submitting transaction', error)
+  return new Error('Error submitting transaction', { cause: error })
+}
+
+const wagmiReadContract = async function (options) {
+  return await readContract(config, options);
+}
+
+const submitTx = async function(options) {
+  try {
+    const { request } = await simulateContract(config, {
+      ...options,
+      chainId: polygon.id
+    })
+    const hash = await writeContract(config, request)
+    console.log('tx submitted', hash)
+    const receipt = await waitForTransactionReceipt(config, { hash })
+    console.log('tx receipt', receipt) // { transactionHash, status: 'success', blockNumber, blockHash }
+    if (receipt?.status !== 'success') {
+      console.error(`tx failed`, receipt)
+      throw new Error('Transaction failed')
+    }
+    return receipt
+  } catch (e) {
+    throw getKnownErrorMessage(e)
+  }
+}
 
 export {
+  config,
   connectWallet,
   disconnectWallet,
   watchWallet,
-  signMessage,
+  wagmiSignMessage,
+  wagmiReadContract,
+  submitTx
 }

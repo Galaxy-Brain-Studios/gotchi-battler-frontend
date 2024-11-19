@@ -14,6 +14,10 @@
       type: Boolean,
       default: false
     },
+    small: {
+      type: Boolean,
+      default: false
+    },
     type: {
       type: String,
       default: 'button'
@@ -26,6 +30,7 @@
     class="site-button__container site-button__container--interactive"
     :class="{
       'site-button__container--is-active': active,
+      'site-button__container--small': small,
       'site-button__container--is-grouped': !!grouped,
       'site-button__container--is-grouped--start': grouped === 'start',
       'site-button__container--is-grouped--middle': grouped === 'middle',
@@ -39,12 +44,13 @@
       }"
       :type="type"
     >
-      <SiteIcon
-        v-if="icon"
-        :name="icon"
-        :size="1.5"
-        class="site-button__icon"
-      />
+      <slot name="icon">
+        <SiteIcon
+          v-if="icon"
+          :name="icon"
+          class="site-button__icon"
+        />
+      </slot>
       <slot />
     </button>
   </div>
@@ -59,7 +65,7 @@
   --button-color-text: var(--c-white);
   --button-color-background: #004E79;
   --button-background--active:
-    linear-gradient(180deg, rgba(5, 174, 187, 0.42) 0%, #01A5B1 100%)
+    var(--site-gradient-blue)
     var(--color-background);
   --button-clip-path--full: polygon(
     0 var(--button-corner-size),

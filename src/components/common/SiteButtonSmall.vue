@@ -29,4 +29,12 @@
   .site-button-small__button:focus {
     box-shadow: 0 0 10px var(--button-color-border);
   }
+
+  .site-button-small__button:disabled {
+    opacity: 0.5;
+  }
+  .site-button-small__button:disabled:hover,
+  .site-button-small__button:disabled:focus {
+    box-shadow: none;
+  }
 </style>

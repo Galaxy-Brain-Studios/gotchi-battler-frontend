@@ -25,6 +25,7 @@
   import uniqueId from 'lodash.uniqueid'
   import { ref, onMounted, onBeforeUnmount } from 'vue'
   import useStatus from '../../utils/useStatus'
+  import useSettings from '../../data/useSettings'
   import SiteError from '../common/SiteError.vue'
 
   const props = defineProps({
@@ -33,6 +34,7 @@
       required: true
     }
   })
+  const { musicVolume, sfxVolume } = useSettings()
 
   // Unity player requires the canvas element to have an HTML ID
   const canvasId = ref(uniqueId('unity-player-canvas'))
@@ -82,6 +84,16 @@
         if (isStale()){ return }
         setLoaded()
         myUnityInstance.value = unityInstance
+
+        const audioSettings = {
+          Audio: {
+            MusicVolume: musicVolume.value - 0,
+            SfxVolume: sfxVolume.value - 0
+          }
+        }
+        // console.log("Sending settings to unity instance", audioSettings)
+        unityInstance.SendMessage('BattleReplayer', 'LoadSettings', JSON.stringify(audioSettings))
+
         const battleLogAsText = JSON.stringify(props.logs)
         // console.log('show logs', { logs: props.logs, battleLogAsText })
         // unityInstance.SendMessage('BattleManager', 'StartBattle', battleLogAsText)

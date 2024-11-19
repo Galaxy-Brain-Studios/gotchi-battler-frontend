@@ -3,6 +3,7 @@
     "id": 1,
     "class": "Ninja",
     "name": "Spectral strike",
+    "cooldown": 0,
     "effects": [
         "Attack a random target with a strong hit",
         "Attack bypasses armor",
@@ -24,6 +25,7 @@
     "id": 2,
     "class": "Enlightened",
     "name": "Meditate",
+    "cooldown": 0,
     "effects": [
       "Increases Magic Power",
       "Increases Physical Power"
@@ -42,6 +44,7 @@
     "id": 3,
     "class": "Cleavers",
     "name": "Cleave",
+    "cooldown": 2,
     "effects": [
       "Attacks a full row with a powerful strike",
       "The row with the most enemies is targeted",
@@ -61,6 +64,7 @@
     "id": 4,
     "class": "Tank",
     "name": "Taunt",
+    "cooldown": 0,
     "effects": [
       "Applies taunt status to self, forcing enemies to target the Tank.",
       "Increases Armor"
@@ -80,6 +84,7 @@
     "id": 5,
     "class": "Cursed",
     "name": "Curse",
+    "cooldown": 0,
     "effects": [
       "Attacks a random enemy",
       "Inflicts fear on the targeted enemy, causing them to skip their next turn.",
@@ -100,6 +105,7 @@
     "id": 6,
     "class": "Healer",
     "name": "Blessing",
+    "cooldown": 0,
     "effects": [
       "Heals all allies for 20% of their maximum health",
       "Cleanses all allies, removing any negative status effects",
@@ -119,6 +125,7 @@
     "id": 7,
     "class": "Mage",
     "name": "Thunder",
+    "cooldown": 2,
     "effects": [
       "Attacks all enemy Gotchis"
     ],
@@ -136,6 +143,7 @@
     "id": 8,
     "class": "Troll",
     "name": "Devastating Smash",
+    "cooldown": 2,
     "effects": [
       "Attacks a random gotchi with a devastating blow"
     ],

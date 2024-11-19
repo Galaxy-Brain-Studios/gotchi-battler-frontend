@@ -31,23 +31,18 @@
     }
   })
 
-  const gotchisById = computed(() => {
-    if (!props.team?.gotchis) { return {} }
-    return Object.fromEntries(props.team.gotchis.map(gotchi => [gotchi.id, gotchi]))
-  })
-
   const gotchisInFormation = computed(() => {
     if (!props.team?.formation) { return null }
     return [
-      ...props.team.formation.back.map((gotchiId, index) => ({
+      ...props.team.formation.back.map((gotchiEntry, index) => ({
         row: 'back',
         position: index + 1,
-        gotchi: gotchisById.value[gotchiId]
+        gotchi: gotchiEntry
       })),
-      ...props.team.formation.front.map((gotchiId, index) => ({
+      ...props.team.formation.front.map((gotchiEntry, index) => ({
         row: 'front',
         position: index + 1,
-        gotchi: gotchisById.value[gotchiId]
+        gotchi: gotchiEntry
       })),
     ].filter(entry => !!entry.gotchi)
   })
@@ -143,7 +138,7 @@
     >
       <slot
         name="gotchi"
-        :gotchi="gotchisById[entry.gotchi.id]"
+        :gotchi="entry.gotchi"
         :row="entry.row"
         :position="entry.position"
       />

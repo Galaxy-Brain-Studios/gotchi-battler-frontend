@@ -12,16 +12,11 @@
     }
   })
 
-  const gotchisById = computed(() => {
-    if (!props.team?.gotchis) { return {} }
-    return Object.fromEntries(props.team.gotchis.map(gotchi => [gotchi.id, gotchi]))
-  })
-
   const gotchisInSubstitutes = computed(() => {
     if (!props.team?.formation) { return null }
-    return (props.team.formation.substitutes || []).map((gotchiId, index) => ({
+    return (props.team.formation.substitutes || []).map((gotchiEntry, index) => ({
       position: index + 1,
-      gotchi: gotchisById.value[gotchiId]
+      gotchi: gotchiEntry
     })).filter(entry => !!entry.gotchi)
   })
 
@@ -64,7 +59,7 @@
     >
       <slot
         name="gotchi"
-        :gotchi="gotchisById[entry.gotchi.id]"
+        :gotchi="entry.gotchi"
         :position="entry.position"
       />
     </div>

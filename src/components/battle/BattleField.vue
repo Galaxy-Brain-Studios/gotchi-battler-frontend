@@ -1,6 +1,7 @@
 <script setup>
   import { computed } from 'vue'
-  import BattleUnityPlayer from './BattleUnityPlayer.vue'
+  import BattleFetcherUnityPlayer from './BattleFetcherUnityPlayer.vue'
+  import UnityPlayer from './UnityPlayer.vue'
   import TeamFormation from '../team/TeamFormation.vue'
   import GotchiInFormation from '../team/GotchiInFormation.vue'
   import BattleVs from './BattleVs.vue'
@@ -26,7 +27,9 @@
 
   const team1 = computed(() => props.battle?.teams[0])
   const team2 = computed(() => props.battle?.teams[1])
+  const battleLogsData = computed(() => props.battle?.logsData ? props.battle.logsData : null )
   const battleLogsUrl = computed(() => props.battle?.logs ? props.battle.logs : null )
+  const hasBattleLogs = computed(() => !!(battleLogsData.value || battleLogsUrl.value) )
 
   const battleIsCompleted = computed(() => !!props.battle?.winnerId)
   const showTeam1Winner = computed(() => props.showResult && battleIsCompleted.value && props.battle.winnerId === team1.value?.id)
@@ -115,6 +118,8 @@
             <GotchiInFormation
               emptyMode="blank"
               variant="small"
+              withItemBadge
+              withSpecialInfoBadge
             />
           </template>
           <template #gotchi="{ gotchi }">
@@ -123,6 +128,7 @@
               :isLeader="gotchi.id === team1.leader"
               :teamId="team1.id"
               variant="small"
+              withItemBadge
               withStatsPopup
               withSpecialInfoBadge
             />
@@ -135,16 +141,20 @@
       <div
         class="battle__display"
         :class="{
-          'battle__display--not-ready': !battleLogsUrl
+          'battle__display--not-ready': !hasBattleLogs
         }"
       >
-        <template v-if="!battleLogsUrl">
+        <template v-if="!hasBattleLogs">
           <slot name="not-started">
             Result not available yet
           </slot>
         </template>
-        <BattleUnityPlayer
-          v-else
+        <UnityPlayer
+          v-else-if="battleLogsData"
+          :logs="battleLogsData"
+        />
+        <BattleFetcherUnityPlayer
+          v-else-if="battleLogsUrl"
           :logsUrl="battleLogsUrl"
         />
       </div>
@@ -157,6 +167,8 @@
             <GotchiInFormation
               emptyMode="blank"
               variant="small"
+              withItemBadge
+              withSpecialInfoBadge
             />
           </template>
           <template #gotchi="{ gotchi }">
@@ -165,6 +177,7 @@
               :isLeader="gotchi.id === team2.leader"
               :teamId="team2.id"
               variant="small"
+              withItemBadge
               withStatsPopup
               withSpecialInfoBadge
             />

@@ -1,28 +1,13 @@
 import wretch from 'wretch'
-import { DEV_MODE, API_URL } from '../appEnv'
+import { API_URL } from '../appEnv'
 
 let baseApi = wretch()
-if (DEV_MODE) {
-  baseApi = baseApi.middlewares([
-    // Dev option: skipDevServerSignatureCheck
-    next => (url, opts) => {
-      let newOpts = opts
-      if (window.skipDevServerSignatureCheck) {
-        // add header to all requests
-        let headers = newOpts.headers || {}
-        headers['X-GB-DEV-SKIP-SIGNATURE'] = true
-        newOpts = {
-          ...newOpts,
-          headers
-        }
-      }
-      return next(url, newOpts)
-    }
-  ])
-}
 
 const api = baseApi.errorType("json").resolve(r => r.json())
 const apiText = baseApi.errorType("json").resolve(r => r.text())
+
+const apiWithCredentials = api.options({ credentials: "include", mode: "cors" })
+const apiTextWithCredentials = apiText.options({ credentials: "include", mode: "cors" })
 
 let BASE_URL = API_URL
 
@@ -37,23 +22,47 @@ const urls = {
   tournamentBrackets: (id) =>  `${BASE_URL}/api/v1/tournaments/${encodeURIComponent(id)}/brackets`,
   trainingTeams: () =>  `${BASE_URL}/api/v1/training/teams/`,
   team: (id) => `${BASE_URL}/api/v1/teams/${encodeURIComponent(id)}`,
-  createTournamentTeam: ({ tournamentId, address, message='', signature='' }) =>
-    `${BASE_URL}/api/v1/me/${encodeURIComponent(address)}/tournaments/${encodeURIComponent(tournamentId)}/teams?message=${encodeURIComponent(message)}&signature=${encodeURIComponent(signature)}`,
-  deleteTournamentTeam: ({ tournamentId, teamId, address, message='', signature='' }) =>
-    `${BASE_URL}/api/v1/me/${encodeURIComponent(address)}/tournaments/${encodeURIComponent(tournamentId)}/teams/${encodeURIComponent(teamId)}?message=${encodeURIComponent(message)}&signature=${encodeURIComponent(signature)}`,
-  editTournamentTeam: ({ tournamentId, teamId, address, message='', signature='' }) =>
-    `${BASE_URL}/api/v1/me/${encodeURIComponent(address)}/tournaments/${encodeURIComponent(tournamentId)}/teams/${encodeURIComponent(teamId)}?message=${encodeURIComponent(message)}&signature=${encodeURIComponent(signature)}`,
+  createTournamentTeam: (tournamentId) =>
+    `${BASE_URL}/api/v1/me/tournaments/${encodeURIComponent(tournamentId)}/teams`,
+  deleteTournamentTeam: ({ tournamentId, teamId }) =>
+    `${BASE_URL}/api/v1/me/tournaments/${encodeURIComponent(tournamentId)}/teams/${encodeURIComponent(teamId)}`,
+  editTournamentTeam: ({ tournamentId, teamId }) =>
+    `${BASE_URL}/api/v1/me/tournaments/${encodeURIComponent(tournamentId)}/teams/${encodeURIComponent(teamId)}`,
   tournamentTeams: (tournamentId) => `${BASE_URL}/api/v1/tournaments/${encodeURIComponent(tournamentId)}/teams`,
   tournamentTeamsReport: (tournamentId) => `${BASE_URL}/api/v1/tournaments/${encodeURIComponent(tournamentId)}/teams-report`,
   tournamentGotchis: (tournamentId) => `${BASE_URL}/api/v1/tournaments/${encodeURIComponent(tournamentId)}/gotchis`,
   battle: (id) => `${BASE_URL}/api/v1/battles/${encodeURIComponent(id)}`,
   battleAnalyser: (id) => `${BASE_URL}/api/v1/battles/${encodeURIComponent(id)}/analyse`,
   battleLogs: (url) => url,
-  trainingBattle: ({ address, message='', signature='' }) =>
-    `${BASE_URL}/api/v1/me/${encodeURIComponent(address)}/training?message=${encodeURIComponent(message)}&signature=${encodeURIComponent(signature)}`,
   trainingGotchis: () =>  `${BASE_URL}/api/v1/training/gotchis`,
-  gotchis: ({ address }) =>  `${BASE_URL}/api/v1/me/${encodeURIComponent(address)}/gotchis`,
-  availableLendings: (tournamentId) => `${BASE_URL}/api/v1/tournaments/${encodeURIComponent(tournamentId)}/lendings`
+  gotchis: ({ address }) =>  `${BASE_URL}/api/v1/gotchis/${encodeURIComponent(address)}`,
+  searchGotchis: () =>  `${BASE_URL}/api/v1/gotchis`,
+  availableLendings: (tournamentId) => `${BASE_URL}/api/v1/tournaments/${encodeURIComponent(tournamentId)}/lendings`,
+  profile: (address) => `${BASE_URL}/api/v1/profiles/${encodeURIComponent(address)}`,
+  profileTeams: () => `${BASE_URL}/api/v1/me/teams`,
+  profileInventory: () => `${BASE_URL}/api/v1/me/items`,
+  itemPurchase: (txId) => `${BASE_URL}/api/v1/me/item-purchases/${encodeURIComponent(txId)}`,
+  updateProfile: () => `${BASE_URL}/api/v1/me`,
+  createProfileTeam: () => `${BASE_URL}/api/v1/me/teams`,
+  updateProfileTeam: (teamId) => `${BASE_URL}/api/v1/me/teams/${encodeURIComponent(teamId)}`,
+  deleteProfileTeam: (teamId) => `${BASE_URL}/api/v1/me/teams/${encodeURIComponent(teamId)}`,
+  generateImageUploadUrl: () => `${BASE_URL}/api/v1/me/avatar-upload-url`,
+  updateProfileImage: () => `${BASE_URL}/api/v1/me/avatar`,
+  sessionNonce: () => `${BASE_URL}/api/v1/auth/nonce`,
+  sessionLogin: () => `${BASE_URL}/api/v1/auth/login`,
+  sessionLogout: () => `${BASE_URL}/api/v1/auth/logout`,
+  sessionUser: () => `${BASE_URL}/api/v1/me`,
+  shopItems: () => `${BASE_URL}/api/v1/items`
 }
 
-export { api, apiText, urls, setBaseUrl }
+function getResponseErrorMessage (e) {
+  // console.log({ ... e})
+  // Special case for Unauthorized responses, which can have various error message causes
+  // but we want to be able to detect them easily so always use the 'Unauthorized' string
+  if (e.status === 401) {
+    return 'Unauthorized'
+  }
+  return e.json?.error || e.json?.message || null
+}
+
+export { api, apiText, apiWithCredentials, apiTextWithCredentials, urls, setBaseUrl, getResponseErrorMessage }

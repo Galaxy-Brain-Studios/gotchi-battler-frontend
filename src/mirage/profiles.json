@@ -1,0 +1,32 @@
+[
+  {
+    "address": "DEFAULT",
+    "name": null,
+    "avatar": null
+  },
+  {
+    "address": "0xBfe09443556773958bae1699b786d8E9680B5571",
+    "name": "Custom Name",
+    "avatar": "/dev/gotchi_g1_front.svg"
+  },
+  {
+    "address": "0x05EBFf07711A5B6042c27FDaa683a5c6D55b6684",
+    "name": "Test Long Name Long Name Long Name Long Name Long Name Long Name Long Name Long Name Long Name Long Name Long Name Long Name Long Name.",
+    "avatar": "/media/10k.png"
+  },
+  {
+    "address": "0xf1d88980505e00db65609ec5420f40c3eb1b77fd",
+    "name": "TestingLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWord",
+    "avatar": null
+  },
+  {
+    "address": "0xaF4Fe811ffA1BF1f7de8FDAa9F706487C882aEd0",
+    "name": "Test <i>HTML</i>",
+    "avatar": null
+  },
+  {
+    "address": "0xd8D4BDb89D64B7A2971Dc987DD67F101fea6c7D8",
+    "name": "",
+    "avatar": null
+  }
+]

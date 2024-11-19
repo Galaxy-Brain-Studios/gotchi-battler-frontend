@@ -1,4 +1,4 @@
-  import { formatDuration, intervalToDuration } from 'date-fns'
+  import { formatDuration, intervalToDuration, isBefore } from 'date-fns'
 
   const formatterDateTime = new Intl.DateTimeFormat(undefined, {
     year: "numeric",
@@ -18,10 +18,12 @@
   const formatDate = date => formatterDate.format(date)
 
   const formatRelativeDateTime = date => {
+    const now = new Date()
+    const isDateBeforeNow = isBefore(date, now)
     let str = formatDuration(
       intervalToDuration({
-        start: date,
-        end: new Date()
+        start: isDateBeforeNow ? date : now,
+        end: isDateBeforeNow ? now : date
       })
     )
     // Shorten it further

@@ -23,6 +23,45 @@ const router = createRouter({
       component: HomePage
     },
     {
+      path: '/settings',
+      name: 'settings',
+      component: () => import('../components/settings/SettingsPage.vue')
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      props: true,
+      component: () => import('../components/profile/ProfilePage.vue'),
+      children: [
+        {
+          path: ':address',
+          name: 'profile-address',
+          props: true,
+          redirect: to => ({ name: 'profile-badges', params: { address: to.params.address } }),
+          children: [
+            {
+              path: 'teams',
+              name: 'profile-teams',
+              props: true,
+              component: () => import('../components/profile/ProfileTeams.vue'),
+            },
+            {
+              path: 'inventory',
+              name: 'profile-inventory',
+              props: true,
+              component: () => import('../components/profile/ProfileInventory.vue'),
+            },
+            {
+              path: 'badges',
+              name: 'profile-badges',
+              props: true,
+              component: () => import('../components/profile/ProfileBadges.vue'),
+            }
+          ]
+        }
+      ]
+    },
+    {
       path: '/tournaments',
       name: 'tournaments',
       redirect: {
@@ -65,10 +104,27 @@ const router = createRouter({
       component: () => import('../components/training/TrainingPage.vue')
     },
     {
-      path: '/analyser/:id?',
-      name: 'analyser',
-      props: true,
-      component: () => import('../components/analyser/AnalyserPage.vue')
+      path: '/tools',
+      name: 'tools',
+      redirect: () => ({ name: 'analyser' }),
+      children: [
+        {
+          path: 'analyser/:id?',
+          name: 'analyser',
+          props: true,
+          component: () => import('../components/analyser/AnalyserPage.vue')
+        },
+        {
+          path: 'simulator',
+          name: 'simulator',
+          component: () => import('../components/simulator/SimulatorPage.vue')
+        }
+      ]
+    },
+    {
+      path: '/shop',
+      name: 'shop',
+      component: () => import('../components/shop/ShopPage.vue')
     },
     {
       path: '/about',

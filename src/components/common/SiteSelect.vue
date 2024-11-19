@@ -82,6 +82,7 @@
     position: absolute;
     top: 50%;
     right: 0.6rem;
-    margin-top: -0.18rem
+    margin-top: -0.18rem;
+    pointer-events: none; /* let click pass through to select element */
   }
 </style>

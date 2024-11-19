@@ -1,12 +1,15 @@
-import { api, urls } from './api'
+import uniqueId from 'lodash.uniqueid'
+import { api, urls, getResponseErrorMessage } from './api'
 import { processTeamModel } from './teamUtils'
+import { battle as runBattle } from 'gotchi-battler-game-logic'
 
 const processBattleModel = function (jsonData) {
-  const teams = [jsonData.team1 || null, jsonData.team2 || null]
+  const { team1, team2, ...restData } = jsonData
+  const teams = [team1 || null, team2 || null]
   return {
-    ...jsonData,
+    ...restData,
     teams: teams.map(team => processTeamModel(team)),
-    createdDate: jsonData.createdAt ? new Date(jsonData.createdAt) : null
+    createdDate: restData.createdAt ? new Date(restData.createdAt) : null
   }
 }
 
@@ -22,7 +25,7 @@ export default {
       return processBattleModel(battle)
     } catch (e) {
       console.error('fetchBattle error', { ...e })
-      throw new Error(e.json?.error || 'Error fetching battle')
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching battle')
     }
   },
 
@@ -37,7 +40,7 @@ export default {
       return processBattleModel(battle)
     } catch (e) {
       console.error('fetchBattleAnalyser error', { ...e })
-      throw new Error(e.json?.error || 'Error fetching battle analysis')
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching battle analysis')
     }
   },
 
@@ -47,30 +50,42 @@ export default {
       return logs
     } catch (e) {
       console.error('fetchBattleLogs error', { ...e })
-      throw new Error(e.json?.error || 'Error fetching battle logs')
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching battle logs')
     }
   },
 
-  async submitTrainingBattle ({ team, trainingTeam, address, message, signature }) {
-    try {
-      const result = await api.url(urls.trainingBattle({ address, message, signature })).post({
-        team,
-        trainingTeam
-      })
-      // result might just contain id
-      if (!result.team1) {
-        return result
-      }
-      // if there's a full battle model, process it
-      const battle = processBattleModel(result)
-      // training battles run immediately
-      if (!battle.status) {
-        battle.status = 'completed'
-      }
-      return battle
-    } catch (e) {
-      console.error('submitTrainingBattle error', { ...e })
-      throw new Error(e.json?.error || 'Error submitting Training battle')
+  runTrainingBattle (match) {
+    const seed = '' + Math.random()
+    const createdAt = new Date()
+    const id = uniqueId('tbatt_')
+    const result = runBattle(match.team1, match.team2, seed)
+    // console.log('runBattle result', result, { match })
+
+    // Similar to the format returned by the battle endpoint
+    return {
+      id,
+      createdAt,
+      status: 'completed',
+      // battle endpoint returns 'logs' which is an URL, but here we store the full logs directly
+      logsData: result,
+      // battle endpoint returns winnerId, but in-browser team might not have an ID
+      winner: result.result.winner // team index, 1 or 2
+    }
+  },
+
+  runTrainingBattles (match, numBattles) {
+    const teamWins = [0, 0]
+    for (let i = 0; i < numBattles; i++) {
+      const result = this.runTrainingBattle(match)
+      teamWins[result.winner - 1]++
+    }
+    const team1WinRate = Math.floor(100 * teamWins[0] / numBattles)
+    const team2WinRate = Math.floor(100 * teamWins[1] / numBattles)
+    return {
+      team1Wins: teamWins[0],
+      team1WinRate,
+      team2Wins: teamWins[1],
+      team2WinRate
     }
   }
 

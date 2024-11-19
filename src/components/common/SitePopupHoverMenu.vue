@@ -10,9 +10,10 @@
 
 <style>
 .v-popper--theme-site-hover-menu-theme .v-popper__inner {
+  --site-popup-hover-menu-padding: 1rem;
   max-width: 27rem;
   word-break: break-word;
-  padding: 1rem;
+  padding: var(--site-popup-hover-menu-padding);
   border-radius: 0px;
   border: 2px solid var(--c-white);
   background: var(--c-black);

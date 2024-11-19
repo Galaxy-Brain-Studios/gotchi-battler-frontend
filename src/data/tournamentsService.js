@@ -1,5 +1,5 @@
-import { api, apiText, urls } from './api'
-import { useAccountStore } from './accountStore'
+import { api, apiWithCredentials, apiTextWithCredentials, urls, getResponseErrorMessage } from './api'
+import { requireLoginSession } from './accountStore'
 import orderBy from 'lodash.orderby'
 
 const TOURNAMENT_API_STATE_TO_STATUS = {
@@ -75,24 +75,6 @@ const processBrackets = function (brackets) {
   return newBrackets
 }
 
-const getSignature = async function (message) {
-  const accountStore = useAccountStore()
-  const address = accountStore.address
-  let signature
-  try {
-    signature = await accountStore.signMessage({
-      message
-    })
-  } catch (e) {
-    console.error('getSignature error', e)
-    throw new Error('Could not get signature')
-  }
-  return {
-    address,
-    signature
-  }
-}
-
 export default {
   async fetchTournaments () {
     try {
@@ -100,7 +82,7 @@ export default {
       return tournaments.map(tournament => processTournament(tournament))
     } catch (e) {
       console.error('fetchTournaments error', { ...e })
-      throw new Error(e.json?.error || e.json?.message || 'Error fetching tournaments')
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching tournaments')
     }
   },
 
@@ -113,7 +95,7 @@ export default {
       }
     } catch (e) {
       console.error('fetchTournament error', { ...e })
-      throw new Error(e.json?.error || e.json?.message || 'Error fetching tournament')
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching tournament')
     }
   },
 
@@ -123,50 +105,44 @@ export default {
       return processBrackets(brackets || [])
     } catch (e) {
       console.error('fetchTournamentBrackets error', { ...e })
-      throw new Error(e.json?.error || e.json?.message || 'Error fetching tournament brackets')
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching tournament brackets')
     }
   },
 
-  async createTeam ({ tournamentId, team }) {
+  createTeam: requireLoginSession(async function ({ tournamentId, team }) {
     try {
-      const message = JSON.stringify(team)
-      const { address, signature } = await getSignature(message)
-      const result = await api.url(urls.createTournamentTeam({ tournamentId, address, message, signature })).post(team)
+      const result = await apiWithCredentials.url(urls.createTournamentTeam(tournamentId)).post(team)
       return result;
     } catch (e) {
       console.error('createTeam error', { ...e })
-      throw new Error(e.json?.errors?.[0]?.message || e.json?.message || e.message || 'Error submitting team')
+      throw new Error(e.json?.errors?.[0]?.message || getResponseErrorMessage(e) || e.message || 'Error submitting team')
     }
-  },
+  }),
 
-  async deleteTeam ({ tournamentId, teamId }) {
+  deleteTeam: requireLoginSession(async function ({ tournamentId, teamId }) {
     try {
-      const message = JSON.stringify(teamId)
-      const { address, signature } = await getSignature(message)
-      const result = await apiText.url(urls.deleteTournamentTeam({ tournamentId, teamId, address, message, signature })).delete()
+      const result = await apiTextWithCredentials.url(urls.deleteTournamentTeam({ tournamentId, teamId })).delete()
       return result;
     } catch (e) {
       console.error('deleteTeam error', e)
-      throw new Error(e.json?.error || e.json?.message || e.message || 'Error deleting team')
+      throw new Error(getResponseErrorMessage(e) || e.message || 'Error deleting team')
     }
-  },
+  }),
 
   // TODO not yet supported by server
   // async replaceTeam ({ tournamentId, teamId, team }) {
   //   return null;
   // },
 
-  async editTeam ({ tournamentId, teamId, team }) {
+  editTeam: requireLoginSession(async function ({ tournamentId, teamId, team }) {
     try {
-      const message = JSON.stringify(team)
-      const { address, signature } = await getSignature(message)
-      const result = await api.url(urls.editTournamentTeam({ tournamentId, teamId, address, message, signature })).put(team)
+      const result = await apiWithCredentials.url(urls.editTournamentTeam({ tournamentId, teamId })).put(team)
       return result;
     } catch (e) {
       console.error('editTeam error', e)
-      throw new Error(e.json?.errors?.[0]?.message || e.message || 'Error updating team')
+      throw new Error(e.json?.errors?.[0]?.message || getResponseErrorMessage(e) || e.message || 'Error updating team')
     }
-  },
+  }),
 
   async fetchTournamentTeams ({ tournamentId }) {
     try {
@@ -178,7 +154,7 @@ export default {
       }))
     } catch (e) {
       console.error('fetchTournamentTeams error', { ...e })
-      throw new Error(e.json?.error || e.json?.message || 'Error fetching tournament teams')
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching tournament teams')
     }
   },
 
@@ -188,7 +164,7 @@ export default {
       return teams || []
     } catch (e) {
       console.error('fetchTournamentTeamsReport error', { ...e })
-      throw new Error(e.json?.error || e.json?.message || 'Error fetching tournament teams report')
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching tournament teams report')
     }
   },
 
@@ -203,11 +179,12 @@ export default {
         brs: gotchi.brs,
         teamId: gotchi.teamId,
         teamName: gotchi.teamName,
-        teamOwner: gotchi.teamOwner
+        teamOwner: gotchi.teamOwner,
+        teamUser: gotchi.teamUser
       }))
     } catch (e) {
       console.error('fetchTournamentGotchis error', { ...e })
-      throw new Error(e.json?.error || e.json?.message || 'Error fetching tournament gotchis')
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching tournament gotchis')
     }
   }
 }

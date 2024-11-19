@@ -1,9 +1,14 @@
 <script setup>
   import { DEV_MODE } from '../../appEnv'
-  import { RouterLink } from 'vue-router'
+  import { RouterLink, useLink } from 'vue-router'
   import SiteIcon from '../common/SiteIcon.vue'
+  import SiteButtonWhite from '../common/SiteButtonWhite.vue'
   import SiteButtonWhiteLink from '../common/SiteButtonWhiteLink.vue'
+  import SitePopupDropdown from '../common/SitePopupDropdown.vue'
+  import SiteLinksMenuWhite from '../common/SiteLinksMenuWhite.vue'
   import SiteConnectWallet from './SiteConnectWallet.vue'
+
+  const { isActive: isToolsActive } = useLink({ to: { name: 'tools' }})
 </script>
 
 <template>
@@ -25,15 +30,44 @@
       >
         Tournaments
       </SiteButtonWhiteLink>
+      <SitePopupDropdown>
+        <SiteButtonWhite :active="isToolsActive">
+          Tools
+        </SiteButtonWhite>
+        <template #popper="{ hide }">
+          <SiteLinksMenuWhite
+            #default="{ linkClasses }"
+          >
+            <li>
+              <RouterLink
+                :to="{ name: 'analyser' }"
+                :class="linkClasses"
+                @click="hide"
+              >
+                Battle analyser
+              </RouterLink>
+            </li>
+            <li>
+              <RouterLink
+                :to="{ name: 'simulator' }"
+                :class="linkClasses"
+                @click="hide"
+              >
+                Simulator
+              </RouterLink>
+            </li>
+            </SiteLinksMenuWhite>
+        </template>
+      </SitePopupDropdown>
+      <SiteButtonWhiteLink
+        to="/shop"
+      >
+        Shop
+      </SiteButtonWhiteLink>
       <SiteButtonWhiteLink
         to="/training"
       >
         Training
-      </SiteButtonWhiteLink>
-      <SiteButtonWhiteLink
-        to="/analyser"
-      >
-        Tools
       </SiteButtonWhiteLink>
       <SiteButtonWhiteLink
         href="https://gotchi-battler-1.gitbook.io/gotchi-battler/"

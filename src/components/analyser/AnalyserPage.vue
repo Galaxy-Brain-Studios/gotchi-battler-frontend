@@ -1,6 +1,7 @@
 <script setup>
   import { ref } from 'vue'
   import { useRouter } from 'vue-router'
+  import SiteHeading from '../common/SiteHeading.vue'
   import SiteIcon from '@/components/common/SiteIcon.vue'
   import SiteButtonBox from '@/components/common/SiteButtonBox.vue'
   import SiteButton from '@/components/common/SiteButton.vue'
@@ -24,6 +25,8 @@
 </script>
 <template>
   <div>
+    <SiteHeading>Battle Analyser</SiteHeading>
+
     <form
       class="analyser-search"
       @submit.prevent="doSearch"
@@ -75,6 +78,9 @@
 </template>
 
 <style scoped>
+  .analyser-search {
+    margin-top: 2.5rem;
+  }
   /* override default SiteButtonGroup grid layout */
   .analyser-search__button-group {
     grid-template-columns: minmax(0, auto) minmax(10rem, 1fr) auto;

@@ -1,29 +1,23 @@
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { useAccountStore } from './accountStore'
 import useStatus from '../utils/useStatus'
 import battlesService from './battlesService';
-
-const accountStore = useAccountStore()
+import { generateTeamForBattle, findHighestTrainingPowerLevel } from './teamUtils'
 
 export const useTrainingBattlesStore = defineStore('trainingBattles', () => {
-  const battlesByAddress = ref({});
+  const battleIds = ref([]);
 
-  function addBattle (address, battleId) {
-    if (!battlesByAddress.value[address]) {
-      battlesByAddress.value[address] = []
-    }
-    battlesByAddress.value[address].push(battleId)
+  function addBattle (battleId) {
+    battleIds.value.push(battleId)
   }
 
-  function getBattles (address) {
-    const battleIds = battlesByAddress.value[address]
-    if (!battleIds) { return [] }
-    return battleIds.map(id => useBattleStore(id)().battle)
-  }
+  const trainingBattles = computed(() => {
+    if (!battleIds.value) { return [] }
+    return battleIds.value.map(id => useBattleStore(id)().battle)
+  })
 
   return {
-    getBattles,
+    trainingBattles,
     addBattle
   }
 })
@@ -92,33 +86,38 @@ export const useBattleAnalyserStore = function (id) {
   })
 }
 
-export const submitTrainingBattle = async function ({ team, trainingTeam, address, message, signature }) {
-  const result = await battlesService.submitTrainingBattle({
-    team,
-    trainingTeam,
-    address,
-    message,
-    signature
+// Run a single training battle which can be displayed,
+// and also another 200 battles to get a win rate
+// Expect teams with formation of embedded gotchis.
+export const runTrainingBattle = async function ({ team1, team2 }) {
+  const team1ForBattle = await generateTeamForBattle(team1)
+  const team2ForBattle = await generateTeamForBattle(team2)
+  const result = battlesService.runTrainingBattle({
+    team1: team1ForBattle,
+    team2: team2ForBattle
   })
   if (!result.id) {
     throw new Error('Expected battle id after submitting training battle')
   }
-  if (result.teams) {
-    // battle object returned: store it
-    useBattleStore(result.id, result)()
-    useTrainingBattlesStore().addBattle(address, result.id)
-  }
-  return result.id
-}
+  const batchResult = battlesService.runTrainingBattles({
+    team1: team1ForBattle,
+    team2: team2ForBattle
+  }, 200)
 
-export const signTrainingBattle = async function({ team, trainingTeam }) {
-  const message = JSON.stringify({ team, trainingTeam })
-  const signature = await accountStore.signMessage({
-    message
-  })
-  return {
-    address: accountStore.address,
-    message,
-    signature
+  // battle object returned: store it, with teams in the originally provided format
+  // Generate training team difficulty based on the gotchis present in the team
+  const team2Extended = {
+    ...team2,
+    difficulty: findHighestTrainingPowerLevel(team2)
   }
+  const battle = {
+    ...result,
+    ...batchResult,
+    teams: [team1, team2Extended]
+  }
+  useBattleStore(result.id, battle)()
+  console.log('Stored battle', battle)
+  useTrainingBattlesStore().addBattle(result.id)
+
+  return result.id
 }

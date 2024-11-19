@@ -2,7 +2,7 @@
   import { storeToRefs } from 'pinia'
   import { useTeamStore } from '../../data/teamStore'
   import useStatus from '../../utils/useStatus'
-  import { generateTeamToSubmit } from '../../data/teamUtils'
+  import { generateTournamentTeamToSubmit } from '../../data/teamUtils'
   import tournamentsService from '../../data/tournamentsService'
   import SiteDialog from '../common/SiteDialog.vue'
   import CreateTeamDialog from './CreateTeamDialog.vue'
@@ -47,7 +47,7 @@
       await tournamentsService.replaceTeam({
         tournamentId: props.tournamentId,
         teamId: props.id,
-        team: generateTeamToSubmit(team)
+        team: generateTournamentTeamToSubmit(team)
       })
       if (isStale()) { return }
       setLoaded()
@@ -66,7 +66,7 @@
       await tournamentsService.editTeam({
         tournamentId: props.tournamentId,
         teamId: props.id,
-        team: generateTeamToSubmit(team)
+        team: generateTournamentTeamToSubmit(team)
       })
       if (isStale()) { return }
       setLoaded()

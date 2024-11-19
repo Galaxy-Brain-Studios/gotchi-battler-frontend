@@ -1,4 +1,4 @@
-import { api, urls } from './api'
+import { api, urls, getResponseErrorMessage } from './api'
 import { processGotchiModel } from './gotchiUtils'
 
 const processLendingModel = function (jsonData) {
@@ -21,7 +21,7 @@ export default {
       return lendings.map(processLendingModel)
     } catch (e) {
       console.error('fetchAvailableGotchis error', { ...e })
-      throw new Error(e.json?.error || 'Error fetching available gotchi lendings')
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching available gotchi lendings')
     }
   },
 }

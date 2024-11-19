@@ -5,6 +5,14 @@
     small: {
       type: Boolean,
       default: false
+    },
+    active: {
+      type: Boolean,
+      default: false
+    },
+    interactive: {
+      type: Boolean,
+      default: false
     }
   })
 </script>
@@ -13,7 +21,9 @@
   <div
     class="site-button-white__container"
     :class="{
-      'site-button-white__container--small': small
+      'site-button-white__container--small': small,
+      'site-button-white__container--is-active': active,
+      'site-button-white__container--interactive': interactive
     }"
   >
     <div class="site-button-white__corner site-button-white__corner-1" />

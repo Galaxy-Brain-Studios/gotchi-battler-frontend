@@ -1079,7 +1079,7 @@ export function makeServer({ environment = 'development' } = {}) {
         // for more details see: https://github.com/miragejs/miragejs/issues/1915
         if (
           verb === 'GET' &&
-          ( path.match(/Build.*\.wasm$/) || path.match(/Build.*\.data/) ) // also needed for the Build.data
+          ( path.match(/Build.*\.wasm/) || path.match(/Build.*\.data/) ) // also needed for the Build.data
         ) {
           request.responseType = 'arraybuffer';
         }

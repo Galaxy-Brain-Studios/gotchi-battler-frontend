@@ -80,6 +80,8 @@
         setError('Error loading player')
         return
       }
+      // Dev note: if this stops working only when Mirage is running,
+      // review server.js passthroughRequest to check the Build files are being properly matched
       window.createUnityInstance(canvas.value, config).then(unityInstance => {
         if (isStale()){ return }
         setLoaded()

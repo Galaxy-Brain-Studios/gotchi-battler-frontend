@@ -460,16 +460,25 @@
 
   function removeGotchiFromSlotsById (gotchiId) {
     let foundGotchiSlot = null
+    let foundGotchiSlotType = null
+    let foundGotchiSlotNumber = null
     for (const key in teamSlots.value) {
       const slots = teamSlots.value[key]
       for (let i = 0; i < slots.length; i++) {
         if (slots[i]?.gotchiId === gotchiId) {
           foundGotchiSlot = slots[i]
+          foundGotchiSlotType = key
+          foundGotchiSlotNumber = i + 1
           slots[i] = null
         }
       }
     }
-    return foundGotchiSlot
+    if (!foundGotchiSlot) { return null }
+    return {
+      slot: foundGotchiSlot,
+      type: foundGotchiSlotType,
+      slotNumber: foundGotchiSlotNumber
+    }
   }
 
   function removeGotchiFromSlot ({ type, slotNumber }) {
@@ -477,9 +486,9 @@
     teamSlots.value[type][slotNumber - 1] = null
   }
 
-  function addGotchiToSlot ({ gotchi, type, slotNumber, restoring }) {
+  function addGotchiToSlot ({ gotchi, type, slotNumber, restoring, isMoving }) {
     const duplicatesEnabled = enableDuplicates.value
-    // console.log('addGotchiToSlot', { type, slotNumber, gotchi, duplicatesEnabled, restoring })
+    // console.log('addGotchiToSlot', { type, slotNumber, gotchi, duplicatesEnabled, restoring, isMoving })
 
     // remove existing matching gotchi
     // (can do even if duplicates are enabled, as duplicates should still have unique ids in this team)
@@ -488,19 +497,31 @@
     // Provided gotchi object might include embedded special and/or item
     const { specialId: embeddedSpecialId, itemId: embeddedItemId, gotchi: gotchiObject } = deconstructEmbeddedGotchiFromSlot(gotchi)
 
+    // If we're moving a gotchi, and there was already a gotchi in the target slot, we want to swap it.
+    // The previous gotchi will move to the removed slot (where the moved gotchi is coming from).
+    // We'll move it as the last step, but save its details now
+    let previousEmbeddedGotchiInTarget = null
+    if (isMoving) {
+      const previousTargetSlotContents = teamSlots.value[type][slotNumber - 1]
+      if (previousTargetSlotContents?.gotchiId) {
+        previousEmbeddedGotchiInTarget = constructEmbeddedGotchiFromSlot(previousTargetSlotContents)
+      }
+    }
+
     // if duplicates are allowed, generate a new id for this gotchi, which will only be used on the frontend
     // (server will assign its own gotchi ids upon saving)
     // But if we're restoring a saved team, don't generate new IDs:
     // we can assume they will already be unique, and
     // we need to preserve the saved ids so the leader ID can be matched up.
-    if (duplicatesEnabled && !restoring ) {
+    // If we're moving a gotchi within the formation, we can also keep its id.
+    if (duplicatesEnabled && !restoring && !isMoving) {
       gotchiObject.id = generateUniqueGotchiId()
     }
 
     // Selected special:
     // - if only one is available to this gotchi, that takes priority
     // - if the provided gotchi has a specialId embedded that is valid, use that
-    // - if there was a selection in the just-removed slot reuse that ('move' gotchi)
+    // - if there was a selection in the just-removed slot reuse that (adding while duplicates are disabled = 'move' gotchi)
     // - otherwise unselected
     let specialId = null
     if (gotchi.availableSpecials?.length === 1) {
@@ -508,17 +529,20 @@
     } else {
       if (embeddedSpecialId && gotchi.availableSpecials.includes(embeddedSpecialId)) {
         specialId = embeddedSpecialId
-      } else if (removedSlot?.specialId) {
-        specialId = removedSlot.specialId
+      } else if (removedSlot?.slot.specialId) {
+        specialId = removedSlot.slot.specialId
       }
     }
 
     // Selected item:
     // - if the provided gotchi has a itemId embedded that is valid, use that
+    // - if there was a selection in the just-removed slot reuse that (adding while duplicates are disabled = 'move' gotchi)
+    // Let validity of this item be checked later, on display/save
     let itemId = null
     if (embeddedItemId) {
-      // Let validity of this item be checked later, on display/save
       itemId = embeddedItemId
+    } else if (removedSlot?.slot.itemId) {
+      itemId = removedSlot.slot.itemId
     }
 
     teamSlots.value[type][slotNumber - 1] = {
@@ -527,6 +551,22 @@
       itemId
     }
     addGotchiObjectToTeam(gotchiObject)
+
+    // Finally, if we're moving and there was a gotchi in the target, swap it back
+    if (isMoving && previousEmbeddedGotchiInTarget && removedSlot) {
+      // console.log('Moving gotchi, swap back gotchi in target slot', {
+      //   gotchi: previousEmbeddedGotchiInTarget,
+      //   type: removedSlot.type,
+      //   slotNumber: removedSlot.slotNumber,
+      //   isMoving: true
+      // })
+      addGotchiToSlot({
+        gotchi: previousEmbeddedGotchiInTarget,
+        type: removedSlot.type,
+        slotNumber: removedSlot.slotNumber,
+        isMoving: true
+      })
+    }
     // console.log({ teamSlots: teamSlots.value })
   }
 
@@ -554,8 +594,8 @@
     }
   )
 
-  function addItemToSlot ({ item, type, slotNumber, restoring }) {
-    // console.log('addItemToSlot', { type, slotNumber, item, restoring })
+  function addItemToSlot ({ item, type, slotNumber }) {
+    // console.log('addItemToSlot', { type, slotNumber, item })
     const slot = teamSlots.value[type][slotNumber - 1]
     if (!slot?.gotchiId) {
       console.error('cannot add item to empty slot', { type, slotNumber })
@@ -851,10 +891,9 @@
         (newTargetArray) => {
           if (newTargetArray.length) {
             // dropped a gotchi into this position
-            const gotchi = newTargetArray[0]
-            // console.log('handle dropped gotchi', { gotchi, rowKey, positionIndex })
-            // TODO Extra features:
-            // a) dragging within the formation to move a gotchi between slots
+            // If it comes from a move within the formation, it may have an extra IS_MOVING property which we extract here
+            const { IS_MOVING: isMoving, ...gotchi } = newTargetArray[0]
+            // console.log('handle dropped gotchi', { gotchi, rowKey, positionIndex, isMoving })
 
             // Determine the target slot corresponding to the row/position
             const { targetSlotType, targetSlotNumber } = findDroppedTargetSlot(rowKey, positionIndex)
@@ -863,9 +902,14 @@
               return
             }
             // add the dropped gotchi to the target slot
-            addGotchiToSlot({ gotchi, type: targetSlotType, slotNumber: targetSlotNumber })
+            addGotchiToSlot({ gotchi, type: targetSlotType, slotNumber: targetSlotNumber, isMoving })
             // now clear this target array
             row[positionIndex] = []
+
+            // and for moving gotchis, set dragging state to false
+            if (isMoving) {
+              isDraggingGotchi.value = false
+            }
           }
         }
       )
@@ -879,6 +923,44 @@
     }
   }
 
+  // Moving gotchis within the formation, between positions
+  // Source:
+  //   Each formation position has its own unique draggable list, which is either empty or contains a gotchi.
+  //   We derive these source lists based on the current formation state.
+  //   We also mark the embedded gotchis with IS_MOVING property for later.
+  // Target:
+  //   We use the already-defined draggable gotchi targets that are used for adding gotchis.
+  // Move:
+  //   The dragged gotchi contains the details of the gotchi already in the formation.
+  //   That includes any generated ID.
+  //   The drop target handler logic will detect the IS_MOVING property, and handle the move.
+  //   This includes removing the gotchi from its previous position, and swapping with any existing target gotchi.
+  // End:
+  //   The normal draggable @end event will not trigger for the source dragged gotchi.
+  //   This is because we remove that gotchi as part of the move, which means
+  //   its source list is emptied and the original component is gone.
+  //   So we need to end the drag (set isDraggingGotchi to false) in the drop target handler earlier.
+
+  const draggableGotchisInFormation = computed(() => {
+    // We want an array at each position, which will contain 0-1 gotchis, that acts as a draggable source list
+    const result = {}
+    for (const rowKey in teamFormation.value) {
+      const rowPositions = teamFormation.value[rowKey]
+      const rowPositionsForDraggable = rowPositions.map(embeddedGotchi => embeddedGotchi ? [{ ...embeddedGotchi, IS_MOVING: true }] : [])
+      result[rowKey] = rowPositionsForDraggable
+    }
+    // console.log('draggableGotchisInFormation', teamFormation.value, result)
+    return result
+  })
+
+  function onMoveGotchiFromFormation (event) {
+    // console.log('onMoveGotchiFromFormation', event, event.to.className)
+    // prevent dragging/moving between the draggable gotchi source lists, we only want them to go to the gotchi target list
+    if (event.to.classList.contains('create-team__gotchis-in-formation-draggable')){
+      return false
+    }
+    // console.log('onMoveGotchiFromFormation', event)
+  }
 
   // Moving items from available list to gotchis in the formation
 
@@ -1425,37 +1507,52 @@
                 </div>
               </template>
               <template #gotchi="{ gotchi, row, position }">
-                <GotchiInFormation
-                  :gotchi="gotchi"
-                  variant="small"
-                  withSpecialBadge
-                  withItemBadge
-                  :slotNumber="selectedFormationPattern[row][position - 1]"
-                  :isLeader="teamToDisplay.leader === gotchi.id"
-                  isRemovable
-                  isSelectable
-                  :warning="gotchi.availableSpecials?.length > 1 && !gotchi.specialId"
-                  @remove="removeGotchiFromSlot({ type: 'main', slotNumber: selectedFormationPattern[row][position - 1] })"
-                  @select="displayGotchiSlot = { type: 'main', slotNumber: selectedFormationPattern[row][position - 1] }"
+                <VueDraggable
+                  :list="draggableGotchisInFormation[row][position - 1]"
+                  item-key="id"
+                  :group="{ name: 'gotchis', pull: 'clone', put: false }"
+                  tag="div"
+                  class="create-team__gotchis-in-formation-draggable"
+                  ghost-class="create-team__gotchis-in-formation-draggable--ghost"
+                  chosen-class="create-team__gotchis-in-formation-draggable--chosen"
+                  drag-class="create-team__gotchis-in-formation-draggable--drag"
+                  :move="onMoveGotchiFromFormation"
+                  @start="isDraggingGotchi = true"
                 >
                   <template #item>
-                    <GotchiItemSlot
-                      :itemId="gotchi.itemId"
-                      :isOverBudget="overBudgetItemIds?.includes(gotchi.itemId)"
-                      @remove="removeItemFromSlot({ type: 'main', slotNumber: selectedFormationPattern[row][position - 1] })"
-                    />
+                    <GotchiInFormation
+                      :gotchi="gotchi"
+                      variant="small"
+                      withSpecialBadge
+                      withItemBadge
+                      :slotNumber="selectedFormationPattern[row][position - 1]"
+                      :isLeader="teamToDisplay.leader === gotchi.id"
+                      isRemovable
+                      isSelectable
+                      :warning="gotchi.availableSpecials?.length > 1 && !gotchi.specialId"
+                      @remove="removeGotchiFromSlot({ type: 'main', slotNumber: selectedFormationPattern[row][position - 1] })"
+                      @select="displayGotchiSlot = { type: 'main', slotNumber: selectedFormationPattern[row][position - 1] }"
+                    >
+                      <template #item>
+                        <GotchiItemSlot
+                          :itemId="gotchi.itemId"
+                          :isOverBudget="overBudgetItemIds?.includes(gotchi.itemId)"
+                          @remove="removeItemFromSlot({ type: 'main', slotNumber: selectedFormationPattern[row][position - 1] })"
+                        />
+                      </template>
+                      <template
+                        v-if="gotchi.availableSpecials?.length > 1"
+                        #special
+                      >
+                        <GotchiSpecialSelect
+                          v-model="teamSlots.main[selectedFormationPattern[row][position - 1] - 1].specialId"
+                          :availableSpecials="gotchi.availableSpecials"
+                          fullWidth
+                        />
+                      </template>
+                    </GotchiInFormation>
                   </template>
-                  <template
-                    v-if="gotchi.availableSpecials?.length > 1"
-                    #special
-                  >
-                    <GotchiSpecialSelect
-                      v-model="teamSlots.main[selectedFormationPattern[row][position - 1] - 1].specialId"
-                      :availableSpecials="gotchi.availableSpecials"
-                      fullWidth
-                    />
-                  </template>
-                </GotchiInFormation>
+                </VueDraggable>
                 <VueDraggable
                   v-model="draggableItemTargets[row][position - 1]"
                   item-key="id"
@@ -1503,36 +1600,51 @@
                 </div>
               </template>
               <template #gotchi="{ gotchi, position }">
-                <GotchiInFormation
-                  :gotchi="gotchi"
-                  variant="small"
-                  withSpecialBadge
-                  withItemBadge
-                  :slotNumber="`S${position}`"
-                  isRemovable
-                  isSelectable
-                  :warning="gotchi.availableSpecials?.length > 1 && !gotchi.specialId"
-                  @remove="removeGotchiFromSlot({ type: 'substitutes', slotNumber: position })"
-                  @select="displayGotchiSlot = { type: 'substitutes', slotNumber: position }"
+                <VueDraggable
+                  :list="draggableGotchisInFormation.substitutes[position - 1]"
+                  item-key="id"
+                  :group="{ name: 'gotchis', pull: 'clone', put: false }"
+                  tag="div"
+                  class="create-team__gotchis-in-formation-draggable"
+                  ghost-class="create-team__gotchis-in-formation-draggable--ghost"
+                  chosen-class="create-team__gotchis-in-formation-draggable--chosen"
+                  drag-class="create-team__gotchis-in-formation-draggable--drag"
+                  :move="onMoveGotchiFromFormation"
+                  @start="isDraggingGotchi = true"
                 >
                   <template #item>
-                    <GotchiItemSlot
-                      :itemId="gotchi.itemId"
-                      :isOverBudget="overBudgetItemIds?.includes(gotchi.itemId)"
-                      @remove="removeItemFromSlot({ type: 'substitutes', slotNumber: position })"
-                    />
+                    <GotchiInFormation
+                      :gotchi="gotchi"
+                      variant="small"
+                      withSpecialBadge
+                      withItemBadge
+                      :slotNumber="`S${position}`"
+                      isRemovable
+                      isSelectable
+                      :warning="gotchi.availableSpecials?.length > 1 && !gotchi.specialId"
+                      @remove="removeGotchiFromSlot({ type: 'substitutes', slotNumber: position })"
+                      @select="displayGotchiSlot = { type: 'substitutes', slotNumber: position }"
+                    >
+                      <template #item>
+                        <GotchiItemSlot
+                          :itemId="gotchi.itemId"
+                          :isOverBudget="overBudgetItemIds?.includes(gotchi.itemId)"
+                          @remove="removeItemFromSlot({ type: 'substitutes', slotNumber: position })"
+                        />
+                      </template>
+                      <template
+                        v-if="gotchi.availableSpecials?.length > 1"
+                        #special
+                      >
+                        <GotchiSpecialSelect
+                          v-model="teamSlots.substitutes[position - 1].specialId"
+                          :availableSpecials="gotchi.availableSpecials"
+                          fullWidth
+                        />
+                      </template>
+                    </GotchiInFormation>
                   </template>
-                  <template
-                    v-if="gotchi.availableSpecials?.length > 1"
-                    #special
-                  >
-                    <GotchiSpecialSelect
-                      v-model="teamSlots.substitutes[position - 1].specialId"
-                      :availableSpecials="gotchi.availableSpecials"
-                      fullWidth
-                    />
-                  </template>
-                </GotchiInFormation>
+                </VueDraggable>
                 <VueDraggable
                   v-model="draggableItemTargets.substitutes[position - 1]"
                   item-key="id"
@@ -1983,6 +2095,12 @@
     display: none;
   }
 
+  /* drag-and-drop styles (gotchi moving within formation) */
+  /* the item being dragged, preview in the target list before dropping */
+  .create-team__formation-position-gotchi-target .create-team__gotchis-in-formation-draggable--chosen :deep(.gotchi-in-formation__top-left-badges),
+  .create-team__formation-position-gotchi-target .create-team__gotchis-in-formation-draggable--chosen :deep(.gotchi-in-formation__remove-button) {
+    display: none;
+  }
 
   .create-team__items-results {
     --source-result-border-width: 2px;

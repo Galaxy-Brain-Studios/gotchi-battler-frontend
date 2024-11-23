@@ -82,7 +82,7 @@ export const useAccountStore = defineStore('account', () => {
         displayMessage,
         uri: origin,
         version: '1',
-        chainId: '1',
+        chainId: '137',
         nonce,
     });
     return message.prepareMessage();

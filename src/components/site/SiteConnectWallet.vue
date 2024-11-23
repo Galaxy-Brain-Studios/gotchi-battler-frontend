@@ -52,6 +52,7 @@
         <SiteIcon
           name="chevron-down"
           :width="0.625"
+          class="connect-wallet__open-menu"
         />
       </SiteButton>
       <template #popper="{ hide }">
@@ -86,16 +87,14 @@
             </button>
           </li>
         </SiteLinksMenuWhite>
-        <div class="connect-wallet__status-info">
-          <template v-if="signedSession">
-            You're securely signed-in and can access private content for your account.
-          </template>
-          <template v-else>
-            You've connected your wallet, but are not securely signed-in.
-            <div style="margin-top: 0.7rem">
-              <SiteSignIn small />
-            </div>
-          </template>
+        <div
+          v-if="!signedSession"
+          class="connect-wallet__status-info"
+        >
+          You've connected your wallet, but are not securely signed-in.
+          <div style="margin-top: 0.7rem">
+            <SiteSignIn small />
+          </div>
         </div>
       </template>
     </SitePopupDropdown>
@@ -105,6 +104,7 @@
 <style scoped>
   .connect-wallet__icon {
     flex: none;
+    margin-left: 0.5rem;
   }
   .connect-wallet__status-info {
     max-width: 300px;
@@ -116,9 +116,9 @@
   }
 
   .connect-wallet__labels {
-    /* avoid growing the button height */
-    margin-top: -0.75rem;
-    margin-bottom: -0.75rem;
+    /* avoid growing the button height too much */
+    margin-top: -0.25rem;
+    margin-bottom: -0.25rem;
     margin-left: 0.1rem;
     text-align: left;
   }
@@ -127,5 +127,9 @@
     line-height: 1.25rem;
     opacity: 0.7;
     text-transform: none;
+  }
+
+  .connect-wallet__open-menu {
+    margin-right: 0.5rem;
   }
 </style>

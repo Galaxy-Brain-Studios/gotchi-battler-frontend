@@ -51,7 +51,7 @@ const urls = {
   sessionNonce: () => `${BASE_URL}/api/v1/auth/nonce`,
   sessionLogin: () => `${BASE_URL}/api/v1/auth/login`,
   sessionLogout: () => `${BASE_URL}/api/v1/auth/logout`,
-  sessionUser: () => `${BASE_URL}/api/v1/me`,
+  sessionUser: () => `${BASE_URL}/api/v1/me/check`,
   shopItems: () => `${BASE_URL}/api/v1/items`
 }
 

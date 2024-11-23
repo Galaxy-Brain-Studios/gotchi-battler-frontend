@@ -1,6 +1,7 @@
 <script setup>
   import { computed } from 'vue'
   import SiteIcon from '../common/SiteIcon.vue'
+  import ItemImage from '../item/ItemImage.vue'
 
   const props = defineProps({
     team: {
@@ -60,6 +61,20 @@
               '--special-color-background': `var(--c-special-${gotchi.specialId})`
             }"
           />
+          <ItemImage
+            v-if="gotchi.item"
+            :imageUrl="gotchi.item.image"
+            :rarity="gotchi.item.rarity"
+            :imageSize="1.25"
+            :paddingY="0.05"
+            :paddingX="0"
+            class="saved-team-formation__position-item"
+          />
+          <div
+            v-else
+            class="saved-team-formation__position-item-empty"
+          >
+          </div>
         </template>
       </div>
     </div>
@@ -70,16 +85,20 @@
   .saved-team-formation__row {
     display: flex;
   }
+  /* offset height of second row */
+  .saved-team-formation__row:nth-child(2) {
+    margin-top: -3.125rem;
+  }
   .saved-team-formation__position {
     --position-border-width: 2px;
     --position-border-color: transparent;
     border: var(--position-border-width) solid var(--position-border-color);
     position: relative;
     flex: none;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 3.125rem;
+    height: 4.375rem;
     display: grid;
-    place-items: center;
+    grid-template-rows: auto auto minmax(0, 1fr);
   }
   .saved-team-formation__position--occupied {
     --position-border-color: var(--c-black);
@@ -90,11 +109,13 @@
     filter: grayscale(100%);
   }
   .saved-team-formation__position-image {
-    height: 2rem;
-    width: 2rem;
+    height: 2.5rem;
+    width: 100%;
+    padding: 0.125rem;
     background-image: var(--image-url);
+    background-origin: content-box;
     background-position: center;
-    background-size: cover;
+    background-size: contain;
     background-repeat: no-repeat;
   }
   .saved-team-formation__position-leader-badge-icon {
@@ -105,11 +126,15 @@
     background: var(--c-black);
   }
   .saved-team-formation__position-special {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: calc(0% - var(--position-border-width));
-    height: var(--position-border-width);
+    width: 100%;
+    height: 0.25rem;
     background: var(--special-color-background, transparent);
+  }
+  .saved-team-formation__position-item-empty {
+    margin: 0.7rem auto 0 auto;
+    width: 0.75rem;
+    height: 2px;
+    background: var(--c-white);
+    opacity: 0.25;
   }
 </style>

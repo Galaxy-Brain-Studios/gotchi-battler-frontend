@@ -627,7 +627,8 @@
             "owner": "0x05EBFf07711A5B6042c27FDaa683a5c6D55b6684",
             "leader": 2000004,
             "back1": 2000008,
-            "back1Gotchi": {
+            "back1Gotchi":
+            {
                 "id": 2000008,
                 "name": "Bear Market",
                 "speed": 10,
@@ -669,7 +670,8 @@
             },
             "back2Gotchi": null,
             "back3": 2000004,
-            "back3Gotchi": {
+            "back3Gotchi":
+            {
                 "id": 2000004,
                 "name": "VIDRUT",
                 "speed": 146,
@@ -711,7 +713,8 @@
             },
             "back4Gotchi": null,
             "back5": 2000009,
-            "back5Gotchi": {
+            "back5Gotchi":
+            {
                 "id": 2000009,
                 "name": "Hopkirk",
                 "speed": 50,
@@ -753,7 +756,8 @@
             },
             "front1Gotchi": null,
             "front2": 2000010,
-            "front2Gotchi": {
+            "front2Gotchi":
+            {
                 "id": 2000010,
                 "name": "VIDRUT",
                 "speed": 146,
@@ -795,7 +799,8 @@
             },
             "front3Gotchi": null,
             "front4": 2000006,
-            "front4Gotchi": {
+            "front4Gotchi":
+            {
                 "id": 2000006,
                 "name": "Moaning Myrtle",
                 "speed": 50,
@@ -845,7 +850,8 @@
             "owner": "0x05EBFf07711A5B6042c27FDaa683a5c6D55b6684",
             "leader": 2000001,
             "back1": 2000003,
-            "back1Gotchi": {
+            "back1Gotchi":
+            {
                 "id": 2000003,
                 "name": "Rare Training Gotchi",
                 "speed": 149,
@@ -886,7 +892,8 @@
                 "xp": 820
             },
             "back2": 2000002,
-            "back2Gotchi": {
+            "back2Gotchi":
+            {
                 "id": 2000002,
                 "name": "Rare Training Gotchi",
                 "speed": 149,
@@ -928,7 +935,8 @@
             },
             "back3Gotchi": null,
             "back4": 2000005,
-            "back4Gotchi": {
+            "back4Gotchi":
+            {
                 "id": 2000005,
                 "name": "Rare Training Gotchi",
                 "speed": 163,
@@ -969,7 +977,8 @@
                 "xp": 820
             },
             "back5": 2000004,
-            "back5Gotchi": {
+            "back5Gotchi":
+            {
                 "id": 2000004,
                 "name": "Rare Training Gotchi",
                 "speed": 163,
@@ -1012,7 +1021,8 @@
             "front1Gotchi": null,
             "front2Gotchi": null,
             "front3": 2000001,
-            "front3Gotchi": {
+            "front3Gotchi":
+            {
                 "id": 2000001,
                 "name": "Obi Wan Kenobi",
                 "speed": 50,
@@ -1068,7 +1078,8 @@
             "back4Gotchi": null,
             "back5Gotchi": null,
             "front1": 2000011,
-            "front1Gotchi": {
+            "front1Gotchi":
+            {
                 "id": 2000011,
                 "name": "Common Training Gotchi",
                 "speed": 147,
@@ -1109,7 +1120,8 @@
                 "xp": 820
             },
             "front2": 2000012,
-            "front2Gotchi": {
+            "front2Gotchi":
+            {
                 "id": 2000012,
                 "name": "Rare Training Gotchi",
                 "speed": 149,
@@ -1150,7 +1162,8 @@
                 "xp": 820
             },
             "front3": 2000013,
-            "front3Gotchi": {
+            "front3Gotchi":
+            {
                 "id": 2000013,
                 "name": "Mythical Training Gotchi",
                 "speed": 151,
@@ -1191,7 +1204,8 @@
                 "xp": 820
             },
             "front4": 2000014,
-            "front4Gotchi": {
+            "front4Gotchi":
+            {
                 "id": 2000014,
                 "name": "Legendary Training Gotchi",
                 "speed": 150,
@@ -1232,7 +1246,8 @@
                 "xp": 820
             },
             "front5": 2000015,
-            "front5Gotchi": {
+            "front5Gotchi":
+            {
                 "id": 2000015,
                 "name": "Godlike Training Gotchi",
                 "speed": 173,
@@ -1286,7 +1301,8 @@
             "back4Gotchi": null,
             "back5Gotchi": null,
             "front1": 2000002,
-            "front1Gotchi": {
+            "front1Gotchi":
+            {
                 "id": 2000002,
                 "name": "",
                 "speed": 50,
@@ -1327,7 +1343,8 @@
                 "xp": 5000
             },
             "front2": 2000005,
-            "front2Gotchi": {
+            "front2Gotchi":
+            {
                 "id": 2000005,
                 "name": "Orko",
                 "speed": 146,
@@ -1368,7 +1385,8 @@
                 "xp": 820
             },
             "front3": 2000007,
-            "front3Gotchi": {
+            "front3Gotchi":
+            {
                 "id": 2000007,
                 "name": "Lead",
                 "speed": 10,
@@ -1409,7 +1427,8 @@
                 "xp": 100
             },
             "front4": 2000001,
-            "front4Gotchi": {
+            "front4Gotchi":
+            {
                 "id": 2000001,
                 "name": "Hopkirk",
                 "speed": 50,
@@ -1450,7 +1469,8 @@
                 "xp": 5000
             },
             "front5": 2000003,
-            "front5Gotchi": {
+            "front5Gotchi":
+            {
                 "id": 2000003,
                 "name": "Peeves",
                 "speed": 50,
@@ -1504,7 +1524,8 @@
             "back4Gotchi": null,
             "back5Gotchi": null,
             "front1": 2000001,
-            "front1Gotchi": {
+            "front1Gotchi":
+            {
                 "id": 2000001,
                 "name": "Orko",
                 "speed": 146,
@@ -1545,7 +1566,8 @@
                 "xp": 820
             },
             "front2": 2000002,
-            "front2Gotchi": {
+            "front2Gotchi":
+            {
                 "id": 2000002,
                 "name": "Peeves",
                 "speed": 100,
@@ -1586,7 +1608,8 @@
                 "xp": 5000
             },
             "front3": 2000003,
-            "front3Gotchi": {
+            "front3Gotchi":
+            {
                 "id": 2000003,
                 "name": "Defiant",
                 "speed": 146,
@@ -1627,7 +1650,8 @@
                 "xp": 820
             },
             "front4": 2000004,
-            "front4Gotchi": {
+            "front4Gotchi":
+            {
                 "id": 2000004,
                 "name": "Bear Market",
                 "speed": 10,
@@ -1668,7 +1692,8 @@
                 "xp": 100
             },
             "front5": 2000005,
-            "front5Gotchi": {
+            "front5Gotchi":
+            {
                 "id": 2000005,
                 "name": "Lead",
                 "speed": 10,
@@ -1717,7 +1742,8 @@
             "owner": "0x05EBFf07711A5B6042c27FDaa683a5c6D55b6684",
             "leader": 2000007,
             "back1": 2000002,
-            "back1Gotchi": {
+            "back1Gotchi":
+            {
                 "id": 2000002,
                 "name": "",
                 "speed": 50,
@@ -1734,13 +1760,24 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g6_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g6_right.svg",
                 "specialId": 6,
-                "special": {
+                "special":
+                {
                     "id": 6,
                     "name": "Blessing",
                     "cooldown": 0,
                     "leaderPassive": "Cleansing Aura"
                 },
                 "onchainId": 232,
+                "brs": 500,
+                "nrg": 50,
+                "agg": 50,
+                "spk": 50,
+                "brn": 50,
+                "eyc": 50,
+                "eys": 50,
+                "kinship": 5000,
+                "xp": 5000,
+                "itemId": 4,
                 "hauntId": 2,
                 "collateralType": "Dai",
                 "eyeShape": "UncommonLow1",
@@ -1752,21 +1789,12 @@
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
                 "wearablePet": 0,
-                "brs": 500,
-                "nrg": 50,
-                "agg": 50,
-                "spk": 50,
-                "brn": 50,
-                "eyc": 50,
-                "eys": 50,
-                "kinship": 5000,
-                "xp": 5000,
-                "itemId": 4,
-                "item": {
+                "item":
+                {
                     "id": 4,
                     "name": "Health +",
                     "description": "Increase health by +50",
-                    "image": "/media/10k.png",
+                    "image": "/media/items/HealthCommon256.png",
                     "rarity": "common",
                     "cost": 12.5,
                     "stat": "health",
@@ -1775,7 +1803,8 @@
             },
             "back2Gotchi": null,
             "back3": 2000007,
-            "back3Gotchi": {
+            "back3Gotchi":
+            {
                 "id": 2000007,
                 "name": "Lead",
                 "speed": 10,
@@ -1792,13 +1821,24 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g10_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g10_right.svg",
                 "specialId": 7,
-                "special": {
+                "special":
+                {
                     "id": 7,
                     "name": "Thunder",
                     "cooldown": 2,
                     "leaderPassive": "Channel the Coven"
                 },
                 "onchainId": 231,
+                "brs": 540,
+                "nrg": -1,
+                "agg": 0,
+                "spk": 1,
+                "brn": 99,
+                "eyc": 101,
+                "eys": 100,
+                "kinship": 1000,
+                "xp": 100,
+                "itemId": 8,
                 "hauntId": 2,
                 "collateralType": "Dai",
                 "eyeShape": "UncommonLow1",
@@ -1810,30 +1850,22 @@
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
                 "wearablePet": 0,
-                "brs": 540,
-                "nrg": -1,
-                "agg": 0,
-                "spk": 1,
-                "brn": 99,
-                "eyc": 101,
-                "eys": 100,
-                "kinship": 1000,
-                "xp": 100,
-                "itemId": 8,
-                "item": {
+                "item":
+                {
                     "id": 8,
                     "name": "Critical ++",
                     "description": "Increase critical by +6",
-                    "image": "/media/30k.png",
-                    "rarity": "uncommon",
+                    "image": "/media/items/CriticalRare256.png",
+                    "rarity": "rare",
                     "cost": 3,
-                    "stat": "critical",
+                    "stat": "crit",
                     "statValue": 6
                 }
             },
             "back4Gotchi": null,
             "back5": 2000003,
-            "back5Gotchi": {
+            "back5Gotchi":
+            {
                 "id": 2000003,
                 "name": "Peeves",
                 "speed": 50,
@@ -1850,13 +1882,24 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g8_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g8_right.svg",
                 "specialId": 8,
-                "special": {
+                "special":
+                {
                     "id": 8,
                     "name": "Devastating Smash",
                     "cooldown": 2,
                     "leaderPassive": "Clan Momentum"
                 },
                 "onchainId": 8,
+                "brs": 500,
+                "nrg": 50,
+                "agg": 50,
+                "spk": 50,
+                "brn": 50,
+                "eyc": 50,
+                "eys": 50,
+                "kinship": 5000,
+                "xp": 5000,
+                "itemId": 24,
                 "hauntId": 2,
                 "collateralType": "Dai",
                 "eyeShape": "UncommonLow1",
@@ -1868,22 +1911,13 @@
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
                 "wearablePet": 0,
-                "brs": 500,
-                "nrg": 50,
-                "agg": 50,
-                "spk": 50,
-                "brn": 50,
-                "eyc": 50,
-                "eys": 50,
-                "kinship": 5000,
-                "xp": 5000,
-                "itemId": 24,
-                "item": {
+                "item":
+                {
                     "id": 24,
                     "name": "Physical +++",
                     "description": "Increase physical by +30",
-                    "image": "/media/60k.png",
-                    "rarity": "rare",
+                    "image": "/media/items/PhysicalMythical256.png",
+                    "rarity": "mythical",
                     "cost": 30,
                     "stat": "physical",
                     "statValue": 30
@@ -1891,7 +1925,8 @@
             },
             "front1Gotchi": null,
             "front2": 2000005,
-            "front2Gotchi": {
+            "front2Gotchi":
+            {
                 "id": 2000005,
                 "name": "Orko",
                 "speed": 146,
@@ -1908,13 +1943,24 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g5_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g5_right.svg",
                 "specialId": 5,
-                "special": {
+                "special":
+                {
                     "id": 5,
                     "name": "Curse",
                     "cooldown": 0,
                     "leaderPassive": "Spread the Fear"
                 },
                 "onchainId": 5,
+                "brs": 520,
+                "nrg": 4,
+                "agg": 8,
+                "spk": 15,
+                "brn": 16,
+                "eyc": 42,
+                "eys": 23,
+                "kinship": 1000,
+                "xp": 820,
+                "itemId": 10,
                 "hauntId": 2,
                 "collateralType": "Dai",
                 "eyeShape": "UncommonLow1",
@@ -1926,21 +1972,12 @@
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
                 "wearablePet": 0,
-                "brs": 520,
-                "nrg": 4,
-                "agg": 8,
-                "spk": 15,
-                "brn": 16,
-                "eyc": 42,
-                "eys": 23,
-                "kinship": 1000,
-                "xp": 820,
-                "itemId": 10,
-                "item": {
+                "item":
+                {
                     "id": 10,
                     "name": "Armor +",
                     "description": "Increase armor by +10",
-                    "image": "/media/10k.png",
+                    "image": "/media/items/ArmourCommon256.png",
                     "rarity": "common",
                     "cost": 2.5,
                     "stat": "armor",
@@ -1949,7 +1986,8 @@
             },
             "front3Gotchi": null,
             "front4": 2000001,
-            "front4Gotchi": {
+            "front4Gotchi":
+            {
                 "id": 2000001,
                 "name": "Hopkirk",
                 "speed": 50,
@@ -1966,13 +2004,24 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g10_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g10_right.svg",
                 "specialId": 2,
-                "special": {
+                "special":
+                {
                     "id": 2,
                     "name": "Meditate",
                     "cooldown": 0,
                     "leaderPassive": "Cloud of Zen"
                 },
                 "onchainId": 10,
+                "brs": 500,
+                "nrg": 50,
+                "agg": 50,
+                "spk": 50,
+                "brn": 50,
+                "eyc": 50,
+                "eys": 50,
+                "kinship": 5000,
+                "xp": 5000,
+                "itemId": 11,
                 "hauntId": 2,
                 "collateralType": "Dai",
                 "eyeShape": "UncommonLow1",
@@ -1984,22 +2033,13 @@
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
                 "wearablePet": 0,
-                "brs": 500,
-                "nrg": 50,
-                "agg": 50,
-                "spk": 50,
-                "brn": 50,
-                "eyc": 50,
-                "eys": 50,
-                "kinship": 5000,
-                "xp": 5000,
-                "itemId": 11,
-                "item": {
+                "item":
+                {
                     "id": 11,
                     "name": "Armor ++",
                     "description": "Increase armor by +20",
-                    "image": "/media/30k.png",
-                    "rarity": "uncommon",
+                    "image": "/media/items/ArmourRare256.png",
+                    "rarity": "rare",
                     "cost": 10,
                     "stat": "armor",
                     "statValue": 20
@@ -2015,7 +2055,8 @@
             "owner": "0x05EBFf07711A5B6042c27FDaa683a5c6D55b6684",
             "leader": 2000007,
             "back1": 2000002,
-            "back1Gotchi": {
+            "back1Gotchi":
+            {
                 "id": 2000002,
                 "name": "",
                 "speed": 50,
@@ -2032,13 +2073,24 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g6_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g6_right.svg",
                 "specialId": 6,
-                "special": {
+                "special":
+                {
                     "id": 6,
                     "name": "Blessing",
                     "cooldown": 0,
                     "leaderPassive": "Cleansing Aura"
                 },
                 "onchainId": 232,
+                "brs": 500,
+                "nrg": 50,
+                "agg": 50,
+                "spk": 50,
+                "brn": 50,
+                "eyc": 50,
+                "eys": 50,
+                "kinship": 5000,
+                "xp": 5000,
+                "itemId": 4,
                 "hauntId": 2,
                 "collateralType": "Dai",
                 "eyeShape": "UncommonLow1",
@@ -2050,21 +2102,12 @@
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
                 "wearablePet": 0,
-                "brs": 500,
-                "nrg": 50,
-                "agg": 50,
-                "spk": 50,
-                "brn": 50,
-                "eyc": 50,
-                "eys": 50,
-                "kinship": 5000,
-                "xp": 5000,
-                "itemId": 4,
-                "item": {
+                "item":
+                {
                     "id": 4,
                     "name": "Health +",
                     "description": "Increase health by +50",
-                    "image": "/media/10k.png",
+                    "image": "/media/items/HealthCommon256.png",
                     "rarity": "common",
                     "cost": 12.5,
                     "stat": "health",
@@ -2073,7 +2116,8 @@
             },
             "back2Gotchi": null,
             "back3": 2000007,
-            "back3Gotchi": {
+            "back3Gotchi":
+            {
                 "id": 2000007,
                 "name": "Lead",
                 "speed": 10,
@@ -2090,13 +2134,24 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g10_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g10_right.svg",
                 "specialId": 7,
-                "special": {
+                "special":
+                {
                     "id": 7,
                     "name": "Thunder",
                     "cooldown": 2,
                     "leaderPassive": "Channel the Coven"
                 },
                 "onchainId": 231,
+                "brs": 540,
+                "nrg": -1,
+                "agg": 0,
+                "spk": 1,
+                "brn": 99,
+                "eyc": 101,
+                "eys": 100,
+                "kinship": 1000,
+                "xp": 100,
+                "itemId": 9001,
                 "hauntId": 2,
                 "collateralType": "Dai",
                 "eyeShape": "UncommonLow1",
@@ -2108,21 +2163,12 @@
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
                 "wearablePet": 0,
-                "brs": 540,
-                "nrg": -1,
-                "agg": 0,
-                "spk": 1,
-                "brn": 99,
-                "eyc": 101,
-                "eys": 100,
-                "kinship": 1000,
-                "xp": 100,
-                "itemId": 9001,
-                "item": {
+                "item":
+                {
                     "id": 9001,
                     "name": "Speed Hack",
                     "description": "Increase speed by too much",
-                    "image": "/media/30k.png",
+                    "image": "/media/items/SpeedHack256.png",
                     "rarity": "rare",
                     "cost": 3,
                     "stat": "speed",
@@ -2131,7 +2177,8 @@
             },
             "back4Gotchi": null,
             "back5": 2000003,
-            "back5Gotchi": {
+            "back5Gotchi":
+            {
                 "id": 2000003,
                 "name": "Peeves",
                 "speed": 50,
@@ -2148,13 +2195,24 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g8_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g8_right.svg",
                 "specialId": 8,
-                "special": {
+                "special":
+                {
                     "id": 8,
                     "name": "Devastating Smash",
                     "cooldown": 2,
                     "leaderPassive": "Clan Momentum"
                 },
                 "onchainId": 8,
+                "brs": 500,
+                "nrg": 50,
+                "agg": 50,
+                "spk": 50,
+                "brn": 50,
+                "eyc": 50,
+                "eys": 50,
+                "kinship": 5000,
+                "xp": 5000,
+                "itemId": 24,
                 "hauntId": 2,
                 "collateralType": "Dai",
                 "eyeShape": "UncommonLow1",
@@ -2166,22 +2224,13 @@
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
                 "wearablePet": 0,
-                "brs": 500,
-                "nrg": 50,
-                "agg": 50,
-                "spk": 50,
-                "brn": 50,
-                "eyc": 50,
-                "eys": 50,
-                "kinship": 5000,
-                "xp": 5000,
-                "itemId": 24,
-                "item": {
+                "item":
+                {
                     "id": 24,
                     "name": "Physical +++",
                     "description": "Increase physical by +30",
-                    "image": "/media/60k.png",
-                    "rarity": "rare",
+                    "image": "/media/items/PhysicalMythical256.png",
+                    "rarity": "mythical",
                     "cost": 30,
                     "stat": "physical",
                     "statValue": 30
@@ -2189,7 +2238,8 @@
             },
             "front1Gotchi": null,
             "front2": 2000005,
-            "front2Gotchi": {
+            "front2Gotchi":
+            {
                 "id": 2000005,
                 "name": "Orko",
                 "speed": 146,
@@ -2206,13 +2256,24 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g5_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g5_right.svg",
                 "specialId": 5,
-                "special": {
+                "special":
+                {
                     "id": 5,
                     "name": "Curse",
                     "cooldown": 0,
                     "leaderPassive": "Spread the Fear"
                 },
                 "onchainId": 5,
+                "brs": 520,
+                "nrg": 4,
+                "agg": 8,
+                "spk": 15,
+                "brn": 16,
+                "eyc": 42,
+                "eys": 23,
+                "kinship": 1000,
+                "xp": 820,
+                "itemId": 10,
                 "hauntId": 2,
                 "collateralType": "Dai",
                 "eyeShape": "UncommonLow1",
@@ -2224,21 +2285,12 @@
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
                 "wearablePet": 0,
-                "brs": 520,
-                "nrg": 4,
-                "agg": 8,
-                "spk": 15,
-                "brn": 16,
-                "eyc": 42,
-                "eys": 23,
-                "kinship": 1000,
-                "xp": 820,
-                "itemId": 10,
-                "item": {
+                "item":
+                {
                     "id": 10,
                     "name": "Armor +",
                     "description": "Increase armor by +10",
-                    "image": "/media/10k.png",
+                    "image": "/media/items/ArmourCommon256.png",
                     "rarity": "common",
                     "cost": 2.5,
                     "stat": "armor",
@@ -2247,7 +2299,8 @@
             },
             "front3Gotchi": null,
             "front4": 2000001,
-            "front4Gotchi": {
+            "front4Gotchi":
+            {
                 "id": 2000001,
                 "name": "Hopkirk",
                 "speed": 50,
@@ -2264,13 +2317,24 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g10_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g10_right.svg",
                 "specialId": 2,
-                "special": {
+                "special":
+                {
                     "id": 2,
                     "name": "Meditate",
                     "cooldown": 0,
                     "leaderPassive": "Cloud of Zen"
                 },
                 "onchainId": 10,
+                "brs": 500,
+                "nrg": 50,
+                "agg": 50,
+                "spk": 50,
+                "brn": 50,
+                "eyc": 50,
+                "eys": 50,
+                "kinship": 5000,
+                "xp": 5000,
+                "itemId": 11,
                 "hauntId": 2,
                 "collateralType": "Dai",
                 "eyeShape": "UncommonLow1",
@@ -2282,22 +2346,13 @@
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
                 "wearablePet": 0,
-                "brs": 500,
-                "nrg": 50,
-                "agg": 50,
-                "spk": 50,
-                "brn": 50,
-                "eyc": 50,
-                "eys": 50,
-                "kinship": 5000,
-                "xp": 5000,
-                "itemId": 11,
-                "item": {
+                "item":
+                {
                     "id": 11,
                     "name": "Armor ++",
                     "description": "Increase armor by +20",
-                    "image": "/media/30k.png",
-                    "rarity": "uncommon",
+                    "image": "/media/items/ArmourRare256.png",
+                    "rarity": "rare",
                     "cost": 10,
                     "stat": "armor",
                     "statValue": 20
@@ -2313,7 +2368,8 @@
             "owner": "0x05EBFf07711A5B6042c27FDaa683a5c6D55b6684",
             "leader": 9,
             "back1": 10,
-            "back1Gotchi": {
+            "back1Gotchi":
+            {
                 "id": 10,
                 "name": "Hopkirk",
                 "speed": 50,
@@ -2330,13 +2386,24 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g10_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g10_right.svg",
                 "specialId": 2,
-                "special": {
+                "special":
+                {
                     "id": 2,
                     "name": "Meditate",
                     "cooldown": 0,
                     "leaderPassive": "Cloud of Zen"
                 },
                 "onchainId": 10,
+                "brs": 500,
+                "nrg": 50,
+                "agg": 50,
+                "spk": 50,
+                "brn": 50,
+                "eyc": 50,
+                "eys": 50,
+                "kinship": 5000,
+                "xp": 5000,
+                "itemId": 1,
                 "hauntId": 2,
                 "collateralType": "Dai",
                 "eyeShape": "UncommonLow1",
@@ -2348,21 +2415,12 @@
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
                 "wearablePet": 0,
-                "brs": 500,
-                "nrg": 50,
-                "agg": 50,
-                "spk": 50,
-                "brn": 50,
-                "eyc": 50,
-                "eys": 50,
-                "kinship": 5000,
-                "xp": 5000,
-                "itemId": 1,
-                "item": {
+                "item":
+                {
                     "id": 1,
                     "name": "Speed +",
                     "description": "Increase speed by +4",
-                    "image": "/media/10k.png",
+                    "image": "/media/items/SpeedCommon256.png",
                     "rarity": "common",
                     "cost": 1,
                     "stat": "speed",
@@ -2371,7 +2429,8 @@
             },
             "back2Gotchi": null,
             "back3": 9,
-            "back3Gotchi": {
+            "back3Gotchi":
+            {
                 "id": 9,
                 "name": "Obi Wan Kenobi",
                 "speed": 50,
@@ -2388,13 +2447,24 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g9_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g9_right.svg",
                 "specialId": 7,
-                "special": {
+                "special":
+                {
                     "id": 7,
                     "name": "Thunder",
                     "cooldown": 2,
                     "leaderPassive": "Channel the Coven"
                 },
                 "onchainId": 9,
+                "brs": 500,
+                "nrg": 50,
+                "agg": 50,
+                "spk": 50,
+                "brn": 50,
+                "eyc": 50,
+                "eys": 50,
+                "kinship": 5000,
+                "xp": 5000,
+                "itemId": 3,
                 "hauntId": 2,
                 "collateralType": "Dai",
                 "eyeShape": "UncommonLow1",
@@ -2406,22 +2476,13 @@
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
                 "wearablePet": 0,
-                "brs": 500,
-                "nrg": 50,
-                "agg": 50,
-                "spk": 50,
-                "brn": 50,
-                "eyc": 50,
-                "eys": 50,
-                "kinship": 5000,
-                "xp": 5000,
-                "itemId": 3,
-                "item": {
+                "item":
+                {
                     "id": 3,
                     "name": "Speed +++",
                     "description": "Increase speed by +8",
-                    "image": "/media/60k.png",
-                    "rarity": "rare",
+                    "image": "/media/items/SpeedMythical256.png",
+                    "rarity": "mythical",
                     "cost": 8,
                     "stat": "speed",
                     "statValue": 8
@@ -2429,7 +2490,8 @@
             },
             "back4Gotchi": null,
             "back5": 3,
-            "back5Gotchi": {
+            "back5Gotchi":
+            {
                 "id": 3,
                 "name": "TestingLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWord",
                 "speed": 0,
@@ -2446,13 +2508,24 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g3_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g3_right.svg",
                 "specialId": 2,
-                "special": {
+                "special":
+                {
                     "id": 2,
                     "name": "Meditate",
                     "cooldown": 0,
                     "leaderPassive": "Cloud of Zen"
                 },
                 "onchainId": 3,
+                "brs": 0,
+                "nrg": 0,
+                "agg": 0,
+                "spk": 0,
+                "brn": 0,
+                "eyc": 0,
+                "eys": 0,
+                "kinship": 0,
+                "xp": 0,
+                "itemId": 1,
                 "hauntId": 2,
                 "collateralType": "Dai",
                 "eyeShape": "UncommonLow1",
@@ -2464,21 +2537,12 @@
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
                 "wearablePet": 0,
-                "brs": 0,
-                "nrg": 0,
-                "agg": 0,
-                "spk": 0,
-                "brn": 0,
-                "eyc": 0,
-                "eys": 0,
-                "kinship": 0,
-                "xp": 0,
-                "itemId": 1,
-                "item": {
+                "item":
+                {
                     "id": 1,
                     "name": "Speed +",
                     "description": "Increase speed by +4",
-                    "image": "/media/10k.png",
+                    "image": "/media/items/SpeedCommon256.png",
                     "rarity": "common",
                     "cost": 1,
                     "stat": "speed",
@@ -2487,7 +2551,8 @@
             },
             "front1Gotchi": null,
             "front2": 1,
-            "front2Gotchi": {
+            "front2Gotchi":
+            {
                 "id": 1,
                 "name": "PolterGeist",
                 "speed": 146,
@@ -2504,13 +2569,24 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g1_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g1_right.svg",
                 "specialId": 4,
-                "special": {
+                "special":
+                {
                     "id": 4,
                     "name": "Taunt",
                     "cooldown": 0,
                     "leaderPassive": "Steel Counter"
                 },
                 "onchainId": 1,
+                "brs": 569,
+                "nrg": 21,
+                "agg": 79,
+                "spk": 88,
+                "brn": 76,
+                "eyc": 11,
+                "eys": 3,
+                "kinship": 829,
+                "xp": 820,
+                "itemId": 10,
                 "hauntId": 2,
                 "collateralType": "Dai",
                 "eyeShape": "UncommonLow1",
@@ -2522,21 +2598,12 @@
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
                 "wearablePet": 0,
-                "brs": 569,
-                "nrg": 21,
-                "agg": 79,
-                "spk": 88,
-                "brn": 76,
-                "eyc": 11,
-                "eys": 3,
-                "kinship": 829,
-                "xp": 820,
-                "itemId": 10,
-                "item": {
+                "item":
+                {
                     "id": 10,
                     "name": "Armor +",
                     "description": "Increase armor by +10",
-                    "image": "/media/10k.png",
+                    "image": "/media/items/ArmourCommon256.png",
                     "rarity": "common",
                     "cost": 2.5,
                     "stat": "armor",
@@ -2545,7 +2612,8 @@
             },
             "front3Gotchi": null,
             "front4": 230,
-            "front4Gotchi": {
+            "front4Gotchi":
+            {
                 "id": 230,
                 "name": "",
                 "speed": 146,
@@ -2562,13 +2630,24 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g2_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g2_right.svg",
                 "specialId": 4,
-                "special": {
+                "special":
+                {
                     "id": 4,
                     "name": "Taunt",
                     "cooldown": 0,
                     "leaderPassive": "Steel Counter"
                 },
                 "onchainId": 230,
+                "brs": 569,
+                "nrg": 21,
+                "agg": 79,
+                "spk": 88,
+                "brn": 76,
+                "eyc": 11,
+                "eys": 3,
+                "kinship": 829,
+                "xp": 820,
+                "itemId": 10,
                 "hauntId": 2,
                 "collateralType": "Dai",
                 "eyeShape": "UncommonLow1",
@@ -2580,21 +2659,12 @@
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
                 "wearablePet": 0,
-                "brs": 569,
-                "nrg": 21,
-                "agg": 79,
-                "spk": 88,
-                "brn": 76,
-                "eyc": 11,
-                "eys": 3,
-                "kinship": 829,
-                "xp": 820,
-                "itemId": 10,
-                "item": {
+                "item":
+                {
                     "id": 10,
                     "name": "Armor +",
                     "description": "Increase armor by +10",
-                    "image": "/media/10k.png",
+                    "image": "/media/items/ArmourCommon256.png",
                     "rarity": "common",
                     "cost": 2.5,
                     "stat": "armor",

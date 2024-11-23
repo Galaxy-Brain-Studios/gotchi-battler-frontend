@@ -19,14 +19,14 @@
     clickable: {
       type: Boolean,
       default: false
-    },
-    defaultSort: {
-      type: String,
-      default: null
     }
   })
 
   const sortOptions = [
+    {
+      id: 'id_asc',
+      label: 'Default'
+    },
     {
       id: 'raritySortable_asc',
       label: 'Rarity'
@@ -40,7 +40,7 @@
       label: 'Price (highest)'
     }
   ]
-  const sorting = ref(props.defaultSort || sortOptions[0].id)
+  const sorting = ref(sortOptions[0].id)
   const sortingProperty = computed(() => sorting.value.split('_')[0])
   const sortingDirection = computed(() => sorting.value.split('_')[1])
 

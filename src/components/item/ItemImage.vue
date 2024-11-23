@@ -7,6 +7,10 @@
     rarity: {
       type: String,
       required: true
+    },
+    imageSize: {
+      type: Number, // rem
+      default: null // defaults to 100%
     }
   })
 
@@ -19,6 +23,10 @@
     class="item-image-container"
     :class="{
       [`item-image-container--${rarity?.toLowerCase()}`]: !!rarity
+    }"
+    :style="{
+      '--item-image-width': (imageSize - 0) > 0 ? `${imageSize - 0}rem` : undefined,
+      '--item-justify-content': (imageSize - 0) > 0 ? 'center' : undefined,
     }"
   >
     <div
@@ -34,9 +42,11 @@
   .item-image-container {
     --item-background: var(--c-black);
     --item-padding: 1.5rem;
+    --item-image-width: 100%;
+    --item-justify-content: stretch;
 
     display: grid;
-    justify-content: stretch;
+    justify-content: var(--item-justify-content);
     padding: var(--item-padding);
     background: var(--item-background);
   }
@@ -60,7 +70,7 @@
   }
 
   .item-image {
-    width: 100%;
+    width: var(--item-image-width);
     aspect-ratio: 1;
     background-image: var(--image-url);
     background-position: center;

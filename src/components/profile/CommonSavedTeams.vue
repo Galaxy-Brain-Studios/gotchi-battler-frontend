@@ -115,7 +115,9 @@
                   return {
                     ...latestGotchi,
                     specialId,
-                    itemId: teamGotchi.itemId || null
+                    // copy any item across to the gotchi from the saved team (item not validated here)
+                    itemId: teamGotchi.itemId || null,
+                    item: teamGotchi.item || null
                   }
                 })
               ]

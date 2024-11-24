@@ -33,6 +33,7 @@
   import SourceGotchisTraining from './SourceGotchisTraining.vue'
   import SourceGotchisTeam from './SourceGotchisTeam.vue'
   import SourceSavedTeams from './SourceSavedTeams.vue'
+  import SourceTrainingTeams from './SourceTrainingTeams.vue'
   import SourceGotchisSearch from './SourceGotchisSearch.vue'
   import SourceItemsUnlimited from './SourceItemsUnlimited.vue'
   import SourceItemsMy from './SourceItemsMy.vue'
@@ -125,6 +126,7 @@
   const onlyTeamGotchisAllowed = computed(() => [EDIT_MODES.EDIT].includes(props.mode))
 
   const savedTeamsAvailable = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
+  const trainingTeamsAvailable = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
 
   const unlimitedItemsAvailable = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
   const myItemsAvailable = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.EDIT].includes(props.mode))
@@ -205,7 +207,7 @@
   }
   const SOURCE_TYPE_LABELS = {
     [SOURCE_TYPE.GOTCHI]: 'Gotchis',
-    [SOURCE_TYPE.TEAM]: 'Saved Teams',
+    [SOURCE_TYPE.TEAM]: 'Teams',
     [SOURCE_TYPE.ITEM]: 'Items'
   }
   const SOURCES_BY_TYPE = {
@@ -239,9 +241,15 @@
     [SOURCE_TYPE.TEAM]: [
       {
         id: 'savedteams',
-        label: 'Saved Teams',
+        label: 'My Saved Teams',
         component: SourceSavedTeams,
         props: { onlyMyGotchisAllowed: true, unavailableGotchiIds: true, savedTeamsLastChanged: true },
+        type: SOURCE_TYPE.TEAM
+      },
+      {
+        id: 'trainingteams',
+        label: 'Training Teams',
+        component: SourceTrainingTeams,
         type: SOURCE_TYPE.TEAM
       }
     ],
@@ -280,6 +288,9 @@
     }
     if (savedTeamsAvailable.value) {
       addSource('savedteams')
+    }
+    if (trainingTeamsAvailable.value) {
+      addSource('trainingteams')
     }
     if (searchGotchisAllowed.value) {
       addSource('searchgotchis')
@@ -1137,7 +1148,7 @@
             Team
           </h1>
         </div>
-        <section class="create-team__gotchis">
+        <section class="create-team__sources">
           <SiteButtonGroup
             v-if="availableSourceTypeTabs.length > 1"
             :numButtons="availableSourceTypeTabs.length"
@@ -1927,7 +1938,7 @@
     grid-row: 1 / 2;
   }
 
-  .create-team__gotchis {
+  .create-team__sources {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
     grid-template-rows: auto auto minmax(0, 1fr);
@@ -1936,7 +1947,7 @@
     align-items: center;
   }
   @media (max-width: 1299px) {
-    .create-team__gotchis {
+    .create-team__sources {
       max-height: 24rem;
     }
   }
@@ -1944,7 +1955,11 @@
     grid-column: 1 / 4;
     margin: 0 4px 1rem;
   }
-  .create-team__gotchis .create-team__section-label {
+  .create-team__sources .create-team__section-label {
+    margin-bottom: 0;
+  }
+  /* override margin on teams list header as we handle it in the grid layout */
+  :deep(.common-saved-teams-list__header) {
     margin-bottom: 0;
   }
   :deep(.create-team-source__search) {

@@ -46,3 +46,6 @@
     </template>
   </CommonSavedTeams>
 </template>
+
+<style scoped>
+</style>

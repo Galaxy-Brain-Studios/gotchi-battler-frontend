@@ -1760,13 +1760,6 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g6_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g6_right.svg",
                 "specialId": 6,
-                "special":
-                {
-                    "id": 6,
-                    "name": "Blessing",
-                    "cooldown": 0,
-                    "leaderPassive": "Cleansing Aura"
-                },
                 "onchainId": 232,
                 "brs": 500,
                 "nrg": 50,
@@ -1788,18 +1781,7 @@
                 "wearableHead": 0,
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
-                "wearablePet": 0,
-                "item":
-                {
-                    "id": 4,
-                    "name": "Health +",
-                    "description": "Increase health by +50",
-                    "image": "/media/items/HealthCommon256.png",
-                    "rarity": "common",
-                    "cost": 12.5,
-                    "stat": "health",
-                    "statValue": 50
-                }
+                "wearablePet": 0
             },
             "back2Gotchi": null,
             "back3": 2000007,
@@ -1821,13 +1803,6 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g10_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g10_right.svg",
                 "specialId": 7,
-                "special":
-                {
-                    "id": 7,
-                    "name": "Thunder",
-                    "cooldown": 2,
-                    "leaderPassive": "Channel the Coven"
-                },
                 "onchainId": 231,
                 "brs": 540,
                 "nrg": -1,
@@ -1849,18 +1824,7 @@
                 "wearableHead": 0,
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
-                "wearablePet": 0,
-                "item":
-                {
-                    "id": 8,
-                    "name": "Critical ++",
-                    "description": "Increase critical by +6",
-                    "image": "/media/items/CriticalRare256.png",
-                    "rarity": "rare",
-                    "cost": 3,
-                    "stat": "crit",
-                    "statValue": 6
-                }
+                "wearablePet": 0
             },
             "back4Gotchi": null,
             "back5": 2000003,
@@ -1882,13 +1846,6 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g8_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g8_right.svg",
                 "specialId": 8,
-                "special":
-                {
-                    "id": 8,
-                    "name": "Devastating Smash",
-                    "cooldown": 2,
-                    "leaderPassive": "Clan Momentum"
-                },
                 "onchainId": 8,
                 "brs": 500,
                 "nrg": 50,
@@ -1910,18 +1867,7 @@
                 "wearableHead": 0,
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
-                "wearablePet": 0,
-                "item":
-                {
-                    "id": 24,
-                    "name": "Physical +++",
-                    "description": "Increase physical by +30",
-                    "image": "/media/items/PhysicalMythical256.png",
-                    "rarity": "mythical",
-                    "cost": 30,
-                    "stat": "physical",
-                    "statValue": 30
-                }
+                "wearablePet": 0
             },
             "front1Gotchi": null,
             "front2": 2000005,
@@ -1943,13 +1889,6 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g5_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g5_right.svg",
                 "specialId": 5,
-                "special":
-                {
-                    "id": 5,
-                    "name": "Curse",
-                    "cooldown": 0,
-                    "leaderPassive": "Spread the Fear"
-                },
                 "onchainId": 5,
                 "brs": 520,
                 "nrg": 4,
@@ -1971,18 +1910,7 @@
                 "wearableHead": 0,
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
-                "wearablePet": 0,
-                "item":
-                {
-                    "id": 10,
-                    "name": "Armor +",
-                    "description": "Increase armor by +10",
-                    "image": "/media/items/ArmourCommon256.png",
-                    "rarity": "common",
-                    "cost": 2.5,
-                    "stat": "armor",
-                    "statValue": 10
-                }
+                "wearablePet": 0
             },
             "front3Gotchi": null,
             "front4": 2000001,
@@ -2004,13 +1932,6 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g10_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g10_right.svg",
                 "specialId": 2,
-                "special":
-                {
-                    "id": 2,
-                    "name": "Meditate",
-                    "cooldown": 0,
-                    "leaderPassive": "Cloud of Zen"
-                },
                 "onchainId": 10,
                 "brs": 500,
                 "nrg": 50,
@@ -2032,18 +1953,7 @@
                 "wearableHead": 0,
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
-                "wearablePet": 0,
-                "item":
-                {
-                    "id": 11,
-                    "name": "Armor ++",
-                    "description": "Increase armor by +20",
-                    "image": "/media/items/ArmourRare256.png",
-                    "rarity": "rare",
-                    "cost": 10,
-                    "stat": "armor",
-                    "statValue": 20
-                }
+                "wearablePet": 0
             },
             "front5Gotchi": null,
             "sub1Gotchi": null,
@@ -2073,13 +1983,6 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g6_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g6_right.svg",
                 "specialId": 6,
-                "special":
-                {
-                    "id": 6,
-                    "name": "Blessing",
-                    "cooldown": 0,
-                    "leaderPassive": "Cleansing Aura"
-                },
                 "onchainId": 232,
                 "brs": 500,
                 "nrg": 50,
@@ -2101,18 +2004,7 @@
                 "wearableHead": 0,
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
-                "wearablePet": 0,
-                "item":
-                {
-                    "id": 4,
-                    "name": "Health +",
-                    "description": "Increase health by +50",
-                    "image": "/media/items/HealthCommon256.png",
-                    "rarity": "common",
-                    "cost": 12.5,
-                    "stat": "health",
-                    "statValue": 50
-                }
+                "wearablePet": 0
             },
             "back2Gotchi": null,
             "back3": 2000007,
@@ -2134,13 +2026,6 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g10_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g10_right.svg",
                 "specialId": 7,
-                "special":
-                {
-                    "id": 7,
-                    "name": "Thunder",
-                    "cooldown": 2,
-                    "leaderPassive": "Channel the Coven"
-                },
                 "onchainId": 231,
                 "brs": 540,
                 "nrg": -1,
@@ -2162,18 +2047,7 @@
                 "wearableHead": 0,
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
-                "wearablePet": 0,
-                "item":
-                {
-                    "id": 9001,
-                    "name": "Speed Hack",
-                    "description": "Increase speed by too much",
-                    "image": "/media/items/SpeedHack256.png",
-                    "rarity": "rare",
-                    "cost": 3,
-                    "stat": "speed",
-                    "statValue": 9001
-                }
+                "wearablePet": 0
             },
             "back4Gotchi": null,
             "back5": 2000003,
@@ -2195,13 +2069,6 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g8_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g8_right.svg",
                 "specialId": 8,
-                "special":
-                {
-                    "id": 8,
-                    "name": "Devastating Smash",
-                    "cooldown": 2,
-                    "leaderPassive": "Clan Momentum"
-                },
                 "onchainId": 8,
                 "brs": 500,
                 "nrg": 50,
@@ -2223,18 +2090,7 @@
                 "wearableHead": 0,
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
-                "wearablePet": 0,
-                "item":
-                {
-                    "id": 24,
-                    "name": "Physical +++",
-                    "description": "Increase physical by +30",
-                    "image": "/media/items/PhysicalMythical256.png",
-                    "rarity": "mythical",
-                    "cost": 30,
-                    "stat": "physical",
-                    "statValue": 30
-                }
+                "wearablePet": 0
             },
             "front1Gotchi": null,
             "front2": 2000005,
@@ -2256,13 +2112,6 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g5_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g5_right.svg",
                 "specialId": 5,
-                "special":
-                {
-                    "id": 5,
-                    "name": "Curse",
-                    "cooldown": 0,
-                    "leaderPassive": "Spread the Fear"
-                },
                 "onchainId": 5,
                 "brs": 520,
                 "nrg": 4,
@@ -2284,18 +2133,7 @@
                 "wearableHead": 0,
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
-                "wearablePet": 0,
-                "item":
-                {
-                    "id": 10,
-                    "name": "Armor +",
-                    "description": "Increase armor by +10",
-                    "image": "/media/items/ArmourCommon256.png",
-                    "rarity": "common",
-                    "cost": 2.5,
-                    "stat": "armor",
-                    "statValue": 10
-                }
+                "wearablePet": 0
             },
             "front3Gotchi": null,
             "front4": 2000001,
@@ -2317,13 +2155,6 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g10_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g10_right.svg",
                 "specialId": 2,
-                "special":
-                {
-                    "id": 2,
-                    "name": "Meditate",
-                    "cooldown": 0,
-                    "leaderPassive": "Cloud of Zen"
-                },
                 "onchainId": 10,
                 "brs": 500,
                 "nrg": 50,
@@ -2345,18 +2176,7 @@
                 "wearableHead": 0,
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
-                "wearablePet": 0,
-                "item":
-                {
-                    "id": 11,
-                    "name": "Armor ++",
-                    "description": "Increase armor by +20",
-                    "image": "/media/items/ArmourRare256.png",
-                    "rarity": "rare",
-                    "cost": 10,
-                    "stat": "armor",
-                    "statValue": 20
-                }
+                "wearablePet": 0
             },
             "front5Gotchi": null,
             "sub1Gotchi": null,
@@ -2386,13 +2206,6 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g10_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g10_right.svg",
                 "specialId": 2,
-                "special":
-                {
-                    "id": 2,
-                    "name": "Meditate",
-                    "cooldown": 0,
-                    "leaderPassive": "Cloud of Zen"
-                },
                 "onchainId": 10,
                 "brs": 500,
                 "nrg": 50,
@@ -2414,18 +2227,7 @@
                 "wearableHead": 0,
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
-                "wearablePet": 0,
-                "item":
-                {
-                    "id": 1,
-                    "name": "Speed +",
-                    "description": "Increase speed by +4",
-                    "image": "/media/items/SpeedCommon256.png",
-                    "rarity": "common",
-                    "cost": 1,
-                    "stat": "speed",
-                    "statValue": 4
-                }
+                "wearablePet": 0
             },
             "back2Gotchi": null,
             "back3": 9,
@@ -2447,13 +2249,6 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g9_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g9_right.svg",
                 "specialId": 7,
-                "special":
-                {
-                    "id": 7,
-                    "name": "Thunder",
-                    "cooldown": 2,
-                    "leaderPassive": "Channel the Coven"
-                },
                 "onchainId": 9,
                 "brs": 500,
                 "nrg": 50,
@@ -2475,18 +2270,7 @@
                 "wearableHead": 0,
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
-                "wearablePet": 0,
-                "item":
-                {
-                    "id": 3,
-                    "name": "Speed +++",
-                    "description": "Increase speed by +8",
-                    "image": "/media/items/SpeedMythical256.png",
-                    "rarity": "mythical",
-                    "cost": 8,
-                    "stat": "speed",
-                    "statValue": 8
-                }
+                "wearablePet": 0
             },
             "back4Gotchi": null,
             "back5": 3,
@@ -2508,13 +2292,6 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g3_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g3_right.svg",
                 "specialId": 2,
-                "special":
-                {
-                    "id": 2,
-                    "name": "Meditate",
-                    "cooldown": 0,
-                    "leaderPassive": "Cloud of Zen"
-                },
                 "onchainId": 3,
                 "brs": 0,
                 "nrg": 0,
@@ -2536,18 +2313,7 @@
                 "wearableHead": 0,
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
-                "wearablePet": 0,
-                "item":
-                {
-                    "id": 1,
-                    "name": "Speed +",
-                    "description": "Increase speed by +4",
-                    "image": "/media/items/SpeedCommon256.png",
-                    "rarity": "common",
-                    "cost": 1,
-                    "stat": "speed",
-                    "statValue": 4
-                }
+                "wearablePet": 0
             },
             "front1Gotchi": null,
             "front2": 1,
@@ -2569,13 +2335,6 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g1_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g1_right.svg",
                 "specialId": 4,
-                "special":
-                {
-                    "id": 4,
-                    "name": "Taunt",
-                    "cooldown": 0,
-                    "leaderPassive": "Steel Counter"
-                },
                 "onchainId": 1,
                 "brs": 569,
                 "nrg": 21,
@@ -2597,18 +2356,7 @@
                 "wearableHead": 0,
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
-                "wearablePet": 0,
-                "item":
-                {
-                    "id": 10,
-                    "name": "Armor +",
-                    "description": "Increase armor by +10",
-                    "image": "/media/items/ArmourCommon256.png",
-                    "rarity": "common",
-                    "cost": 2.5,
-                    "stat": "armor",
-                    "statValue": 10
-                }
+                "wearablePet": 0
             },
             "front3Gotchi": null,
             "front4": 230,
@@ -2630,13 +2378,6 @@
                 "svgLeft": "http://localhost:5173/dev/gotchi_g2_left.svg",
                 "svgRight": "http://localhost:5173/dev/gotchi_g2_right.svg",
                 "specialId": 4,
-                "special":
-                {
-                    "id": 4,
-                    "name": "Taunt",
-                    "cooldown": 0,
-                    "leaderPassive": "Steel Counter"
-                },
                 "onchainId": 230,
                 "brs": 569,
                 "nrg": 21,
@@ -2658,18 +2399,7 @@
                 "wearableHead": 0,
                 "wearableHandLeft": 0,
                 "wearableHandRight": 0,
-                "wearablePet": 0,
-                "item":
-                {
-                    "id": 10,
-                    "name": "Armor +",
-                    "description": "Increase armor by +10",
-                    "image": "/media/items/ArmourCommon256.png",
-                    "rarity": "common",
-                    "cost": 2.5,
-                    "stat": "armor",
-                    "statValue": 10
-                }
+                "wearablePet": 0
             },
             "front5Gotchi": null,
             "sub1Gotchi": null,

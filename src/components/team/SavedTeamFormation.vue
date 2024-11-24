@@ -1,5 +1,6 @@
 <script setup>
   import { computed } from 'vue'
+  import useShop from '@/data/useShop'
   import SiteIcon from '../common/SiteIcon.vue'
   import ItemImage from '../item/ItemImage.vue'
 
@@ -14,11 +15,23 @@
     }
   })  
 
+  const { items, fetchItemsStatus } = useShop()
+
   const rows = computed(() => {
     return ['front', 'back'].map(row => {
       return [1, 2, 3, 4, 5].map(position => {
         const gotchi = props.team.formation[row][position - 1]
-        return gotchi || null
+        let gotchiWithItem = gotchi
+        // Look up the reported itemId in the available shop items
+        if (gotchi?.itemId && fetchItemsStatus.value.loaded && items.value) {
+          const item = items.value.find(item => item.id === gotchi.itemId)
+          gotchiWithItem = {
+            ...gotchi,
+            itemId: item?.id || null,
+            item: item || null
+          }
+        }
+        return gotchiWithItem || null
       })
     })
   })

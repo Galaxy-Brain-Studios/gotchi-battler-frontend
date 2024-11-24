@@ -1958,21 +1958,20 @@
   .create-team__sources .create-team__section-label {
     margin-bottom: 0;
   }
-  /* override margin on teams list header as we handle it in the grid layout */
-  :deep(.common-saved-teams-list__header) {
-    margin-bottom: 0;
+  /* lay out source elements within the grid */
+  .create-team__sources > :deep(.site-sign-in) {
+    grid-column: 1 / 4;
+    align-self: flex-start;
+    padding-top: 1rem;
   }
-  :deep(.create-team-source__search) {
-    max-width: 200px;
-  }
-  :deep(.create-team-source__connect-wallet) {
+  .create-team__sources > :deep(.create-team-source__connect-wallet) {
     grid-column: 1 / 4;
     padding-top: 1rem;
     align-self: flex-start;
     display: grid;
     place-items: center;
   }
-  :deep(.create-team-source__items-available) {
+  .create-team__sources > :deep(.create-team-source__items-available) {
     align-self: stretch;
     padding: 1rem;
     grid-column: 1 / 4;
@@ -1980,8 +1979,16 @@
     overflow-y: auto;
     background: rgba(var(--c-black-rgb), 0.25);
   }
-  :deep(.site-sign-in) {
-    grid-column: 1 / 4;
+  .create-team__sources > :deep(.common-saved-teams-list__header) {
+    margin-bottom: 0;
+  }
+  .create-team__sources > :deep( .common-saved-teams-list__empty) {
+    grid-column: 1/4;
+    align-self: flex-start;
+    padding: 0.5rem;
+  }
+  :deep(.create-team-source__search) {
+    max-width: 200px;
   }
   .create-team__gotchis-results {
     --source-result-border-width: 2px;

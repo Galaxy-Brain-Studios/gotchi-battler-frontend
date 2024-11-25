@@ -35,7 +35,6 @@
     <ItemList
       v-else-if="fetchItemsStatus.loaded"
       :items="items"
-      defaultSort="cost_asc"
       clickable
       @click:item="item = $event"
     />

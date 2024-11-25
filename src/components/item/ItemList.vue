@@ -19,14 +19,14 @@
     clickable: {
       type: Boolean,
       default: false
-    },
-    defaultSort: {
-      type: String,
-      default: null
     }
   })
 
   const sortOptions = [
+    {
+      id: 'id_asc',
+      label: 'Default'
+    },
     {
       id: 'raritySortable_asc',
       label: 'Rarity'
@@ -40,7 +40,7 @@
       label: 'Price (highest)'
     }
   ]
-  const sorting = ref(props.defaultSort || sortOptions[0].id)
+  const sorting = ref(sortOptions[0].id)
   const sortingProperty = computed(() => sorting.value.split('_')[0])
   const sortingDirection = computed(() => sorting.value.split('_')[1])
 
@@ -111,6 +111,7 @@
             class="items-list__item__image"
             :imageUrl="item.image"
             :rarity="item.rarity"
+            :imageSize="8.5"
           />
           <div class="items-list__item__details">
             <div>
@@ -168,20 +169,23 @@
     gap: 1rem;
   }
   .items-list__list {
-    --item-border-radius: 1rem;
+    --items-list__item--border-radius: 1rem;
+    --items-list__item--image-width: 8.5rem;
+    --items-list__item--image-padding: 1.5rem;
+    --items-list__item--card-width: calc(var(--items-list__item--image-width) + 2 * var(--items-list__item--image-padding));
     display: grid;
-    grid-template-columns: repeat(auto-fill, 11.5rem);
+    grid-template-columns: repeat(auto-fill, minmax(var(--items-list__item--card-width), 1fr));
     gap: 1.5rem;
   }
 
   .items-list__item__image {
-    border-top-left-radius: var(--item-border-radius);
-    border-top-right-radius: var(--item-border-radius);
+    border-top-left-radius: var(--items-list__item--border-radius);
+    border-top-right-radius: var(--items-list__item--border-radius);
   }
 
   .items-list__item__details {
-    border-bottom-left-radius: var(--item-border-radius);
-    border-bottom-right-radius: var(--item-border-radius);
+    border-bottom-left-radius: var(--items-list__item--border-radius);
+    border-bottom-right-radius: var(--items-list__item--border-radius);
     padding: 0.5rem 0.75rem 0.75rem 0.75rem;
     color: black;
     background: var(--c-white);
@@ -225,7 +229,7 @@
     position: relative;
   }
   .items-list__item__button:before {
-    border-radius: var(--item-border-radius);
+    border-radius: var(--items-list__item--border-radius);
   }
   .items-list__item__button:hover::before {
     border: 2px solid var(--c-light-blue);

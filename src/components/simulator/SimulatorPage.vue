@@ -174,18 +174,20 @@
               }"
             >
               <div>
-                <SavedTeamFormation
+                <div
                   v-if="match.team1"
-                  :team="match.team1"
-                  class="match__team-formation"
-                />
-                <div class="match__team-actions">
-                  <div
-                    v-if="match.team1"
-                    class="match__team-name word-break"
-                  >
+                  class="match__team-details"
+                >
+                  <div class="match__team-name word-break">
                     {{ match.team1.name }}
                   </div>
+                  <SavedTeamFormation
+                    v-if="match.team1"
+                    :team="match.team1"
+                    class="match__team-formation"
+                  />
+                </div>
+                <div class="match__team-actions">
                   <SiteButtonWhite
                     small
                     active
@@ -203,18 +205,20 @@
               }"
             >
               <div>
-                <SavedTeamFormation
+                <div
                   v-if="match.team2"
-                  :team="match.team2"
-                  class="match__team-formation"
-                />
-                <div class="match__team-actions">
-                  <div
-                    v-if="match.team2"
-                    class="match__team-name word-break"
-                  >
+                  class="match__team-details"
+                >
+                  <div class="match__team-name word-break">
                     {{ match.team2.name }}
                   </div>
+                  <SavedTeamFormation
+                    v-if="match.team2"
+                    :team="match.team2"
+                    class="match__team-formation"
+                  />
+                </div>
+                <div class="match__team-actions">
                   <SiteButtonWhite
                     small
                     active
@@ -362,20 +366,23 @@
   }
   .match__team > div {
     display: flex;
-    gap: 0.5rem;
+    gap: 1.25rem;
   }
-  .match__team-formation {
-    flex: none;
+  .match__team-details {
+    flex: 1 1 auto;
+    min-width: 16rem;
+  }
+  .match__team-name {
+    margin-bottom: 0.5rem;
   }
   .match__team-actions {
-    flex: 1 1 auto;
-    min-width: 4rem;
+    flex: 1 0 auto;
     display: grid;
     place-items: center;
-    gap: 0.5rem;
   }
   .match__team--empty .match__team-actions {
     min-height: calc(6rem - 2 * var(--site-table-card-padding-size));
+    min-width: 9rem;
   }
 
   td.match__team-wins,

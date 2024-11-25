@@ -12,7 +12,6 @@
   import BattleField from '../battle/BattleField.vue'
   import BattleVs from '../battle/BattleVs.vue'
   import CreateTeamDialog from '../team/CreateTeamDialog.vue'
-  import TrainingTeamsDialog from './TrainingTeamsDialog.vue'
   import useStatus from '../../utils/useStatus'
   import { getTotalBrsFromFormation } from '../../data/teamUtils'
 
@@ -23,8 +22,8 @@
     teams: [team1.value, team2.value]
   }))
 
-  const createTeamDialogIsOpen = ref(false)
-  const trainingTeamsDialogIsOpen = ref(false)
+  const createTeam1DialogIsOpen = ref(false)
+  const createTeam2DialogIsOpen = ref(false)
 
   // Match (Battle)
   const completedBattleId = ref(null)
@@ -117,7 +116,7 @@
       <template #empty-team-1>
         <SiteButton
           v-if="!isEditingLocked"
-          @click="createTeamDialogIsOpen = true"
+          @click="createTeam1DialogIsOpen = true"
         >
           Create Team
         </SiteButton>
@@ -125,9 +124,9 @@
       <template #empty-team-2>
         <SiteButton
           v-if="!isEditingLocked"
-          @click="trainingTeamsDialogIsOpen = true"
+          @click="createTeam2DialogIsOpen = true"
         >
-          Choose Team
+          Create Team
         </SiteButton>
       </template>
       <template #not-started>
@@ -158,16 +157,16 @@
         v-if="team1 && !isEditingLocked"
         #before-team-1
       >
-        <SiteButton @click="createTeamDialogIsOpen = true">
-          Edit Your Team
+        <SiteButton @click="createTeam1DialogIsOpen = true">
+          Edit Team
         </SiteButton>
       </template>
       <template
         #before-team-2
         v-if="team2 && !isEditingLocked"
       >
-        <SiteButton @click="trainingTeamsDialogIsOpen = true">
-          Choose Team
+        <SiteButton @click="createTeam2DialogIsOpen = true">
+          Edit Team
         </SiteButton>
       </template>
     </BattleField>
@@ -256,16 +255,18 @@
     </div>
   </main>
   <CreateTeamDialog
-    v-if="createTeamDialogIsOpen"
-    v-model:isOpen="createTeamDialogIsOpen"
+    v-if="createTeam1DialogIsOpen"
+    v-model:isOpen="createTeam1DialogIsOpen"
     v-model:team="team1"
     mode="create_training"
     closeOnSave
   />
-  <TrainingTeamsDialog
-    v-if="trainingTeamsDialogIsOpen"
-    v-model:isOpen="trainingTeamsDialogIsOpen"
+  <CreateTeamDialog
+    v-if="createTeam2DialogIsOpen"
+    v-model:isOpen="createTeam2DialogIsOpen"
     v-model:team="team2"
+    mode="create_training"
+    closeOnSave
   />
 </template>
 

@@ -33,6 +33,7 @@
   import SourceGotchisTraining from './SourceGotchisTraining.vue'
   import SourceGotchisTeam from './SourceGotchisTeam.vue'
   import SourceSavedTeams from './SourceSavedTeams.vue'
+  import SourceTrainingTeams from './SourceTrainingTeams.vue'
   import SourceGotchisSearch from './SourceGotchisSearch.vue'
   import SourceItemsUnlimited from './SourceItemsUnlimited.vue'
   import SourceItemsMy from './SourceItemsMy.vue'
@@ -43,7 +44,6 @@
   const EDIT_MODES = {
     CREATE: 'create',
     CREATE_TRAINING: 'create_training',
-    EDIT_TRAINING: 'edit_training',
     EDIT: 'edit',
     EDIT_PROFILE_SAVED: 'edit_profile_saved'
   }
@@ -112,29 +112,29 @@
 
   const modeLabel = computed(() => {
     if (props.mode === EDIT_MODES.CREATE_TRAINING) { return 'Create'; }
-    if (props.mode === EDIT_MODES.EDIT_TRAINING) { return 'Customize'; }
     if (props.mode === EDIT_MODES.EDIT_PROFILE_SAVED) { return 'Edit Saved'; }
     return props.mode
   })
 
   const isEditMode = computed(() => props.mode === EDIT_MODES.EDIT)
   const myGotchisAllowed = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
-  const trainingGotchisAllowed = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
-  const searchGotchisAllowed = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
+  const trainingGotchisAllowed = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
+  const searchGotchisAllowed = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
   const onlyMyGotchisAllowed = computed(() => [EDIT_MODES.CREATE].includes(props.mode))
   const onlyTeamGotchisAllowed = computed(() => [EDIT_MODES.EDIT].includes(props.mode))
 
-  const savedTeamsAvailable = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
+  const savedTeamsAvailable = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
+  const trainingTeamsAvailable = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
 
-  const unlimitedItemsAvailable = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
+  const unlimitedItemsAvailable = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
   const myItemsAvailable = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.EDIT].includes(props.mode))
 
   const canChangeName = computed(() => !isEditMode.value)
   const withSubstitutes = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.EDIT].includes(props.mode))
-  const enableDuplicates = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
+  const enableDuplicates = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
 
   const primarySaveLabel = computed(() => {
-    if ([EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING].includes(props.mode)) {
+    if ([EDIT_MODES.CREATE_TRAINING].includes(props.mode)) {
       return 'Use Team'
     }
     if ([EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode)) {
@@ -188,7 +188,7 @@
         store.fetchMyGotchis()
       } else {
         // If editing a training team, we don't need to be connected
-        if ([EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING].includes(props.mode)) {
+        if ([EDIT_MODES.CREATE_TRAINING].includes(props.mode)) {
           return;
         }
         // not connected, can't create or edit a team
@@ -205,7 +205,7 @@
   }
   const SOURCE_TYPE_LABELS = {
     [SOURCE_TYPE.GOTCHI]: 'Gotchis',
-    [SOURCE_TYPE.TEAM]: 'Saved Teams',
+    [SOURCE_TYPE.TEAM]: 'Teams',
     [SOURCE_TYPE.ITEM]: 'Items'
   }
   const SOURCES_BY_TYPE = {
@@ -239,9 +239,15 @@
     [SOURCE_TYPE.TEAM]: [
       {
         id: 'savedteams',
-        label: 'Saved Teams',
+        label: 'My Saved Teams',
         component: SourceSavedTeams,
         props: { onlyMyGotchisAllowed: true, unavailableGotchiIds: true, savedTeamsLastChanged: true },
+        type: SOURCE_TYPE.TEAM
+      },
+      {
+        id: 'trainingteams',
+        label: 'Training Teams',
+        component: SourceTrainingTeams,
         type: SOURCE_TYPE.TEAM
       }
     ],
@@ -280,6 +286,9 @@
     }
     if (savedTeamsAvailable.value) {
       addSource('savedteams')
+    }
+    if (trainingTeamsAvailable.value) {
+      addSource('trainingteams')
     }
     if (searchGotchisAllowed.value) {
       addSource('searchgotchis')
@@ -822,7 +831,7 @@
 
   const canSaveProfileTeam = computed(() =>
     !!address.value &&
-    [EDIT_MODES.CREATE, EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode)
+    [EDIT_MODES.CREATE, EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode)
   )
   const { status: submitProfileTeamStatus, setLoading: setProfileTeamLoading } = useStatus()
 
@@ -1137,7 +1146,7 @@
             Team
           </h1>
         </div>
-        <section class="create-team__gotchis">
+        <section class="create-team__sources">
           <SiteButtonGroup
             v-if="availableSourceTypeTabs.length > 1"
             :numButtons="availableSourceTypeTabs.length"
@@ -1927,7 +1936,7 @@
     grid-row: 1 / 2;
   }
 
-  .create-team__gotchis {
+  .create-team__sources {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
     grid-template-rows: auto auto minmax(0, 1fr);
@@ -1936,7 +1945,7 @@
     align-items: center;
   }
   @media (max-width: 1299px) {
-    .create-team__gotchis {
+    .create-team__sources {
       max-height: 24rem;
     }
   }
@@ -1944,20 +1953,23 @@
     grid-column: 1 / 4;
     margin: 0 4px 1rem;
   }
-  .create-team__gotchis .create-team__section-label {
+  .create-team__sources .create-team__section-label {
     margin-bottom: 0;
   }
-  :deep(.create-team-source__search) {
-    max-width: 200px;
+  /* lay out source elements within the grid */
+  .create-team__sources > :deep(.site-sign-in) {
+    grid-column: 1 / 4;
+    align-self: flex-start;
+    padding-top: 1rem;
   }
-  :deep(.create-team-source__connect-wallet) {
+  .create-team__sources > :deep(.create-team-source__connect-wallet) {
     grid-column: 1 / 4;
     padding-top: 1rem;
     align-self: flex-start;
     display: grid;
     place-items: center;
   }
-  :deep(.create-team-source__items-available) {
+  .create-team__sources > :deep(.create-team-source__items-available) {
     align-self: stretch;
     padding: 1rem;
     grid-column: 1 / 4;
@@ -1965,8 +1977,16 @@
     overflow-y: auto;
     background: rgba(var(--c-black-rgb), 0.25);
   }
-  :deep(.site-sign-in) {
-    grid-column: 1 / 4;
+  .create-team__sources > :deep(.common-saved-teams-list__header) {
+    margin-bottom: 0;
+  }
+  .create-team__sources > :deep( .common-saved-teams-list__empty) {
+    grid-column: 1/4;
+    align-self: flex-start;
+    padding: 0.5rem;
+  }
+  :deep(.create-team-source__search) {
+    max-width: 200px;
   }
   .create-team__gotchis-results {
     --source-result-border-width: 2px;

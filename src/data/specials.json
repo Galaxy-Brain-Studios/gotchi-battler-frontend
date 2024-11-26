@@ -7,7 +7,6 @@
     "effects": [
         "Single attack with a 1.35x multiplier that inflicts bleed",
         "Ignores armor",
-        "Cannot be countered",
         "Cannot be evaded"
     ],
     "leader": "Sharpen blades",
@@ -37,8 +36,7 @@
     "cooldown": 2,
     "effects": [
       "Attacks all enemies on a single row with a 1.55x multiplier",
-      "The row with the most enemies is targeted",
-      "Cannot be countered"
+      "The row with the most enemies is targeted"
     ],
     "leader": "Frenzy",
     "leaderEffects": [
@@ -55,7 +53,7 @@
       "Applies 'Taunt' status to self",
       "'Taunt' forces all enemies to target the tank",
       "'Taunt' increases armor by 100%",
-      "'Taunt' gives a 38% chance to counter attack when hit",
+      "'Taunt' gives a 38% chance to counter attack when hit by a non-special attack",
       "Chance to counter with 'Taunt' is further increased based on speed"
     ],
     "leader": "Fortify",
@@ -76,8 +74,7 @@
       "'Fear' reduces resistance by 50%",
       "Attacker heals for 70% of the damage dealt",
       "Removes a random buff status from the target",
-      "A critical hit removes a second random buff status from the target",
-      "Cannot be countered"
+      "A critical hit removes a second random buff status from the target"
     ],
     "leader": "Spread the Fear",
     "leaderEffects": [

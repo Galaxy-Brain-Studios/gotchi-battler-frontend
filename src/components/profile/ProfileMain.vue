@@ -71,7 +71,7 @@
             :to="{ name: 'profile-teams', params: { address } }"
             grouped="vertical-middle"
           >
-            Favorite Teams
+            Saved Teams
           </SiteButtonLink>
           <SiteButtonLink
             :to="{ name: 'profile-inventory', params: { address } }"

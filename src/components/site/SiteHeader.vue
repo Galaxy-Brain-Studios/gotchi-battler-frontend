@@ -30,6 +30,11 @@
       >
         Tournaments
       </SiteButtonWhiteLink>
+      <SiteButtonWhiteLink
+        to="/training"
+      >
+        Training
+      </SiteButtonWhiteLink>
       <SitePopupDropdown>
         <SiteButtonWhite :active="isToolsActive">
           Tools
@@ -63,11 +68,6 @@
         to="/shop"
       >
         Shop
-      </SiteButtonWhiteLink>
-      <SiteButtonWhiteLink
-        to="/training"
-      >
-        Training
       </SiteButtonWhiteLink>
       <SiteButtonWhiteLink
         href="https://gotchi-battler-1.gitbook.io/gotchi-battler/"

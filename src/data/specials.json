@@ -89,7 +89,8 @@
     "cooldown": 0,
     "effects": [
       "Heals all allies for 4.9x the healers resistance stat", 
-      "Cleanses all allies, removing any negative status effects"
+      "Cleanses all allies, removing any negative status effects",
+      "A critical hit increases the heal by 25%"
     ],
     "leader": "Cleansing Aura",
     "leaderEffects": [

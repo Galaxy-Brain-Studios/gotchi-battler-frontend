@@ -87,11 +87,11 @@
 
         const audioSettings = {
           Audio: {
-            MusicVolume: musicVolume.value - 0,
-            SfxVolume: sfxVolume.value - 0
+            MusicVolume: musicVolume.value ? musicVolume.value - 0 : 1,
+            SfxVolume: sfxVolume.value ? sfxVolume.value - 0 : 1
           }
         }
-        // console.log("Sending settings to unity instance", audioSettings)
+        console.log("Sending settings to unity instance", audioSettings)
         unityInstance.SendMessage('BattleReplayer', 'LoadSettings', JSON.stringify(audioSettings))
 
         const battleLogAsText = JSON.stringify(props.logs)

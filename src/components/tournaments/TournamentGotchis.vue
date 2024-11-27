@@ -11,7 +11,7 @@
   import SiteTable from '../common/SiteTable.vue'
   import SiteIcon from '../common/SiteIcon.vue'
   import SiteButton from '../common/SiteButton.vue'
-  import SiteEthAddress from '../common/SiteEthAddress.vue'
+  import UserIdentity from '../profile/UserIdentity.vue'
   import TeamDialog from '../team/TeamDialog.vue'
 
   const props = defineProps({
@@ -273,8 +273,9 @@
                 </a>
               </td>
               <td class="team-owner">
-                <SiteEthAddress
+                <UserIdentity
                   :address="gotchi.teamOwner"
+                  :user="gotchi.teamUser"
                 />
               </td>
             </tr>
@@ -332,9 +333,7 @@ span + .tournament-gotchis__header-sort-icon {
   height: 3rem;
 }
 .tournament-gotchis__table .team-owner {
-  font-size: 1rem;
-  letter-spacing: 0.03rem;
-  opacity: 0.5;
+  max-width: 450px;
 }
 .tournament-gotchis__footer {
   display: grid;

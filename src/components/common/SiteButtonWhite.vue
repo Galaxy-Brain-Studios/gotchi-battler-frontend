@@ -4,6 +4,14 @@
       type: Boolean,
       default: false
     },
+    active: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
     type: {
       type: String,
       default: 'button'
@@ -15,7 +23,8 @@
   <div
     class="site-button-white__container site-button-white__container--interactive"
     :class="{
-      'site-button-white__container--small': small
+      'site-button-white__container--small': small,
+      'site-button-white__container--is-active': active
     }"
   >
     <div class="site-button-white__corner site-button-white__corner-1" />
@@ -25,6 +34,7 @@
     <button
       class="site-button-white__button button-reset"
       :type="type"
+      :disabled="disabled"
     >
       <slot />
     </button>
@@ -74,9 +84,14 @@
   --button-color-border: transparent;
   opacity: 0.7;
 }
+.site-button-white__container:not(.site-button-white__container--link):not(.site-button-white__container--is-active):not(:hover) {
+  --button-color-border: transparent;
+  opacity: 0.7;
+}
 
 .site-button-white__button {
   display: block;
+  width: 100%;
   outline-color: transparent;
   border: var(--button-border-width) solid var(--button-color-border);
   padding: calc(0.75rem - var(--button-border-width)) 2.5rem;

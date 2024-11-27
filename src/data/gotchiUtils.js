@@ -11,6 +11,7 @@ const getSpecialIdFromSpecial = function(special) {
 }
 
 export const processGotchiModel = function (jsonData) {
+  if (!jsonData) { return null }
   return {
     ...jsonData,
     // id should be a number

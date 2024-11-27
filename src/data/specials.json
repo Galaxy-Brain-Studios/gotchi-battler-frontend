@@ -3,150 +3,134 @@
     "id": 1,
     "class": "Ninja",
     "name": "Spectral strike",
+    "cooldown": 0,
     "effects": [
-        "Attack a random target with a strong hit",
-        "Attack bypasses armor",
-        "Inflicts bleed status on the target",
-        "Cannot be countered"
+        "Single attack with a 1.35x multiplier that inflicts bleed",
+        "Ignores armor",
+        "Cannot be evaded"
     ],
     "leader": "Sharpen blades",
     "leaderEffects": [
-        "All allies gain a chance to cause bleed on each non-special attack",
-        "Ignores resistance"
-    ],
-    "info": {
-      "header": "Attack ignores armor",
-      "description": "Applies bleed status. Cannot be countered",
-      "leader": "Sharpen blades. All allies get 20% bleed chance on hit."
-    }
+        "All allies gain a high chance to cause bleed on non-special attacks"
+    ]
   },
   {
     "id": 2,
     "class": "Enlightened",
     "name": "Meditate",
+    "cooldown": 0,
     "effects": [
-      "Increases Magic Power",
-      "Increases Physical Power"
+      "Applies 'Power up 2' status to self",
+      "'Power up 2' increases critical, resist, magic and physical by 42.5%"
     ],
     "leader": "Cloud of Zen",
     "leaderEffects": [
-        "Meditate also applies a small buff to all allies"
-    ],
-    "info": {
-      "header": "Boost magic and physical",
-      "description": "",
-      "leader": "Cloud of Zen. The leader's Meditate also boosts magic, and physical of all allies"
-    }
+        "Meditate also applies 'Power up 1' status to all allies including self",
+        "'Power up 1' increases magic and physical by 16.5%"
+    ]
   },
   {
     "id": 3,
     "class": "Cleavers",
     "name": "Cleave",
+    "cooldown": 2,
     "effects": [
-      "Attacks a full row with a powerful strike",
-      "The row with the most enemies is targeted",
-      "Cannot be countered"
+      "Attacks all enemies on a single row with a 1.55x multiplier",
+      "The row with the most enemies is targeted"
     ],
     "leader": "Frenzy",
     "leaderEffects": [
-        "Increases the strength of all ally's critical hits"
-    ],
-    "info": {
-      "header": "Attack full row for 75% attack power",
-      "description": "Attacks the row with most gotchis",
-      "leader": "Frenzy. Critical hits are stronger for all allies."
-    }
+        "Applies 'Frenzy' status to all allies including self",
+        "'Frenzy' increases critical % by either 2x or +14% (whichever is higher)"
+    ]
   },
   {
     "id": 4,
     "class": "Tank",
     "name": "Taunt",
+    "cooldown": 0,
     "effects": [
-      "Applies taunt status to self, forcing enemies to target the Tank.",
-      "Increases Armor"
+      "Applies 'Taunt' status to self",
+      "'Taunt' forces all enemies to target the tank",
+      "'Taunt' increases armor by 100%",
+      "'Taunt' gives a 38% chance to counter attack when hit by a non-special attack",
+      "Chance to counter with 'Taunt' is further increased based on speed"
     ],
-    "leader": "Steel Counter",
+    "leader": "Fortify",
     "leaderEffects": [
-        "The leader gains a chance to launch a counterattack when hit whilst taunting.",
-        "Counterattacks cannot be countered by opponents."
-    ],
-    "info": {
-      "header": "Applies taunt status to self",
-      "description": "Increases armor by 20%",
-      "leader": "Steel Counter. Leader has a 50% chance to counter when attacked with taunt active; Taunt increases armor by 50%; A counter attack is for 100% attack power; A counter attack cannot be countered; A counter always hits."
-    }
+        "Applies 'Fortify' status to all allies including self",
+        "'Fortify' increases armor by 100% or +90 (whichever is higher)",
+        "'Fortify' gives an additional 12% chance to counter with 'Taunt'"
+    ]
   },
   {
     "id": 5,
     "class": "Cursed",
     "name": "Curse",
+    "cooldown": 0,
     "effects": [
-      "Attacks a random enemy",
-      "Inflicts fear on the targeted enemy, causing them to skip their next turn.",
-      "Removes all positive buffs from the target"
+      "Single attack with a 1x multiplier that inflicts fear",
+      "'Fear' causes the target to skip their next turn",
+      "'Fear' reduces resistance by 50%",
+      "Attacker heals for 70% of the damage dealt",
+      "Removes a random buff status from the target",
+      "A critical hit removes a second random buff status from the target"
     ],
     "leader": "Spread the Fear",
     "leaderEffects": [
-        "All allies gain a chance to cause fear on each non-special attack",
-        "Ignores resistance"
-    ],
-    "info": {
-      "header": "Attack random for 100% attack power and fear for 1 round",
-      "description": "Remove all Buffs.",
-      "leader": "Spread the fear. All allies get 20% fear chance on hit; Ignore resistance and stacks with any other status effects the move already does."
-    }
+        "Applies 'Spread the fear' status to all allies including self",
+        "'Spread the fear' gives a high chance to inflict fear on non-special attacks"
+    ]
   },
   {
     "id": 6,
     "class": "Healer",
     "name": "Blessing",
+    "cooldown": 0,
     "effects": [
-      "Heals all allies for 20% of their maximum health",
+      "Heals all allies for 4.9x the healers resistance stat", 
       "Cleanses all allies, removing any negative status effects",
-      "Cannot heal/cleanse other Healers including self"
+      "A critical hit increases the heal by 25%"
     ],
     "leader": "Cleansing Aura",
     "leaderEffects": [
-        "Leader cleanses all allies on all of their turns"
-    ],
-    "info": {
-      "header": "Heal all for 20% and Cleanse (remove status effects)",
-      "description": "",
-      "leader": "Cleansing Aura. Leader automatically cleanses all allies on each of their turns"
-    }
+        "Applies 'Cleansing Aura' status to all healer and tank allies",
+        "'Cleansing Aura' status regenrates healers for 0.6x their resistance stat per turn",
+        "'Cleansing Aura' status regenrates tanks for 10HP per turn",
+        "'Cleansing Aura' increases the healers heal to 5.7x their resistance stat"
+    ]
   },
   {
     "id": 7,
     "class": "Mage",
     "name": "Thunder",
+    "cooldown": 2,
     "effects": [
-      "Attacks all enemy Gotchis"
+      "Attacks all enemies with a 0.7x multiplier",
+      "Has a 20% chance to inflict stun on each enemy hit",
+      "'Stun' reduces the targets speed by 20%"
     ],
     "leader": "Channel the Coven",
     "leaderEffects": [
-        "All ally mage's thunder attacks inflict stun on hit"
-    ],
-    "info": {
-      "header": "Attack all Gotchis and apply stun.",
-      "description": "",
-      "leader": "Channel the coven. The leader's Thunder attacks for an extra 25% attack power per alive mage ally."
-    }
+        "Applies 'Channel the Coven' status to all allies",
+        "'Channel the Coven' status increases magic by 17.5%",
+        "'Channel the Coven' increases the chance to inflict stun to 80%"
+    ]
   },
   {
     "id": 8,
     "class": "Troll",
     "name": "Devastating Smash",
+    "cooldown": 2,
     "effects": [
-      "Attacks a random gotchi with a devastating blow"
+      "Single attack with a 2.8x multiplier",
+      "Has a 30% chance to do another attack with a 1.75x multiplier"
     ],
     "leader": "Clan Momentum",
     "leaderEffects": [
-        "Every troll ally does another strong hit when killing with a devastating smash"
-    ],
-    "info": {
-      "header": "Attack Random Gotchi with devastating force.",
-      "description": "",
-      "leader": "Clan momentum. Every troll ally does an extra attack after a devesating smash."
-    }
+        "Applies 'Clan Momentum' status to all allies",
+        "'Clan momentum' status increases physical by 17.5%",
+        "'Clan momentum' status increases the chance to do a second attack on Devastating Smash to 60%"
+    ]
   }
 ]

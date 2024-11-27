@@ -2,25 +2,18 @@
   import { ref, computed, watch, nextTick } from 'vue'
   import { storeToRefs } from 'pinia'
   import { formatDateTime } from '../../utils/date'
-  import { useAccountStore } from '../../data/accountStore'
-  import { useBattleStore, submitTrainingBattle, signTrainingBattle, useTrainingBattlesStore } from '../../data/battleStore'
+  import { useBattleStore, runTrainingBattle, useTrainingBattlesStore } from '../../data/battleStore'
   import SiteButton from '../common/SiteButton.vue' 
   import SiteError from '../common/SiteError.vue'
-  import SiteConnectWallet from '../site/SiteConnectWallet.vue'
   import SiteButtonPrimary from '../common/SiteButtonPrimary.vue'
   import SiteButtonSmall from '../common/SiteButtonSmall.vue'
   import SiteButtonIcon from '../common/SiteButtonIcon.vue'
-  import SiteIcon from '../common/SiteIcon.vue'
   import SitePopupHoverMenu from '../common/SitePopupHoverMenu.vue'
   import BattleField from '../battle/BattleField.vue'
   import BattleVs from '../battle/BattleVs.vue'
   import CreateTeamDialog from '../team/CreateTeamDialog.vue'
-  import TrainingTeamsDialog from './TrainingTeamsDialog.vue'
   import useStatus from '../../utils/useStatus'
-  import { generateTeamToSubmit } from '../../data/teamUtils'
-
-  const store = useAccountStore()
-  const { isConnected, address } = storeToRefs(store)
+  import { getTotalBrsFromFormation } from '../../data/teamUtils'
 
   const team1 = ref(null)
   const team2 = ref(null)
@@ -29,8 +22,8 @@
     teams: [team1.value, team2.value]
   }))
 
-  const createTeamDialogIsOpen = ref(false)
-  const trainingTeamsDialogIsOpen = ref(false)
+  const createTeam1DialogIsOpen = ref(false)
+  const createTeam2DialogIsOpen = ref(false)
 
   // Match (Battle)
   const completedBattleId = ref(null)
@@ -44,54 +37,26 @@
 
   const showCompletedBattleWinner = ref(false)
 
-  watch(
-    () => address.value,
-    () => {
-      team1.value = null
-      completedBattleId.value = null
-      showCompletedBattleWinner.value = false
-    }
-  )
-
   const isEditingLocked = computed(() => {
     return submitStatus.value.loading || submitStatus.value.loaded
   })
 
   const canStartMatch = computed(() => {
-    if (!address.value) { return false }
     if (!team1.value || !team2.value) { return false }
     if (isEditingLocked.value) { return false }
     if (completedBattleId.value) { return false }
     return true
   })
 
-  const teamToSubmit = computed(() => {
-    if (!team1.value) { return null }
-    return {
-      ...generateTeamToSubmit(team1.value),
-      owner: address.value,
-    }
-  })
-  const trainingTeamToSubmit = computed(() => {
-    if (!team2.value) { return null }
-    return {
-      ...generateTeamToSubmit(team2.value),
-      owner: address.value,
-    }
-  })
-
   const battleToSubmit = computed(() =>({
-    team: teamToSubmit.value,
-    trainingTeam: trainingTeamToSubmit.value
+    team1: team1.value,
+    team2: team2.value
   }))
 
   // if any of the data for submitting a battle changes while submitting,
   // cancel the submission
   watch(
-    () => ({
-      address: address.value,
-      battleToSubmit: battleToSubmit.value
-    }),
+    () => battleToSubmit.value,
     () => resetSubmit()
   )
 
@@ -99,15 +64,7 @@
     if (!canStartMatch.value) { return }
     const [isStale, setLoaded, setError] = setLoading()
     try {
-      const { address, message, signature } = await signTrainingBattle(battleToSubmit.value)
-      if (isStale()) { return }
-      const battleId = await submitTrainingBattle({
-        ...battleToSubmit.value,
-        address,
-        message,
-        signature
-      })
-      if (isStale()) { return }
+      const battleId = await runTrainingBattle(battleToSubmit.value)
       if (battleId) {
         completedBattleId.value = battleId
         showCompletedBattleWinner.value = false
@@ -124,34 +81,15 @@
     completedBattleId.value = null
   }
 
-  // List of training battles for the current address
+  // List of training battles
   const trainingBattleStore = useTrainingBattlesStore()
-  const trainingBattles = computed(() => {
-    if (!address.value) { return null }
-    return trainingBattleStore.getBattles(address.value)
-  })
+  const { trainingBattles } = storeToRefs(trainingBattleStore)
 
   function loadTrainingBattle (battle) {
     completedBattleId.value = battle.id
     // console.log('loading training battle', 'old team', team1.value, 'new team', battle.teams[0])
-
-    // Training battle gotchi IDs are different to the onchain gotchi IDs.
-    // So that we can load old training battles, set the gotchi IDs back to the onchain ones.
-    const newTeam1 = JSON.parse(JSON.stringify(battle.teams[0]))
-    const idToOnchainId = Object.fromEntries(newTeam1.gotchis.map(gotchi => [gotchi.id, gotchi.onchainId]))
-    newTeam1.gotchis = newTeam1.gotchis.map(gotchi => ({
-      ...gotchi,
-      id: gotchi.onchainId
-    }))
-    newTeam1.formation = {
-      back: newTeam1.formation.back.map(id => idToOnchainId[id] || null),
-      front: newTeam1.formation.front.map(id => idToOnchainId[id] || null)
-    }
-    newTeam1.leader = idToOnchainId[newTeam1.leader] || null
-
-    // console.log('adjusted team for loading', newTeam1)
-    team1.value = newTeam1
-    team2.value = battle.teams[1]
+    team1.value = JSON.parse(JSON.stringify(battle.teams[0]))
+    team2.value = JSON.parse(JSON.stringify(battle.teams[1]))
     resetSubmit()
     // wait for nextTick because changing team will cause resetSubmit again
     nextTick(() => {
@@ -159,6 +97,11 @@
       const [isStale, setLoaded, setError] = setLoading()
       setLoaded()
     })
+  }
+
+  function getTotalBrs (team) {
+    if (!team?.formation) { return '' }
+    return getTotalBrsFromFormation(team.formation)
   }
 </script>
 
@@ -172,19 +115,18 @@
     >
       <template #empty-team-1>
         <SiteButton
-          v-if="isConnected && !isEditingLocked"
-          @click="createTeamDialogIsOpen = true"
+          v-if="!isEditingLocked"
+          @click="createTeam1DialogIsOpen = true"
         >
           Create Team
         </SiteButton>
-        <SiteConnectWallet v-else />
       </template>
       <template #empty-team-2>
         <SiteButton
           v-if="!isEditingLocked"
-          @click="trainingTeamsDialogIsOpen = true"
+          @click="createTeam2DialogIsOpen = true"
         >
-          Choose Team
+          Create Team
         </SiteButton>
       </template>
       <template #not-started>
@@ -215,16 +157,16 @@
         v-if="team1 && !isEditingLocked"
         #before-team-1
       >
-        <SiteButton @click="createTeamDialogIsOpen = true">
-          Edit Your Team
+        <SiteButton @click="createTeam1DialogIsOpen = true">
+          Edit Team
         </SiteButton>
       </template>
       <template
         #before-team-2
         v-if="team2 && !isEditingLocked"
       >
-        <SiteButton @click="trainingTeamsDialogIsOpen = true">
-          Choose Team
+        <SiteButton @click="createTeam2DialogIsOpen = true">
+          Edit Team
         </SiteButton>
       </template>
     </BattleField>
@@ -246,7 +188,7 @@
             <th>Date</th>
             <th>Team</th>
             <th>Opponent</th>
-            <th>Power level</th>
+            <th>Total BRS</th>
             <th>
               <div class="training-battle__win-rate-title">
                 <div>Win rate</div>
@@ -263,7 +205,6 @@
             </th>
             <th>Result</th>
             <th>Replay</th>
-            <th>Share</th>
           </tr>
         </thead>
         <tbody>
@@ -280,8 +221,8 @@
             <td>
               {{ battle.teams[1]?.name }}
             </td>
-            <td class="training-battle__history-table-difficulty">
-              {{ battle.teams[1]?.difficulty }}
+            <td>
+              {{ getTotalBrs(battle.teams[1]) }}
             </td>
             <td class="training-battle__history-table-win-rate">
               {{ battle.team1WinRate }} %
@@ -289,17 +230,17 @@
             <td
               class="training-battle__history-table-result"
               :class="{
-                'training-battle__history-table-result--winner': battle.winnerId === battle.teams[0]?.id
+                'training-battle__history-table-result--winner': battle.winner === 1
               }"
             >
-              <template v-if="battle.winnerId">
+              <template v-if="battle.winner">
                 <template v-if="battle.id === completedBattleId && !showCompletedBattleWinner">
                   <SiteButtonSmall @click="showCompletedBattleWinner = true">
                     Reveal
                   </SiteButtonSmall>
                 </template>
                 <template v-else>
-                  {{ battle.winnerId === battle.teams[0]?.id ? 'Winner' : 'Loser' }}
+                  {{ battle.winner === 1 ? 'Winner' : 'Loser' }}
                 </template>
               </template>
             </td>
@@ -308,31 +249,24 @@
                 Load
               </SiteButtonSmall>
             </td>
-            <td>
-              <RouterLink 
-                class="training-battle__analytics-link"
-                :to="{ name: 'analyser', params: { id: battle.id } }"
-                target="_blank">
-                <span class="training-battle__analytics-link-text">Analytics</span>
-                <SiteIcon name="new-window" :width="0.95"/>
-              </RouterLink>
-            </td>
           </tr>
         </tbody>
       </table>
     </div>
   </main>
   <CreateTeamDialog
-    v-if="createTeamDialogIsOpen"
-    v-model:isOpen="createTeamDialogIsOpen"
+    v-if="createTeam1DialogIsOpen"
+    v-model:isOpen="createTeam1DialogIsOpen"
     v-model:team="team1"
     mode="create_training"
     closeOnSave
   />
-  <TrainingTeamsDialog
-    v-if="trainingTeamsDialogIsOpen"
-    v-model:isOpen="trainingTeamsDialogIsOpen"
+  <CreateTeamDialog
+    v-if="createTeam2DialogIsOpen"
+    v-model:isOpen="createTeam2DialogIsOpen"
     v-model:team="team2"
+    mode="create_training"
+    closeOnSave
   />
 </template>
 
@@ -388,9 +322,6 @@
   .training-battle__history-table td:not(:last-child) {
     padding-right: 1rem;
   }
-  .training-battle__history-table-difficulty {
-    text-transform: capitalize;
-  }
   .training-battle__history-table-win-rate {
     font-weight: bold;
   }
@@ -401,19 +332,8 @@
   .training-battle__history-table-result--winner {
     color: var(--c-light-yellow);
   }
-  .training-battle__history-table td.training-battle__history-table-select {
+  .training-battle__history-table td:has(button) {
     padding-top: 0;
     padding-bottom: 0.5rem;
-  }
-  .training-battle__analytics-link {
-    color: white;
-    display: flex;
-    text-decoration: none;
-  }
-  .training-battle__analytics-link:hover {
-    text-decoration: underline;
-  }
-  .training-battle__analytics-link-text {
-    margin-right: 0.5rem;
   }
 </style>

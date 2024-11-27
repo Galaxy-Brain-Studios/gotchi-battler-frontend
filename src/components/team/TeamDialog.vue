@@ -44,20 +44,15 @@
   const teamStore = useTeamStore({ teamId: props.id })()
   const { team, fetchStatus } = storeToRefs(teamStore)
 
-  const gotchisById = computed(() => {
-    if (!team.value?.gotchis) { return {} }
-    return Object.fromEntries(team.value.gotchis.map(gotchi => [gotchi.id, gotchi]))
-  })
-
-  const displayGotchiId = ref(null)
+  const displayGotchi = ref(null)
 
   const { status: deleteStatus, setLoading: setDeleteLoading, reset: resetDeleteStatus } = useStatus()
 
   watch(
     () => team.value,
     (newTeam) => {
-      if (newTeam && newTeam.leader) {
-        displayGotchiId.value = newTeam.leader
+      if (newTeam && newTeam.leader && newTeam.formation) {
+        displayGotchi.value = [...newTeam.formation.front, ...newTeam.formation.back].find(g => g?.id === newTeam.leader) || null
       }
       resetDeleteStatus()
     },
@@ -76,7 +71,7 @@
       // To avoid disrupting activity, emit events that will only trigger refresh if this dialog is still open.
       // TODO always alert to notify user that deletion has happened and they can manually refresh the page to update the teams list.
       emit('update:isOpen', false)
-      emit('deletedTeam')
+      emit('deletedTeam', props.id)
     } catch (e) {
       if (isStale()) { return }
       console.error('Error deleting team', e)
@@ -127,7 +122,7 @@
       <div class="team__formation">
         <TeamFormation
           :team="team"
-          :selectedGotchiId="displayGotchiId"
+          :selectedGotchiId="displayGotchi?.id"
           horizontal
           reverseRows
           withRowLabels
@@ -137,6 +132,8 @@
             <GotchiInFormation
               emptyMode="disabled"
               variant="small"
+              withItemBadge
+              withSpecialInfoBadge
             />
           </template>
           <template #gotchi="{ gotchi }">
@@ -145,21 +142,24 @@
               :isLeader="gotchi.id === team.leader"
               :teamId="id"
               isSelectable
+              withItemBadge
               withSpecialInfoBadge
               variant="small"
-              @select="displayGotchiId = gotchi.id"
+              @select="displayGotchi = gotchi"
             />
           </template>
         </TeamFormation>
         <TeamSubstitutes
           :team="team"
-          :selectedGotchiId="displayGotchiId"
+          :selectedGotchiId="displayGotchi?.id"
           class="team__formation-substitutes"
         >
           <template #position>
             <GotchiInFormation
               emptyMode="disabled"
               variant="small"
+              withItemBadge
+              withSpecialInfoBadge
             />
           </template>
           <template #gotchi="{ gotchi }">
@@ -167,9 +167,10 @@
               :gotchi="gotchi"
               :teamId="id"
               isSelectable
+              withItemBadge
               withSpecialInfoBadge
               variant="small"
-              @select="displayGotchiId = gotchi.id"
+              @select="displayGotchi = gotchi"
             />
           </template>
         </TeamSubstitutes>
@@ -217,9 +218,9 @@
         </template>
       </div>
       <GotchiDetails
-        v-if="gotchisById[displayGotchiId]"
-        :gotchi="gotchisById[displayGotchiId]"
-        :isLeader="displayGotchiId === team.leader"
+        v-if="displayGotchi"
+        :gotchi="displayGotchi"
+        :isLeader="displayGotchi?.id === team.leader"
         :teamId="id"
         class="team__gotchi-details"
       />

@@ -1,6 +1,8 @@
 <script setup>
-  import { useAccountStore } from '../../data/accountStore'
+  import { useAccountStore, requireLoginSession } from '../../data/accountStore'
+  import sessionService from '../../data/sessionService'
   import { setBaseUrl } from '../../data/api'
+  import shopContract from '../../data/shopContract'
   import { storeToRefs } from 'pinia'
 
   const accountStore = useAccountStore()
@@ -13,8 +15,25 @@
     window.mirageServer.shutdown()
   }
 
-  function skipServerSignatureChecks () {
-    window.skipDevServerSignatureCheck = true
+  function enableMockContract () {
+    window.mockContractConfig.enable = true
+  }
+  function disableMockContract () {
+    window.mockContractConfig.enable = false
+  }
+
+  function setShopContractToTest () {
+    shopContract.setAddressInDevMode(shopContract.POLYGON_TEST_CONTRACT_ADDRESS)
+  }
+  function setShopContractToProd () {
+    shopContract.setAddressInDevMode(shopContract.POLYGON_PROD_CONTRACT_ADDRESS)
+  }
+  function logShopContractAddress () {
+    console.log('shop contract', shopContract.getAddress())
+  }
+
+  function doLogout () {
+    sessionService.logout()
   }
 </script>
 
@@ -39,6 +58,12 @@
         >
           Set API to localhost:8888
         </button>
+        <button
+          type="button"
+          @click="setBaseUrl('https://127.0.0.1:10889')"
+        >
+          Set API to https://127.0.0.1:10889
+        </button>
         <br>
         <button
           type="button"
@@ -46,15 +71,61 @@
         >
           Set API to https://gotchi-battler-backend-76ns3tfg6q-ew.a.run.app
         </button>
-        <br>
+      </div>
+      <div>
         <button
           type="button"
-          @click="skipServerSignatureChecks"
+          @click="requireLoginSession(() => console.log('signed in'))()"
         >
-          Skip server-side signature checks
+          Request signed session
         </button>
-        Click this button to tell the server (both real/Mirage) to allow any submitted signature.
       </div>
+      <div>
+        <button
+          type="button"
+          @click="doLogout"
+        >
+          Logout on server (test expired/invalid session)
+        </button>
+      </div>
+      <div>
+        By default this site does NOT submit real contract reads/writes, it uses a simple simulated interaction.
+        <br>Enable/disable real contract calls (polygon RPC) below:
+        <br><button
+          type="button"
+          @click="enableMockContract"
+        >
+          Use mock contract calls
+        </button> (optionally configure behaviour on <code>window.mockContractConfig</code>)
+        <br><button
+          type="button"
+          @click="disableMockContract"
+        >
+          Use real RPC contract calls
+        </button>
+      </div>
+      <div>
+        Shop contract:
+        <br><button
+          type="button"
+          @click="setShopContractToTest"
+        >
+          Use Polygon TEST contract address
+        </button> ({{ shopContract.POLYGON_TEST_CONTRACT_ADDRESS}})
+        <br><button
+          type="button"
+          @click="setShopContractToProd"
+        >
+          Use Polygon PROD contract address
+        </button> ({{ shopContract.POLYGON_PROD_CONTRACT_ADDRESS}})
+        <br><button
+          type="button"
+          @click="logShopContractAddress"
+        >
+          Log shop contract address to console
+        </button>
+      </div>
+
       <div>
         To test with a hardcoded address, click one below, and then Connect.
         <br>(Remember to also click 'Use API' if you want to use the real server)
@@ -66,7 +137,7 @@
         >
           Set address '0xBfe09443556773958bae1699b786d8E9680B5571'
         </button>
-        (3 gotchis)
+        (3 gotchis, many items)
       </div>
 
       <div>
@@ -76,7 +147,7 @@
         >
           Set address '0x05EBFf07711A5B6042c27FDaa683a5c6D55b6684'
         </button>
-         (6 gotchis)
+         (6 gotchis, few items)
       </div>
 
       <div>
@@ -86,7 +157,7 @@
         >
           Set address '0xf1d88980505e00db65609ec5420f40c3eb1b77fd'
         </button>
-         (31 gotchis)
+         (31 gotchis, 1 item)
       </div>
 
       <div>
@@ -96,7 +167,7 @@
         >
           Set address '0xaF4Fe811ffA1BF1f7de8FDAa9F706487C882aEd0'
         </button>
-         (0 gotchis)
+         (0 gotchis, 2 items)
       </div>
 
       <div>
@@ -106,7 +177,7 @@
         >
           Set address '0xd8D4BDb89D64B7A2971Dc987DD67F101fea6c7D8'
         </button>
-         (mumbai test with many gotchis)
+         (mumbai test with many gotchis, no items)
       </div>
     </div>
   </main>

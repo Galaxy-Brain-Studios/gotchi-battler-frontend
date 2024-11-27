@@ -1,4 +1,4 @@
-import { api, urls } from './api'
+import { api, urls, getResponseErrorMessage } from './api'
 
 export default {
   async fetchStats () {
@@ -7,7 +7,7 @@ export default {
       return stats
     } catch (e) {
       console.error('fetchStats error', { ...e })
-      throw new Error(e.json?.error || e.json?.message || 'Error fetching stats')
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching stats')
     }
   },
 }

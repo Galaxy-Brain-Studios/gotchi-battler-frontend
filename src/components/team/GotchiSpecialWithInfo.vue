@@ -33,7 +33,6 @@
 
   const name = computed(() => specialsById.value[props.id]?.name)
   const gotchiClass = computed(() => specialsById.value[props.id]?.class)
-  const info = computed(() => specialsById.value[props.id]?.info)
   const effects = computed(() => specialsById.value[props.id]?.effects)
   const leader = computed(() => specialsById.value[props.id]?.leader)
   const leaderEffects = computed(() => specialsById.value[props.id]?.leaderEffects)
@@ -59,7 +58,7 @@
 
     <template #popper>
       <div class="gotchi-special__popup">
-        <template v-if="info">
+        <template v-if="name">
           <template v-if="forSpecial">
             <div class="gotchi-special__popup-header">
               {{ forSpecialShowClass ? gotchiClass : name }}

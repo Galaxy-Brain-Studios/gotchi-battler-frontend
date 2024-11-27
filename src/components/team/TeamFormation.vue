@@ -31,23 +31,18 @@
     }
   })
 
-  const gotchisById = computed(() => {
-    if (!props.team?.gotchis) { return {} }
-    return Object.fromEntries(props.team.gotchis.map(gotchi => [gotchi.id, gotchi]))
-  })
-
   const gotchisInFormation = computed(() => {
     if (!props.team?.formation) { return null }
     return [
-      ...props.team.formation.back.map((gotchiId, index) => ({
+      ...props.team.formation.back.map((gotchiEntry, index) => ({
         row: 'back',
         position: index + 1,
-        gotchi: gotchisById.value[gotchiId]
+        gotchi: gotchiEntry
       })),
-      ...props.team.formation.front.map((gotchiId, index) => ({
+      ...props.team.formation.front.map((gotchiEntry, index) => ({
         row: 'front',
         position: index + 1,
-        gotchi: gotchisById.value[gotchiId]
+        gotchi: gotchiEntry
       })),
     ].filter(entry => !!entry.gotchi)
   })
@@ -66,7 +61,7 @@
   const rowBoosts = computed(() => {
     const boosts = [
       {
-        text: 'Gotchis in the front row will be targeted first, whilst receiving an increase to physical attack and a decrease in physical defence.',
+        text: 'Gotchis in the front row get targeted first by attacks whilst receiving a 10% increase in attack and a 20% decrease in defence',
         color: '#FF5038'
       },
       null // nothing to show for back
@@ -143,7 +138,7 @@
     >
       <slot
         name="gotchi"
-        :gotchi="gotchisById[entry.gotchi.id]"
+        :gotchi="entry.gotchi"
         :row="entry.row"
         :position="entry.position"
       />

@@ -77,8 +77,12 @@
     }
   }
 
-  const onDeletedTeam = function () {
+  const onDeletedTeam = function (teamId) {
     store.refetchTournament()
+    // Ensure we are no longer showing this team
+    if (props.teamId && `${teamId}` === `${props.teamId}`) {
+      router.push({ name: 'tournament-tab', params: { tab: 'teams' } })
+    }
   }
   const onReplacedTeam = function () {
     store.refetchTournament()

@@ -81,6 +81,7 @@
   }
 
   .item-image {
+    min-width: 0;
     width: var(--item-image-width);
     aspect-ratio: 1;
     background-image: var(--image-url);

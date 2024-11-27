@@ -8,6 +8,7 @@
   import SiteDialog from '../common/SiteDialog.vue'
   import SiteIcon from '../common/SiteIcon.vue'
   import SiteButtonPrimary from '../common/SiteButtonPrimary.vue'
+  import SiteButtonBox from '../common/SiteButtonBox.vue'
   import SiteError from '../common/SiteError.vue'
   import SiteConnectWallet from '../site/SiteConnectWallet.vue'
   import ItemImage from '../item/ItemImage.vue'
@@ -172,7 +173,13 @@
           v-if="!isConnected"
         />
         <template v-else-if="canBuy">
+          <SiteButtonBox
+            v-if="buyStatus.loading"
+          >
+            Processing...
+          </SiteButtonBox>
           <SiteButtonPrimary
+            v-else
             compact
             :disabled="!canStartBuy"
             @click="startBuy"
@@ -244,6 +251,7 @@
   }
 
   .item-dialog__image {
+    align-self: flex-start;
     border-radius: 1rem;
     width: var(--item-dialog-image-width);
     --item-padding: var(--item-dialog-image-padding); /* override ItemImage component's custom property */

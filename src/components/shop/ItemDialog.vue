@@ -251,6 +251,7 @@
   }
 
   .item-dialog__image {
+    align-self: flex-start;
     border-radius: 1rem;
     width: var(--item-dialog-image-width);
     --item-padding: var(--item-dialog-image-padding); /* override ItemImage component's custom property */

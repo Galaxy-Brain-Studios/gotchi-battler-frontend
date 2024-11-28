@@ -227,35 +227,6 @@ export const generateTeamForBattle = async function (team) {
   return teamForBattle
 }
 
-
-/**
- * // TODO replace this with a different measure that doesn't rely on training gotchis, e.g. total BRS of team
- * Copied from gotchi-battler-backend
- *
- * Finds the highest training power level in a team of gotchis.
- * Assumes gotchi names start with their rarity.
- *
- * @param {Array} gotchis - An array of gotchis in the team.
- * @returns {string|null} - The highest training power level found in the team, or null if there are no training gotchis.
- */
-const DIFFICULTIES_HIGHEST_FIRST = [].concat(DIFFICULTIES).reverse()
-export const findHighestTrainingPowerLevel = (team) => {
-  // Check if there are any training gotchis in the team (onchainId > 1000000)
-  const gotchis = getEmbeddedGotchisFromFormation(team.formation)
-  const trainingGotchis = gotchis.filter(x => x.onchainId > 1000000)
-  // If there are training gotchis, set the trainingPowerLevel to the highest training gotchi
-  let highestLevel = null
-  if (trainingGotchis.length > 0) {
-    // Extract power level from name e.g "Godlike ++++ Troll" -> "godlike"
-    const powerLevels = trainingGotchis.map(x => x.name.split(' ')[0].toLowerCase())
-
-    // Find the highest power level in the team
-    highestLevel = DIFFICULTIES_HIGHEST_FIRST.find(x => powerLevels.includes(x)) || null
-  }
-
-  return highestLevel
-}
-
 export const getTotalBrsFromFormation = function(formation) {
   const gotchis = getEmbeddedGotchisFromFormation(formation)
   let total = 0

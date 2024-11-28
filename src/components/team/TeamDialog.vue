@@ -30,16 +30,12 @@
       type: Boolean,
       default: false
     },
-    canReplace: {
-      type: Boolean,
-      default: false
-    },
     canEdit: {
       type: Boolean,
       default: false
     }
   })
-  const emit = defineEmits(['update:isOpen', 'deletedTeam', 'requestReplaceTeam', 'requestEditTeam'])
+  const emit = defineEmits(['update:isOpen', 'deletedTeam', 'requestEditTeam'])
 
   const teamStore = useTeamStore({ teamId: props.id })()
   const { team, fetchStatus } = storeToRefs(teamStore)
@@ -77,12 +73,6 @@
       console.error('Error deleting team', e)
       setError('Error deleting team: ' + e.message)
     }
-  }
-
-  const showReplaceButton = computed(() => props.canReplace && (props.id || props.id === 0) && props.tournamentId)
-
-  function requestReplaceTeam () {
-    emit('requestReplaceTeam')
   }
 
   const showEditButton = computed(() => props.canEdit && (props.id || props.id === 0) && props.tournamentId)
@@ -177,20 +167,13 @@
       </div>
 
       <div
-        v-if="showDeleteButton || showReplaceButton || showEditButton"
+        v-if="showDeleteButton || showEditButton"
         class="team__manage"
       >
         <SiteButton
           v-if="showEditButton"
           class="team__manage-button"
           @click="requestEditTeam"
-        >
-          Edit Team
-        </SiteButton>
-        <SiteButton
-          v-if="showReplaceButton"
-          class="team__manage-button"
-          @click="requestReplaceTeam"
         >
           Edit Team
         </SiteButton>

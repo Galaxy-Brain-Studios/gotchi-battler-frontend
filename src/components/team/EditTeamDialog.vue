@@ -25,7 +25,7 @@
       default: null
     }
   })
-  const emit = defineEmits(['update:isOpen', 'replacedTeam', 'editedTeam'])
+  const emit = defineEmits(['update:isOpen', 'editedTeam'])
 
   const teamStore = useTeamStore({ teamId: props.id })()
   const { team, fetchStatus } = storeToRefs(teamStore)
@@ -34,29 +34,8 @@
 
   function updateTeam (team) {
     if (!team || !(props.id || props.id === 0)) { return }
-    if (props.mode === 'replace') {
-      replaceTeam(team)
-    } else if (props.mode === 'edit') {
+    if (props.mode === 'edit') {
       editTeam(team)
-    }
-  }
-
-  async function replaceTeam (team) {
-    const [isStale, setLoaded, setError] = setLoading()
-    try {
-      await tournamentsService.replaceTeam({
-        tournamentId: props.tournamentId,
-        teamId: props.id,
-        team: generateTournamentTeamToSubmit(team)
-      })
-      if (isStale()) { return }
-      setLoaded()
-      emit('update:isOpen', false)
-      emit('replacedTeam')
-    } catch (e) {
-      if (isStale()) { return }
-      console.error('Error replacing team', e)
-      setError(`Error: ${e.message}`)
     }
   }
 

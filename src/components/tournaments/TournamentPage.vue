@@ -84,9 +84,6 @@
       router.push({ name: 'tournament-tab', params: { tab: 'teams' } })
     }
   }
-  const onReplacedTeam = function () {
-    store.refetchTournament()
-  }
   const onEditedTeam = function () {
     store.refetchTournament()
   }
@@ -220,7 +217,6 @@
           :teamId="teamId"
           :teamMode="teamMode"
           @deletedTeam="onDeletedTeam"
-          @replacedTeam="onReplacedTeam"
           @editedTeam="onEditedTeam"
         />
 

@@ -10,35 +10,30 @@ const teamFrontPositionPropertyNames = ['front1', 'front2', 'front3', 'front4', 
 const teamFrontPositionGotchiPropertyNames = teamFrontPositionPropertyNames.map(name => name + 'Gotchi')
 const teamSubstitutePositionPropertyNames = ['sub1', 'sub2']
 const teamSubstitutePositionGotchiPropertyNames = teamSubstitutePositionPropertyNames.map(name => name + 'Gotchi')
-// const teamPositionPropertyNames = [...teamBackPositionPropertyNames, ...teamFrontPositionPropertyNames, ...teamSubstitutePositionPropertyNames]
-// const teamGotchiPropertyNames = teamPositionPropertyNames.map(name => name + 'Gotchi')
-// const teamLeaderPositionPropertyName = 'leader'
+const teamPositionPropertyNames = [...teamBackPositionPropertyNames, ...teamFrontPositionPropertyNames, ...teamSubstitutePositionPropertyNames]
 
 // Convert server-side format ({ back1, back1Gotchi })
 // to formation with embedded gotchis ({ formation: { front, back, substitutes } })
-export const processTeamModel = function(team) {
+export const processTeamModel = function(team, options /* { useOnchainIds } */) {
   if (!team) { return null }
   // training teams have a team difficulty
   const difficulty = team.trainingPowerLevel ? team.trainingPowerLevel.toLowerCase() : null
 
-  // use the onchainId as the gotchi id (relevant for training teams and when editing own teams)
-  // TODO is this still necessary/correct?
-  /*
-  const gotchiIdToOnchainId = {}
-  for (const propertyName of teamGotchiPropertyNames) {
-    const gotchi = team[propertyName]
-    if (gotchi) {
-      gotchiIdToOnchainId[gotchi.id] = gotchi.onchainId
-      gotchi.id = gotchi.onchainId
+  // optionally use the onchainId as the gotchi id (relevant when editing own teams)
+  // this assumes that duplicates are not allowed, i.e. the onchain IDs are unique within the team
+  if (options?.useOnchainIds) {
+    for (const propertyName of teamPositionPropertyNames) {
+      const oldId = team[propertyName]
+      const onchainId = team[`${propertyName}Gotchi`]?.onchainId || null
+      if (oldId && onchainId) {
+        team[propertyName] = onchainId
+        team[`${propertyName}Gotchi`].id = onchainId
+        if (team.leader === oldId) {
+          team.leader = onchainId
+        }
+      }
     }
   }
-  for (const propertyName of [...teamPositionPropertyNames, teamLeaderPositionPropertyName]) {
-    const id = team[propertyName]
-    if (id && gotchiIdToOnchainId[id]) {
-      team[propertyName] = gotchiIdToOnchainId[id]
-    }
-  }
-  */
 
   const back = teamBackPositionGotchiPropertyNames.map(propertyName => processGotchiModel(team[propertyName]))
   const front = teamFrontPositionGotchiPropertyNames.map(propertyName => processGotchiModel(team[propertyName]))

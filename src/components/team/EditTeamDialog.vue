@@ -1,10 +1,13 @@
 <script setup>
+  import { ref, watch } from 'vue'
   import { storeToRefs } from 'pinia'
-  import { useTeamStore } from '../../data/teamStore'
-  import useStatus from '../../utils/useStatus'
-  import { generateTournamentTeamToSubmit } from '../../data/teamUtils'
-  import tournamentsService from '../../data/tournamentsService'
+  import { useAccountStore } from '@/data/accountStore'
+  import profileService from '@/data/profileService'
+  import useStatus from '@/utils/useStatus'
+  import { generateTournamentTeamToSubmit } from '@/data/teamUtils'
+  import tournamentsService from '@/data/tournamentsService'
   import SiteDialog from '../common/SiteDialog.vue'
+  import SiteRequireSignIn from '../site/SiteRequireSignIn.vue'
   import CreateTeamDialog from './CreateTeamDialog.vue'
 
   const props = defineProps({
@@ -27,8 +30,37 @@
   })
   const emit = defineEmits(['update:isOpen', 'editedTeam'])
 
-  const teamStore = useTeamStore({ teamId: props.id })()
-  const { team, fetchStatus } = storeToRefs(teamStore)
+  const accountStore = useAccountStore()
+  const { signedSession } = storeToRefs(accountStore)
+
+  const team = ref(null)
+  const { status: fetchStatus, setLoading: setFetchLoading, reset: resetFetchLoading } = useStatus()
+
+  watch(
+    () => [props.id, props.tournamentId, signedSession.value],
+    async () => {
+      if (!props.id || !props.tournamentId || !signedSession.value) {
+        team.value = null
+        resetFetchLoading()
+        return
+      }
+      const [isStale, setLoaded, setError] = setFetchLoading()
+      try {
+        const result = await profileService.fetchTournamentTeamToEdit({
+          tournamentId: props.tournamentId,
+          teamId: props.id
+        })
+        if (isStale()) { return }
+        team.value = result
+        setLoaded()
+      } catch (e) {
+        if (isStale()) { return }
+        console.error('Error fetching team', e)
+        setError(`Error: ${e.message}`)
+      }
+    },
+    { immediate: true }
+  )
 
   const { status: submitStatus, setLoading: setLoading } = useStatus()
 
@@ -62,21 +94,27 @@
 
 <template>
   <SiteDialog
-    v-if="fetchStatus.loading"
+    v-if="!team"
     :isOpen="isOpen"
     variant="medium"
   >
-    Loading...
-  </SiteDialog>
-  <SiteDialog
-    v-else-if="fetchStatus.error"
-    :isOpen="isOpen"
-    variant="medium"
-  >
-    Error loading team ({{ fetchStatus.errorMessage }})
+    <SiteRequireSignIn>
+      <template #signin-message>
+        to edit your team
+      </template>
+      <template v-if="fetchStatus.loading">
+        Loading...
+      </template>
+      <template v-else-if="fetchStatus.error">
+        Error loading team ({{ fetchStatus.errorMessage }})
+      </template>
+      <template v-else-if="fetchStatus.loaded">
+        Unexpected error, no team data received
+      </template>
+    </SiteRequireSignIn>
   </SiteDialog>
   <CreateTeamDialog
-    v-else-if="team"
+    v-else
     :isOpen="isOpen"
     :mode="mode"
     :team="team"

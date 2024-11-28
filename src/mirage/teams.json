@@ -99,7 +99,7 @@
                 }
             ],
             "specialId": 7,
-            "itemId": 2,
+            "itemId": 1,
             "speed": 10,
             "health": 20,
             "accuracy": 30,
@@ -276,7 +276,7 @@
                 }
             ],
             "specialId": 5,
-            "itemId": null,
+            "itemId": 21,
             "speed": 146,
             "health": 228,
             "accuracy": 71,

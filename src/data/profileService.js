@@ -116,6 +116,16 @@ export default {
     }
   }),
 
+  fetchTournamentTeamToEdit: requireLoginSession(async function (teamId) {
+    try {
+      const team = await apiWithCredentials.url(urls.getTournamentTeamToEdit(teamId)).get()
+      return processTeamModel(team, { useOnchainIds: true })
+    } catch (e) {
+      console.error('fetchTournamentTeamToEdit error', e)
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching team')
+    }
+  }),
+
   deleteImage: requireLoginSession(async function () {
     try {
       const profile = await apiWithCredentials.url(urls.updateProfileImage()).post({ filename: null })

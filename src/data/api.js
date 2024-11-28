@@ -28,6 +28,8 @@ const urls = {
     `${BASE_URL}/api/v1/me/tournaments/${encodeURIComponent(tournamentId)}/teams/${encodeURIComponent(teamId)}`,
   editTournamentTeam: ({ tournamentId, teamId }) =>
     `${BASE_URL}/api/v1/me/tournaments/${encodeURIComponent(tournamentId)}/teams/${encodeURIComponent(teamId)}`,
+  getTournamentTeamToEdit: ({ tournamentId, teamId }) =>
+    `${BASE_URL}/api/v1/me/tournaments/${encodeURIComponent(tournamentId)}/teams/${encodeURIComponent(teamId)}`,
   tournamentTeams: (tournamentId) => `${BASE_URL}/api/v1/tournaments/${encodeURIComponent(tournamentId)}/teams`,
   tournamentTeamsReport: (tournamentId) => `${BASE_URL}/api/v1/tournaments/${encodeURIComponent(tournamentId)}/teams-report`,
   tournamentGotchis: (tournamentId) => `${BASE_URL}/api/v1/tournaments/${encodeURIComponent(tournamentId)}/gotchis`,

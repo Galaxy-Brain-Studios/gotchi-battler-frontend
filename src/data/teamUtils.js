@@ -10,35 +10,30 @@ const teamFrontPositionPropertyNames = ['front1', 'front2', 'front3', 'front4', 
 const teamFrontPositionGotchiPropertyNames = teamFrontPositionPropertyNames.map(name => name + 'Gotchi')
 const teamSubstitutePositionPropertyNames = ['sub1', 'sub2']
 const teamSubstitutePositionGotchiPropertyNames = teamSubstitutePositionPropertyNames.map(name => name + 'Gotchi')
-// const teamPositionPropertyNames = [...teamBackPositionPropertyNames, ...teamFrontPositionPropertyNames, ...teamSubstitutePositionPropertyNames]
-// const teamGotchiPropertyNames = teamPositionPropertyNames.map(name => name + 'Gotchi')
-// const teamLeaderPositionPropertyName = 'leader'
+const teamPositionPropertyNames = [...teamBackPositionPropertyNames, ...teamFrontPositionPropertyNames, ...teamSubstitutePositionPropertyNames]
 
 // Convert server-side format ({ back1, back1Gotchi })
 // to formation with embedded gotchis ({ formation: { front, back, substitutes } })
-export const processTeamModel = function(team) {
+export const processTeamModel = function(team, options /* { useOnchainIds } */) {
   if (!team) { return null }
   // training teams have a team difficulty
   const difficulty = team.trainingPowerLevel ? team.trainingPowerLevel.toLowerCase() : null
 
-  // use the onchainId as the gotchi id (relevant for training teams and when editing own teams)
-  // TODO is this still necessary/correct?
-  /*
-  const gotchiIdToOnchainId = {}
-  for (const propertyName of teamGotchiPropertyNames) {
-    const gotchi = team[propertyName]
-    if (gotchi) {
-      gotchiIdToOnchainId[gotchi.id] = gotchi.onchainId
-      gotchi.id = gotchi.onchainId
+  // optionally use the onchainId as the gotchi id (relevant when editing own teams)
+  // this assumes that duplicates are not allowed, i.e. the onchain IDs are unique within the team
+  if (options?.useOnchainIds) {
+    for (const propertyName of teamPositionPropertyNames) {
+      const oldId = team[propertyName]
+      const onchainId = team[`${propertyName}Gotchi`]?.onchainId || null
+      if (oldId && onchainId) {
+        team[propertyName] = onchainId
+        team[`${propertyName}Gotchi`].id = onchainId
+        if (team.leader === oldId) {
+          team.leader = onchainId
+        }
+      }
     }
   }
-  for (const propertyName of [...teamPositionPropertyNames, teamLeaderPositionPropertyName]) {
-    const id = team[propertyName]
-    if (id && gotchiIdToOnchainId[id]) {
-      team[propertyName] = gotchiIdToOnchainId[id]
-    }
-  }
-  */
 
   const back = teamBackPositionGotchiPropertyNames.map(propertyName => processGotchiModel(team[propertyName]))
   const front = teamFrontPositionGotchiPropertyNames.map(propertyName => processGotchiModel(team[propertyName]))
@@ -230,35 +225,6 @@ export const generateTeamForBattle = async function (team) {
   }
   // console.log('generated team', teamForBattle)
   return teamForBattle
-}
-
-
-/**
- * // TODO replace this with a different measure that doesn't rely on training gotchis, e.g. total BRS of team
- * Copied from gotchi-battler-backend
- *
- * Finds the highest training power level in a team of gotchis.
- * Assumes gotchi names start with their rarity.
- *
- * @param {Array} gotchis - An array of gotchis in the team.
- * @returns {string|null} - The highest training power level found in the team, or null if there are no training gotchis.
- */
-const DIFFICULTIES_HIGHEST_FIRST = [].concat(DIFFICULTIES).reverse()
-export const findHighestTrainingPowerLevel = (team) => {
-  // Check if there are any training gotchis in the team (onchainId > 1000000)
-  const gotchis = getEmbeddedGotchisFromFormation(team.formation)
-  const trainingGotchis = gotchis.filter(x => x.onchainId > 1000000)
-  // If there are training gotchis, set the trainingPowerLevel to the highest training gotchi
-  let highestLevel = null
-  if (trainingGotchis.length > 0) {
-    // Extract power level from name e.g "Godlike ++++ Troll" -> "godlike"
-    const powerLevels = trainingGotchis.map(x => x.name.split(' ')[0].toLowerCase())
-
-    // Find the highest power level in the team
-    highestLevel = DIFFICULTIES_HIGHEST_FIRST.find(x => powerLevels.includes(x)) || null
-  }
-
-  return highestLevel
 }
 
 export const getTotalBrsFromFormation = function(formation) {

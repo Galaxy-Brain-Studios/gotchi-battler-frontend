@@ -3,7 +3,7 @@ import { submitTx } from './wagmi'
 import shopContractAbi from './shopContractAbi.json'
 
 const POLYGON_TEST_CONTRACT_ADDRESS = '0x4bA7DF6154f0Da58f0f3dAc0aE5Add1d59F2deF5' // Polygon Test contract
-const POLYGON_PROD_CONTRACT_ADDRESS = '0x90196f04f86c879fbB5C8b44CE8D3943E73eCc58' // TODO Polygon Prod contract
+const POLYGON_PROD_CONTRACT_ADDRESS = '0x90196f04f86c879fbB5C8b44CE8D3943E73eCc58' // Polygon Prod contract
 
 // The shop contract address can be set by an env variable (top priority)
 // otherwise it is set based on DEV_MODE, and in dev mode can also be changed at runtime through the DevPage.

@@ -2,7 +2,7 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import useStatus from '../utils/useStatus'
 import battlesService from './battlesService';
-import { generateTeamForBattle, findHighestTrainingPowerLevel } from './teamUtils'
+import { generateTeamForBattle } from './teamUtils'
 
 export const useTrainingBattlesStore = defineStore('trainingBattles', () => {
   const battleIds = ref([]);
@@ -105,15 +105,10 @@ export const runTrainingBattle = async function ({ team1, team2 }) {
   }, 200)
 
   // battle object returned: store it, with teams in the originally provided format
-  // Generate training team difficulty based on the gotchis present in the team
-  const team2Extended = {
-    ...team2,
-    difficulty: findHighestTrainingPowerLevel(team2)
-  }
   const battle = {
     ...result,
     ...batchResult,
-    teams: [team1, team2Extended]
+    teams: [team1, team2]
   }
   useBattleStore(result.id, battle)()
   console.log('Stored battle', battle)

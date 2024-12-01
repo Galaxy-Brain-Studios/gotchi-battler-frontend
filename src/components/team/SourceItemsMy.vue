@@ -8,6 +8,10 @@
     itemIdsInTeam: {
       type: Array,
       default: null
+    },
+    additionalItems: {
+      type: Array,
+      default: null
     }
   })
 
@@ -26,6 +30,7 @@
     v-else
     :address="address"
     :itemIdsInTeam="itemIdsInTeam"
+    :additionalItems="additionalItems"
   >
     <template #items="slotProps">
       <slot

@@ -69,7 +69,7 @@ export const generateTournamentTeamToSubmit = function (team) {
   const gotchis = getEmbeddedGotchisFromFormation(team.formation)
   const gotchiTeam = gotchis.map(g => g.id)
   const gotchiSpecials = gotchis.map(g => g.specialId)
-  const gotchiItems = gotchis.map(g => g.itemId)
+  const gotchiItems = gotchis.map(g => g.itemId || 0)
   const gotchiLeader = team.leader
   const gotchiFormation = [
     ...team.formation.back.map(gotchi => gotchi?.id || 0),

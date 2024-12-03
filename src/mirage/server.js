@@ -201,6 +201,10 @@ const mirageConfig = window.mirageConfig = {
     error: false,
     slow: false
   },
+  getTournamentTeamToEdit: {
+    error: false,
+    slow: false
+  },
   editTournamentTeam: {
     error: false,
     slow: false
@@ -584,6 +588,41 @@ export function makeServer({ environment = 'development' } = {}) {
         return newTeam
       }, {
         timing: mirageConfig.createTournamentTeam.slow ? 5000 : 1000
+      })
+
+      this.get(fixUrl(urls.getTournamentTeamToEdit({ tournamentId: ':tournamentId', teamId: ':teamId' })), async (schema, request) => {
+        if (mirageConfig.getTournamentTeamToEdit.error) {
+          return errorResponse()
+        }
+        const address = checkCredentials(request)
+        if (!address) { return unauthorizedErrorResponse() }
+
+        const teamId = request.params.teamId;
+        const team = teamsById[teamId]?.leader ? teamsById[teamId] : {
+          ...teamsById.DEFAULT,
+          name: `Mock Team ${teamId}`,
+          ...teamsById[teamId],
+          id: teamId
+        }
+        // generate new ids for the gotchis, as this is what the real server does
+        let baseId = Date.now()
+        for (const key of ['back1', 'back2', 'back3', 'back4', 'back5',
+                            'front1', 'front2', 'front3', 'front4', 'front5',
+                            'sub1', 'sub2']) {
+          if (team[key]) {
+            const oldId = team[key]
+            const newId = ++baseId
+            team[key] = newId
+            team[`${key}Gotchi`].id = newId
+            if (team.leader === oldId) {
+              team.leader = newId
+            }
+          }
+        }
+
+        return team
+      }, {
+        timing: mirageConfig.getTournamentTeamToEdit.slow ? 5000 : 1000
       })
 
       this.put(fixUrl(urls.editTournamentTeam({ tournamentId: ':tournamentId', teamId: ':teamId' })), async (schema, request) => {

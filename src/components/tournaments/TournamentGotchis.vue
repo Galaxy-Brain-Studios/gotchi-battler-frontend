@@ -295,7 +295,6 @@
           :id="teamId"
           :tournamentId="tournamentId"
           :canDelete="false"
-          :canReplace="false"
           :canEdit="false"
         />
       </div>

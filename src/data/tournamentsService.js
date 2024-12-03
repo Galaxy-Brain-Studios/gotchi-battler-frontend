@@ -129,11 +129,6 @@ export default {
     }
   }),
 
-  // TODO not yet supported by server
-  // async replaceTeam ({ tournamentId, teamId, team }) {
-  //   return null;
-  // },
-
   editTeam: requireLoginSession(async function ({ tournamentId, teamId, team }) {
     try {
       const result = await apiWithCredentials.url(urls.editTournamentTeam({ tournamentId, teamId })).put(team)

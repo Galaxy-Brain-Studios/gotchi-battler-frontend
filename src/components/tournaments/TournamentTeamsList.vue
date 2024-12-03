@@ -21,7 +21,6 @@
 
   const TEAM_MODES = {
     VIEW: null,
-    REPLACE: 'replace', // before inscription phase, will delete and create new team
     EDIT: 'edit' // during inscription phase, more limited editing allowed
   }
   const props = defineProps({
@@ -46,7 +45,7 @@
       default: null
     }
   })
-  defineEmits(['deletedTeam', 'replacedTeam', 'editedTeam'])
+  defineEmits(['deletedTeam', 'editedTeam'])
 
   // Fetch teams in tournament
   const { fetchTeams, fetchTeamsStatus, teams } = useTournamentTeamsReport()
@@ -73,7 +72,7 @@
         teamDialogIsOpen.value = false
         editTeamDialogIsOpen.value = false
       } else if (newTeamId !== oldTeamId) {
-        if ([TEAM_MODES.REPLACE, TEAM_MODES.EDIT].includes(props.teamMode)) {
+        if ([TEAM_MODES.EDIT].includes(props.teamMode)) {
           editTeamDialogIsOpen.value = true
         } else {
           teamDialogIsOpen.value = true
@@ -183,13 +182,8 @@
   })
 
   const canDeleteTeam = computed(() => canManageTeam.value && props.tournamentStatus === 'registering' )
-  //const canReplaceTeam = computed(() => canDeleteTeam.value)
-  const canReplaceTeam = computed(() => false) // Disabled as server doesn't yet support this, but might in future
   const canEditTeam = computed(() => canManageTeam.value && props.tournamentStatus === 'active_preparation' )
 
-  function requestReplaceTeam () {
-    router.push({ name: 'tournament-tab', params: { tab: 'teams', teamId: props.teamId, teamMode: 'replace' } })
-  }
   function requestEditTeam () {
     router.push({ name: 'tournament-tab', params: { tab: 'teams', teamId: props.teamId, teamMode: 'edit' } })
   }
@@ -211,7 +205,7 @@
         editTeamDialogIsOpen.value = false
       } else {
         // non-default mode shows Edit dialog, but check this is allowed
-        if (!canReplaceTeam.value && !canEditTeam.value) {
+        if (!canEditTeam.value) {
           router.push({ name: 'tournament-tab', params: { tab: 'teams' } })
         } else {
           teamDialogIsOpen.value = false
@@ -415,19 +409,16 @@
       :id="teamIdNum"
       :tournamentId="tournamentId"
       :canDelete="canDeleteTeam"
-      :canReplace="canReplaceTeam"
       :canEdit="canEditTeam"
       @deletedTeam="$emit('deletedTeam', $event)"
-      @requestReplaceTeam="requestReplaceTeam"
       @requestEditTeam="requestEditTeam"
     />
     <EditTeamDialog
-      v-if="teamId && (canReplaceTeam || canEditTeam) && editTeamDialogIsOpen"
+      v-if="teamId && canEditTeam && editTeamDialogIsOpen"
       v-model:isOpen="editTeamDialogIsOpen"
       :id="teamIdNum"
       :tournamentId="tournamentId"
       :mode="teamMode"
-      @replacedTeam="$emit('replacedTeam')"
       @editedTeam="$emit('editedTeam')"
     />
   </template>

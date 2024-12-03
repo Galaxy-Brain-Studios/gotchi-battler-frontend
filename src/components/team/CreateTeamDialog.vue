@@ -99,15 +99,34 @@
     }
   }
 
-  const incomingTeamGotchis = computed(() => {
+  const incomingTeamEntries = computed(() => {
     if (!props.team?.formation) { return null }
-    // extract all gotchi objects from the incoming team formation
     return [
       ...props.team.formation.back,
       ...props.team.formation.front,
       ...props.team.formation.substitutes
     ].filter(gotchi => !!gotchi)
-    .map(g => deconstructEmbeddedGotchiFromSlot(g).gotchi)
+    .map(g => deconstructEmbeddedGotchiFromSlot(g))
+  })
+  const incomingTeamGotchis = computed(() => {
+    if (!incomingTeamEntries.value) { return null }
+    // extract all gotchi objects from the incoming team formation
+    return incomingTeamEntries.value.map(entry => entry.gotchi)
+  })
+  const additionalItemsFromIncomingTeam = computed(() => {
+    if (!incomingTeamEntries.value) { return null }
+    // get counts of all items equipped in the incoming team formation
+    const items = {}
+    for (const entry of incomingTeamEntries.value) {
+      const itemId = entry.itemId
+      if (itemId) {
+        if (!items[itemId]) {
+          items[itemId] = { id: itemId, quantity: 0 }
+        }
+        items[itemId].quantity++
+      }
+    }
+    return Object.values(items)
   })
 
   const modeLabel = computed(() => {
@@ -263,7 +282,7 @@
         id: 'myitems',
         label: 'Items',
         component: SourceItemsMy,
-        props: { itemIdsInTeam: true },
+        props: { itemIdsInTeam: true, additionalItems: true },
         type: SOURCE_TYPE.ITEM
       }
     ]
@@ -370,6 +389,9 @@
       }
       if (propsRequested.itemIdsInTeam) {
         propsToProvide.itemIdsInTeam = teamSlotsItemIds.value
+      }
+      if (propsRequested.additionalItems) {
+        propsToProvide.additionalItems = additionalItemsFromIncomingTeam.value
       }
     }
     return propsToProvide
@@ -1240,7 +1262,7 @@
                       <template #popper>
                         <div class="create-team__source-result-popup">
                           <div class="create-team__source-result-popup-header">
-                            {{ element.name }} #{{ element.id }}
+                            {{ element.name }} #{{ element.onchainId || element.id }}
                           </div>
                           <div
                             v-if="differentTeamForGotchi[element.id]"
@@ -1689,7 +1711,7 @@
             :height="1.5"
           />
           <div>
-            Your updates will be saved and applied at the end of the preparation round. Until then, no one <b>(including yourself!)</b> can see the changes made to the team to keep it secret.
+            Your updates will be saved and applied at the end of the preparation round. Until then, no one <b>(including yourself, except here while editing!)</b> can see the changes made to the team to keep it secret.
           </div>
         </div>
         <div class="create-team__submit">

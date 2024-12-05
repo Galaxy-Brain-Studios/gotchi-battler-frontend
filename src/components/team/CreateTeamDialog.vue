@@ -1711,7 +1711,7 @@
             :height="1.5"
           />
           <div>
-            Your updates will be saved and applied at the end of the preparation round. Until then, no one <b>(including yourself, except here while editing!)</b> can see the changes made to the team to keep it secret.
+            Your updates will be saved and applied at the end of the preparation round. Until then, no one <b>(except yourself while signed-in)</b> can see the changes made to the team to keep it secret.
           </div>
         </div>
         <div class="create-team__submit">

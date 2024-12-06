@@ -8,6 +8,7 @@
   import useStatus from '../../utils/useStatus'
   import SiteDialog from '../common/SiteDialog.vue'
   import SiteButton from '../common/SiteButton.vue'
+  import SiteIcon from '../common/SiteIcon.vue'
   import SiteError from '../common/SiteError.vue'
   import SiteRequireSignIn from '../site/SiteRequireSignIn.vue'
   import TeamFormation from './TeamFormation.vue'
@@ -41,7 +42,7 @@
   const emit = defineEmits(['update:isOpen', 'deletedTeam', 'requestEditTeam'])
 
   const accountStore = useAccountStore()
-  const { signedSession } = storeToRefs(accountStore)
+  const { address, signedSession } = storeToRefs(accountStore)
 
   // Normally we display the public version of the team
   const teamStore = useTeamStore({ teamId: props.id })()
@@ -125,6 +126,41 @@
   }
 
   const showSignInToViewProtectedTeam = computed(() => showEditButton.value && !signedSession.value)
+
+
+  // Allow connected user to save a copy of the team
+  const canSaveProfileTeam = computed(() => address.value)
+  const showSaveProfileTeamSuccess = ref(false)
+  const { status: submitProfileTeamStatus, setLoading: setProfileTeamLoading, reset: resetProfileTeamStatus } = useStatus()
+
+  watch(
+    () => teamToDisplay.value,
+    () => {
+      showSaveProfileTeamSuccess.value = false
+      resetProfileTeamStatus()
+    }
+  )
+
+  async function saveProfileTeam () {
+    const teamData = {
+      name: teamToDisplay.value.name,
+      formation: teamToDisplay.value.formation,
+      leader: teamToDisplay.value.leader
+    }
+
+    const [isStale, setLoaded, setError] = setProfileTeamLoading()
+    try {
+      await profileService.createTeam({
+        owner: address.value,
+        ...teamData
+      })
+      if (isStale()) { return; }
+      setLoaded()
+      showSaveProfileTeamSuccess.value = true
+    } catch (e) {
+      setError(e.message)
+    }
+  }
 
 </script>
 
@@ -210,11 +246,44 @@
             />
           </template>
         </TeamSubstitutes>
-        <SiteRequireSignIn v-if="showSignInToViewProtectedTeam">
+        <SiteRequireSignIn
+          v-if="showSignInToViewProtectedTeam"
+          class="team__view-protected-team"
+        >
           <template #signin-message>
             to view your latest submitted team
           </template>
         </SiteRequireSignIn>
+        <div
+          v-if="canSaveProfileTeam"
+          class="team__save-team"
+        >
+          <div
+            v-if="showSaveProfileTeamSuccess"
+            class="team__save-team-success"
+          >
+            <SiteIcon name="check" />
+            <span>Saved Team</span>
+          </div>
+          <SiteButton
+            v-else-if="submitProfileTeamStatus.loading"
+            disabled
+          >
+            Saving...
+          </SiteButton>
+          <SiteError
+            v-else-if="submitProfileTeamStatus.error"
+          >
+            {{ submitProfileTeamStatus.errorMessage }}
+          </SiteError>
+          <SiteButton
+            v-else
+            icon="favorite"
+            @click="saveProfileTeam"
+          >
+            Add to My Saved Teams
+          </SiteButton>
+        </div>
       </div>
 
       <div
@@ -269,6 +338,14 @@
     text-overflow: ellipsis;
   }
 
+  .team__formation {
+    display: flex;
+    flex-direction: column;
+    gap: 1.88rem;
+    margin-bottom: 2rem;
+    align-items: flex-start;
+  }
+
   @media (min-width: 1500px) {
     .team__details {
       display: grid;
@@ -282,6 +359,7 @@
     }
     .team__formation {
       grid-area: formation;
+      margin-bottom: 0;
     }
     .team__manage {
       grid-area: manage;
@@ -291,10 +369,11 @@
     }
   }
 
-  .team__formation-substitutes {
-    margin-top: 1.88rem;
-    margin-bottom: 2rem;
+  .team__view-protected-team,
+  .team__save-team {
+    align-self: center;
   }
+
   .team__manage {
     margin-top: 1rem;
     display: flex;
@@ -309,5 +388,16 @@
     margin-right: 1rem;
     flex: none;
     align-self: flex-start;
+  }
+
+  .team__save-team-success {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    font-weight: bold;
+    color: var(--c-white);
+    text-transform: uppercase;
   }
 </style>

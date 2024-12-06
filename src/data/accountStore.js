@@ -109,7 +109,19 @@ export const useAccountStore = defineStore('account', () => {
       // Submit signed message to server to initialize session
       await sessionService.login({ message, signature })
       if (isStale()) { throw new Error('Login cancelled') }
-      // Server session is set up, we're signed in
+      // Server session is set up now
+      // Verify sign-in works by submitting a server request
+      // If cookies are blocked, this won't work
+      const user = await sessionService.fetchSessionUser()
+      if (!user) {
+        logSessionEvent('session: post-sign in existing session is null')
+        throw new Error('There was an error connecting to your login session: please check that third-party cookies are allowed for this website in your browser')
+      }
+      if (!user.address || user.address?.toLowerCase() !== address.value?.toLowerCase()) {
+        logSessionEvent('session: post-sign in existing session address does not match', { server: user.address, expected: address.value })
+        throw new Error('Unexpected session address mismatch')
+      }
+      // Server session is set up and browser is sending cookie, we're signed in
       signedSession.value = address.value
       logSessionEvent('session: sign in - success', signedSession.value)
       setLoaded()

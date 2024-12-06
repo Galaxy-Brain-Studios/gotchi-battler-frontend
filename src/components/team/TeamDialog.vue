@@ -1,12 +1,16 @@
 <script setup>
   import { ref, computed, watch } from 'vue'
   import { storeToRefs } from 'pinia'
+  import { useAccountStore } from '@/data/accountStore'
   import { useTeamStore } from '../../data/teamStore'
   import tournamentsService from '../../data/tournamentsService'
+  import profileService from '../../data/profileService'
   import useStatus from '../../utils/useStatus'
   import SiteDialog from '../common/SiteDialog.vue'
   import SiteButton from '../common/SiteButton.vue'
+  import SiteIcon from '../common/SiteIcon.vue'
   import SiteError from '../common/SiteError.vue'
+  import SiteRequireSignIn from '../site/SiteRequireSignIn.vue'
   import TeamFormation from './TeamFormation.vue'
   import TeamSubstitutes from './TeamSubstitutes.vue'
   import GotchiInFormation from './GotchiInFormation.vue'
@@ -37,15 +41,55 @@
   })
   const emit = defineEmits(['update:isOpen', 'deletedTeam', 'requestEditTeam'])
 
+  const accountStore = useAccountStore()
+  const { address, signedSession } = storeToRefs(accountStore)
+
+  // Normally we display the public version of the team
   const teamStore = useTeamStore({ teamId: props.id })()
   const { team, fetchStatus } = storeToRefs(teamStore)
+
+  // If canEdit is enabled, and the user is viewing their own team,
+  // we should fetch and display the latest submitted team (protected endpoint)
+  const protectedTeam = ref(null)
+  const { status: protectedTeamFetchStatus, setLoading: setProtectedTeamFetchLoading, reset: resetProtectedTeamFetchLoading } = useStatus()
+
+  const displayProtectedTeam = computed(() => props.canEdit && signedSession.value)
+
+  watch(
+    () => [displayProtectedTeam.value, props.id, props.tournamentId],
+    async () => {
+      if (!displayProtectedTeam.value) {
+        protectedTeam.value = null
+        resetProtectedTeamFetchLoading()
+        return
+      }
+      const [isStale, setLoaded, setError] = setProtectedTeamFetchLoading()
+      try {
+        const result = await profileService.fetchTournamentTeamToEdit({
+          tournamentId: props.tournamentId,
+          teamId: props.id
+        })
+        if (isStale()) { return }
+        protectedTeam.value = result
+        setLoaded()
+      } catch (e) {
+        if (isStale()) { return }
+        console.error('Error fetching protected team', e)
+        setError(`Error: ${e.message}`)
+      }
+    },
+    { immediate: true }
+  )
+
+  const teamToDisplay = computed(() => displayProtectedTeam?.value ? protectedTeam.value : team.value)
+  const teamToDisplayFetchStatus = computed(() => displayProtectedTeam?.value ? protectedTeamFetchStatus.value : fetchStatus.value )
 
   const displayGotchi = ref(null)
 
   const { status: deleteStatus, setLoading: setDeleteLoading, reset: resetDeleteStatus } = useStatus()
 
   watch(
-    () => team.value,
+    () => teamToDisplay.value,
     (newTeam) => {
       if (newTeam && newTeam.leader && newTeam.formation) {
         displayGotchi.value = [...newTeam.formation.front, ...newTeam.formation.back].find(g => g?.id === newTeam.leader) || null
@@ -80,6 +124,44 @@
   function requestEditTeam () {
     emit('requestEditTeam')
   }
+
+  const showSignInToViewProtectedTeam = computed(() => showEditButton.value && !signedSession.value)
+
+
+  // Allow connected user to save a copy of the team
+  const canSaveProfileTeam = computed(() => address.value)
+  const showSaveProfileTeamSuccess = ref(false)
+  const { status: submitProfileTeamStatus, setLoading: setProfileTeamLoading, reset: resetProfileTeamStatus } = useStatus()
+
+  watch(
+    () => teamToDisplay.value,
+    () => {
+      showSaveProfileTeamSuccess.value = false
+      resetProfileTeamStatus()
+    }
+  )
+
+  async function saveProfileTeam () {
+    const teamData = {
+      name: teamToDisplay.value.name,
+      formation: teamToDisplay.value.formation,
+      leader: teamToDisplay.value.leader
+    }
+
+    const [isStale, setLoaded, setError] = setProfileTeamLoading()
+    try {
+      await profileService.createTeam({
+        owner: address.value,
+        ...teamData
+      })
+      if (isStale()) { return; }
+      setLoaded()
+      showSaveProfileTeamSuccess.value = true
+    } catch (e) {
+      setError(e.message)
+    }
+  }
+
 </script>
 
 <template>
@@ -90,28 +172,28 @@
   >
     <template #title>
       <div class="team__title">
-        {{ team?.name || 'Team' }}
+        {{ teamToDisplay?.name || 'Team' }}
       </div>
     </template>
     <div
-      v-if="fetchStatus.loading"
+      v-if="teamToDisplayFetchStatus.loading"
       class="team__loading"
     >
       Loading...
     </div>
     <div
-      v-if="fetchStatus.error"
+      v-if="teamToDisplayFetchStatus.error"
       class="team__error"
     >
-      {{ fetchStatus.errorMessage }}
+      {{ teamToDisplayFetchStatus.errorMessage }}
     </div>
     <div
-      v-else-if="fetchStatus.loaded"
+      v-else-if="teamToDisplayFetchStatus.loaded"
       class="team__details"
     >
       <div class="team__formation">
         <TeamFormation
-          :team="team"
+          :team="teamToDisplay"
           :selectedGotchiId="displayGotchi?.id"
           horizontal
           reverseRows
@@ -129,7 +211,7 @@
           <template #gotchi="{ gotchi }">
             <GotchiInFormation
               :gotchi="gotchi"
-              :isLeader="gotchi.id === team.leader"
+              :isLeader="gotchi.id === teamToDisplay.leader"
               :teamId="id"
               isSelectable
               withItemBadge
@@ -140,7 +222,7 @@
           </template>
         </TeamFormation>
         <TeamSubstitutes
-          :team="team"
+          :team="teamToDisplay"
           :selectedGotchiId="displayGotchi?.id"
           class="team__formation-substitutes"
         >
@@ -164,6 +246,44 @@
             />
           </template>
         </TeamSubstitutes>
+        <SiteRequireSignIn
+          v-if="showSignInToViewProtectedTeam"
+          class="team__view-protected-team"
+        >
+          <template #signin-message>
+            to view your latest submitted team
+          </template>
+        </SiteRequireSignIn>
+        <div
+          v-if="canSaveProfileTeam"
+          class="team__save-team"
+        >
+          <div
+            v-if="showSaveProfileTeamSuccess"
+            class="team__save-team-success"
+          >
+            <SiteIcon name="check" />
+            <span>Saved Team</span>
+          </div>
+          <SiteButton
+            v-else-if="submitProfileTeamStatus.loading"
+            disabled
+          >
+            Saving...
+          </SiteButton>
+          <SiteError
+            v-else-if="submitProfileTeamStatus.error"
+          >
+            {{ submitProfileTeamStatus.errorMessage }}
+          </SiteError>
+          <SiteButton
+            v-else
+            icon="favorite"
+            @click="saveProfileTeam"
+          >
+            Add to My Saved Teams
+          </SiteButton>
+        </div>
       </div>
 
       <div
@@ -203,7 +323,7 @@
       <GotchiDetails
         v-if="displayGotchi"
         :gotchi="displayGotchi"
-        :isLeader="displayGotchi?.id === team.leader"
+        :isLeader="displayGotchi?.id === teamToDisplay.leader"
         :teamId="id"
         class="team__gotchi-details"
       />
@@ -216,6 +336,14 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  .team__formation {
+    display: flex;
+    flex-direction: column;
+    gap: 1.88rem;
+    margin-bottom: 2rem;
+    align-items: flex-start;
   }
 
   @media (min-width: 1500px) {
@@ -231,6 +359,7 @@
     }
     .team__formation {
       grid-area: formation;
+      margin-bottom: 0;
     }
     .team__manage {
       grid-area: manage;
@@ -240,10 +369,11 @@
     }
   }
 
-  .team__formation-substitutes {
-    margin-top: 1.88rem;
-    margin-bottom: 2rem;
+  .team__view-protected-team,
+  .team__save-team {
+    align-self: center;
   }
+
   .team__manage {
     margin-top: 1rem;
     display: flex;
@@ -258,5 +388,16 @@
     margin-right: 1rem;
     flex: none;
     align-self: flex-start;
+  }
+
+  .team__save-team-success {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    font-weight: bold;
+    color: var(--c-white);
+    text-transform: uppercase;
   }
 </style>

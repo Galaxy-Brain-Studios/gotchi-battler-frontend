@@ -77,7 +77,7 @@
           </div>
           <div class="team-member-text">
             <div class="team-member-name">
-              DeadFolk
+              Deadfolk™
             </div>
             <div class="team-member-role">
               Unity

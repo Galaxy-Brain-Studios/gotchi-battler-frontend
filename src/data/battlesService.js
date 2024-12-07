@@ -4,8 +4,8 @@ import { processTeamModel } from './teamUtils'
 import { battle as runBattle } from 'gotchi-battler-game-logic'
 
 const processBattleModel = function (jsonData) {
-  const { team1, team2, ...restData } = jsonData
-  const teams = [team1 || null, team2 || null]
+  const { team1, team1Snapshot, team2, team2Snapshot, ...restData } = jsonData
+  const teams = [team1 || null, team2 || null, team1Snapshot || null, team2Snapshot || null]
   return {
     ...restData,
     teams: teams.map(team => processTeamModel(team)),

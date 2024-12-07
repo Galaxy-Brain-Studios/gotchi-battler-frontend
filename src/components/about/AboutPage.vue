@@ -123,6 +123,19 @@
             </div>
           </div>
         </li>
+        <li>
+          <div class="team-image-container">
+            <img src="./lavel.jpg" />
+          </div>
+          <div class="team-member-text">
+            <div class="team-member-name">
+              Lavel
+            </div>
+            <div class="team-member-role">
+              Game Balance
+            </div>
+          </div>
+        </li>
       </ul>
     </div>
   </main>

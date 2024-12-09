@@ -25,8 +25,20 @@
     }
   })
 
-  const team1 = computed(() => props.battle?.teams[0])
-  const team2 = computed(() => props.battle?.teams[1])
+  const team1 = computed(() => {
+    if (props.battle && props.battle.teams && props.battle.teams[0]) {
+      // If team1 has a snapshot then it's in index 2, return that if it exists otherwise return team1
+      return props.battle.teams[2] || props.battle.teams[0]
+    }
+    return null
+  })
+  const team2 = computed(() => {
+    if (props.battle && props.battle.teams && props.battle.teams[1]) {
+      // If team1 has a snapshot then it's in index 3, return that if it exists otherwise return team2
+      return props.battle.teams[3] || props.battle.teams[1]
+    }
+    return null
+  })
   const battleLogsData = computed(() => props.battle?.logsData ? props.battle.logsData : null )
   const battleLogsUrl = computed(() => props.battle?.logs ? props.battle.logs : null )
   const hasBattleLogs = computed(() => !!(battleLogsData.value || battleLogsUrl.value) )

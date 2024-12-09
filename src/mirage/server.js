@@ -600,12 +600,14 @@ export function makeServer({ environment = 'development' } = {}) {
         const teamId = request.params.teamId;
         const team = teamsById[teamId]?.leader ? teamsById[teamId] : {
           ...teamsById.DEFAULT,
-          name: `Mock Team ${teamId}`,
           ...teamsById[teamId],
+          // Change the team name, so we can see an 'Edit' difference
+          name: 'Latest version of ' + (teamsById[teamId]?.name || `Mock Team ${teamId}`),
           id: teamId
         }
         // generate new ids for the gotchis, as this is what the real server does
         let baseId = Date.now()
+        let firstGotchiId = null
         for (const key of ['back1', 'back2', 'back3', 'back4', 'back5',
                             'front1', 'front2', 'front3', 'front4', 'front5',
                             'sub1', 'sub2']) {
@@ -617,8 +619,13 @@ export function makeServer({ environment = 'development' } = {}) {
             if (team.leader === oldId) {
               team.leader = newId
             }
+            if (!firstGotchiId) {
+              firstGotchiId = newId
+            }
           }
         }
+        // change the leader to the first gotchi found, so we can see an 'Edit' difference
+        team.leader = firstGotchiId
 
         return team
       }, {

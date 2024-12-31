@@ -6,10 +6,10 @@
 
   const gameBuildUrl = 'https://storage.googleapis.com/gotchi-battler-live_game/builds/WebGL'
   const unityVersion = 'Test2'
-  const loaderUrl20 = `${gameBuildUrl}/${unityVersion}/Build.loader.js`
-  const dataUrl20 = `${gameBuildUrl}/${unityVersion}/Build.data.br`
-  const frameworkUrl20 = `${gameBuildUrl}/${unityVersion}/Build.framework.js.br`
-  const codeUrl20 = `${gameBuildUrl}/${unityVersion}/Build.wasm.br`
+  const loaderUrl20 = `${gameBuildUrl}/${unityVersion}/Build/Build.loader.js`
+  const dataUrl20 = `${gameBuildUrl}/${unityVersion}/Build/Build.data`
+  const frameworkUrl20 = `${gameBuildUrl}/${unityVersion}/Build/Build.framework.js`
+  const codeUrl20 = `${gameBuildUrl}/${unityVersion}/Build/Build.wasm`
 
   const loaderUrl = loaderUrl20
   const dataUrl = dataUrl20

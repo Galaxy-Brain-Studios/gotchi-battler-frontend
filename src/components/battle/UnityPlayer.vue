@@ -1,26 +1,18 @@
 <script setup>
-  // import loaderUrlDev from './unity/Build/build.loader.js?url'
-  // import dataUrlDev from './unity/Build/build.data?url'
-  // import frameworkUrlDev from './unity/Build/build.framework.js?url'
-  // import codeUrlDev from './unity/Build/build.wasm?url'
-  // import loaderUrlProd from './unity/BuildProd/Build.loader.js?url'
-  // import dataUrlProd from './unity/BuildProd/Build.data.br?url'
-  // import frameworkUrlProd from './unity/BuildProd/Build.framework.js.br?url'
-  // import codeUrlProd from './unity/BuildProd/Build.wasm.br?url'
-  import loaderUrlNew from './unity/Build15/Build.loader.js?url'
-  import dataUrlNew from './unity/Build15/Build.data.br?url'
-  import frameworkUrlNew from './unity/Build15/Build.framework.js.br?url'
-  import codeUrlNew from './unity/Build15/Build.wasm.br?url'
-  
-  // const loaderUrl = import.meta.env.MODE === 'production' ? loaderUrlProd : loaderUrlDev
-  // const dataUrl = import.meta.env.MODE === 'production' ? dataUrlProd : dataUrlDev
-  // const frameworkUrl = import.meta.env.MODE === 'production' ? frameworkUrlProd : frameworkUrlDev
-  // const codeUrl = import.meta.env.MODE === 'production' ? codeUrlProd : codeUrlDev
+  import loaderUrl15 from './unity/Build15/Build.loader.js?url'
+  import dataUrl15 from './unity/Build15/Build.data.br?url'
+  import frameworkUrl15 from './unity/Build15/Build.framework.js.br?url'
+  import codeUrl15 from './unity/Build15/Build.wasm.br?url'
 
-  const loaderUrl = loaderUrlNew
-  const dataUrl = dataUrlNew
-  const frameworkUrl = frameworkUrlNew
-  const codeUrl = codeUrlNew
+  import loaderUrl20 from './unity/Build20/Build.loader.js?url'
+  import dataUrl20 from './unity/Build20/Build.data.br?url'
+  import frameworkUrl20 from './unity/Build20/Build.framework.js.br?url'
+  import codeUrl20 from './unity/Build20/Build.wasm.br?url'
+
+  const loaderUrl = loaderUrl20
+  const dataUrl = dataUrl20
+  const frameworkUrl = frameworkUrl20
+  const codeUrl = codeUrl20
 
   import uniqueId from 'lodash.uniqueid'
   import { ref, onMounted, onBeforeUnmount } from 'vue'

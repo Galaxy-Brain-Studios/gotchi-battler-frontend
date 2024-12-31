@@ -1,13 +1,15 @@
 <script setup>
-  import loaderUrl15 from './unity/Build15/Build.loader.js?url'
-  import dataUrl15 from './unity/Build15/Build.data.br?url'
-  import frameworkUrl15 from './unity/Build15/Build.framework.js.br?url'
-  import codeUrl15 from './unity/Build15/Build.wasm.br?url'
+  // import loaderUrl15 from './unity/Build15/Build.loader.js?url'
+  // import dataUrl15 from './unity/Build15/Build.data.br?url'
+  // import frameworkUrl15 from './unity/Build15/Build.framework.js.br?url'
+  // import codeUrl15 from './unity/Build15/Build.wasm.br?url'
 
-  import loaderUrl20 from './unity/Build20/Build.loader.js?url'
-  import dataUrl20 from './unity/Build20/Build.data.br?url'
-  import frameworkUrl20 from './unity/Build20/Build.framework.js.br?url'
-  import codeUrl20 from './unity/Build20/Build.wasm.br?url'
+  const gameBuildUrl = 'https://storage.googleapis.com/gotchi-battler-live_game/builds/WebGL'
+  const unityVersion = 'Test2'
+  const loaderUrl20 = `${gameBuildUrl}/${unityVersion}/Build.loader.js`
+  const dataUrl20 = `${gameBuildUrl}/${unityVersion}/Build.data.br`
+  const frameworkUrl20 = `${gameBuildUrl}/${unityVersion}/Build.framework.js.br`
+  const codeUrl20 = `${gameBuildUrl}/${unityVersion}/Build.wasm.br`
 
   const loaderUrl = loaderUrl20
   const dataUrl = dataUrl20

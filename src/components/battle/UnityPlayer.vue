@@ -1,20 +1,29 @@
 <script setup>
-  // import loaderUrl15 from './unity/Build15/Build.loader.js?url'
-  // import dataUrl15 from './unity/Build15/Build.data.br?url'
-  // import frameworkUrl15 from './unity/Build15/Build.framework.js.br?url'
-  // import codeUrl15 from './unity/Build15/Build.wasm.br?url'
-
   const gameBuildUrl = 'https://storage.googleapis.com/gotchi-battler-live_game/builds/WebGL'
-  const unityVersion = 'Test2'
-  const loaderUrl20 = `${gameBuildUrl}/${unityVersion}/Build/Build.loader.js`
-  const dataUrl20 = `${gameBuildUrl}/${unityVersion}/Build/Build.data`
-  const frameworkUrl20 = `${gameBuildUrl}/${unityVersion}/Build/Build.framework.js`
-  const codeUrl20 = `${gameBuildUrl}/${unityVersion}/Build/Build.wasm`
+  const versions = {
+    '1.5': '1.5.0',
+    '2.0': 'Test3',
+  }
+  const versionUrls = {
+    '1.5' : {
+      loader: `${gameBuildUrl}/${versions['1.5']}/Build/Build.loader.js`,
+      data: `${gameBuildUrl}/${versions['1.5']}/Build/Build.data.br`,
+      framework: `${gameBuildUrl}/${versions['1.5']}/Build/Build.framework.js.br`,
+      code: `${gameBuildUrl}/${versions['1.5']}/Build/Build.wasm.br`,
+    },
+    '2.0' : {
+      loader: `${gameBuildUrl}/${versions['2.0']}/Build/Build.loader.js`,
+      data: `${gameBuildUrl}/${versions['2.0']}/Build/Build.data`,
+      framework: `${gameBuildUrl}/${versions['2.0']}/Build/Build.framework.js`,
+      code: `${gameBuildUrl}/${versions['2.0']}/Build/Build.wasm`,
+    },
+  }
 
-  const loaderUrl = loaderUrl20
-  const dataUrl = dataUrl20
-  const frameworkUrl = frameworkUrl20
-  const codeUrl = codeUrl20
+  const version = '2.0'
+  const loaderUrl = versionUrls[version].loader
+  const dataUrl = versionUrls[version].data
+  const frameworkUrl = versionUrls[version].framework
+  const codeUrl = versionUrls[version].code
 
   import uniqueId from 'lodash.uniqueid'
   import { ref, onMounted, onBeforeUnmount } from 'vue'

@@ -2,7 +2,7 @@
   const gameBuildUrl = 'https://storage.googleapis.com/gotchi-battler-live_game/builds/WebGL'
   const versions = {
     '1.5': '1.5.0',
-    '2.0': 'Test3',
+    '2.0': 'Test4',
   }
   const versionUrls = {
     '1.5' : {
@@ -13,9 +13,9 @@
     },
     '2.0' : {
       loader: `${gameBuildUrl}/${versions['2.0']}/Build/Build.loader.js`,
-      data: `${gameBuildUrl}/${versions['2.0']}/Build/Build.data.br`,
-      framework: `${gameBuildUrl}/${versions['2.0']}/Build/Build.framework.js.br`,
-      code: `${gameBuildUrl}/${versions['2.0']}/Build/Build.wasm.br`,
+      data: `${gameBuildUrl}/${versions['2.0']}/Build/Build.data`,
+      framework: `${gameBuildUrl}/${versions['2.0']}/Build/Build.framework.js`,
+      code: `${gameBuildUrl}/${versions['2.0']}/Build/Build.wasm`,
     },
   }
 

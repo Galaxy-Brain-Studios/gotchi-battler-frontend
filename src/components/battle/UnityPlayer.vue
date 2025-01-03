@@ -16,6 +16,7 @@
       data: `${gameBuildUrl}/${versions['2.0']}/Build/Build.data`,
       framework: `${gameBuildUrl}/${versions['2.0']}/Build/Build.framework.js`,
       code: `${gameBuildUrl}/${versions['2.0']}/Build/Build.wasm`,
+      streamingAssets: `${gameBuildUrl}/${versions['2.0']}/StreamingAssets`,
     },
   }
 
@@ -24,6 +25,7 @@
   const dataUrl = versionUrls[version].data
   const frameworkUrl = versionUrls[version].framework
   const codeUrl = versionUrls[version].code
+  const streamingAssetsUrl = versionUrls[version].streamingAssets
 
   import uniqueId from 'lodash.uniqueid'
   import { ref, onMounted, onBeforeUnmount } from 'vue'
@@ -72,11 +74,12 @@
         dataUrl,
         frameworkUrl,
         codeUrl,
-        streamingAssetsUrl: "StreamingAssets",
+        streamingAssetsUrl,
         companyName: "DefaultCompany",
         productName: "GotchiBattler",
         productVersion: "0.1.0",
         showBanner: unityShowBanner,
+        devicePixelRatio: 1,
       }
       if (!window.createUnityInstance) {
         console.error('window.createUnityInstance is missing')

@@ -31,6 +31,7 @@
   const { isConnected, address } = storeToRefs(store)
 
   const onlyShowMine = ref(false)
+  const onlyShowCompleted = ref(false)
 
   const showWinners = ref(false)
 
@@ -69,8 +70,8 @@
     const teamsById = Object.fromEntries(tournament.value.teams.map(team => [team.id, team]))
     const result = fullBrackets.value.map(bracket => {
       return bracket.rounds.map(round => {
-        // Only return battles that have a winner
-        return round.battles.filter(b => b.winnerId).map(battle => ({
+        // Only return battles that have at least one team
+        return round.battles.filter(b => b.team1Id || b.team2Id).map(battle => ({
           ...battle,
           team1Name: teamsById[battle.team1Id]?.name || '',
           team2Name: teamsById[battle.team2Id]?.name || '',
@@ -86,6 +87,9 @@
   const filteredBattles = computed(() => {
     if (!battles.value?.length) { return [] }
     let result = battles.value
+    if (onlyShowCompleted.value) {
+      result = result.filter(b => b.winnerId)
+    }
     if (isConnected.value && onlyShowMine.value) {
       if (myTeamIds.value.length) {
         const myTeams = myTeamIds.value
@@ -146,6 +150,11 @@
           v-model="onlyShowMine"
         >
           My matches only
+        </SiteCheckbox>
+        <SiteCheckbox
+          v-model="onlyShowCompleted"
+        >
+          Completed Battles only
         </SiteCheckbox>
         <SiteCheckbox
           v-model="showWinners"

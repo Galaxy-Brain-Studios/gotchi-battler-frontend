@@ -1139,12 +1139,13 @@ export function makeServer({ environment = 'development' } = {}) {
 }
 
 
-function generateFullBrackets ({ brackets=[], teams=[] }) {
+function generateFullBrackets ({ brackets=[], teams=[], prizes=null }) {
   // This tournament logic is not intended to be correct,
   // just to generate the correct data structure with enough variations
   // for testing the frontend
   const allBattleIds = []
   const gapBetweenRoundsMs = 3 * 24 * 60 * 60 * 1000
+  const prizeCurrency = prizes?.length ? prizes[0].currency : null
   const fullBrackets = brackets.map(bracket => {
     const startDate = bracket.startDate
     const numberOfTeams = bracket.numberOfTeams
@@ -1159,6 +1160,14 @@ function generateFullBrackets ({ brackets=[], teams=[] }) {
       const roundId = `r${roundNumber}`
       const roundDateMs = startDateMs + gapBetweenRoundsMs * roundNumber
       const isFinished = nowMs > roundDateMs
+      const loserPrize = prizeCurrency ? {
+        currency: prizeCurrency,
+        prize: 10 * roundNumber
+      } : null
+      const winnerPrize = prizeCurrency ? {
+        currency: prizeCurrency,
+        prize: 100 * roundNumber
+      } : null
       let status = ''
       if (isFinished) {
         status = 'completed'
@@ -1199,6 +1208,8 @@ function generateFullBrackets ({ brackets=[], teams=[] }) {
           roundStage: roundNumber - 1,
           name: `Round ${roundNumber}`,
           status,
+          loserPrize,
+          winnerPrize,
           battles
         })
       }
@@ -1266,12 +1277,22 @@ function generateFullBrackets ({ brackets=[], teams=[] }) {
         team2Id: teams[0].id, // just use any valid team ID for testing
         winnerId: null
       }
+      const loserPrize = lastRound.loserPrize ? {
+        ...lastRound.loserPrize,
+        prize: lastRound.loserPrize.prize * 2
+      } : null
+      const winnerPrize = lastRound.winnerPrize ? {
+        ...lastRound.winnerPrize,
+        prize: lastRound.winnerPrize.prize * 2
+      } : null
       const newLastRound = {
         id: 'rTestIncoming',
         name: 'Round w Incoming',
         roundStage: lastRound.roundStage + 1,
         startDate: new Date(lastRound.startDate.getTime() + gapBetweenRoundsMs),
         status: lastRound.status,
+        loserPrize,
+        winnerPrize,
         battles: [newLastBattle]
       }
       lastBracket.rounds.push(newLastRound)

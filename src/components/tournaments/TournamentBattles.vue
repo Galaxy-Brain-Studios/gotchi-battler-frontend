@@ -5,11 +5,14 @@
   import { storeToRefs } from 'pinia'
   import { useAccountStore } from '../../data/accountStore'
   import { useTournamentStore } from '../../data/tournamentStore'
+  import prizeCurrencies from "./prizeCurrencies.json"
   import SiteCheckbox from '../common/SiteCheckbox.vue'
+  import SiteIcon from '../common/SiteIcon.vue'
   import SiteTextField from '../common/SiteTextField.vue'
   import SiteTable from '../common/SiteTable.vue'
   import SiteButton from '../common/SiteButton.vue'
   import SiteButtonIcon from '../common/SiteButtonIcon.vue'
+  import SitePopupHoverMenu from '../common/SitePopupHoverMenu.vue'
   import BattleDialog from '../battle/BattleDialog.vue'
 
   const props = defineProps({
@@ -80,6 +83,8 @@
           team2Name: teamsById[battle.team2Id]?.name || '',
           bracketName: bracket.name,
           roundName: round.name,
+          loserPrize: round.loserPrize,
+          winnerPrize: round.winnerPrize,
           startDate: round.startDate
         }))
       }).flat()
@@ -224,6 +229,34 @@
               <th>
                 <span>Team 2</span>
               </th>
+              <th>
+                <div class="tournament-battles__table-header-with-info">
+                  <span class="tournament-battles__table-header-text">Losers Prize</span>
+                  <SitePopupHoverMenu class="tournament-battles__table-header-info">
+                    <SiteButtonIcon
+                      iconName="info"
+                      label="about"
+                    />
+                    <template #popper>
+                      This is the prize the team will win if they lose this battle
+                    </template>
+                  </SitePopupHoverMenu>
+                </div>
+              </th>
+              <th>
+                <div class="tournament-battles__table-header-with-info">
+                  <span class="tournament-battles__table-header-text">Winners Prize</span>
+                  <SitePopupHoverMenu class="tournament-battles__table-header-info">
+                    <SiteButtonIcon
+                      iconName="info"
+                      label="about"
+                    />
+                    <template #popper>
+                      This is the minimum future prize the team will win if they win this battle
+                    </template>
+                  </SitePopupHoverMenu>
+                </div>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -273,6 +306,53 @@
                 >
                   {{ battle.team2Name }}
                 </a>
+              </td>
+              <td>
+                <div
+                  v-if="battle.loserPrize"
+                  class="battle-prize"
+                >
+                  <div class="battle-prize__amount">
+                    {{ battle.loserPrize.prize }}
+                  </div>
+                  <SiteIcon
+                    v-if="prizeCurrencies[battle.loserPrize.currency]?.icon"
+                    :name="prizeCurrencies[battle.loserPrize.currency]?.icon"
+                    :height="1"
+                    :width="1"
+                  />
+                  <div
+                    :class="{
+                      'sr-only': prizeCurrencies[battle.loserPrize.currency]?.icon
+                    }"
+                  >
+                    {{ prizeCurrencies[battle.loserPrize.currency]?.label || battle.loserPrize.currency }}
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div
+                  v-if="battle.winnerPrize"
+                  class="battle-prize"
+                >
+                  <div class="battle-prize__amount">
+                    &gt;
+                    {{ battle.winnerPrize.prize }}
+                  </div>
+                  <SiteIcon
+                    v-if="prizeCurrencies[battle.winnerPrize.currency]?.icon"
+                    :name="prizeCurrencies[battle.winnerPrize.currency]?.icon"
+                    :height="1"
+                    :width="1"
+                  />
+                  <div
+                    :class="{
+                      'sr-only': prizeCurrencies[battle.winnerPrize.currency]?.icon
+                    }"
+                  >
+                    {{ prizeCurrencies[battle.winnerPrize.currency]?.label || battle.winnerPrize.currency }}
+                  </div>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -326,6 +406,20 @@
   place-items: center;
 }
 
+.tournament-battles__table-header-with-info {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  opacity: 0.5;
+}
+.tournament-battles__table-header-text {
+  flex: 1 1 auto;
+}
+.tournament-battles__table-header-info {
+  flex: none;
+  line-height: 1rem;
+}
+
 .battle-row {
   position: relative;
 }
@@ -355,5 +449,16 @@
 .battle-team-name {
   position: relative;
   z-index: 1;
+}
+.battle-prize {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.battle-prize-amount {
+  flex: 1 0 auto;
+}
+.battle-prize-amount + * {
+  flex: none;
 }
 </style>

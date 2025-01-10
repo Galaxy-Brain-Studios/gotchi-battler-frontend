@@ -216,6 +216,9 @@
                 <span>Round</span>
               </th>
               <th>
+                <span>Bracket</span>
+              </th>
+              <th>
                 <span>Team 1</span>
               </th>
               <th>
@@ -237,6 +240,9 @@
                 >
                   {{ battle.roundName }}
                 </a>
+              </td>
+              <td>
+                {{ battle.bracketName }}
               </td>
               <td
                 class="word-break battle-team"

@@ -1,5 +1,5 @@
 <script setup>
-  import { ref, computed } from 'vue'
+  import { ref, computed, watch } from 'vue'
   import debounce from 'lodash.debounce'
   import orderBy from 'lodash.orderby'
   import { storeToRefs } from 'pinia'
@@ -33,6 +33,18 @@
   const onlyShowMine = ref(false)
 
   const showWinners = ref(false)
+
+  watch(
+    () => isConnected.value,
+    () => {
+      if (isConnected.value) {
+        // If user has just connected, enable onlyShowMine
+        // If user has just disconnected, disable onlyShowMine
+        onlyShowMine.value = !!isConnected.value
+      }
+    },
+    { immediate: true }
+  )
 
   const query = ref('')
   const debouncedQuery = ref('')

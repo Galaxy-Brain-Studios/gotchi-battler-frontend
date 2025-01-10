@@ -9,6 +9,7 @@
   import SiteTextField from '../common/SiteTextField.vue'
   import SiteTable from '../common/SiteTable.vue'
   import SiteButton from '../common/SiteButton.vue'
+  import SiteButtonIcon from '../common/SiteButtonIcon.vue'
   import BattleDialog from '../battle/BattleDialog.vue'
 
   const props = defineProps({
@@ -46,6 +47,8 @@
     },
     { immediate: true }
   )
+
+  const exactTeamName = ref('')
 
   const query = ref('')
   const debouncedQuery = ref('')
@@ -98,9 +101,13 @@
         result = []
       }
     }
+    if (exactTeamName.value) {
+      result = result.filter(battle => battle.team1Name === exactTeamName.value || battle.team2Name === exactTeamName.value)
+    }
     if (query.value) {
       const q = query.value
-      result = result.filter(battle => `${battle.code}` === q || `${battle.id}` === q)
+      const qLower = q.toLowerCase()
+      result = result.filter(battle => `${battle.code}` === q || `${battle.id}` === q || battle.team1Name.toLowerCase().includes(qLower) || battle.team2Name.toLowerCase().includes(qLower))
     }
     return result
   })
@@ -113,6 +120,13 @@
     numToShow.value += 10
   }
   const canLoadMore = computed(() => filteredBattles.value?.length > numToShow.value)
+
+
+  const filterBattlesForTeam = function (teamName) {
+    exactTeamName.value = teamName
+    query.value = ''
+  }
+
 
   const battleDialogIsOpen = ref(false)
   const displayBattle = ref(null)
@@ -166,9 +180,22 @@
             v-model="query"
             search
             subtle
-            placeholder="Search for Battle ID"
+            placeholder="Find Battle ID/Team name"
             class="tournament-battles__search-field"
             @input="debouncedSetQuery"
+          />
+        </div>
+        <div
+          v-if="exactTeamName"
+          class="tournament-battles__exact-team-filter"
+        >
+          <span>
+            Battles for: <b class="word-break">{{ exactTeamName }}</b>
+          </span>
+          <SiteButtonIcon
+            label="Remove filter"
+            iconName="close"
+            @click="exactTeamName = ''"
           />
         </div>
       </div>
@@ -218,7 +245,13 @@
                   'battle-team--mine': myTeamIdsLookup[battle.team1Id]
                 }"
               >
-                {{ battle.team1Name }}
+                <a
+                  href="#"
+                  class="battle-team-name link-reset link-reset--hover-underline"
+                  @click.prevent="filterBattlesForTeam(battle.team1Name)"
+                >
+                  {{ battle.team1Name }}
+                </a>
               </td>
               <td
                 class="word-break battle-team"
@@ -227,7 +260,13 @@
                   'battle-team--mine': myTeamIdsLookup[battle.team2Id]
                 }"
               >
-                {{ battle.team2Name }}
+                <a
+                  href="#"
+                  class="battle-team-name link-reset link-reset--hover-underline"
+                  @click.prevent="filterBattlesForTeam(battle.team2Name)"
+                >
+                  {{ battle.team2Name }}
+                </a>
               </td>
             </tr>
           </tbody>
@@ -269,6 +308,13 @@
   flex: none;
 }
 
+.tournament-battles__exact-team-filter {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .tournament-battles__footer {
   display: grid;
   place-items: center;
@@ -299,5 +345,9 @@
   content: '🥇';
   margin-right: 0.25rem;
   font-size: 1.25rem;
+}
+.battle-team-name {
+  position: relative;
+  z-index: 1;
 }
 </style>

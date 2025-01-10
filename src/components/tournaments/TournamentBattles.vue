@@ -173,9 +173,6 @@
               <th>
                 <span>Team 2</span>
               </th>
-              <th>
-                <span>Winner</span>
-              </th>
             </tr>
           </thead>
           <tbody>
@@ -210,25 +207,6 @@
                 }"
               >
                 {{ battle.team2Name }}
-              </td>
-              <td
-                class="battle-result"
-                :class="{
-                  'battle-result--available': !!battle.winnerId,
-                  'battle-result--hidden': !showWinners && !!battle.winnerId
-                }"
-              >
-                <template v-if="battle.winnerId">
-                  <template v-if="!showWinners">
-                    hidden
-                  </template>
-                  <template v-else>
-                    {{ battle.winnerId === battle.team1Id ? 'Team 1 Win' : 'Team 2 Win' }}
-                  </template>
-                </template>
-                <template v-else>
-                  N/A
-                </template>
               </td>
             </tr>
           </tbody>
@@ -300,18 +278,5 @@
   content: '🥇';
   margin-right: 0.25rem;
   font-size: 1.25rem;
-}
-.battle-result {
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-.battle-result--available {
-  font-weight: bold;
-}
-.battle-result--hidden {
-  font-weight: normal;
-  text-transform: none;
-  font-style: italic;
-  color: rgba(255, 255, 255, 0.6);
 }
 </style>

@@ -8,6 +8,9 @@
   import useHorizontalDragScroll from '../../utils/useHorizontalDragScroll'
   import SiteButtonWhite from '../common/SiteButtonWhite.vue'
   import SiteButtonWhiteBox from '../common/SiteButtonWhiteBox.vue'
+  import SiteButtonIcon from '../common/SiteButtonIcon.vue'
+  import SitePopupHoverMenu from '../common/SitePopupHoverMenu.vue'
+  import RoundPrize from './RoundPrize.vue'
 
   const props = defineProps({
     tournamentId: {
@@ -318,6 +321,25 @@
               <template v-else>
                 Start: {{ formatDateTime(round.startDate) }}
               </template>
+            </div>
+            <div
+              v-if="round.loserPrize"
+              class="bracket-diagram__round-prize"
+            >
+              <RoundPrize
+                :prize="round.loserPrize"
+                :size="0.875"
+                class="bracket-diagram__round-prize-amount"
+              />
+              <SitePopupHoverMenu class="bracket-diagram__round-prize-info">
+                <SiteButtonIcon
+                  iconName="info"
+                  label="about"
+                />
+                <template #popper>
+                  This is the prize the teams will win if they lose in this round
+                </template>
+              </SitePopupHoverMenu>
             </div>
           </div>
           <div v-if="round.status === 'completed' && !roundIdsWithRevealedWinners.includes(round.id)">
@@ -688,6 +710,18 @@
   .bracket-diagram__round-status {
     font-size: 0.875rem;
     line-height: 1rem;
+  }
+  .bracket-diagram__round-prize {
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  .bracket-diagram__round-prize > * {
+    flex: none;
+  }
+  .bracket-diagram__round-prize-info {
+    line-height: 0.7rem;
   }
   .bracket-diagram__round--status-completed .bracket-diagram__round-name,
   .bracket-diagram__round--status-active .bracket-diagram__round-name {

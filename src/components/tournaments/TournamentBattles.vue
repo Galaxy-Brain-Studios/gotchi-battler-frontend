@@ -5,15 +5,14 @@
   import { storeToRefs } from 'pinia'
   import { useAccountStore } from '../../data/accountStore'
   import { useTournamentStore } from '../../data/tournamentStore'
-  import prizeCurrencies from "./prizeCurrencies.json"
   import SiteCheckbox from '../common/SiteCheckbox.vue'
-  import SiteIcon from '../common/SiteIcon.vue'
   import SiteTextField from '../common/SiteTextField.vue'
   import SiteTable from '../common/SiteTable.vue'
   import SiteButton from '../common/SiteButton.vue'
   import SiteButtonIcon from '../common/SiteButtonIcon.vue'
   import SitePopupHoverMenu from '../common/SitePopupHoverMenu.vue'
   import BattleDialog from '../battle/BattleDialog.vue'
+  import RoundPrize from './RoundPrize.vue'
 
   const props = defineProps({
     tournamentId: {
@@ -308,51 +307,16 @@
                 </a>
               </td>
               <td>
-                <div
+                <RoundPrize
                   v-if="battle.loserPrize"
-                  class="battle-prize"
-                >
-                  <div class="battle-prize__amount">
-                    {{ battle.loserPrize.prize }}
-                  </div>
-                  <SiteIcon
-                    v-if="prizeCurrencies[battle.loserPrize.currency]?.icon"
-                    :name="prizeCurrencies[battle.loserPrize.currency]?.icon"
-                    :height="1"
-                    :width="1"
-                  />
-                  <div
-                    :class="{
-                      'sr-only': prizeCurrencies[battle.loserPrize.currency]?.icon
-                    }"
-                  >
-                    {{ prizeCurrencies[battle.loserPrize.currency]?.label || battle.loserPrize.currency }}
-                  </div>
-                </div>
+                  :prize="battle.loserPrize"
+                />
               </td>
               <td>
-                <div
+                <RoundPrize
                   v-if="battle.winnerPrize"
-                  class="battle-prize"
-                >
-                  <div class="battle-prize__amount">
-                    &gt;
-                    {{ battle.winnerPrize.prize }}
-                  </div>
-                  <SiteIcon
-                    v-if="prizeCurrencies[battle.winnerPrize.currency]?.icon"
-                    :name="prizeCurrencies[battle.winnerPrize.currency]?.icon"
-                    :height="1"
-                    :width="1"
-                  />
-                  <div
-                    :class="{
-                      'sr-only': prizeCurrencies[battle.winnerPrize.currency]?.icon
-                    }"
-                  >
-                    {{ prizeCurrencies[battle.winnerPrize.currency]?.label || battle.winnerPrize.currency }}
-                  </div>
-                </div>
+                  :prize="battle.winnerPrize"
+                />
               </td>
             </tr>
           </tbody>
@@ -449,16 +413,5 @@
 .battle-team-name {
   position: relative;
   z-index: 1;
-}
-.battle-prize {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-.battle-prize-amount {
-  flex: 1 0 auto;
-}
-.battle-prize-amount + * {
-  flex: none;
 }
 </style>

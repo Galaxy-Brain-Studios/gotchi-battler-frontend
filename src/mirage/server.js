@@ -6,6 +6,8 @@ import profiles from './profiles.json'
 import profileTeamsForAddress from './profileTeamsForAddress.json'
 import profileInventoryForAddress from './profileInventoryForAddress.json'
 import tournaments from './tournaments.json'
+import exampleTournament from './exampleTournament.json'
+import exampleTournamentBrackets from './exampleTournamentBrackets.json'
 import teams from './teams.json'
 import battles from './battles.json'
 import battleLog from './battleLog.json'
@@ -91,6 +93,15 @@ const getTeamModelFromFormationTeam = function (team) {
     sub2: sub2Gotchi?.id,
     sub2Gotchi
   }
+}
+
+
+{
+  // Add example tournament
+  tournaments.push({
+    ...exampleTournament,
+    fullBrackets: exampleTournamentBrackets
+  })
 }
 
 const tournamentsById = Object.fromEntries(tournaments.map(t => [t.id, t]))
@@ -421,6 +432,9 @@ export function makeServer({ environment = 'development' } = {}) {
         const tournament = tournamentsById[request.params.id]
         if (!tournament) {
           return errorResponse({ statusCode: 404, message: 'Tournament not found' })
+        }
+        if (tournament.fullBrackets) {
+          return tournament.fullBrackets
         }
         return generateFullBrackets(tournament)
       })

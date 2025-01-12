@@ -64,7 +64,7 @@ const processBrackets = function (brackets) {
       isFinale: false
     }
     newBrackets.push(newBracket)
-    if (bracket.stage > finalBracketStage) {
+    if (!bracket.isLosers && bracket.stage > finalBracketStage) {
       finalBracketStage = bracket.stage
       finalBracket = newBracket
     }

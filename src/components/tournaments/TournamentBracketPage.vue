@@ -161,6 +161,7 @@
         v-if="bracket.rounds && tournament?.teams"
         :tournamentId="id"
         :bracketId="bracket.id"
+        :isFinale="bracket.isFinale"
         :rounds="bracket.rounds"
         :nextBracketId="nextBracket?.id"
         :nextBracketName="nextBracket?.name"

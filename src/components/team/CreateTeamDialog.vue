@@ -44,6 +44,7 @@
   const EDIT_MODES = {
     CREATE: 'create',
     CREATE_TRAINING: 'create_training',
+    CREATE_PROFILE_SAVED: 'create_profile_saved',
     EDIT: 'edit',
     EDIT_PROFILE_SAVED: 'edit_profile_saved'
   }
@@ -131,26 +132,27 @@
 
   const modeLabel = computed(() => {
     if (props.mode === EDIT_MODES.CREATE_TRAINING) { return 'Create'; }
+    if (props.mode === EDIT_MODES.CREATE_PROFILE_SAVED) { return 'Create'; }
     if (props.mode === EDIT_MODES.EDIT_PROFILE_SAVED) { return 'Edit Saved'; }
     return props.mode
   })
 
   const isEditMode = computed(() => props.mode === EDIT_MODES.EDIT)
-  const myGotchisAllowed = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
-  const trainingGotchisAllowed = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
-  const searchGotchisAllowed = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
+  const myGotchisAllowed = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.CREATE_TRAINING, EDIT_MODES.CREATE_PROFILE_SAVED, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
+  const trainingGotchisAllowed = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.CREATE_PROFILE_SAVED, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
+  const searchGotchisAllowed = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.CREATE_PROFILE_SAVED, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
   const onlyMyGotchisAllowed = computed(() => [EDIT_MODES.CREATE].includes(props.mode))
   const onlyTeamGotchisAllowed = computed(() => [EDIT_MODES.EDIT].includes(props.mode))
 
-  const savedTeamsAvailable = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
-  const trainingTeamsAvailable = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
+  const savedTeamsAvailable = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.CREATE_TRAINING, EDIT_MODES.CREATE_PROFILE_SAVED, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
+  const trainingTeamsAvailable = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.CREATE_PROFILE_SAVED, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
 
-  const unlimitedItemsAvailable = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
+  const unlimitedItemsAvailable = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.CREATE_PROFILE_SAVED, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
   const myItemsAvailable = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.EDIT].includes(props.mode))
 
   const canChangeName = computed(() => !isEditMode.value)
   const withSubstitutes = computed(() => [EDIT_MODES.CREATE, EDIT_MODES.EDIT].includes(props.mode))
-  const enableDuplicates = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
+  const enableDuplicates = computed(() => [EDIT_MODES.CREATE_TRAINING, EDIT_MODES.CREATE_PROFILE_SAVED, EDIT_MODES.EDIT_PROFILE_SAVED].includes(props.mode))
 
   const primarySaveLabel = computed(() => {
     if ([EDIT_MODES.CREATE_TRAINING].includes(props.mode)) {

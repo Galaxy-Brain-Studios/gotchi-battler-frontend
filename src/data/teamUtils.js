@@ -99,6 +99,7 @@ const getSpecialForBattle = function (specialId) {
   // Only include the required properties from the game logic schema, because it will complain if there are unexpected properties
   return {
     id: special.id,
+    class: special.class,
     name: special.name,
     cooldown: special.cooldown,
     leaderPassive: special.leader

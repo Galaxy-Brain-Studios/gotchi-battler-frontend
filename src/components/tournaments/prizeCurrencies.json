@@ -1,0 +1,10 @@
+{
+    "dai": {
+        "icon": "token-dai",
+        "label": "DAI"
+    },
+    "ghst": {
+        "icon": "token-ghst",
+        "label": "GHST"
+    }
+}

@@ -171,7 +171,7 @@
   })
 
   function loadMoreTeams () {
-    numToShow.value += 10
+    numToShow.value += 100
   }
   const canLoadMoreTeams = computed(() => filteredAndSortedTeams.value?.length > numToShow.value)
 

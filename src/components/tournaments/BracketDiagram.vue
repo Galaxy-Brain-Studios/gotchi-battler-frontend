@@ -8,6 +8,9 @@
   import useHorizontalDragScroll from '../../utils/useHorizontalDragScroll'
   import SiteButtonWhite from '../common/SiteButtonWhite.vue'
   import SiteButtonWhiteBox from '../common/SiteButtonWhiteBox.vue'
+  import SiteButtonIcon from '../common/SiteButtonIcon.vue'
+  import SitePopupHoverMenu from '../common/SitePopupHoverMenu.vue'
+  import RoundPrize from './RoundPrize.vue'
 
   const props = defineProps({
     tournamentId: {
@@ -17,6 +20,10 @@
     bracketId: {
       type: [String, Number],
       required: true
+    },
+    isFinale: {
+      type: Boolean,
+      default: false
     },
     rounds: {
       type: Array,
@@ -157,7 +164,7 @@
     if (rootNodes.length !== 1) {
       console.log('Unexpected round structure: expected a tree with a single root node but found', { rootNodes })
     }
-    rootNodes[0].isFinale = true
+    rootNodes[0].isRootBattle = true
 
     let hierarchyRoot = rootNodes[0]
 
@@ -173,7 +180,19 @@
         children: rootNodes,
         fromBattles: [rootNodes[0].id, null]
       }
+    } else if (props.isFinale) {
+      // If this is the final bracket, add a Winner as the ultimate root of the tree
+      const winningTeam = hierarchyRoot.winner && hierarchyRoot.teams?.find(team => team?.id === hierarchyRoot.winner) || null
+      hierarchyRoot = {
+        id: 'winner_node' + hierarchyRoot.id,
+        isWinnerNode: true,
+        winner: hierarchyRoot.winner,
+        teams: winningTeam ? [winningTeam] : [],
+        children: rootNodes,
+        fromBattles: [rootNodes[0].id, null]
+      }
     }
+
 
     const dataForTree = hierarchy(hierarchyRoot)
 
@@ -254,6 +273,12 @@
         }
       }
     }
+    if (props.isFinale) {
+      const node = nodesById[hierarchyRoot.id]
+      roundPositions['winner'] = {
+        displayX: node.displayX
+      }
+    }
 
     return {
       nodes: allNodes,
@@ -319,6 +344,25 @@
                 Start: {{ formatDateTime(round.startDate) }}
               </template>
             </div>
+            <div
+              v-if="round.loserPrize"
+              class="bracket-diagram__round-prize"
+            >
+              <RoundPrize
+                :prize="round.loserPrize"
+                :size="0.875"
+                class="bracket-diagram__round-prize-amount"
+              />
+              <SitePopupHoverMenu class="bracket-diagram__round-prize-info">
+                <SiteButtonIcon
+                  iconName="info"
+                  label="about"
+                />
+                <template #popper>
+                  This is the prize the teams will win if they lose in this round
+                </template>
+              </SitePopupHoverMenu>
+            </div>
           </div>
           <div v-if="round.status === 'completed' && !roundIdsWithRevealedWinners.includes(round.id)">
             <SiteButtonWhite
@@ -328,6 +372,34 @@
             >
               Show
             </SiteButtonWhite>
+          </div>
+        </div>
+      </div>
+      <div
+        v-if="isFinale"
+        class="bracket-diagram__round"
+        :class="{
+          [`bracket-diagram__round--status-${rounds[rounds.length - 1].status}`]: true
+        }"
+        :style="{
+          '--bd-round-display-x': `${treeResult.roundPositions['winner']?.displayX}rem`,
+        }"
+      >
+        <div class="bracket-diagram__round-header">
+          <div>
+            <div class="bracket-diagram__round-name">
+              Winner
+            </div>
+            <div
+              v-if="rounds[rounds.length - 1].winnerPrize"
+              class="bracket-diagram__round-prize"
+            >
+              <RoundPrize
+                :prize="rounds[rounds.length - 1].winnerPrize"
+                :size="0.875"
+                class="bracket-diagram__round-prize-amount"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -345,7 +417,8 @@
         class="bracket-diagram__tree-node"
         :class="{
           'bracket-diagram__tree-node--empty': !node.data.teams?.length,
-          'bracket-diagram__tree-node--next-bracket': node.data.isNextBracket
+          'bracket-diagram__tree-node--next-bracket': node.data.isNextBracket,
+          'bracket-diagram__tree-node--finale-winner': node.data.isWinnerNode
         }"
         :style="{
           '--bd-tree-node-display-x': `${node.displayX}rem`,
@@ -362,10 +435,10 @@
           {{ node.data.bracket.name }}
         </RouterLink>
         <RouterLink
-          v-if="!node.data.isBye && node.data.teams?.[0] || node.data.teams?.[1]"
+          v-if="!node.data.isBye && !node.data.isWinnerNode && node.data.teams?.[0] || node.data.teams?.[1]"
           :to="{ name: 'tournament-bracket', params: { id: tournamentId, bracketId, battleId: node.data.id } }"
           class="link-reset bracket-diagram__battle-id"
-          @click="node.data.isFinale && node.data.round.status === 'completed' && revealFinalRound()"
+          @click="node.data.isRootBattle && node.data.round.status === 'completed' && revealFinalRound()"
         >
           <span>
             #{{ node.data.code || node.data.id }}
@@ -451,6 +524,7 @@
   }
   .bracket-diagram__round {
     width: var(--bd-tree-node-width);
+    min-height: 4rem; /* vertical round header height */
   }
   .bracket-diagram__round:not(:first-child) {
     position: absolute;
@@ -662,6 +736,19 @@
     line-height: 0.875rem;
     padding-right: 0.25rem;
   }
+   .bracket-diagram__tree-node--finale-winner .bracket-diagram__team--winner::after {
+    content: '';
+   }
+  .bracket-diagram__tree-node--finale-winner::before {
+    content: '🏆';
+    position: absolute;
+    font-size: 1.5rem;
+    line-height: var(--bd-tree-node-height);
+    padding-left: 0.5rem;
+  }
+  .bracket-diagram__tree-node--finale-winner .bracket-diagram__team--winner {
+    padding-left: 2.75rem;
+  }
   .bracket-diagram__team--empty,
   .bracket-diagram__team--loser {
     color: rgb(146, 141, 237);
@@ -688,6 +775,18 @@
   .bracket-diagram__round-status {
     font-size: 0.875rem;
     line-height: 1rem;
+  }
+  .bracket-diagram__round-prize {
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  .bracket-diagram__round-prize > * {
+    flex: none;
+  }
+  .bracket-diagram__round-prize-info {
+    line-height: 0.7rem;
   }
   .bracket-diagram__round--status-completed .bracket-diagram__round-name,
   .bracket-diagram__round--status-active .bracket-diagram__round-name {

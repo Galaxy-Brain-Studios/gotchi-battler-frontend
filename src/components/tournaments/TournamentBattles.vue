@@ -1,5 +1,5 @@
 <script setup>
-  import { ref, computed } from 'vue'
+  import { ref, computed, watch } from 'vue'
   import debounce from 'lodash.debounce'
   import orderBy from 'lodash.orderby'
   import { storeToRefs } from 'pinia'
@@ -9,7 +9,10 @@
   import SiteTextField from '../common/SiteTextField.vue'
   import SiteTable from '../common/SiteTable.vue'
   import SiteButton from '../common/SiteButton.vue'
+  import SiteButtonIcon from '../common/SiteButtonIcon.vue'
+  import SitePopupHoverMenu from '../common/SitePopupHoverMenu.vue'
   import BattleDialog from '../battle/BattleDialog.vue'
+  import RoundPrize from './RoundPrize.vue'
 
   const props = defineProps({
     tournamentId: {
@@ -31,8 +34,23 @@
   const { isConnected, address } = storeToRefs(store)
 
   const onlyShowMine = ref(false)
+  const onlyShowCompleted = ref(false)
 
   const showWinners = ref(false)
+
+  watch(
+    () => isConnected.value,
+    () => {
+      if (isConnected.value) {
+        // If user has just connected, enable onlyShowMine
+        // If user has just disconnected, disable onlyShowMine
+        onlyShowMine.value = !!isConnected.value
+      }
+    },
+    { immediate: true }
+  )
+
+  const exactTeamName = ref('')
 
   const query = ref('')
   const debouncedQuery = ref('')
@@ -41,7 +59,7 @@
   }
   const debouncedSetQuery = debounce(setQuery, 200)
 
-  const numToShow = ref(10)
+  const numToShow = ref(100)
 
   const myTeamIds = computed(() => {
     if (!isConnected.value || !address.value) { return [] }
@@ -57,13 +75,15 @@
     const teamsById = Object.fromEntries(tournament.value.teams.map(team => [team.id, team]))
     const result = fullBrackets.value.map(bracket => {
       return bracket.rounds.map(round => {
-        // Only return battles that have a winner
-        return round.battles.filter(b => b.winnerId).map(battle => ({
+        // Only return battles that have at least one team
+        return round.battles.filter(b => b.team1Id || b.team2Id).map(battle => ({
           ...battle,
           team1Name: teamsById[battle.team1Id]?.name || '',
           team2Name: teamsById[battle.team2Id]?.name || '',
           bracketName: bracket.name,
           roundName: round.name,
+          loserPrize: round.loserPrize,
+          winnerPrize: round.winnerPrize,
           startDate: round.startDate
         }))
       }).flat()
@@ -74,6 +94,9 @@
   const filteredBattles = computed(() => {
     if (!battles.value?.length) { return [] }
     let result = battles.value
+    if (onlyShowCompleted.value) {
+      result = result.filter(b => b.winnerId)
+    }
     if (isConnected.value && onlyShowMine.value) {
       if (myTeamIds.value.length) {
         const myTeams = myTeamIds.value
@@ -82,9 +105,13 @@
         result = []
       }
     }
+    if (exactTeamName.value) {
+      result = result.filter(battle => battle.team1Name === exactTeamName.value || battle.team2Name === exactTeamName.value)
+    }
     if (query.value) {
       const q = query.value
-      result = result.filter(battle => `${battle.code}` === q || `${battle.id}` === q)
+      const qLower = q.toLowerCase()
+      result = result.filter(battle => `${battle.code}` === q || `${battle.id}` === q || battle.team1Name.toLowerCase().includes(qLower) || battle.team2Name.toLowerCase().includes(qLower))
     }
     return result
   })
@@ -94,9 +121,16 @@
   })
 
   function loadMore () {
-    numToShow.value += 10
+    numToShow.value += 100
   }
   const canLoadMore = computed(() => filteredBattles.value?.length > numToShow.value)
+
+
+  const filterBattlesForTeam = function (teamName) {
+    exactTeamName.value = teamName
+    query.value = ''
+  }
+
 
   const battleDialogIsOpen = ref(false)
   const displayBattle = ref(null)
@@ -136,6 +170,11 @@
           My matches only
         </SiteCheckbox>
         <SiteCheckbox
+          v-model="onlyShowCompleted"
+        >
+          Completed Battles only
+        </SiteCheckbox>
+        <SiteCheckbox
           v-model="showWinners"
         >
           Reveal Winners
@@ -145,9 +184,22 @@
             v-model="query"
             search
             subtle
-            placeholder="Search for Battle ID"
+            placeholder="Find Battle ID/Team name"
             class="tournament-battles__search-field"
             @input="debouncedSetQuery"
+          />
+        </div>
+        <div
+          v-if="exactTeamName"
+          class="tournament-battles__exact-team-filter"
+        >
+          <span>
+            Battles for: <b class="word-break">{{ exactTeamName }}</b>
+          </span>
+          <SiteButtonIcon
+            label="Remove filter"
+            iconName="close"
+            @click="exactTeamName = ''"
           />
         </div>
       </div>
@@ -165,6 +217,9 @@
           <thead>
             <tr>
               <th>
+                <span>Bracket</span>
+              </th>
+              <th>
                 <span>Round</span>
               </th>
               <th>
@@ -174,7 +229,32 @@
                 <span>Team 2</span>
               </th>
               <th>
-                <span>Winner</span>
+                <div class="tournament-battles__table-header-with-info">
+                  <span class="tournament-battles__table-header-text">Losers Prize</span>
+                  <SitePopupHoverMenu class="tournament-battles__table-header-info">
+                    <SiteButtonIcon
+                      iconName="info"
+                      label="about"
+                    />
+                    <template #popper>
+                      This is the prize the team will win if they lose this battle
+                    </template>
+                  </SitePopupHoverMenu>
+                </div>
+              </th>
+              <th>
+                <div class="tournament-battles__table-header-with-info">
+                  <span class="tournament-battles__table-header-text">Winners Prize</span>
+                  <SitePopupHoverMenu class="tournament-battles__table-header-info">
+                    <SiteButtonIcon
+                      iconName="info"
+                      label="about"
+                    />
+                    <template #popper>
+                      This is the minimum future prize the team will win if they win this battle
+                    </template>
+                  </SitePopupHoverMenu>
+                </div>
               </th>
             </tr>
           </thead>
@@ -184,6 +264,9 @@
               :key="battle.id"
               class="battle-row"
             >
+              <td>
+                {{ battle.bracketName }}
+              </td>
               <td class="battle-round">
                 <a
                   href="#"
@@ -200,7 +283,13 @@
                   'battle-team--mine': myTeamIdsLookup[battle.team1Id]
                 }"
               >
-                {{ battle.team1Name }}
+                <a
+                  href="#"
+                  class="battle-team-name link-reset link-reset--hover-underline"
+                  @click.prevent="filterBattlesForTeam(battle.team1Name)"
+                >
+                  {{ battle.team1Name }}
+                </a>
               </td>
               <td
                 class="word-break battle-team"
@@ -209,26 +298,26 @@
                   'battle-team--mine': myTeamIdsLookup[battle.team2Id]
                 }"
               >
-                {{ battle.team2Name }}
+                <a
+                  href="#"
+                  class="battle-team-name link-reset link-reset--hover-underline"
+                  @click.prevent="filterBattlesForTeam(battle.team2Name)"
+                >
+                  {{ battle.team2Name }}
+                </a>
               </td>
-              <td
-                class="battle-result"
-                :class="{
-                  'battle-result--available': !!battle.winnerId,
-                  'battle-result--hidden': !showWinners && !!battle.winnerId
-                }"
-              >
-                <template v-if="battle.winnerId">
-                  <template v-if="!showWinners">
-                    hidden
-                  </template>
-                  <template v-else>
-                    {{ battle.winnerId === battle.team1Id ? 'Team 1 Win' : 'Team 2 Win' }}
-                  </template>
-                </template>
-                <template v-else>
-                  N/A
-                </template>
+              <td>
+                <RoundPrize
+                  v-if="battle.loserPrize"
+                  :prize="battle.loserPrize"
+                />
+              </td>
+              <td>
+                <RoundPrize
+                  v-if="battle.winnerPrize"
+                  :prize="battle.winnerPrize"
+                  :minimum="true"
+                />
               </td>
             </tr>
           </tbody>
@@ -270,9 +359,30 @@
   flex: none;
 }
 
+.tournament-battles__exact-team-filter {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .tournament-battles__footer {
   display: grid;
   place-items: center;
+}
+
+.tournament-battles__table-header-with-info {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  opacity: 0.5;
+}
+.tournament-battles__table-header-text {
+  flex: 1 1 auto;
+}
+.tournament-battles__table-header-info {
+  flex: none;
+  line-height: 1rem;
 }
 
 .battle-row {
@@ -301,17 +411,8 @@
   margin-right: 0.25rem;
   font-size: 1.25rem;
 }
-.battle-result {
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-.battle-result--available {
-  font-weight: bold;
-}
-.battle-result--hidden {
-  font-weight: normal;
-  text-transform: none;
-  font-style: italic;
-  color: rgba(255, 255, 255, 0.6);
+.battle-team-name {
+  position: relative;
+  z-index: 1;
 }
 </style>

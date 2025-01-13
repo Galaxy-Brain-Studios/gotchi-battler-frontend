@@ -1,26 +1,31 @@
 <script setup>
-  // import loaderUrlDev from './unity/Build/build.loader.js?url'
-  // import dataUrlDev from './unity/Build/build.data?url'
-  // import frameworkUrlDev from './unity/Build/build.framework.js?url'
-  // import codeUrlDev from './unity/Build/build.wasm?url'
-  // import loaderUrlProd from './unity/BuildProd/Build.loader.js?url'
-  // import dataUrlProd from './unity/BuildProd/Build.data.br?url'
-  // import frameworkUrlProd from './unity/BuildProd/Build.framework.js.br?url'
-  // import codeUrlProd from './unity/BuildProd/Build.wasm.br?url'
-  import loaderUrlNew from './unity/Build15/Build.loader.js?url'
-  import dataUrlNew from './unity/Build15/Build.data.br?url'
-  import frameworkUrlNew from './unity/Build15/Build.framework.js.br?url'
-  import codeUrlNew from './unity/Build15/Build.wasm.br?url'
-  
-  // const loaderUrl = import.meta.env.MODE === 'production' ? loaderUrlProd : loaderUrlDev
-  // const dataUrl = import.meta.env.MODE === 'production' ? dataUrlProd : dataUrlDev
-  // const frameworkUrl = import.meta.env.MODE === 'production' ? frameworkUrlProd : frameworkUrlDev
-  // const codeUrl = import.meta.env.MODE === 'production' ? codeUrlProd : codeUrlDev
+  const gameBuildUrl = 'https://storage.googleapis.com/gotchi-battler-live_game/builds/WebGL'
+  const versions = {
+    '1.5': '1-5-0',
+    '2.0': '0-1-6',
+  }
+  const versionUrls = {
+    '1.5' : {
+      loader: `${gameBuildUrl}/${versions['1.5']}/Build/Build.loader.js`,
+      data: `${gameBuildUrl}/${versions['1.5']}/Build/Build.data.br`,
+      framework: `${gameBuildUrl}/${versions['1.5']}/Build/Build.framework.js.br`,
+      code: `${gameBuildUrl}/${versions['1.5']}/Build/Build.wasm.br`,
+    },
+    '2.0' : {
+      loader: `${gameBuildUrl}/${versions['2.0']}/Build/Build.loader.js`,
+      data: `${gameBuildUrl}/${versions['2.0']}/Build/Build.data.br`,
+      framework: `${gameBuildUrl}/${versions['2.0']}/Build/Build.framework.js.br`,
+      code: `${gameBuildUrl}/${versions['2.0']}/Build/Build.wasm.br`,
+      streamingAssets: `${gameBuildUrl}/${versions['2.0']}/StreamingAssets`,
+    },
+  }
 
-  const loaderUrl = loaderUrlNew
-  const dataUrl = dataUrlNew
-  const frameworkUrl = frameworkUrlNew
-  const codeUrl = codeUrlNew
+  const version = '1.5'
+  const loaderUrl = versionUrls[version].loader
+  const dataUrl = versionUrls[version].data
+  const frameworkUrl = versionUrls[version].framework
+  const codeUrl = versionUrls[version].code
+  const streamingAssetsUrl = versionUrls[version].streamingAssets || 'StreamingAssets'
 
   import uniqueId from 'lodash.uniqueid'
   import { ref, onMounted, onBeforeUnmount } from 'vue'
@@ -69,11 +74,12 @@
         dataUrl,
         frameworkUrl,
         codeUrl,
-        streamingAssetsUrl: "StreamingAssets",
+        streamingAssetsUrl,
         companyName: "DefaultCompany",
         productName: "GotchiBattler",
         productVersion: "0.1.0",
         showBanner: unityShowBanner,
+        devicePixelRatio: window.devicePixelRatio || 1,
       }
       if (!window.createUnityInstance) {
         console.error('window.createUnityInstance is missing')

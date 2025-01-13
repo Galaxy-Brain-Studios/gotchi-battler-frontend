@@ -1,4 +1,5 @@
 <script setup>
+  import prizeCurrencies from "./prizeCurrencies.json"
   import SiteIcon from "../common/SiteIcon.vue"
   defineProps({
     tournament: {
@@ -16,15 +17,6 @@
   const doubleEliminationPlacementLabels = [
     '1st', '2nd', '3rd', '4th', '5th - 6th', '7th - 8th','9th - 12th', '13th - 16th', '17th - 24th', '25th - 32nd', '33rd - 48th', '49th - 64th', '65th - 96th', '97th - 128th', '129th - 192nd', '193rd - 256th', '257th - 384th', '385th - 512th', '513th - 768th', '769th - 1024th', '1025th - 1536th', '1537th - 2048th'
   ]
-
-  const currencyIcons = {
-    dai: 'token-dai',
-    ghst: 'token-ghst'
-  }
-  const currencyLabels = {
-    dai: 'DAI',
-    ghst: 'GHST'
-  }
 </script>
 
 <template>
@@ -54,14 +46,14 @@
         </div>
         <div class="prizes-list__prize">
           <SiteIcon
-            v-if="currencyIcons[prize.currency]"
-            :name="currencyIcons[prize.currency]"
+            v-if="prizeCurrencies[prize.currency]?.icon"
+            :name="prizeCurrencies[prize.currency]?.icon"
             :height="2"
             :width="2"
             class="prizes-list__currency-icon"
           />
           {{ prize.prize }}
-          {{ currencyLabels[prize.currency] || prize.currency }}
+          {{ prizeCurrencies[prize.currency]?.label || prize.currency }}
         </div>
       </li>
     </ol>

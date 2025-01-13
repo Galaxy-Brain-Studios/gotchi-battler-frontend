@@ -10,6 +10,10 @@
     size: {
       type: Number,
       default: 1 /* in rem */
+    },
+    minimum: {
+      type: Boolean,
+      default: false
     }
   })
 </script>
@@ -22,6 +26,9 @@
       '--round-prize--size': (size - 0)
     }"
   >
+    <div v-if="minimum">
+      >
+    </div>
     <div class="round-prize__amount">
       {{ prize.prize }}
     </div>

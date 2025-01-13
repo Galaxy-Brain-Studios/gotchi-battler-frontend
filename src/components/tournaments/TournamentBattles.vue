@@ -59,7 +59,7 @@
   }
   const debouncedSetQuery = debounce(setQuery, 200)
 
-  const numToShow = ref(10)
+  const numToShow = ref(100)
 
   const myTeamIds = computed(() => {
     if (!isConnected.value || !address.value) { return [] }
@@ -121,7 +121,7 @@
   })
 
   function loadMore () {
-    numToShow.value += 10
+    numToShow.value += 100
   }
   const canLoadMore = computed(() => filteredBattles.value?.length > numToShow.value)
 
@@ -217,10 +217,10 @@
           <thead>
             <tr>
               <th>
-                <span>Round</span>
+                <span>Bracket</span>
               </th>
               <th>
-                <span>Bracket</span>
+                <span>Round</span>
               </th>
               <th>
                 <span>Team 1</span>
@@ -264,6 +264,9 @@
               :key="battle.id"
               class="battle-row"
             >
+              <td>
+                {{ battle.bracketName }}
+              </td>
               <td class="battle-round">
                 <a
                   href="#"
@@ -272,9 +275,6 @@
                 >
                   {{ battle.roundName }}
                 </a>
-              </td>
-              <td>
-                {{ battle.bracketName }}
               </td>
               <td
                 class="word-break battle-team"
@@ -316,6 +316,7 @@
                 <RoundPrize
                   v-if="battle.winnerPrize"
                   :prize="battle.winnerPrize"
+                  :minimum="true"
                 />
               </td>
             </tr>

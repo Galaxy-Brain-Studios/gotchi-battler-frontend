@@ -27,7 +27,7 @@
     }"
   >
     <div v-if="minimum">
-      >
+      &gt;
     </div>
     <div class="round-prize__amount">
       {{ prize.prize }}

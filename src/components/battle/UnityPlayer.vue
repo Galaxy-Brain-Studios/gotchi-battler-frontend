@@ -1,8 +1,8 @@
 <script setup>
   const gameBuildUrl = 'https://storage.googleapis.com/gotchi-battler-live_game/builds/WebGL'
   const versions = {
-    '1.5': '1.5.0',
-    '2.0': '0-0-321',
+    '1.5': '1-5-0',
+    '2.0': '0-1-6',
   }
   const versionUrls = {
     '1.5' : {
@@ -20,12 +20,12 @@
     },
   }
 
-  const version = '2.0'
+  const version = '1.5'
   const loaderUrl = versionUrls[version].loader
   const dataUrl = versionUrls[version].data
   const frameworkUrl = versionUrls[version].framework
   const codeUrl = versionUrls[version].code
-  const streamingAssetsUrl = versionUrls[version].streamingAssets
+  const streamingAssetsUrl = versionUrls[version].streamingAssets || 'StreamingAssets'
 
   import uniqueId from 'lodash.uniqueid'
   import { ref, onMounted, onBeforeUnmount } from 'vue'

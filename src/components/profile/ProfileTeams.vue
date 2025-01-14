@@ -6,6 +6,7 @@
   import useStatus from '../../utils/useStatus'
   import CommonSavedTeams from './CommonSavedTeams.vue'
   import ProfileTeamDelete from './ProfileTeamDelete.vue'
+  import SiteButtonSmall from '../common/SiteButtonSmall.vue'
   import SiteButtonWhite from '../common/SiteButtonWhite.vue'
   import CreateTeamDialog from '../team/CreateTeamDialog.vue'
 
@@ -33,26 +34,64 @@
 
   const savedTeamsLastChanged = ref(Date.now())
 
+  function refreshSavedTeamsList () {
+    savedTeamsLastChanged.value = Date.now()
+  }
+
+  // Create Team
   const createTeamDialogIsOpen = ref(false)
+  const { status: submitCreateStatus, setLoading: setCreateLoading, reset: resetCreateStatus } = useStatus()
+
+  function createTeam () {
+    createTeamDialogIsOpen.value = true
+    resetCreateStatus()
+  }
+
+  function closeCreateTeam () {
+    createTeamDialogIsOpen.value = false
+    resetCreateStatus()
+  }
+
+  async function saveNewTeam (team) {
+    const [isStale, setLoaded, setError] = setCreateLoading()
+    try {
+      await profileService.createTeam({
+        ...team
+      })
+      // teams list will need updating, even if we've moved on from this dialog
+      refreshSavedTeamsList()
+      if (isStale()) { return }
+      setLoaded()
+      closeCreateTeam()
+    } catch (e) {
+      if (isStale()) { return }
+      console.error('Error saving team', e)
+      setError(`Error: ${e.message}`)
+    }
+  }
+
+
+  // Edit Team
+  const editTeamDialogIsOpen = ref(false)
   const editingTeam = ref(null)
-  const { status: submitStatus, setLoading: setLoading, reset: resetStatus } = useStatus()
+  const { status: submitEditStatus, setLoading: setEditLoading, reset: resetEditStatus } = useStatus()
 
   function editTeam (team) {
-    createTeamDialogIsOpen.value = true
+    editTeamDialogIsOpen.value = true
     editingTeam.value = team
-    resetStatus()
+    resetEditStatus()
   }
 
   function closeEditTeam () {
-    createTeamDialogIsOpen.value = false
+    editTeamDialogIsOpen.value = false
     editingTeam.value = null
-    resetStatus()
+    resetEditStatus()
   }
 
   async function updateTeam (team) {
     const editTeamId = editingTeam.value?.id
     if (!editTeamId) { return }
-    const [isStale, setLoaded, setError] = setLoading()
+    const [isStale, setLoaded, setError] = setEditLoading()
     try {
       await profileService.updateTeam({
         ...team,
@@ -72,9 +111,6 @@
     }
   }
 
-  function refreshSavedTeamsList () {
-    savedTeamsLastChanged.value = Date.now()
-  }
 </script>
 
 <template>
@@ -84,6 +120,15 @@
     :savedTeamsLastChanged="savedTeamsLastChanged"
     showTeamCount
   >
+    <template #headerActions>
+      <div>
+        <SiteButtonSmall
+          @click="createTeam()"
+        >
+          Create Saved Team
+        </SiteButtonSmall>
+      </div>
+    </template>
     <template #actions="{ team }">
       <SiteButtonWhite
         small
@@ -100,12 +145,20 @@
     </template>
   </CommonSavedTeams>
   <CreateTeamDialog
-    v-if="createTeamDialogIsOpen && editingTeam"
+    v-if="createTeamDialogIsOpen"
     v-model:isOpen="createTeamDialogIsOpen"
+    mode="create_profile_saved"
+    :isSaving="submitCreateStatus.loading"
+    :errorMessage="submitCreateStatus.error && submitCreateStatus.errorMessage || null"
+    @update:team="saveNewTeam"
+  />
+  <CreateTeamDialog
+    v-else-if="editTeamDialogIsOpen && editingTeam"
+    v-model:isOpen="editTeamDialogIsOpen"
     :team="editingTeam"
     mode="edit_profile_saved"
-    :isSaving="submitStatus.loading"
-    :errorMessage="submitStatus.error && submitStatus.errorMessage || null"
+    :isSaving="submitEditStatus.loading"
+    :errorMessage="submitEditStatus.error && submitEditStatus.errorMessage || null"
     @update:team="updateTeam"
     @savedProfileTeam="refreshSavedTeamsList"
   />

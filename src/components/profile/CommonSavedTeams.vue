@@ -149,6 +149,12 @@
       :unavailableGotchiIds="unavailableGotchiIds"
       :showTeamCount="showTeamCount"
     >
+      <template #headerActions="slotProps">
+        <slot
+          name="headerActions"
+          v-bind="slotProps"
+        />
+      </template>
       <template #actions="slotProps">
         <slot
           name="actions"

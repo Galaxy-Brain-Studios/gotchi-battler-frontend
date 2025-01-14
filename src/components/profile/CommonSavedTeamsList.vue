@@ -54,6 +54,7 @@
         class="common-saved-teams-list__search-field"
       />
     </div>
+    <slot name="headerActions"></slot>
   </div>
   <div
     v-if="!teamsToDisplay.length"

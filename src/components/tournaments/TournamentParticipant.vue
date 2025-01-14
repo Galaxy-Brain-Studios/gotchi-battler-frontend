@@ -3,6 +3,7 @@
   import { storeToRefs } from 'pinia'
   import { useAccountStore } from '../../data/accountStore'
   import TournamentCreateTeam from './TournamentCreateTeam.vue'
+  import SiteRequireSignIn from '../site/SiteRequireSignIn.vue'
 
   const props = defineProps({
     tournamentId: {
@@ -26,11 +27,18 @@
 </script>
 
 <template>
-  <TournamentCreateTeam
+  <SiteRequireSignIn
     v-if="address && tournamentId && canCreateTeam"
-    :tournamentId="tournamentId"
-    @createdTeam="emit('createdTeam')"
-  />
+  >
+    <template #signin-message>
+      to create a team for this tournament
+    </template>
+    <TournamentCreateTeam
+      :tournamentId="tournamentId"
+      style="white-space: nowrap;"
+      @createdTeam="emit('createdTeam')"
+    />
+  </SiteRequireSignIn>
 </template>
 
 <style scoped>

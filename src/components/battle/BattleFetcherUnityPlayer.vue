@@ -38,18 +38,29 @@
     },
     { immediate: true }
   )
+
+  const playerWidth = 1280
+  const playerHeight = 720
 </script>
 
 <template>
   <div
     v-if="fetchStatus.loading"
     class="battle-logs-message"
+    :style="{
+      '--battle-player-width': playerWidth,
+      '--battle-player-height': playerHeight
+    }"
   >
-    Loading...
+    Loading data...
   </div>
   <div
-    v-if="fetchStatus.error"
+    v-else-if="fetchStatus.error"
     class="battle-logs-message"
+    :style="{
+      '--battle-player-width': playerWidth,
+      '--battle-player-height': playerHeight
+    }"
   >
     <SiteError>
       Error fetching battle logs:
@@ -59,6 +70,8 @@
   <UnityPlayer
     v-else-if="fetchStatus.loaded && logs"
     :logs="logs"
+    :playerWidth="playerWidth"
+    :playerHeight="playerHeight"
   />
 </template>
 
@@ -67,5 +80,9 @@
     display: grid;
     place-items: center;
     height: 100%;
+    /* take up the same size as the unity player, to avoid layout resizing */
+    aspect-ratio: var(--battle-player-width) / var(--battle-player-height);
+    width: 100%;
+    max-width: calc(var(--battle-player-width) * 1px);
   }
 </style>

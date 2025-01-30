@@ -1,10 +1,11 @@
 <script setup>
-  import { computed } from 'vue'
+  import { ref, computed, watch } from 'vue'
   import BattleFetcherUnityPlayer from './BattleFetcherUnityPlayer.vue'
   import UnityPlayer from './UnityPlayer.vue'
   import TeamFormation from '../team/TeamFormation.vue'
   import GotchiInFormation from '../team/GotchiInFormation.vue'
   import BattleVs from './BattleVs.vue'
+  import SiteButtonPrimary from '../common/SiteButtonPrimary.vue'
 
   const props = defineProps({
     battle: {
@@ -42,12 +43,19 @@
   const battleLogsData = computed(() => props.battle?.logsData ? props.battle.logsData : null )
   const battleLogsUrl = computed(() => props.battle?.logs ? props.battle.logs : null )
   const hasBattleLogs = computed(() => !!(battleLogsData.value || battleLogsUrl.value) )
+  const playingBattle = ref(false)
+  const showBattlePlayer = computed(() => hasBattleLogs.value && playingBattle.value)
 
   const battleIsCompleted = computed(() => !!props.battle?.winnerId)
   const showTeam1Winner = computed(() => props.showResult && battleIsCompleted.value && props.battle.winnerId === team1.value?.id)
   const showTeam2Winner = computed(() => props.showResult && battleIsCompleted.value && props.battle.winnerId === team2.value?.id)
   const showTeam1Loser = computed(() => showTeam2Winner.value)
   const showTeam2Loser = computed(() => showTeam1Winner.value)
+
+  watch(
+    () => [props.battle, hasBattleLogs.value],
+    () => playingBattle.value = false
+  )
 </script>
 
 <template>
@@ -122,47 +130,12 @@
     </div>
 
     <div class="battle__field">
-      <div class="battle__team-formation">
-        <TeamFormation
-          :team="team1"
-        >
-          <template #position>
-            <GotchiInFormation
-              emptyMode="blank"
-              variant="small"
-              withItemBadge
-              withSpecialInfoBadge
-            />
-          </template>
-          <template #gotchi="{ gotchi }">
-            <GotchiInFormation
-              :gotchi="gotchi"
-              :isLeader="gotchi.id === team1.leader"
-              :teamId="team1.id"
-              variant="small"
-              withItemBadge
-              withStatsPopup
-              withSpecialInfoBadge
-            />
-          </template>
-          <template #no-team>
-            <slot name="empty-team-1" />
-          </template>
-        </TeamFormation>
-      </div>
       <div
-        class="battle__display"
-        :class="{
-          'battle__display--not-ready': !hasBattleLogs
-        }"
+        v-if="showBattlePlayer"
+        class="battle__display-player"
       >
-        <template v-if="!hasBattleLogs">
-          <slot name="not-started">
-            Result not available yet
-          </slot>
-        </template>
         <UnityPlayer
-          v-else-if="battleLogsData"
+          v-if="battleLogsData"
           :logs="battleLogsData"
         />
         <BattleFetcherUnityPlayer
@@ -170,35 +143,79 @@
           :logsUrl="battleLogsUrl"
         />
       </div>
-      <div class="battle__team-formation">
-        <TeamFormation
-          :team="team2"
-          reverseRows
-        >
-          <template #position>
-            <GotchiInFormation
-              emptyMode="blank"
-              variant="small"
-              withItemBadge
-              withSpecialInfoBadge
-            />
+      <template v-else>
+        <div class="battle__team-formation">
+          <TeamFormation
+            :team="team1"
+          >
+            <template #position>
+              <GotchiInFormation
+                emptyMode="blank"
+                variant="small"
+                withItemBadge
+                withSpecialInfoBadge
+              />
+            </template>
+            <template #gotchi="{ gotchi }">
+              <GotchiInFormation
+                :gotchi="gotchi"
+                :isLeader="gotchi.id === team1.leader"
+                :teamId="team1.id"
+                variant="small"
+                withItemBadge
+                withStatsPopup
+                withSpecialInfoBadge
+              />
+            </template>
+            <template #no-team>
+              <slot name="empty-team-1" />
+            </template>
+          </TeamFormation>
+        </div>
+        <div class="battle__display-placeholder">
+          <template v-if="!hasBattleLogs">
+            <slot name="not-started">
+              Result not available yet
+            </slot>
           </template>
-          <template #gotchi="{ gotchi }">
-            <GotchiInFormation
-              :gotchi="gotchi"
-              :isLeader="gotchi.id === team2.leader"
-              :teamId="team2.id"
-              variant="small"
-              withItemBadge
-              withStatsPopup
-              withSpecialInfoBadge
-            />
+          <template v-else>
+            <SiteButtonPrimary
+              @click="playingBattle = true"
+            >
+              Play Battle
+            </SiteButtonPrimary>
           </template>
-          <template #no-team>
-            <slot name="empty-team-2" />
-          </template>
-        </TeamFormation>
-      </div>
+        </div>
+        <div class="battle__team-formation">
+          <TeamFormation
+            :team="team2"
+            reverseRows
+          >
+            <template #position>
+              <GotchiInFormation
+                emptyMode="blank"
+                variant="small"
+                withItemBadge
+                withSpecialInfoBadge
+              />
+            </template>
+            <template #gotchi="{ gotchi }">
+              <GotchiInFormation
+                :gotchi="gotchi"
+                :isLeader="gotchi.id === team2.leader"
+                :teamId="team2.id"
+                variant="small"
+                withItemBadge
+                withStatsPopup
+                withSpecialInfoBadge
+              />
+            </template>
+            <template #no-team>
+              <slot name="empty-team-2" />
+            </template>
+          </TeamFormation>
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -249,14 +266,15 @@
     grid-template-columns: minmax(12.5rem, max-content) 1fr minmax(12.5rem, max-content);
     column-gap: 1rem;
   }
-  .battle__display {
-    /* don't use flex or grid display for centering here because then the unity player doesn't grow when width increases. */
-  }
-  .battle__display--not-ready {
+  .battle__display-placeholder {
     display: grid;
     place-items: center;
     background: radial-gradient(50% 50.00% at 50% 50.00%, #421F89 0%, #150B4D 100%);
     font-size: 1.5rem;
   }
-
+  .battle__display-player {
+    grid-column: 1 / 4;
+    /* don't use flex or grid display for centering here because then the unity player doesn't grow when width increases. */
+    padding: 1px 0; /* tweak to make it the same height as the battle field display */
+  }
 </style>

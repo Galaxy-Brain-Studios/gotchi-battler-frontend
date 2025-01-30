@@ -183,7 +183,7 @@
 
 <style scoped>
   .team-formation {
-    margin: 1px;
+    margin: 1px; /* so outline is included */
     display: grid;
     grid-template-columns: auto auto;
     grid-template-rows: auto repeat(5, auto);

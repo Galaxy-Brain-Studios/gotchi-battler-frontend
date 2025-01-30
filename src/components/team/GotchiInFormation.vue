@@ -250,7 +250,7 @@
   .gotchi-in-formation,
   .gotchi-in-formation-placeholder {
     --gotchi-in-formation-small-width: calc(6.25rem - 2px);
-    --gotchi-in-formation-small-height: calc(6.25rem - 2px - 0.5rem);
+    --gotchi-in-formation-small-height: calc(6.25rem - 4px - 0.5rem);
     --gotchi-in-formation__item-badge-height: 1.5rem;
     --gotchi-in-formation__special-badge-height: 1.25rem;
     --gotchi-in-formation__badges-height: 0px; /* need size unit for calc to work */

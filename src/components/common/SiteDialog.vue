@@ -10,7 +10,8 @@
     variant: { type: String, default: 'large' },
     /* enable 'strict' to prevent clicks on backdrop closing dialog */
     strict: { type: Boolean, default: false },
-    lightMode: { type: Boolean, default: false }
+    lightMode: { type: Boolean, default: false },
+    maxWidth: { type: String, default: null }
   })
 
   const emit = defineEmits(['update:isOpen'])
@@ -113,6 +114,9 @@
           'site-dialog__dialog--variant-medium': variant === VARIANT.MEDIUM,
           'site-dialog__dialog--variant-small': variant === VARIANT.SMALL,
           'site-dialog__dialog--mode-light': !!lightMode
+        }"
+        :style="{
+          '--site-dialog-max-width': maxWidth
         }"
       >
         <div
@@ -239,12 +243,13 @@
     --site-dialog-background: linear-gradient(180deg, #6027E2 0%, #3E1F6B 100%), #3E1F6B;
     --site-dialog-box-shadow: 0px 0px 24px 0px rgba(0, 0, 0, 0.25);
     --site-dialog-width: 90%;
+    --site-dialog-max-width: 1415px;
     --site-dialog-padding: 2rem;
     margin: auto; /* 1 */
     z-index: 2; /* 2 */
     position: relative; /* 2 */
     width: var(--site-dialog-width);
-    max-width: calc(min(100% - 3rem, 1415px));
+    max-width: calc(min(100% - 3rem, var(--site-dialog-max-width)));
     max-height: calc(100% - 3rem);
     border: none; /* 3 */
     border-radius: 1.5rem;

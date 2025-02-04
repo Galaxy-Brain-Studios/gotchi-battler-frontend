@@ -2,7 +2,7 @@
   const gameBuildUrl = 'https://storage.googleapis.com/gotchi-battler-live_game/builds/WebGL'
   const versions = {
     '1.5': '1-5-0',
-    '2.0': '0-1-64',
+    '2.0': '0-1-71',
   }
   const versionUrls = {
     '1.5' : {
@@ -87,7 +87,7 @@
         productName: "GotchiBattler",
         productVersion: "0.1.0",
         showBanner: unityShowBanner,
-        devicePixelRatio: 1,
+        devicePixelRatio: window.devicePixelRatio || 1,
       }
       if (!window.createUnityInstance) {
         console.error('window.createUnityInstance is missing')

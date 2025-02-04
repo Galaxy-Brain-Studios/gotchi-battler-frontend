@@ -87,7 +87,7 @@
         productName: "GotchiBattler",
         productVersion: "0.1.0",
         showBanner: unityShowBanner,
-        devicePixelRatio: window.devicePixelRatio || 1,
+        devicePixelRatio: 1,
       }
       if (!window.createUnityInstance) {
         console.error('window.createUnityInstance is missing')

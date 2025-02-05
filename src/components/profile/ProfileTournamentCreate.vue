@@ -2,12 +2,14 @@
   import { ref, computed, watch } from 'vue'
   import { useRouter } from 'vue-router'
   import useProfile from '@/data/useProfile'
+  import profileService from '@/data/profileService'
+  import useStatus from '../../utils/useStatus'
   import useTournamentPrizeSets from '@/data/useTournamentPrizeSets'
   import SiteRequireSignIn from '../site/SiteRequireSignIn.vue'
   import SiteTextField from '../common/SiteTextField.vue'
   import SiteSelect from '../common/SiteSelect.vue'
   import SiteCheckbox from '../common/SiteCheckbox.vue'
-  import SiteButton from '../common/SiteButton.vue'
+  import SiteButtonPrimary from '../common/SiteButtonPrimary.vue'
   import SiteError from '../common/SiteError.vue'
 
   const props = defineProps({
@@ -152,15 +154,24 @@
   })
 
   const showFormValidationErrors = ref(false)
+  const { status: createStatus, setLoading } = useStatus()
 
-  const submitForm = function () {
-    showFormValidationErrors.value = false
+  const submitForm = async function () {
     console.log(formToSubmit.value);
     if (formValidationErrors.value?.length) {
       showFormValidationErrors.value = true
       return
     }
     console.log('Ok - submit')
+    const [isStale, setLoaded, setError] = setLoading()
+    try {
+      const id = await profileService.createTournament(formToSubmit.value)
+      if (isStale()) { return; }
+      setLoaded()
+      router.push({ name: 'tournament', params: { id } })
+    } catch (e) {
+      setError(e.message)
+    }
   }
 </script>
 
@@ -350,12 +361,24 @@
           </SiteError>
         </div>
 
+        <div v-if="createStatus.error">
+          <SiteError small>
+            {{ createStatus.errorMessage }}
+          </SiteError>
+        </div>
+
         <div class="tournament-create-form__submit">
-          <SiteButton
+          <SiteButtonPrimary
+            :disabled="createStatus.loading"
             @click="submitForm"
           >
-            Create Tournament
-          </SiteButton>
+            <template v-if="createStatus.loading">
+              Saving...
+            </template>
+            <template v-else>
+              Create Tournament
+            </template>
+          </SiteButtonPrimary>
         </div>
       </div>
     </div>

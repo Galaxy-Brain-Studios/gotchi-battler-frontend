@@ -177,4 +177,13 @@ export default {
       throw new Error(getResponseErrorMessage(e) || 'Error uploading image')
     }
   },
+  createTournament: requireLoginSession(async function (tournament) {
+    try {
+      const savedTournament = await apiWithCredentials.url(urls.createTournament()).post(tournament)
+      return savedTournament.id;
+    } catch (e) {
+      console.error('createTournament error', e)
+      throw new Error(getResponseErrorMessage(e) || 'Error creating tournament')
+    }
+  }),
 }

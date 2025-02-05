@@ -268,6 +268,10 @@ const mirageConfig = window.mirageConfig = {
     slow: false,
     empty: false
   },
+  createTournament: {
+    error: false,
+    slow: false
+  },
   updateProfile: {
     error: false,
     slow: false
@@ -957,6 +961,20 @@ export function makeServer({ environment = 'development' } = {}) {
         return tournaments
       }, {
         timing: mirageConfig.profileTournaments.slow ? 3000 : 100
+      })
+
+      this.post(fixUrl(urls.createTournament()), async (schema, request) => {
+        if (mirageConfig.createTournament.error) {
+          return errorResponse()
+        }
+        const address = checkCredentials(request)
+        if (!address) { return unauthorizedErrorResponse() }
+
+        // real server would return the saved tournament model with its new id
+        // just return an existing one for testing
+        return { id: tournaments[0].id }
+      }, {
+        timing: mirageConfig.createTournament.slow ? 3000 : 1000
       })
 
       this.put(fixUrl(urls.updateProfile()), async (schema, request) => {

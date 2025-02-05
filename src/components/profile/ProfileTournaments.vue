@@ -4,6 +4,7 @@
   import useProfile from '@/data/useProfile'
   import SiteRequireSignIn from '../site/SiteRequireSignIn.vue'
   import SiteTable from '../common/SiteTable.vue'
+  import SiteButtonLink from '../common/SiteButtonLink.vue'
   import TournamentStatusBadge from '../tournaments/TournamentStatusBadge.vue'
 
   const props = defineProps({
@@ -61,6 +62,12 @@
     <div
       v-else-if="fetchTournamentsStatus.loaded"
     >
+      <div class="profile-tournaments__header">
+        <SiteButtonLink :to="{ name: 'profile-tournament-create', params: { address } }">
+          Create Tournament
+        </SiteButtonLink>
+      </div>
+
       <div v-if="!tournaments?.length">
         You have not created any tournaments.
       </div>
@@ -92,6 +99,11 @@
 </template>
 
 <style scoped>
+  .profile-tournaments__header {
+    display: flex;
+    justify-content: flex-end;
+  }
+
   .profile-tournaments td {
     vertical-align: top;
   }

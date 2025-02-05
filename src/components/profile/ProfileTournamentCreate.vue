@@ -201,7 +201,7 @@
         <div class="tournament-create-form__datetime">
           <div>
             <label>
-              Registration Date:
+              Registration Date (UTC):
               <SiteTextField
                 v-model="form.registrationDate"
                 placeholder="YYYY-MM-DD"
@@ -230,7 +230,7 @@
         <div class="tournament-create-form__datetime">
           <div>
             <label>
-              Start Date:
+              Start Date (UTC):
               <SiteTextField
                 v-model="form.startDate"
                 placeholder="YYYY-MM-DD"

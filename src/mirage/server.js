@@ -9,6 +9,7 @@ import profileTournamentsForAddress from './profileTournamentsForAddress.json'
 import tournaments from './tournaments.json'
 import exampleTournament from './exampleTournament.json'
 import exampleTournamentBrackets from './exampleTournamentBrackets.json'
+import tournamentPrizeSets from './tournamentPrizeSets.json'
 import teams from './teams.json'
 import battles from './battles.json'
 import battleLog from './battleLog.json'
@@ -240,6 +241,11 @@ const mirageConfig = window.mirageConfig = {
     empty: false,
     long: false
   },
+  tournamentPrizeSets: {
+    error: false,
+    slow: true,
+    empty: false
+  },
   availableLendings: {
     error: false,
     slow: false,
@@ -444,6 +450,18 @@ export function makeServer({ environment = 'development' } = {}) {
           return tournament.fullBrackets
         }
         return generateFullBrackets(tournament)
+      })
+
+      this.get(fixUrl(urls.tournamentPrizeSets()), () => {
+        if (mirageConfig.tournamentPrizeSets.error) {
+          return errorResponse()
+        }
+        if (mirageConfig.tournamentPrizeSets.empty) {
+          return []
+        }
+        return tournamentPrizeSets
+      }, {
+        timing: mirageConfig.tournamentPrizeSets.slow ? 5000 : 1000
       })
 
       this.get(urls.trainingTeams(), () => {

@@ -20,6 +20,7 @@ const urls = {
   tournaments: () =>  `${BASE_URL}/api/v1/tournaments/`,
   tournament: (id) =>  `${BASE_URL}/api/v1/tournaments/${encodeURIComponent(id)}`,
   tournamentBrackets: (id) =>  `${BASE_URL}/api/v1/tournaments/${encodeURIComponent(id)}/brackets`,
+  tournamentPrizeSets: () =>  `${BASE_URL}/api/v1/tournament-prize-sets/`,
   trainingTeams: () =>  `${BASE_URL}/api/v1/training/teams/`,
   team: (id) => `${BASE_URL}/api/v1/teams/${encodeURIComponent(id)}`,
   createTournamentTeam: (tournamentId) =>

@@ -2,6 +2,7 @@
   import { ref, computed, watch } from 'vue'
   import { useRouter } from 'vue-router'
   import useProfile from '@/data/useProfile'
+  import useTournamentPrizeSets from '@/data/useTournamentPrizeSets'
   import SiteRequireSignIn from '../site/SiteRequireSignIn.vue'
   import SiteTextField from '../common/SiteTextField.vue'
   import SiteSelect from '../common/SiteSelect.vue'
@@ -19,6 +20,7 @@
   const router = useRouter()
 
   const { isConnectedProfile } = useProfile(props.address)
+  const { prizeSets, fetchPrizeSetsStatus } = useTournamentPrizeSets()
 
   watch(
     () => isConnectedProfile.value,
@@ -59,25 +61,30 @@
     prizeCurrency: PRIZE_CURRENCIES[0]
   })
 
-
-
-  const prizeSets = computed(() => {
+  const prizeSetAllOptions = computed(() => {
+    let sets = []
+    if (fetchPrizeSetsStatus.value.loaded && prizeSets.value) {
+      sets = prizeSets.value
+    }
     return [
-      { id: 1, label: 'Test 1' },
-      { id: 2, label: 'Test 2' },
-      { id: 3, label: 'Test 3' }
+      { id: '', label: 'None' },
+      ...sets.map(set => ({
+        id: '' + set.id, // convert number to string for the HTML option
+        label: set.name,
+        isDoubleElim: !!set.isDoubleElim
+      }))
     ]
   })
 
   const prizeSetOptions = computed(() => {
-    return [
-      { id: '', label: 'None' },
-      ...prizeSets.value.map(set => ({
-        id: '' + set.id, // convert number to string for the HTML option
-        label: set.label
-      }))
-    ]
+    const isDoubleElim = !!form.value.isDoubleElim
+    return prizeSetAllOptions.value.filter(option => !option.id || option.isDoubleElim === isDoubleElim)
   })
+
+  watch(
+    () => form.value.isDoubleElim,
+    () => form.value.tournamentPrizeSetId = ''
+  )
 
   const formToSubmit = computed(() => {
     const formData = form.value
@@ -303,6 +310,13 @@
                 </option>
               </SiteSelect>
           </label>
+          <SiteError
+            v-if="fetchPrizeSetsStatus.error"
+            small
+            style="margin-top: 1rem"
+          >
+            Error fetching available prize sets: {{ fetchPrizeSetsStatus.errorMessage }}
+          </SiteError>
         </div>
 
         <div v-show="form.tournamentPrizeSetId">

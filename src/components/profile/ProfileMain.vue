@@ -1,4 +1,5 @@
 <script setup>
+  import { computed } from 'vue'
   import useProfile from '@/data/useProfile'
   import SiteButtonLink from '../common/SiteButtonLink.vue'
 
@@ -23,6 +24,49 @@
     }
     setProfile(newProfile)
   }
+
+  const links = computed(() => {
+    const address = props.address.value
+    const items = []
+
+    if (isConnectedProfile.value) {
+      items.push(
+        {
+          label: 'Badges / Achievements',
+          to: { name: 'profile-badges', params: { address } }
+        },
+        {
+          label: 'Saved Teams',
+          to: { name: 'profile-teams', params: { address } }
+        },
+        {
+          label: 'Item Inventory',
+          to: { name: 'profile-inventory', params: { address } }
+        }
+      )
+
+      if (profile.value?.isTournamentAdmin) {
+        items.push({
+          label: 'My Tournaments',
+          to: { name: 'profile-tournaments', params: { address } }
+        })
+      }
+    }
+
+    if (items.length > 1) {
+      for (let i = 0; i < items.length; i++) {
+        let grouped = 'vertical-middle'
+        if (i === 0) {
+          grouped = 'vertical-start';
+        } else if (i === items.length - 1) {
+          grouped = 'vertical-end';
+        }
+        items[i].grouped = grouped;
+      }
+    }
+
+    return items;
+  })
 </script>
 
 <template>
@@ -60,35 +104,14 @@
         </div>
       </div>
       <div class="profile-main__nav">
-        <template v-if="isConnectedProfile">
-          <SiteButtonLink
-            :to="{ name: 'profile-badges', params: { address } }"
-            grouped="vertical-start"
-          >
-            Badges / Achievements
-          </SiteButtonLink>
-          <SiteButtonLink
-            :to="{ name: 'profile-teams', params: { address } }"
-            grouped="vertical-middle"
-          >
-            Saved Teams
-          </SiteButtonLink>
-          <SiteButtonLink
-            :to="{ name: 'profile-inventory', params: { address } }"
-            grouped="vertical-end"
-          >
-            Item Inventory
-          </SiteButtonLink>
-        </template>
-        <template v-else>
-          <!--
-          <SiteButtonLink
-            :to="{ name: 'profile-badges', params: { address } }"
-          >
-            Badges / Achievements
-          </SiteButtonLink>
-          -->
-        </template>
+        <SiteButtonLink
+          v-for="(link, index) in links"
+          :key="index"
+          :to="link.to"
+          :grouped="link.grouped"
+        >
+          {{ link.label }}
+        </SiteButtonLink>
       </div>
       <div class="profile-main__content">
         <router-view />

@@ -2,6 +2,7 @@ import { api, apiText, apiWithCredentials, apiTextWithCredentials, urls, getResp
 import { requireLoginSession } from './accountStore'
 import { notifyUpdate } from './useProfileUpdateNotifications'
 import { processTeamModel, generateTeamForBattle } from './teamUtils'
+import { processTournamentModel } from './tournamentUtils'
 
 const newDefaultProfile = function (address) {
   return {
@@ -70,6 +71,15 @@ export default {
       }
       console.error('fetchItemPurchase error', e)
       throw new Error(message || 'Error fetching item purchase')
+    }
+  }),
+  fetchProfileTournaments: requireLoginSession(async function () {
+    try {
+      const tournaments = await apiWithCredentials.get(urls.profileTournaments())
+      return tournaments.map(processTournamentModel)
+    } catch (e) {
+      console.error('fetchProfileTournaments error', e)
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching profile tournaments')
     }
   }),
 

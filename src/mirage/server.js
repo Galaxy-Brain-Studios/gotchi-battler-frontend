@@ -5,6 +5,7 @@ import { urls } from '../data/api.js'
 import profiles from './profiles.json'
 import profileTeamsForAddress from './profileTeamsForAddress.json'
 import profileInventoryForAddress from './profileInventoryForAddress.json'
+import profileTournamentsForAddress from './profileTournamentsForAddress.json'
 import tournaments from './tournaments.json'
 import exampleTournament from './exampleTournament.json'
 import exampleTournamentBrackets from './exampleTournamentBrackets.json'
@@ -58,6 +59,7 @@ const initProfileForAddress = function (address) {
 const profileTeamsByAddress = Object.fromEntries(Object.entries( profileTeamsForAddress).map( ([address, teams]) => [address.toLowerCase(), teams] ) )
 const profileInventoryByAddress = Object.fromEntries(Object.entries( profileInventoryForAddress).map( ([address, inventory]) => [address.toLowerCase(), inventory] ) )
 const INVENTORY_ITEMS_BY_ID = Object.fromEntries(SHOP_ITEMS.map(item => [`${item.id}`, item]))
+const profileTournamentsByAddress = Object.fromEntries(Object.entries( profileTournamentsForAddress).map( ([address, tournaments]) => [address.toLowerCase(), tournaments] ) )
 
 const getTeamModelFromFormationTeam = function (team) {
   const [back1Gotchi, back2Gotchi, back3Gotchi, back4Gotchi, back5Gotchi] = team.formation.back
@@ -254,6 +256,11 @@ const mirageConfig = window.mirageConfig = {
   profileInventory: {
     error: false,
     slow: false
+  },
+  profileTournaments: {
+    error: false,
+    slow: false,
+    empty: false
   },
   updateProfile: {
     error: false,
@@ -906,6 +913,32 @@ export function makeServer({ environment = 'development' } = {}) {
         return purchase;
       }, {
         timing: mirageConfig.itemPurchase.slow ? 3000 : 100
+      })
+
+      this.get(fixUrl(urls.profileTournaments()), (schema, request) => {
+        if (mirageConfig.profileTournaments.error) {
+          return errorResponse()
+        }
+        const address = checkCredentials(request)
+        if (!address) { return unauthorizedErrorResponse() }
+
+        if (mirageConfig.profileTournaments.empty) {
+          return []
+        }
+
+        const tournaments = (profileTournamentsByAddress[address.toLowerCase()] || []).map(id => {
+          const tournament = tournamentsById[id]
+          if (!tournament) { return null }
+          return {
+            id,
+            name: tournament.name,
+            state: tournament.state
+          }
+        }).filter(t => t)
+
+        return tournaments
+      }, {
+        timing: mirageConfig.profileTournaments.slow ? 3000 : 100
       })
 
       this.put(fixUrl(urls.updateProfile()), async (schema, request) => {

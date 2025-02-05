@@ -137,7 +137,7 @@
         >
           Set address '0xBfe09443556773958bae1699b786d8E9680B5571'
         </button>
-        (3 gotchis, many items)
+        (3 gotchis, many items, Tournament Admin with tournaments)
       </div>
 
       <div>
@@ -167,7 +167,7 @@
         >
           Set address '0xaF4Fe811ffA1BF1f7de8FDAa9F706487C882aEd0'
         </button>
-         (0 gotchis, 2 items)
+         (0 gotchis, 2 items, Tournament Admin with 0 tournaments)
       </div>
 
       <div>

@@ -1,36 +1,7 @@
 import { api, apiWithCredentials, apiTextWithCredentials, urls, getResponseErrorMessage } from './api'
 import { requireLoginSession } from './accountStore'
+import { processTournamentModel } from './tournamentUtils'
 import orderBy from 'lodash.orderby'
-
-const TOURNAMENT_API_STATE_TO_STATUS = {
-  UPCOMING: "upcoming",
-  REGISTERING: "registering",
-  PREPARATION: "active_preparation",
-  BATTLE: "active_battle",
-  FINISHED: "completed"
-}
-
-const getTournamentStatus = function (tournamentFromApi) {
-  if (!tournamentFromApi?.state) {
-    console.error('Tournament is missing state', tournamentFromApi);
-    return ''
-  }
-  const status = TOURNAMENT_API_STATE_TO_STATUS[tournamentFromApi.state]
-  if (!status) {
-    console.error('Unexpected tournament state', tournamentFromApi);
-    return ''
-  }
-  return status
-}
-
-const processTournament = function (tournament) {
-  return {
-    ...tournament,
-    endDate: tournament.endDate ? new Date(tournament.endDate) : null,
-    startDate: tournament.startDate ? new Date(tournament.startDate) : null,
-    status: getTournamentStatus(tournament)
-  }
-}
 
 const processBracketRounds = function(rounds) {
   let newRounds = (rounds || []).map(round => ({
@@ -79,7 +50,7 @@ export default {
   async fetchTournaments () {
     try {
       const tournaments = await api.get(urls.tournaments())
-      return tournaments.map(tournament => processTournament(tournament))
+      return tournaments.map(tournament => processTournamentModel(tournament))
     } catch (e) {
       console.error('fetchTournaments error', { ...e })
       throw new Error(getResponseErrorMessage(e) || 'Error fetching tournaments')
@@ -90,7 +61,7 @@ export default {
     try {
       const tournament = await api.get(urls.tournament(id))
       return {
-        ...processTournament(tournament),
+        ...processTournamentModel(tournament),
         brackets: processBrackets(tournament.brackets || [])
       }
     } catch (e) {

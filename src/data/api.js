@@ -44,6 +44,7 @@ const urls = {
   profileTeams: () => `${BASE_URL}/api/v1/me/teams`,
   profileInventory: () => `${BASE_URL}/api/v1/me/items`,
   itemPurchase: (txId) => `${BASE_URL}/api/v1/me/item-purchases/${encodeURIComponent(txId)}`,
+  profileTournaments: () => `${BASE_URL}/api/v1/me/tournaments`,
   updateProfile: () => `${BASE_URL}/api/v1/me`,
   createProfileTeam: () => `${BASE_URL}/api/v1/me/teams`,
   updateProfileTeam: (teamId) => `${BASE_URL}/api/v1/me/teams/${encodeURIComponent(teamId)}`,

@@ -157,12 +157,10 @@
   const { status: createStatus, setLoading } = useStatus()
 
   const submitForm = async function () {
-    console.log(formToSubmit.value);
     if (formValidationErrors.value?.length) {
       showFormValidationErrors.value = true
       return
     }
-    console.log('Ok - submit')
     const [isStale, setLoaded, setError] = setLoading()
     try {
       const id = await profileService.createTournament(formToSubmit.value)

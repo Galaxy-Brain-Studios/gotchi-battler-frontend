@@ -2093,7 +2093,7 @@
   .create-team__formation-display,
   .create-team__substitutes-display {
     /* some magic numbers so we can size the dragged item to fit inside the target formation position containers */
-    --formation-position-height: 9rem;
+    --formation-position-height: calc(9rem - 2px);
     --formation-position-width: 6.125rem;
   }
 

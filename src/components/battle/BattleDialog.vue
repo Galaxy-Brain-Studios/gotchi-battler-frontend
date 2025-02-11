@@ -24,12 +24,15 @@
 
   const store = useBattleStore(props.id)()
   const { battle, fetchStatus } = storeToRefs(store)
+
+  // Custom maxWidth is set on the SiteDialog to result in a battle area that matches the Unity canvas width
 </script>
 
 <template>
   <SiteDialog
     :isOpen="isOpen"
     variant="large"
+    maxWidth="1344px"
     @update:isOpen="$emit('update:isOpen', $event)"
   >
     <template #header="{ dialogTitleId }">

@@ -2,7 +2,7 @@
   const gameBuildUrl = 'https://storage.googleapis.com/gotchi-battler-live_game/builds/WebGL'
   const versions = {
     '1.5': '1-5-0',
-    '2.0': '0-1-6',
+    '2.0': '2-0-7',
   }
   const versionUrls = {
     '1.5' : {
@@ -20,7 +20,7 @@
     },
   }
 
-  const version = '1.5'
+  const version = '2.0'
   const loaderUrl = versionUrls[version].loader
   const dataUrl = versionUrls[version].data
   const frameworkUrl = versionUrls[version].framework
@@ -37,6 +37,14 @@
     logs: {
       type: Object,
       required: true
+    },
+    playerWidth: {
+      type: Number,
+      default: 1280
+    },
+    playerHeight: {
+      type: Number,
+      default: 720
     }
   })
   const { musicVolume, sfxVolume } = useSettings()
@@ -122,21 +130,26 @@
       myUnityInstance.value = null
     }
   })
+
 </script>
 <template>
   <div class="unity-player-container">
     <canvas
       :id="canvasId"
       ref="canvas"
-      width=960
-      height=600
+      :width="playerWidth"
+      :height="playerHeight"
       tabindex="-1"
+      :style="{
+        '--unity-player-width': playerWidth,
+        '--unity-player-height': playerHeight
+      }"
     ></canvas>
     <div
       v-if="playerStatus.loading"
       class="unity-player__loading"
     >
-      Loading...
+      Loading player...
     </div>
     <SiteError
       v-if="playerStatus.error"
@@ -162,8 +175,8 @@
   }
 
   canvas {
-    --unity-player-width: 960;
-    --unity-player-height: 600;
+    --unity-player-width: 1280;
+    --unity-player-height: 720;
     aspect-ratio: var(--unity-player-width) / var(--unity-player-height);
     width: 100%;
     max-width: calc(var(--unity-player-width) * 1px);

@@ -2,7 +2,7 @@
   const gameBuildUrl = 'https://storage.googleapis.com/gotchi-battler-live_game/builds/WebGL'
   const versions = {
     '1.5': '1-5-0',
-    '2.0': '2-0-5',
+    '2.0': '2-0-7',
   }
   const versionUrls = {
     '1.5' : {

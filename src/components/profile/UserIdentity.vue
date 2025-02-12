@@ -17,29 +17,34 @@
   const escapeUrl = url => CSS.escape(url)
 </script>
 <template>
-  <div
-    v-if="displayName"
-    class="user-identity__user word-break"
+  <RouterLink
+    :to="{ name: 'profile-badges', params: { address } }"
+    class="link-reset link-reset--hover-underline"
   >
     <div
-      v-if="user.avatar"
-      class="user-identity__avatar"
-      :style="{
-        '--image-url': `url(${escapeUrl(user.avatar)})`
-      }"
-    />
-    <div class="user-identity__name">
-      {{ displayName }}
+      v-if="displayName"
+      class="user-identity__user word-break"
+    >
+      <div
+        v-if="user.avatar"
+        class="user-identity__avatar"
+        :style="{
+          '--image-url': `url(${escapeUrl(user.avatar)})`
+        }"
+      />
+      <div class="user-identity__name">
+        {{ displayName }}
+      </div>
     </div>
-  </div>
-  <div
-    v-else
-    class="user-identity__address"
-  >
-    <SiteEthAddress
-      :address="address"
-    />
-  </div>
+    <div
+      v-else
+      class="user-identity__address"
+    >
+      <SiteEthAddress
+        :address="address"
+      />
+    </div>
+  </RouterLink>
 </template>
 
 <style scoped>

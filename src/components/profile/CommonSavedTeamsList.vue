@@ -103,6 +103,11 @@
       </div>
     </li>
   </ol>
+  <slot
+    v-if="$slots['after']"
+    name="after"
+    :teams="teams"
+  ></slot>
 </template>
 
 <style scoped>

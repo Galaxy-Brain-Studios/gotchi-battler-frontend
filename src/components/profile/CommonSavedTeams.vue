@@ -161,6 +161,12 @@
           v-bind="slotProps"
         />
       </template>
+      <template #after="slotProps">
+        <slot
+          name="after"
+          v-bind="slotProps"
+        />
+      </template>
     </CommonSavedTeamsList>
   </SiteRequireSignIn>
 </template>

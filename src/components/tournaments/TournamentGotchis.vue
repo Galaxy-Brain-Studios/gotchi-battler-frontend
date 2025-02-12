@@ -224,7 +224,7 @@
                   :height="0.625"
                 />
               </th>
-              <th class="site-table--no-grow">
+              <th>
                 <span>Team Owner</span>
                 <SiteIcon
                   v-if="sortingProperty === 'teamOwner'"

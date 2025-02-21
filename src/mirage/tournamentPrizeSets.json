@@ -1,0 +1,27 @@
+[
+    {
+        "id": 1,
+        "name": "Prize Set 1",
+        "isDoubleElim": false
+    },
+    {
+        "id": 2,
+        "name": "Prize Set 2 (double elim)",
+        "isDoubleElim": true
+    },
+    {
+        "id": 3,
+        "name": "Prize Set 3",
+        "isDoubleElim": false
+    },
+    {
+        "id": 4,
+        "name": "Prize Set 4 (double elim)",
+        "isDoubleElim": true
+    },
+    {
+        "id": 5,
+        "name": "Prize Set 5",
+        "isDoubleElim": false
+    }
+]

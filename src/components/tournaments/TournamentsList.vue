@@ -6,6 +6,7 @@
   import { formatDateTime } from '../../utils/date'
   import { RouterLink } from 'vue-router'
   import SiteIcon from '../common/SiteIcon.vue'
+  import TournamentStatusBadge from './TournamentStatusBadge.vue'
 
   const props = defineProps({
     type: {
@@ -104,17 +105,10 @@
             '--image-url': `url(${escapeUrl(tournament.image)})`
           }"
         >
-          <div
+          <TournamentStatusBadge
+            :status="tournament.type"
             class="tournament__type-badge"
-            :class="{
-              'tournament__type-badge--active': tournament.type.startsWith('active'),
-              'tournament__type-badge--upcoming': tournament.type === 'upcoming',
-              'tournament__type-badge--registering': tournament.type === 'registering',
-              'tournament__type-badge--completed': tournament.type === 'completed'
-            }"
-          >
-            {{ tournament.type.split('_')[0] }}
-          </div>
+          />
         </div>
         <div class="tournament__info">
           <RouterLink
@@ -208,34 +202,9 @@
     background-repeat: no-repeat;
   }
   .tournament__type-badge {
-    --tournament-type-badge-color-background: var(--c-white);
-    --tournament-type-badge-color-text: var(--c-black);
     position: absolute;
     bottom: 0.5rem;
     right: 0.5rem;
-    padding: 0.12rem 0.5rem;
-    background-color: var(--tournament-type-badge-color-background);
-    color: var(--tournament-type-badge-color-text);
-    text-transform: uppercase;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    letter-spacing: 0.02625rem;
-  }
-  .tournament__type-badge--upcoming {
-    --tournament-type-badge-color-background: var(--c-bright-yellow);
-    --tournament-type-badge-color-text: var(--c-black);
-  }
-  .tournament__type-badge--registering {
-    --tournament-type-badge-color-background: #D9322A;
-    --tournament-type-badge-color-text: var(--c-white);
-  }
-  .tournament__type-badge--active {
-    --tournament-type-badge-color-background: #53BC34;
-    --tournament-type-badge-color-text: var(--c-white);
-  }
-  .tournament__type-badge--completed {
-    --tournament-type-badge-color-background: #243DAE;
-    --tournament-type-badge-color-text: var(--c-white);
   }
   .tournament__info {
     padding: 1rem;

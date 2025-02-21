@@ -64,6 +64,22 @@ export default function useProfile (address) {
     }
   }
 
+  const tournaments = ref(null)
+  const { status: fetchTournamentsStatus, setLoading: setTournamentsLoading } = useStatus()
+  const fetchTournaments = async function () {
+    tournaments.value = null
+    const [isStale, setLoaded, setError] = setTournamentsLoading()
+    try {
+      const result = await profileService.fetchProfileTournaments()
+      if (isStale()) { return; }
+      tournaments.value = result
+      setLoaded()
+    } catch (e) {
+      console.error('Error fetching profile tournaments', e)
+      setError(e.message)
+    }
+  }
+
   return {
     isConnectedProfile,
     isConnectedSignedInProfile,
@@ -76,6 +92,9 @@ export default function useProfile (address) {
     fetchTeamsStatus,
     inventory,
     fetchInventory,
-    fetchInventoryStatus
+    fetchInventoryStatus,
+    tournaments,
+    fetchTournaments,
+    fetchTournamentsStatus
   }
 }

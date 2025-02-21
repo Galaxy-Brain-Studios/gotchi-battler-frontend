@@ -56,6 +56,18 @@ const router = createRouter({
               name: 'profile-badges',
               props: true,
               component: () => import('../components/profile/ProfileBadges.vue'),
+            },
+            {
+              path: 'tournaments',
+              name: 'profile-tournaments',
+              props: true,
+              component: () => import('../components/profile/ProfileTournaments.vue'),
+            },
+            {
+              path: 'tournament-create',
+              name: 'profile-tournament-create',
+              props: true,
+              component: () => import('../components/profile/ProfileTournamentCreate.vue'),
             }
           ]
         }

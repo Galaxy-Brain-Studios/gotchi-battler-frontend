@@ -92,7 +92,7 @@ const router = createRouter({
         {
           path: 'id/:id',
           name: 'tournament',
-          redirect: to => ({ name: 'tournament-tab', params: { id: to.params.id, tab: 'brackets' } }),
+          redirect: to => ({ name: 'tournament-tab', params: { id: to.params.id, tab: 'overview' } }),
           children: [
             {
               path: 'tab/:tab/:teamId?/:teamMode?',

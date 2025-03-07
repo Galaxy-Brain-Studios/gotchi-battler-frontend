@@ -60,6 +60,78 @@
                 "nextBracket": null
             }
         ],
+        "teamsRejected": [
+            {
+                "id": 1001,
+                "name": "Rejected Team 1001",
+                "owner": "0xBfe09443556773958bae1699b786d8E9680B5571",
+                "user": {
+                    "address": "0xBfe09443556773958bae1699b786d8E9680B5571",
+                    "name": "Custom User Name with Avatar",
+                    "avatar": "/dev/gotchi_g1_front.svg"
+                },
+                "reason": "Reason for rejecting team, Test <b>HTML</b>"
+            },
+            {
+                "id": 1002,
+                "name": "Rejected Team 1002",
+                "owner": "0xBfe09443556773958bae1699b786d8E9680B5571",
+                "user": {
+                    "address": "0xBfe09443556773958bae1699b786d8E9680B5571",
+                    "name": "",
+                    "avatar": ""
+                },
+                "reason": "Another reason"
+            },
+            {
+                "id": 1003,
+                "name": "Rejected Team 1003 TestingLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWord",
+                "owner": "0x05EBFf07711A5B6042c27FDaa683a5c6D55b6684",
+                "reason": "TestingLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWordLongWord"
+            },
+            {
+                "id": 1004,
+                "name": "Rejected Team 1004 Testing Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String",
+                "owner": "0x86935F11C86623deC8a25696E1C19a8659CbF95d",
+                "reason": "Another reason Testing Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String"
+            },
+            {
+                "id": 1005,
+                "name": "Rejected Team 1005",
+                "owner": "0xf1d88980505e00db65609ec5420f40c3eb1b77fd",
+                "reason": "Another reason"
+            },
+            {
+                "id": 1006,
+                "name": "Rejected Team 1006",
+                "owner": "0xf1d88980505e00db65609ec5420f40c3eb1b77fd",
+                "reason": "Another reason"
+            },
+            {
+                "id": 1007,
+                "name": "Rejected Team 1007",
+                "owner": "0xaF4Fe811ffA1BF1f7de8FDAa9F706487C882aEd0",
+                "reason": "Another reason"
+            },
+            {
+                "id": 1008,
+                "name": "Rejected Team 1008",
+                "owner": "0xaF4Fe811ffA1BF1f7de8FDAa9F706487C882aEd0",
+                "reason": "Another reason"
+            },
+            {
+                "id": 1009,
+                "name": "Rejected Team 1009",
+                "owner": "0xd8D4BDb89D64B7A2971Dc987DD67F101fea6c7D8",
+                "reason": "Another reason"
+            },
+            {
+                "id": 1010,
+                "name": "Rejected Team 1010",
+                "owner": "0xd8D4BDb89D64B7A2971Dc987DD67F101fea6c7D8",
+                "reason": "Another reason"
+            }
+        ],
         "teams":
         [
             {
@@ -328,6 +400,7 @@
                 "nextBracket": null
             }
         ],
+        "teamsRejected": [],
         "teams":
         [
             {
@@ -399,6 +472,7 @@
                 "nextBracket": null
             }
         ],
+        "teamsRejected": [],
         "teams":
         [
             {
@@ -469,6 +543,7 @@
                 "nextBracket": null
             }
         ],
+        "teamsRejected": [],
         "teams":
         [
             {
@@ -582,6 +657,7 @@
         "image": "https://verse.aavegotchi.com/_next/image?url=https%3A%2F%2Fverse-ugc.aavegotchi.com%2Fparcel%2FPimpGotchiBounceGate-1688830769997.png&w=1920&q=75",
         "description": "Test with zero brackets",
         "brackets": [],
+        "teamsRejected": [],
         "teams": [{"id":4514,"name":"Test Team 1","owner":"0x0000000000000000000000000000000000000001","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4515,"name":"Test Team 2","owner":"0x0000000000000000000000000000000000000002","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4516,"name":"Test Team 3","owner":"0x0000000000000000000000000000000000000003","numOfWins":3,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":3},{"id":4517,"name":"Test Team 4","owner":"0x0000000000000000000000000000000000000004","numOfWins":null,"numOfLosses":2,"ranking":97,"prize":0,"battlesWon":0},{"id":4518,"name":"Test Team 5","owner":"0x0000000000000000000000000000000000000005","numOfWins":3,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":3},{"id":4519,"name":"Test Team 6","owner":"0x0000000000000000000000000000000000000006","numOfWins":2,"numOfLosses":2,"ranking":49,"prize":3,"battlesWon":2},{"id":4520,"name":"Test Team 7","owner":"0x0000000000000000000000000000000000000007","numOfWins":3,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":3},{"id":4521,"name":"Test Team 8","owner":"0x0000000000000000000000000000000000000008","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4522,"name":"Test Team 9","owner":"0x0000000000000000000000000000000000000009","numOfWins":3,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":3},{"id":4523,"name":"Test Team 10","owner":"0x0000000000000000000000000000000000000010","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4524,"name":"Test Team 11","owner":"0x0000000000000000000000000000000000000011","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4525,"name":"Test Team 12","owner":"0x0000000000000000000000000000000000000012","numOfWins":3,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":3},{"id":4526,"name":"Test Team 13","owner":"0x0000000000000000000000000000000000000013","numOfWins":2,"numOfLosses":2,"ranking":49,"prize":3,"battlesWon":2},{"id":4527,"name":"Test Team 14","owner":"0x0000000000000000000000000000000000000014","numOfWins":2,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":2},{"id":4528,"name":"Test Team 15","owner":"0x0000000000000000000000000000000000000015","numOfWins":4,"numOfLosses":null,"ranking":null,"prize":null,"battlesWon":4},{"id":4529,"name":"Test Team 16","owner":"0x0000000000000000000000000000000000000016","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4530,"name":"Test Team 17","owner":"0x0000000000000000000000000000000000000017","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4531,"name":"Test Team 18","owner":"0x0000000000000000000000000000000000000018","numOfWins":4,"numOfLosses":null,"ranking":null,"prize":null,"battlesWon":4},{"id":4532,"name":"Test Team 19","owner":"0x0000000000000000000000000000000000000019","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4533,"name":"Test Team 20","owner":"0x0000000000000000000000000000000000000020","numOfWins":2,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":2},{"id":4534,"name":"Test Team 21","owner":"0x0000000000000000000000000000000000000021","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4535,"name":"Test Team 22","owner":"0x0000000000000000000000000000000000000022","numOfWins":3,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":3},{"id":4536,"name":"Test Team 23","owner":"0x0000000000000000000000000000000000000023","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4537,"name":"Test Team 24","owner":"0x0000000000000000000000000000000000000024","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4538,"name":"Test Team 25","owner":"0x0000000000000000000000000000000000000025","numOfWins":2,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":2},{"id":4539,"name":"Test Team 26","owner":"0x0000000000000000000000000000000000000026","numOfWins":3,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":3},{"id":4540,"name":"Test Team 27","owner":"0x0000000000000000000000000000000000000027","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4541,"name":"Test Team 28","owner":"0x0000000000000000000000000000000000000028","numOfWins":3,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":3},{"id":4542,"name":"Test Team 29","owner":"0x0000000000000000000000000000000000000029","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4543,"name":"Test Team 30","owner":"0x0000000000000000000000000000000000000030","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4544,"name":"Test Team 31","owner":"0x0000000000000000000000000000000000000031","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4545,"name":"Test Team 32","owner":"0x0000000000000000000000000000000000000032","numOfWins":3,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":3},{"id":4546,"name":"Test Team 33","owner":"0x0000000000000000000000000000000000000033","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4547,"name":"Test Team 34","owner":"0x0000000000000000000000000000000000000034","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4548,"name":"Test Team 35","owner":"0x0000000000000000000000000000000000000035","numOfWins":2,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":2},{"id":4549,"name":"Test Team 36","owner":"0x0000000000000000000000000000000000000036","numOfWins":null,"numOfLosses":2,"ranking":97,"prize":0,"battlesWon":0},{"id":4550,"name":"Test Team 37","owner":"0x0000000000000000000000000000000000000037","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4551,"name":"Test Team 38","owner":"0x0000000000000000000000000000000000000038","numOfWins":2,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":2},{"id":4552,"name":"Test Team 39","owner":"0x0000000000000000000000000000000000000039","numOfWins":3,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":3},{"id":4553,"name":"Test Team 40","owner":"0x0000000000000000000000000000000000000040","numOfWins":3,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":3},{"id":4554,"name":"Test Team 41","owner":"0x0000000000000000000000000000000000000041","numOfWins":3,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":3},{"id":4555,"name":"Test Team 42","owner":"0x0000000000000000000000000000000000000042","numOfWins":3,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":3},{"id":4556,"name":"Test Team 43","owner":"0x0000000000000000000000000000000000000043","numOfWins":4,"numOfLosses":null,"ranking":null,"prize":null,"battlesWon":4},{"id":4557,"name":"Test Team 44","owner":"0x0000000000000000000000000000000000000044","numOfWins":2,"numOfLosses":2,"ranking":49,"prize":3,"battlesWon":2},{"id":4558,"name":"Test Team 45","owner":"0x0000000000000000000000000000000000000045","numOfWins":3,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":3},{"id":4559,"name":"Test Team 46","owner":"0x0000000000000000000000000000000000000046","numOfWins":2,"numOfLosses":2,"ranking":49,"prize":3,"battlesWon":2},{"id":4560,"name":"Test Team 47","owner":"0x0000000000000000000000000000000000000047","numOfWins":2,"numOfLosses":2,"ranking":49,"prize":3,"battlesWon":2},{"id":4561,"name":"Test Team 48","owner":"0x0000000000000000000000000000000000000048","numOfWins":2,"numOfLosses":2,"ranking":49,"prize":3,"battlesWon":2},{"id":4562,"name":"Test Team 49","owner":"0x0000000000000000000000000000000000000049","numOfWins":3,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":3},{"id":4563,"name":"Test Team 50","owner":"0x0000000000000000000000000000000000000050","numOfWins":3,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":3},{"id":4564,"name":"Test Team 51","owner":"0x0000000000000000000000000000000000000051","numOfWins":2,"numOfLosses":2,"ranking":49,"prize":3,"battlesWon":2},{"id":4565,"name":"Test Team 52","owner":"0x0000000000000000000000000000000000000052","numOfWins":2,"numOfLosses":2,"ranking":49,"prize":3,"battlesWon":2},{"id":4566,"name":"Test Team 53","owner":"0x0000000000000000000000000000000000000053","numOfWins":2,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":2},{"id":4567,"name":"Test Team 54","owner":"0x0000000000000000000000000000000000000054","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4568,"name":"Test Team 55","owner":"0x0000000000000000000000000000000000000055","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4569,"name":"Test Team 56","owner":"0x0000000000000000000000000000000000000056","numOfWins":4,"numOfLosses":null,"ranking":null,"prize":null,"battlesWon":4},{"id":4570,"name":"Test Team 57","owner":"0x0000000000000000000000000000000000000057","numOfWins":4,"numOfLosses":null,"ranking":null,"prize":null,"battlesWon":4},{"id":4571,"name":"Test Team 58","owner":"0x0000000000000000000000000000000000000058","numOfWins":2,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":2},{"id":4572,"name":"Test Team 59","owner":"0x0000000000000000000000000000000000000059","numOfWins":2,"numOfLosses":2,"ranking":49,"prize":3,"battlesWon":2},{"id":4573,"name":"Test Team 60","owner":"0x0000000000000000000000000000000000000060","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4574,"name":"Test Team 61","owner":"0x0000000000000000000000000000000000000061","numOfWins":2,"numOfLosses":2,"ranking":49,"prize":3,"battlesWon":2},{"id":4575,"name":"Test Team 62","owner":"0x0000000000000000000000000000000000000062","numOfWins":2,"numOfLosses":2,"ranking":49,"prize":3,"battlesWon":2},{"id":4576,"name":"Test Team 63","owner":"0x0000000000000000000000000000000000000063","numOfWins":2,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":2},{"id":4577,"name":"Test Team 64","owner":"0x0000000000000000000000000000000000000064","numOfWins":null,"numOfLosses":2,"ranking":97,"prize":0,"battlesWon":0},{"id":4578,"name":"Test Team 65","owner":"0x0000000000000000000000000000000000000065","numOfWins":2,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":2},{"id":4579,"name":"Test Team 66","owner":"0x0000000000000000000000000000000000000066","numOfWins":2,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":2},{"id":4580,"name":"Test Team 67","owner":"0x0000000000000000000000000000000000000067","numOfWins":2,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":2},{"id":4581,"name":"Test Team 68","owner":"0x0000000000000000000000000000000000000068","numOfWins":4,"numOfLosses":null,"ranking":null,"prize":null,"battlesWon":4},{"id":4582,"name":"Test Team 69","owner":"0x0000000000000000000000000000000000000069","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4583,"name":"Test Team 70","owner":"0x0000000000000000000000000000000000000070","numOfWins":3,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":3},{"id":4584,"name":"Test Team 71","owner":"0x0000000000000000000000000000000000000071","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4585,"name":"Test Team 72","owner":"0x0000000000000000000000000000000000000072","numOfWins":3,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":3},{"id":4586,"name":"Test Team 73","owner":"0x0000000000000000000000000000000000000073","numOfWins":2,"numOfLosses":2,"ranking":49,"prize":3,"battlesWon":2},{"id":4587,"name":"Test Team 74","owner":"0x0000000000000000000000000000000000000074","numOfWins":2,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":2},{"id":4588,"name":"Test Team 75","owner":"0x0000000000000000000000000000000000000075","numOfWins":3,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":3},{"id":4589,"name":"Test Team 76","owner":"0x0000000000000000000000000000000000000076","numOfWins":null,"numOfLosses":2,"ranking":97,"prize":0,"battlesWon":0},{"id":4590,"name":"Test Team 77","owner":"0x0000000000000000000000000000000000000077","numOfWins":3,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":3},{"id":4591,"name":"Test Team 78","owner":"0x0000000000000000000000000000000000000078","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4592,"name":"Test Team 79","owner":"0x0000000000000000000000000000000000000079","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4593,"name":"Test Team 80","owner":"0x0000000000000000000000000000000000000080","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4594,"name":"Test Team 81","owner":"0x0000000000000000000000000000000000000081","numOfWins":2,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":2},{"id":4595,"name":"Test Team 82","owner":"0x0000000000000000000000000000000000000082","numOfWins":3,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":3},{"id":4596,"name":"Test Team 83","owner":"0x0000000000000000000000000000000000000083","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4597,"name":"Test Team 84","owner":"0x0000000000000000000000000000000000000084","numOfWins":4,"numOfLosses":null,"ranking":null,"prize":null,"battlesWon":4},{"id":4598,"name":"Test Team 85","owner":"0x0000000000000000000000000000000000000085","numOfWins":2,"numOfLosses":2,"ranking":49,"prize":3,"battlesWon":2},{"id":4599,"name":"Test Team 86","owner":"0x0000000000000000000000000000000000000086","numOfWins":2,"numOfLosses":2,"ranking":49,"prize":3,"battlesWon":2},{"id":4600,"name":"Test Team 87","owner":"0x0000000000000000000000000000000000000087","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4601,"name":"Test Team 88","owner":"0x0000000000000000000000000000000000000088","numOfWins":2,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":2},{"id":4602,"name":"Test Team 89","owner":"0x0000000000000000000000000000000000000089","numOfWins":2,"numOfLosses":2,"ranking":49,"prize":3,"battlesWon":2},{"id":4603,"name":"Test Team 90","owner":"0x0000000000000000000000000000000000000090","numOfWins":3,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":3},{"id":4604,"name":"Test Team 91","owner":"0x0000000000000000000000000000000000000091","numOfWins":2,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":2},{"id":4605,"name":"Test Team 92","owner":"0x0000000000000000000000000000000000000092","numOfWins":3,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":3},{"id":4606,"name":"Test Team 93","owner":"0x0000000000000000000000000000000000000093","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4607,"name":"Test Team 94","owner":"0x0000000000000000000000000000000000000094","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4608,"name":"Test Team 95","owner":"0x0000000000000000000000000000000000000095","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4609,"name":"Test Team 96","owner":"0x0000000000000000000000000000000000000096","numOfWins":2,"numOfLosses":2,"ranking":49,"prize":3,"battlesWon":2},{"id":4610,"name":"Test Team 97","owner":"0x0000000000000000000000000000000000000097","numOfWins":3,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":3},{"id":4611,"name":"Test Team 98","owner":"0x0000000000000000000000000000000000000098","numOfWins":2,"numOfLosses":1,"ranking":null,"prize":null,"battlesWon":2},{"id":4612,"name":"Test Team 99","owner":"0x0000000000000000000000000000000000000099","numOfWins":1,"numOfLosses":2,"ranking":65,"prize":0,"battlesWon":1},{"id":4613,"name":"Test Team 100","owner":"0x0000000000000000000000000000000000000100","numOfWins":4,"numOfLosses":null,"ranking":null,"prize":null,"battlesWon":4}]
     },
     {
@@ -603,7 +679,9 @@
         "image": "",
         "description": "",
         "brackets":
-        []
+        [],
+        "teamsRejected": [],
+        "teams": []
     },
     {
         "id": 7,
@@ -625,6 +703,7 @@
         "description": "",
         "brackets":
         [],
+        "teamsRejected": [],
         "teams":
         [
             {

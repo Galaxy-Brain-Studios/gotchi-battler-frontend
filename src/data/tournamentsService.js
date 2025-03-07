@@ -134,6 +134,16 @@ export default {
     }
   },
 
+  async fetchTournamentTeamsRejected ({ tournamentId }) {
+    try {
+      const teams = await api.get(urls.tournamentTeamsRejected(tournamentId))
+      return teams || []
+    } catch (e) {
+      console.error('fetchTournamentTeamsRejected error', { ...e })
+      throw new Error(getResponseErrorMessage(e) || 'Error fetching tournament rejected teams')
+    }
+  },
+
   async fetchTournamentGotchis ({ tournamentId }) {
     try {
       const gotchis = await api.get(urls.tournamentGotchis(tournamentId))

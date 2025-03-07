@@ -237,6 +237,11 @@ const mirageConfig = window.mirageConfig = {
     error: false,
     slow: false
   },
+  tournamentTeamsRejected: {
+    error: false,
+    slow: false,
+    empty: false
+  },
   tournamentGotchis: {
     error: false,
     slow: false,
@@ -442,6 +447,22 @@ export function makeServer({ environment = 'development' } = {}) {
           return errorResponse({ statusCode: 404, message: 'Tournament not found' })
         }
         return tournament.teams || []
+      })
+
+      this.get(fixUrl(urls.tournamentTeamsRejected(':id')), (schema, request) => {
+        if (mirageConfig.tournamentTeamsRejected.error) {
+          return errorResponse()
+        }
+        if (mirageConfig.tournamentTeamsRejected.empty) {
+          return []
+        }
+        const tournament = tournamentsById[request.params.id]
+        if (!tournament) {
+          return errorResponse({ statusCode: 404, message: 'Tournament not found' })
+        }
+        return tournament.teamsRejected || []
+      }, {
+        timing: mirageConfig.tournamentTeamsRejected.slow ? 5000 : 1000
       })
 
       this.get(fixUrl(urls.tournamentBrackets(':id')), (schema, request) => {

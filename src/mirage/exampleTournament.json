@@ -18,6 +18,20 @@
     "createdAt": "2024-12-16T16:47:59.000Z",
     "updatedAt": "2025-01-02T16:01:38.000Z",
     "winner": null,
+    "teamsRejected": [
+        {
+            "id": 999999,
+            "name": "Test Rejected Team",
+            "owner": "0x5b95a971b4583a5f011e9da082acdd679b870d06",
+            "user":
+            {
+                "address": "0x5b95a971b4583a5f011e9da082acdd679b870d06",
+                "name": "Someone",
+                "avatar": "https://storage.googleapis.com/gotchi-battler-live_users/866d4302-e431-4f8f-b048-1e84d79acb17.jpg"
+            },
+            "reason": "Team \"Test Rejected Team\" has a total BRS of 3357 which is higher than the max allowed BRS of 3300"
+        }
+    ],
     "teams":
     [
         {

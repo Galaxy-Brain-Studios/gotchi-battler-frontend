@@ -33,6 +33,7 @@ const urls = {
     `${BASE_URL}/api/v1/me/tournaments/${encodeURIComponent(tournamentId)}/teams/${encodeURIComponent(teamId)}`,
   tournamentTeams: (tournamentId) => `${BASE_URL}/api/v1/tournaments/${encodeURIComponent(tournamentId)}/teams`,
   tournamentTeamsReport: (tournamentId) => `${BASE_URL}/api/v1/tournaments/${encodeURIComponent(tournamentId)}/teams-report`,
+  tournamentTeamsRejected: (tournamentId) => `${BASE_URL}/api/v1/tournaments/${encodeURIComponent(tournamentId)}/rejected-teams`,
   tournamentGotchis: (tournamentId) => `${BASE_URL}/api/v1/tournaments/${encodeURIComponent(tournamentId)}/gotchis`,
   battle: (id) => `${BASE_URL}/api/v1/battles/${encodeURIComponent(id)}`,
   battleAnalyser: (id) => `${BASE_URL}/api/v1/battles/${encodeURIComponent(id)}/analyse`,

@@ -5,9 +5,11 @@
   import { useTournamentStore } from '../../data/tournamentStore'
   import SiteBackLink from '../common/SiteBackLink.vue'
   import SiteButtonLink from '../common/SiteButtonLink.vue'
+  import SiteButtonGroup from '../common/SiteButtonGroup.vue'
   import TournamentOverview from './TournamentOverview.vue'
   import TournamentBracketsList from './TournamentBracketsList.vue'
   import TournamentTeamsList from './TournamentTeamsList.vue'
+  import TournamentTeamsRejectedList from './TournamentTeamsRejectedList.vue'
   import TournamentParticipant from './TournamentParticipant.vue'
   import TournamentGotchis from './TournamentGotchis.vue'
   import TournamentBattles from './TournamentBattles.vue'
@@ -61,6 +63,12 @@
 
   const showLending = computed(() => {
     return ['registering'].includes(tournamentStatus.value)
+  })
+
+  // Rejected teams are only available after a tournament has started.
+  // (edge case: if teams-rejected is in the URL, then show the subtabs to make it clear what's being displayed)
+  const showTeamSubtabs = computed(() => {
+    return !['upcoming', 'registering'].includes(tournamentStatus.value) || props.tab === 'teams-rejected'
   })
 
   const onCreatedTeam = function () {
@@ -197,16 +205,44 @@
           :tournament="tournament"
         />
 
-        <TournamentTeamsList
-          v-else-if="tab === 'teams'"
-          :tournamentId="tournament.id"
-          :tournamentStatus="tournamentStatus"
-          :tournamentPrizeCurrency="tournamentPrizeCurrency"
-          :teamId="teamId"
-          :teamMode="teamMode"
-          @deletedTeam="onDeletedTeam"
-          @editedTeam="onEditedTeam"
-        />
+        <template v-if="['teams', 'teams-rejected'].includes(tab)">
+          <template v-if="showTeamSubtabs">
+            <SiteButtonGroup
+              :numButtons="2"
+              class="tournament__subtabs"
+            >
+              <SiteButtonLink
+                grouped="start"
+                :to="{ name: 'tournament-tab', params: { id, tab: 'teams' } }"
+              >
+                Active Teams
+              </SiteButtonLink>
+              <SiteButtonLink
+                grouped="end"
+                :to="{ name: 'tournament-tab', params: { id, tab: 'teams-rejected' } }"
+              >
+                Rejected Teams
+              </SiteButtonLink>
+            </SiteButtonGroup>
+          </template>
+
+          <TournamentTeamsList
+            v-if="tab === 'teams'"
+            :tournamentId="tournament.id"
+            :tournamentStatus="tournamentStatus"
+            :tournamentPrizeCurrency="tournamentPrizeCurrency"
+            :teamId="teamId"
+            :teamMode="teamMode"
+            @deletedTeam="onDeletedTeam"
+            @editedTeam="onEditedTeam"
+          />
+
+          <TournamentTeamsRejectedList
+            v-else-if="tab === 'teams-rejected'"
+            :tournamentId="tournament.id"
+            :teamId="teamId"
+          />
+        </template>
 
         <TournamentPrizes
           v-else-if="tab === 'prizes'"
@@ -323,5 +359,8 @@
     border: 2px solid var(--c-black);
     padding: 2rem 1.5rem;
     background: var(--c-dark-blue);
+  }
+  .tournament__subtabs {
+    margin-bottom: 1.5rem;
   }
 </style>

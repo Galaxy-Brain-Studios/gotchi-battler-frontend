@@ -1,5 +1,6 @@
 :root {
   --c-white: #fff;
+  --c-white-rgb: 255, 255, 255;
   --c-black-rgb: 27, 15, 85;
   --c-black: rgb(var(--c-black-rgb));
   --c-medium-blue-rgb: 32, 68, 185;

@@ -1,13 +1,15 @@
 <script setup>
   import { computed } from 'vue'
-  import { formatDateTime } from '../../utils/date'
   import { storeToRefs } from 'pinia'
   import { useRouter } from 'vue-router'
   import { useTournamentStore } from '../../data/tournamentStore'
   import SiteBackLink from '../common/SiteBackLink.vue'
   import SiteButtonLink from '../common/SiteButtonLink.vue'
+  import SiteButtonGroup from '../common/SiteButtonGroup.vue'
+  import TournamentOverview from './TournamentOverview.vue'
   import TournamentBracketsList from './TournamentBracketsList.vue'
   import TournamentTeamsList from './TournamentTeamsList.vue'
+  import TournamentTeamsRejectedList from './TournamentTeamsRejectedList.vue'
   import TournamentParticipant from './TournamentParticipant.vue'
   import TournamentGotchis from './TournamentGotchis.vue'
   import TournamentBattles from './TournamentBattles.vue'
@@ -21,7 +23,7 @@
     },
     tab: {
       type: String,
-      default: 'brackets'
+      default: 'overview'
     },
     teamId: {
       type: String,
@@ -61,6 +63,12 @@
 
   const showLending = computed(() => {
     return ['registering'].includes(tournamentStatus.value)
+  })
+
+  // Rejected teams are only available after a tournament has started.
+  // (edge case: if teams-rejected is in the URL, then show the subtabs to make it clear what's being displayed)
+  const showTeamSubtabs = computed(() => {
+    return !['upcoming', 'registering'].includes(tournamentStatus.value) || props.tab === 'teams-rejected'
   })
 
   const onCreatedTeam = function () {
@@ -142,8 +150,14 @@
         class="tournament__tabs"
       >
         <SiteButtonLink
-          :to="{ name: 'tournament-tab', params: { id, tab: 'brackets' } }"
+          :to="{ name: 'tournament-tab', params: { id, tab: 'overview' } }"
           grouped="vertical-start"
+        >
+          Overview
+        </SiteButtonLink>
+        <SiteButtonLink
+          :to="{ name: 'tournament-tab', params: { id, tab: 'brackets' } }"
+          grouped="vertical-middle"
         >
           Brackets
         </SiteButtonLink>
@@ -180,45 +194,55 @@
         </SiteButtonLink>
       </div>
 
-      <div
-        class="tournament__info-container"
-      >
-        <div class="tournament__meta">
-          <div>
-            <span class="tournament__meta-label">
-              Start:
-            </span>
-            <span class="tournament__meta-value">
-               {{ formatDateTime(tournament.startDate) }}
-            </span>
-          </div>
-          <div>
-            <span class="tournament__meta-label">
-              End:
-            </span>
-            <span class="tournament__meta-value">
-               {{ formatDateTime(tournament.endDate) }}
-            </span>
-          </div>
-        </div>
-      </div>
-
       <div class="tournament__tab-content">
+        <TournamentOverview
+          v-if="tab === 'overview'"
+          :tournament="tournament"
+        />
+
         <TournamentBracketsList
           v-if="tab === 'brackets'"
           :tournament="tournament"
         />
 
-        <TournamentTeamsList
-          v-else-if="tab === 'teams'"
-          :tournamentId="tournament.id"
-          :tournamentStatus="tournamentStatus"
-          :tournamentPrizeCurrency="tournamentPrizeCurrency"
-          :teamId="teamId"
-          :teamMode="teamMode"
-          @deletedTeam="onDeletedTeam"
-          @editedTeam="onEditedTeam"
-        />
+        <template v-if="['teams', 'teams-rejected'].includes(tab)">
+          <template v-if="showTeamSubtabs">
+            <SiteButtonGroup
+              :numButtons="2"
+              class="tournament__subtabs"
+            >
+              <SiteButtonLink
+                grouped="start"
+                :to="{ name: 'tournament-tab', params: { id, tab: 'teams' } }"
+              >
+                Active Teams
+              </SiteButtonLink>
+              <SiteButtonLink
+                grouped="end"
+                :to="{ name: 'tournament-tab', params: { id, tab: 'teams-rejected' } }"
+              >
+                Rejected Teams
+              </SiteButtonLink>
+            </SiteButtonGroup>
+          </template>
+
+          <TournamentTeamsList
+            v-if="tab === 'teams'"
+            :tournamentId="tournament.id"
+            :tournamentStatus="tournamentStatus"
+            :tournamentPrizeCurrency="tournamentPrizeCurrency"
+            :teamId="teamId"
+            :teamMode="teamMode"
+            @deletedTeam="onDeletedTeam"
+            @editedTeam="onEditedTeam"
+          />
+
+          <TournamentTeamsRejectedList
+            v-else-if="tab === 'teams-rejected'"
+            :tournamentId="tournament.id"
+            :teamId="teamId"
+          />
+        </template>
 
         <TournamentPrizes
           v-else-if="tab === 'prizes'"
@@ -263,11 +287,10 @@
     display: grid;
     grid-template-areas:
       "image"
-      "info"
       "tabs"
       "content";
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto auto auto auto;
+    grid-template-rows: auto auto auto;
     column-gap: 2rem;
     row-gap: 2rem;
   }
@@ -277,9 +300,6 @@
   .tournament__tabs {
     grid-area: tabs;
   }
-  .tournament__info-container {
-    grid-area: info;
-  }
   .tournament__tab-content {
     grid-area: content;
   }
@@ -288,10 +308,9 @@
     .tournament__layout {
       grid-template-areas:
         "image tabs"
-        "info tabs"
         "content content";
       grid-template-columns: minmax(0, 50%) minmax(0, 1fr);
-      grid-template-rows: auto auto auto;
+      grid-template-rows: auto auto;
       row-gap: 1.5rem;
     }
   }
@@ -300,14 +319,10 @@
     .tournament__layout {
       grid-template-areas:
         "image content"
-        "tabs content"
-        "info content";
+        "tabs content";
       grid-template-columns: 18rem minmax(0, auto);
-      grid-template-rows: auto auto minmax(auto, 1fr);
+      grid-template-rows: auto minmax(auto, 1fr);
       row-gap: 0;
-    }
-    .tournament__meta {
-      margin: 1.5rem 0.375rem;
     }
     .tournament__image {
       padding: 0 0.5rem; /* to align with vertical menu */
@@ -336,12 +351,6 @@
     letter-spacing: 0.02625rem;
   }
 
-  .tournament__info-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2.5rem;
-    align-items: flex-start;
-  }
   .tournament__image {
     flex: none;
     max-width: min(400px, 100%);
@@ -351,15 +360,7 @@
     padding: 2rem 1.5rem;
     background: var(--c-dark-blue);
   }
-  .tournament__meta {
-    flex: 1 1 auto;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    letter-spacing: 0.02625rem;
-    color: var(--c-white);
-  }
-  .tournament__meta-label {
-    margin-right: 0.75rem;
-    opacity: 0.5;
+  .tournament__subtabs {
+    margin-bottom: 1.5rem;
   }
 </style>

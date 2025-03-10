@@ -23,6 +23,7 @@ export const processTournamentModel = function (jsonData) {
   if (!jsonData) { return null }
   return {
     ...jsonData,
+    registrationDate: jsonData.registrationDate ? new Date(jsonData.registrationDate) : null,
     endDate: jsonData.endDate ? new Date(jsonData.endDate) : null,
     startDate: jsonData.startDate ? new Date(jsonData.startDate) : null,
     status: getTournamentStatus(jsonData)

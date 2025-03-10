@@ -118,6 +118,7 @@ battlesById.DEFAULT = battles[0]
   const t1 = tournaments[0]
   const nowMs = Date.now()
   const dayMs = 24 * 60 * 60 * 1000
+  t1.registrationDate = new Date( nowMs - (70 * dayMs))
   t1.startDate = new Date( nowMs - (60 * dayMs))
   t1.endDate = new Date( nowMs + (60 * dayMs))
   for (const bracket of t1.brackets) {
@@ -133,6 +134,7 @@ battlesById.DEFAULT = battles[0]
   // set dates on 'registering' tournaments so we can test the lending warning
   for (const tournament of tournaments) {
     if (tournament.state === 'REGISTERING') {
+      tournament.registrationDate = new Date ( nowMs - (2 * dayMs ))
       tournament.startDate = new Date ( nowMs + (5 * dayMs ))
       tournament.endDate = new Date ( nowMs + (10 * dayMs ))
     }
@@ -234,6 +236,11 @@ const mirageConfig = window.mirageConfig = {
   tournamentTeams: {
     error: false,
     slow: false
+  },
+  tournamentTeamsRejected: {
+    error: false,
+    slow: false,
+    empty: false
   },
   tournamentGotchis: {
     error: false,
@@ -440,6 +447,22 @@ export function makeServer({ environment = 'development' } = {}) {
           return errorResponse({ statusCode: 404, message: 'Tournament not found' })
         }
         return tournament.teams || []
+      })
+
+      this.get(fixUrl(urls.tournamentTeamsRejected(':id')), (schema, request) => {
+        if (mirageConfig.tournamentTeamsRejected.error) {
+          return errorResponse()
+        }
+        if (mirageConfig.tournamentTeamsRejected.empty) {
+          return []
+        }
+        const tournament = tournamentsById[request.params.id]
+        if (!tournament) {
+          return errorResponse({ statusCode: 404, message: 'Tournament not found' })
+        }
+        return tournament.teamsRejected || []
+      }, {
+        timing: mirageConfig.tournamentTeamsRejected.slow ? 5000 : 1000
       })
 
       this.get(fixUrl(urls.tournamentBrackets(':id')), (schema, request) => {

@@ -78,15 +78,14 @@
     grid-template-columns: auto minmax(0, 1fr);
     border: 1px solid var(--c-medium-blue);
   }
+  dt {
+    color: rgba(var(--c-white-rgb), 0.6);
+  }
   dt, dd {
     border: 1px solid var(--c-medium-blue);
-    padding: 0.5rem 1rem;
+    padding: 1rem;
     background: rgba(var(--c-medium-blue-rgb), 0.35);
-    font-size: 1.2rem;
     line-height: 1.5rem;
-  }
-  dd {
-    font-weight: bold;
   }
   .tournament-overview__max-item-level {
     text-transform: capitalize;

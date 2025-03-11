@@ -99,7 +99,8 @@
 
   const rankingIsAvailable = computed(() => ['active_preparation', 'active_battle', 'completed'].includes(props.tournamentStatus) )
 
-  const numToShow = ref(100)
+  const PAGE_SIZE = 100
+  const numToShow = ref(PAGE_SIZE)
   const onlyShowMyTeams = ref(false)
   const sortOptions = computed(() => [
     ...(rankingIsAvailable.value ? [{
@@ -171,7 +172,7 @@
   })
 
   function loadMoreTeams () {
-    numToShow.value += 100
+    numToShow.value += PAGE_SIZE
   }
   const canLoadMoreTeams = computed(() => filteredAndSortedTeams.value?.length > numToShow.value)
 

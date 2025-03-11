@@ -5,9 +5,11 @@ import { urls } from '../data/api.js'
 import profiles from './profiles.json'
 import profileTeamsForAddress from './profileTeamsForAddress.json'
 import profileInventoryForAddress from './profileInventoryForAddress.json'
+import profileTournamentsForAddress from './profileTournamentsForAddress.json'
 import tournaments from './tournaments.json'
 import exampleTournament from './exampleTournament.json'
 import exampleTournamentBrackets from './exampleTournamentBrackets.json'
+import tournamentPrizeSets from './tournamentPrizeSets.json'
 import teams from './teams.json'
 import battles from './battles.json'
 import battleLog from './battleLog.json'
@@ -58,6 +60,7 @@ const initProfileForAddress = function (address) {
 const profileTeamsByAddress = Object.fromEntries(Object.entries( profileTeamsForAddress).map( ([address, teams]) => [address.toLowerCase(), teams] ) )
 const profileInventoryByAddress = Object.fromEntries(Object.entries( profileInventoryForAddress).map( ([address, inventory]) => [address.toLowerCase(), inventory] ) )
 const INVENTORY_ITEMS_BY_ID = Object.fromEntries(SHOP_ITEMS.map(item => [`${item.id}`, item]))
+const profileTournamentsByAddress = Object.fromEntries(Object.entries( profileTournamentsForAddress).map( ([address, tournaments]) => [address.toLowerCase(), tournaments] ) )
 
 const getTeamModelFromFormationTeam = function (team) {
   const [back1Gotchi, back2Gotchi, back3Gotchi, back4Gotchi, back5Gotchi] = team.formation.back
@@ -115,6 +118,7 @@ battlesById.DEFAULT = battles[0]
   const t1 = tournaments[0]
   const nowMs = Date.now()
   const dayMs = 24 * 60 * 60 * 1000
+  t1.registrationDate = new Date( nowMs - (70 * dayMs))
   t1.startDate = new Date( nowMs - (60 * dayMs))
   t1.endDate = new Date( nowMs + (60 * dayMs))
   for (const bracket of t1.brackets) {
@@ -130,6 +134,7 @@ battlesById.DEFAULT = battles[0]
   // set dates on 'registering' tournaments so we can test the lending warning
   for (const tournament of tournaments) {
     if (tournament.state === 'REGISTERING') {
+      tournament.registrationDate = new Date ( nowMs - (2 * dayMs ))
       tournament.startDate = new Date ( nowMs + (5 * dayMs ))
       tournament.endDate = new Date ( nowMs + (10 * dayMs ))
     }
@@ -232,11 +237,21 @@ const mirageConfig = window.mirageConfig = {
     error: false,
     slow: false
   },
+  tournamentTeamsRejected: {
+    error: false,
+    slow: false,
+    empty: false
+  },
   tournamentGotchis: {
     error: false,
     slow: false,
     empty: false,
     long: false
+  },
+  tournamentPrizeSets: {
+    error: false,
+    slow: true,
+    empty: false
   },
   availableLendings: {
     error: false,
@@ -252,6 +267,15 @@ const mirageConfig = window.mirageConfig = {
     slow: false
   },
   profileInventory: {
+    error: false,
+    slow: false
+  },
+  profileTournaments: {
+    error: false,
+    slow: false,
+    empty: false
+  },
+  createTournament: {
     error: false,
     slow: false
   },
@@ -425,6 +449,22 @@ export function makeServer({ environment = 'development' } = {}) {
         return tournament.teams || []
       })
 
+      this.get(fixUrl(urls.tournamentTeamsRejected(':id')), (schema, request) => {
+        if (mirageConfig.tournamentTeamsRejected.error) {
+          return errorResponse()
+        }
+        if (mirageConfig.tournamentTeamsRejected.empty) {
+          return []
+        }
+        const tournament = tournamentsById[request.params.id]
+        if (!tournament) {
+          return errorResponse({ statusCode: 404, message: 'Tournament not found' })
+        }
+        return tournament.teamsRejected || []
+      }, {
+        timing: mirageConfig.tournamentTeamsRejected.slow ? 5000 : 1000
+      })
+
       this.get(fixUrl(urls.tournamentBrackets(':id')), (schema, request) => {
         if (mirageConfig.tournamentBrackets.error) {
           return errorResponse()
@@ -437,6 +477,18 @@ export function makeServer({ environment = 'development' } = {}) {
           return tournament.fullBrackets
         }
         return generateFullBrackets(tournament)
+      })
+
+      this.get(fixUrl(urls.tournamentPrizeSets()), () => {
+        if (mirageConfig.tournamentPrizeSets.error) {
+          return errorResponse()
+        }
+        if (mirageConfig.tournamentPrizeSets.empty) {
+          return []
+        }
+        return tournamentPrizeSets
+      }, {
+        timing: mirageConfig.tournamentPrizeSets.slow ? 5000 : 1000
       })
 
       this.get(urls.trainingTeams(), () => {
@@ -906,6 +958,46 @@ export function makeServer({ environment = 'development' } = {}) {
         return purchase;
       }, {
         timing: mirageConfig.itemPurchase.slow ? 3000 : 100
+      })
+
+      this.get(fixUrl(urls.profileTournaments()), (schema, request) => {
+        if (mirageConfig.profileTournaments.error) {
+          return errorResponse()
+        }
+        const address = checkCredentials(request)
+        if (!address) { return unauthorizedErrorResponse() }
+
+        if (mirageConfig.profileTournaments.empty) {
+          return []
+        }
+
+        const tournaments = (profileTournamentsByAddress[address.toLowerCase()] || []).map(id => {
+          const tournament = tournamentsById[id]
+          if (!tournament) { return null }
+          return {
+            id,
+            name: tournament.name,
+            state: tournament.state
+          }
+        }).filter(t => t)
+
+        return tournaments
+      }, {
+        timing: mirageConfig.profileTournaments.slow ? 3000 : 100
+      })
+
+      this.post(fixUrl(urls.createTournament()), async (schema, request) => {
+        if (mirageConfig.createTournament.error) {
+          return errorResponse()
+        }
+        const address = checkCredentials(request)
+        if (!address) { return unauthorizedErrorResponse() }
+
+        // real server would return the saved tournament model with its new id
+        // just return an existing one for testing
+        return { id: tournaments[0].id }
+      }, {
+        timing: mirageConfig.createTournament.slow ? 3000 : 1000
       })
 
       this.put(fixUrl(urls.updateProfile()), async (schema, request) => {

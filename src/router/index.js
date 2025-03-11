@@ -56,6 +56,18 @@ const router = createRouter({
               name: 'profile-badges',
               props: true,
               component: () => import('../components/profile/ProfileBadges.vue'),
+            },
+            {
+              path: 'tournaments',
+              name: 'profile-tournaments',
+              props: true,
+              component: () => import('../components/profile/ProfileTournaments.vue'),
+            },
+            {
+              path: 'tournament-create',
+              name: 'profile-tournament-create',
+              props: true,
+              component: () => import('../components/profile/ProfileTournamentCreate.vue'),
             }
           ]
         }
@@ -80,7 +92,7 @@ const router = createRouter({
         {
           path: 'id/:id',
           name: 'tournament',
-          redirect: to => ({ name: 'tournament-tab', params: { id: to.params.id, tab: 'brackets' } }),
+          redirect: to => ({ name: 'tournament-tab', params: { id: to.params.id, tab: 'overview' } }),
           children: [
             {
               path: 'tab/:tab/:teamId?/:teamMode?',
